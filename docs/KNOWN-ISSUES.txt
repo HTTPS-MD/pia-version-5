@@ -1,5 +1,12 @@
 KNOWN ISSUES AND TO-DO (Version 05, staging)
-Written 2026-10-26. Nothing here has been changed in code yet.
+Written 2026-10-26.
+
+STATUS OF ITEM 1: FIXED on staging (commit c766035 + supabase/staging/03-section-open-fix.sql).
+  Tested: Tutoring switched ON first, then Test Student Two and Three entered later and went straight
+  into tutoring without being stuck in the Waiting Room.
+  Still to test: a student who is already in the Waiting Room when the switch is on and finishes later
+  (the 5 second check), and the same fix for the OCEAN and character stages.
+  Production does NOT have this fix yet (see PRODUCTION-CHECKLIST.txt, section B).
 
 1. Opening a stage only lets in the students who are ready at that moment
    - Turning on "Tutoring dashboard" (or the other stage switches) runs admin_grant_stage once.
