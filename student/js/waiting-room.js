@@ -20,21 +20,36 @@ async function checkUserAndStage() {
     }
 
     if (canEnterStage(profile, 'ocean')) {
-        checkAndListen('stage_ocean', 'ocean-test.html');
+        checkAndListen('stage_ocean', 'ocean-test.html', 'OCEAN');
     } else if (canEnterStage(profile, 'char')) {
-        checkAndListen('stage_char', 'character-selection.html');
+        checkAndListen('stage_char', 'character-selection.html', 'Character Selection');
     } else if (isControlGroup(profile)) {
         window.location.replace('assessment-complete.html');
     } else {
-        checkAndListen('stage_dash', 'student-dashboard.html');
+        checkAndListen('stage_dash', 'student-dashboard.html', 'Tutoring Dashboard');
     }
 }
 
-async function checkAndListen(stageKey, redirectUrl) {
+const SECTION_OPEN_CHECK_MS = 5000;
+
+// A section the admin opened lets in students who finish later: ask the server every few seconds.
+async function sectionOpenForMe(stageName) {
+    const { data } = await supabaseClient.rpc('set_student_stage', { p_stage: stageName });
+    return !!(data && data.granted);
+}
+
+async function checkAndListen(stageKey, redirectUrl, stageName) {
     if (await isStageOpen(stageKey)) {
         window.location.replace(redirectUrl);
         return;
     }
+
+    const timer = setInterval(async () => {
+        if (await sectionOpenForMe(stageName)) {
+            clearInterval(timer);
+            window.location.replace(redirectUrl);
+        }
+    }, SECTION_OPEN_CHECK_MS);
 
     registerChannel('waiting-room-' + stageKey, (ch) =>
         ch
