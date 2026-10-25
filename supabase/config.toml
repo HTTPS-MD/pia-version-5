@@ -1,0 +1,11 @@
+# Tells the Supabase CLI where each Edge Function starts. The functions are JavaScript
+# (index.js); the CLI looks for index.ts unless it is told otherwise.
+project_id = "pia"
+
+[functions.join-with-number]
+entrypoint = "./functions/join-with-number/index.js"
+# The caller is an anonymous visitor, so the sign-in check is off here.
+verify_jwt = false
+
+[functions.learning-profile]
+entrypoint = "./functions/learning-profile/index.js"
