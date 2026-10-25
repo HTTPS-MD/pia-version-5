@@ -17,6 +17,25 @@ Written 2026-10-26. Nothing here has been changed in code yet.
    - Possible fix (to decide and test, never on dev): when the stage is open for the section,
      let any qualifying student in when they reach the Waiting Room or when they refresh.
 
+   PROPOSED SOLUTION for item 1 (not done yet; to be tested on staging first)
+   Step 1. Find out why Test Student Three was not let in the first time. Turn the Tutoring switch
+           ON while a Neutral student is already in the Waiting Room with OCEAN done, and read the
+           "granted" and "skipped" lists that admin_grant_stage returns. This gives the real cause.
+   Step 2. Fix the rule, not the order of the admin's clicks. The section already has a record that
+           the stage is open (table stage_overrides, the switch shows "Open"). When a student who
+           qualifies (OCEAN done, character chosen if needed, not control) opens or refreshes the
+           Waiting Room, check that record for their section and send them in. Today only the
+           global setting is checked, which stays false for a section-only opening.
+           Files to change: student/js/waiting-room.js and assets/js/shared/student-guard.js
+           (the same check in set_student_stage on the database side).
+   Step 3. Listen live. The Waiting Room should also listen for changes to the section record,
+           so a student who finishes later moves on by itself without a refresh.
+   Step 4. Test on staging with three students who finish at different times
+           (before, during and after the switch is turned on). All three must get in.
+   Step 5. Rerun the behavior tests in ~/pia-backups/behavior-tests so nothing else changes.
+   Until this is fixed: open Tutoring only after everyone is done, or switch OFF and ON again.
+   Rule: change Version 05 only. Never change dev or the real database for this.
+
 2. Not tested yet on staging
    - Solving problems and hints under Free choice and Neutral.
    - A whole class at the same time (more than 3 students).
