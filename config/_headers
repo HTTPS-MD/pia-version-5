@@ -1,0 +1,43 @@
+# ============================================================================
+# PIA SYSTEM — RESPONSE HEADERS (Cloudflare Pages)
+# https://developers.cloudflare.com/pages/configuration/headers/
+#
+# Must sit in the build output directory, which is dist/ (see config/build.sh). Only
+# the site's own folders are copied there, so supabase/ and
+# ml-service/ are never served. Every page also carries headers a <meta> tag cannot: frame-ancestors
+# (clickjacking), HSTS and the rest.
+#
+# CONTENT-SECURITY-POLICY, directive by directive:
+#   script-src   'self' only: the Supabase SDK is a pinned local copy
+#                (assets/js/vendor/supabase.js). NO
+#                'unsafe-inline': every inline <script> and onclick="" was
+#                moved into files so this could be strict.
+#   style-src    'unsafe-inline' stays for style="" attributes the dashboards
+#                still write (e.g. display:none toggles). Styles cannot run
+#                code; scripts are what this policy locks down.
+#   connect-src  only this project's Supabase — REST, Auth, Edge Functions
+#                and the realtime websocket.
+#   frame-ancestors 'none' + X-Frame-Options: no site may frame PIA.
+#
+# Cloudflare serves "pretty" URLs: /page.html redirects to /page. A per-page
+# rule added here must therefore list both spellings.
+# ============================================================================
+
+/*
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob:; media-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self'; worker-src 'self'; connect-src 'self' https://hvfqqdtemayhhfavmfbs.supabase.co wss://hvfqqdtemayhhfavmfbs.supabase.co; manifest-src 'self'; upgrade-insecure-requests
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=(), browsing-topics=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Cross-Origin-Opener-Policy: same-origin
+  X-Permitted-Cross-Domain-Policies: none
+
+# Staff and student pages are not for search engines. The landing page (/)
+# stays indexable. Both spellings: Cloudflare redirects /page.html to /page.
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+/teacher/*
+  X-Robots-Tag: noindex, nofollow
+/student/*
+  X-Robots-Tag: noindex, nofollow

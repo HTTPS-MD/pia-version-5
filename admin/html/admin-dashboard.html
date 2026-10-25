@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-surface="admin">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+
+    <script src="../../assets/js/shared/theme-boot.js"></script>
+    <meta name="description" content="PIA System — Admin Console for the Personal Instructing Agent research platform.">
+    <title>Admin Console — PIA System</title>
+
+    <script src="../../assets/js/shared/page-guard.js"></script>
+    <script src="../js/admin-boot-watchdog.js"></script>
+
+    <script src="/assets/js/vendor/supabase.js"></script>
+
+    <script src="../../assets/js/shared/admin-fonts.js"></script>
+
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261030a">
+    <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261027b">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261029c">
+</head>
+
+<body data-boot="pending">
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></symbol>
+            <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3 3 7.5l9 4.5 9-4.5L12 3Z"/><path d="m3 12.5 9 4.5 9-4.5"/><path d="m3 17 9 4.5 9-4.5"/></symbol>
+            <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 20v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20"/><circle cx="9" cy="7.5" r="3.5"/><path d="M22 20v-1.5a4 4 0 0 0-3-3.87"/><path d="M16 4.1a4 4 0 0 1 0 7"/></symbol>
+            <symbol id="i-cap" viewBox="0 0 24 24"><path d="m2 8 10-4.5L22 8l-10 4.5L2 8Z"/><path d="M6 10.2V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.8"/><path d="M22 8v6"/></symbol>
+            <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h9M19 6h1M4 12h3M13 12h7M4 18h9M19 18h1"/><circle cx="16" cy="6" r="2.4"/><circle cx="10" cy="12" r="2.4"/><circle cx="16" cy="18" r="2.4"/></symbol>
+            <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M19.1 14.4a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1v.2a2 2 0 1 1-4 0v-.1a1.6 1.6 0 0 0-2.7-1.2l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1A1.6 1.6 0 0 0 3.1 13H3a2 2 0 1 1 0-4h.1a1.6 1.6 0 0 0 1.2-2.7l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1A1.6 1.6 0 0 0 9.8 3.3V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 2.7 1.2l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0 1.1 2.7h.2a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.4 1Z"/></symbol>
+            <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></symbol>
+            <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+            <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+            <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+            <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+            <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+            <symbol id="i-chev-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+            <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M9.5 4v16"/></symbol>
+            <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+            <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8.5a6 6 0 1 0-12 0c0 5.5-2 6.5-2 6.5h16s-2-1-2-6.5Z"/><path d="M10.4 19a2 2 0 0 0 3.2 0"/></symbol>
+            <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9.5 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4.5"/><path d="m16 16.5 4.5-4.5L16 7.5"/><path d="M20.5 12H9"/></symbol>
+            <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9.5 7V5.2A1.2 1.2 0 0 1 10.7 4h2.6a1.2 1.2 0 0 1 1.2 1.2V7"/><path d="M6.5 7 7.4 19a1.2 1.2 0 0 0 1.2 1.1h6.8a1.2 1.2 0 0 0 1.2-1.1L17.5 7"/></symbol>
+            <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M4 20.2h4L20 8.2a2.83 2.83 0 0 0-4-4L4 16.2v4Z"/><path d="m14.5 5.7 3.8 3.8"/></symbol>
+            <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.6 7.2 8.4 5.8 8.4-5.8"/></symbol>
+            <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5"/><path d="M21 3 14.5 21l-4-7.5L3 9.5 21 3Z"/></symbol>
+            <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 7.7 7 9 4-1.3 7-4.6 7-9V6l-7-3Z"/><path d="m9.2 12 2 2 3.6-3.8"/></symbol>
+            <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+            <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4.2 2.8 20h18.4L12 4.2Z"/><path d="M12 10.5v3.8"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5.5"/><circle cx="12" cy="7.8" r=".9" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-monitor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12.5" rx="2.2"/><path d="M9 20.5h6M12 16.5v4"/></symbol>
+            <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="2.5" width="10" height="19" rx="2.4"/><path d="M11 18.5h2"/></symbol>
+            <symbol id="i-tablet" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="2.4"/><path d="M11 18.5h2"/></symbol>
+            <symbol id="i-laptop" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="10.5" rx="2"/><path d="M2 19h20"/></symbol>
+            <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.4V12l3.1 1.9"/></symbol>
+            <symbol id="i-rotate" viewBox="0 0 24 24"><path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1"/><path d="M3.5 4.5V10h5.5"/></symbol>
+            <symbol id="i-gamepad" viewBox="0 0 24 24"><rect x="2.5" y="7.5" width="19" height="9.5" rx="4.7"/><path d="M7.2 10.6v3.2M5.6 12.2h3.2"/><circle cx="16.2" cy="11.2" r="1" fill="currentColor" stroke="none"/><circle cx="18.4" cy="13.6" r="1" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-brain" viewBox="0 0 24 24"><path d="M12 5.2a3 3 0 0 0-5.6-1.4A2.9 2.9 0 0 0 4 9.4a3 3 0 0 0 .6 5.3A3 3 0 0 0 9 19.4a3 3 0 0 0 3-2.6Z"/><path d="M12 5.2a3 3 0 0 1 5.6-1.4A2.9 2.9 0 0 1 20 9.4a3 3 0 0 1-.6 5.3A3 3 0 0 1 15 19.4a3 3 0 0 1-3-2.6Z"/></symbol>
+            <symbol id="i-key" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10.2" rx="2.5"/><path d="M7.8 10V7.6a4.2 4.2 0 0 1 8.4 0V10"/><circle cx="12" cy="15.2" r="1.2" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-file" viewBox="0 0 24 24"><path d="M13.5 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8.5L13.5 3Z"/><path d="M13.5 3v5.5H19"/></symbol>
+            <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M20 12H4"/><path d="m10 6-6 6 6 6"/></symbol>
+            <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3.5v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4 19.5h16"/></symbol>
+            <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5v-1a5 5 0 0 1 5-5h5a5 5 0 0 1 5 5v1"/></symbol>
+            <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12.5" height="12.5" rx="2.5"/><path d="M15.5 8V5.5A2 2 0 0 0 13.5 3.5h-8a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2H8"/></symbol>
+            <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20.5 12a8.5 8.5 0 1 1-2.6-6.1"/><path d="M20.5 4.5V10H15"/></symbol>
+
+            <symbol id="i-math" viewBox="0 0 24 24"><path d="M7 4v6M4 7h6"/><path d="M14 7h6"/><path d="m4.9 14.9 4.2 4.2M9.1 14.9l-4.2 4.2"/><path d="M14 17h6"/><circle cx="17" cy="14" r=".9" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r=".9" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3.5c.6 4.4 2.1 5.9 6.5 6.5-4.4.6-5.9 2.1-6.5 6.5-.6-4.4-2.1-5.9-6.5-6.5 4.4-.6 5.9-2.1 6.5-6.5Z"/><path d="M18.5 15.5c.3 1.9.9 2.5 2.8 2.8-1.9.3-2.5.9-2.8 2.8-.3-1.9-.9-2.5-2.8-2.8 1.9-.3 2.5-.9 2.8-2.8Z"/></symbol>
+            <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></symbol>
+            <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z"/></symbol>
+            <symbol id="i-chev-up" viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></symbol>
+        </defs>
+    </svg>
+
+    <div class="boot-veil" id="boot-veil">
+        <div class="spinner" aria-hidden="true"></div>
+        <p class="boot-text" id="boot-text">Verifying administrator access…</p>
+        <button type="button" class="btn btn-primary" id="boot-retry" hidden>Reload and try again</button>
+    </div>
+
+    <div class="error-banner" id="global-error-banner" role="alert" hidden>
+        <svg class="icon"><use href="#i-alert"></use></svg>
+        <span id="global-error-message"></span>
+    </div>
+
+    <div class="loadbar" id="load-bar" aria-hidden="true"></div>
+    <p class="sr-only" id="load-status" role="status" aria-live="polite"></p>
+
+    <div class="scrim" id="nav-scrim" aria-hidden="true"></div>
+
+    <div class="app" id="app">
+
+        <aside class="sidebar" id="sidebar" aria-label="Primary">
+            <div class="sidebar-brand">
+                <a class="brand-link" href="#students" data-view-link="students"><img class="site-logo" src="../../assets/images/logo-320.webp" alt="PIA — Admin"></a>
+                <span class="brand-name">Admin</span>
+            </div>
+
+            <nav class="sidebar-nav" aria-label="Main">
+                <ul class="nav-list">
+                    <li class="nav-parent" id="nav-people">
+                        <button type="button" class="nav-item nav-toggle" id="nav-people-toggle"
+                            aria-expanded="false" aria-controls="nav-people-list">
+                            <span>People</span>
+                            <svg class="icon nav-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg>
+                        </button>
+                        <ul class="nav-sub" id="nav-people-list" hidden>
+                            <li><button type="button" class="nav-item" data-view="students">
+                                <span>Sections</span><span class="nav-count mono" id="nav-count-students">—</span></button></li>
+                            <li hidden><button type="button" class="nav-item" data-view="faculty" tabindex="-1">
+                                <span>Professors</span><span class="nav-count mono" id="nav-count-faculty">—</span></button></li>
+                        </ul>
+                    </li>
+                    <li><button type="button" class="nav-item" data-view="mathtask">
+                        <span>Math Task</span></button></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-foot">
+                <button type="button" class="sidebar-user" id="user-menu-btn" aria-haspopup="menu"
+                    aria-expanded="false" aria-controls="user-menu">
+                    <span class="avatar avatar-md" id="admin-initials" aria-hidden="true">··</span>
+                    <span class="sidebar-user-text">
+                        <span class="sidebar-user-name" id="admin-name">Loading…</span>
+                        <span class="sidebar-user-mail" id="admin-email">—</span>
+                    </span>
+                    <svg class="icon icon-sm user-chevron" aria-hidden="true"><use href="#i-chev-up"></use></svg>
+                </button>
+                <div class="user-menu" id="user-menu" role="menu" aria-label="Account" hidden>
+                    <button type="button" class="user-menu-item" role="menuitem" data-user-action="settings">
+                        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-gear"></use></svg>Settings</button>
+                    <button type="button" class="user-menu-item is-signout" role="menuitem" id="user-signout" data-user-action="signout">
+                        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-logout"></use></svg>Sign Out</button>
+                </div>
+                <p class="sr-only" id="signout-status" role="status" aria-live="polite"></p>
+            </div>
+        </aside>
+
+        <div class="workspace">
+
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button type="button" class="btn-icon nav-toggle-mobile" id="mobile-nav-toggle"
+                        aria-label="Open navigation" aria-controls="sidebar" aria-expanded="false">
+                        <svg class="icon" aria-hidden="true"><use href="#i-menu"></use></svg>
+                    </button>
+                    <nav class="crumbs" aria-label="Breadcrumb">
+                        <ol id="crumbs-list"><li>Admin</li><li aria-current="page">Overview</li></ol>
+                    </nav>
+                </div>
+                <div class="topbar-right">
+                    <button type="button" class="quickfind" id="palette-open" hidden aria-haspopup="dialog"
+                        aria-controls="palette" aria-expanded="false"
+                        aria-label="Search students, sections, or commands" aria-keyshortcuts="Control+K Meta+K">
+                        <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+                        <span class="quickfind-label">Search...</span>
+                        <kbd class="quickfind-keys" id="quickfind-keys" aria-hidden="true" style="display:none">Ctrl K</kbd>
+                    </button>
+                    <button type="button" class="btn-icon theme-toggle" id="theme-toggle" aria-label="Switch to light theme">
+                        <svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+                        <svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+                    </button>
+                </div>
+            </header>
+
+            <main class="main" id="main">
+
+                <section class="page is-hidden" id="view-students" data-view-panel="students">
+                    <div class="page-head">
+                        <h1 class="page-title">Students</h1>
+                        <div class="page-actions">
+                            <div class="head-search" role="search">
+                                <label class="sr-only" for="student-search">Search students</label>
+                                <input type="search" class="input" id="student-search" placeholder="Name or email, in all sections">
+                                <button type="button" class="pill-toggle" id="all-sections" aria-pressed="false" title="Search every section, not only the chosen one">All sections</button>
+                            </div>
+                            <button type="button" class="btn btn-secondary is-hidden" data-modal-open="modal-manage-sections">Manage sections</button>
+                            <button type="button" class="btn btn-secondary" data-modal-open="modal-add-students">Add Students</button>
+                        </div>
+                    </div>
+
+                    <div class="scope-row">
+                        <p class="scope-line" id="scope-line" aria-live="polite">Loading…</p>
+                        <button type="button" class="btn btn-secondary is-hidden" id="section-scores-open">Input Scores</button>
+                    </div>
+
+                    <div id="section-chips" style="margin-bottom:12px"></div>
+                    <div id="attendance-bar" style="margin-bottom:16px"></div>
+
+                    <div class="panel" data-region="roster stages">
+                        <div class="panel-bar">
+
+                            <div class="tabs" role="group" aria-label="Current stage" id="stage-tabs">
+                                <button type="button" class="tab is-active" data-stage-filter="" aria-pressed="true">All <span class="mono" data-stage-count="all">—</span></button>
+                                <button type="button" class="tab" data-stage-filter="OCEAN" aria-pressed="false">OCEAN test <span class="mono" data-stage-count="OCEAN">—</span></button>
+                                <button type="button" class="tab" data-stage-filter="Character Selection" aria-pressed="false">Character select <span class="mono" data-stage-count="Character Selection">—</span></button>
+                                <button type="button" class="tab" data-stage-filter="Tutoring Dashboard" aria-pressed="false">Tutoring dashboard <span class="mono" data-stage-count="Tutoring Dashboard">—</span></button>
+                                <button type="button" class="tab" data-stage-filter="Active Game" aria-pressed="false" title="Marked as in a tutoring session by the student’s own page. It can be out of date if the page closed unexpectedly.">Active session <span class="mono" data-stage-count="Active Game">—</span></button>
+                            </div>
+                            <div class="filter-field" style="display:none">
+                                <label class="filter-label" id="section-filter-label">Section</label>
+                                <select class="input input-sm" id="section-filter">
+                                    <option value="">All sections</option>
+                                </select>
+                            </div>
+                            <div class="filter-field bar-group">
+                                <label class="filter-label sr-only" id="group-filter-label">Research group</label>
+                                <select class="input input-sm" id="group-filter">
+                                    <option value="all">All groups</option>
+                                    <option value="experimental">Experimental</option>
+                                    <option value="assigned">· Assigned</option>
+                                    <option value="non-assigned">· Free choice</option>
+                                    <option value="neutral">· Neutral</option>
+                                    <option value="control">Control</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-wrap" tabindex="0" role="region" aria-label="Students table">
+                            <table class="table">
+                                <caption class="sr-only">Students</caption>
+                                <thead id="roster-thead">
+                                    <tr><th scope="col">Student</th><th scope="col">Section</th><th scope="col">Condition</th><th scope="col">Stage</th><th scope="col">OCEAN</th><th scope="col">Character</th><th scope="col">Tutoring</th></tr>
+                                </thead>
+                                <tbody id="student-tbody"></tbody>
+                            </table>
+                            <div id="student-empty" class="state-block is-hidden">
+                                <p class="state-title">No matching students</p>
+                                <button type="button" class="btn btn-secondary btn-sm" id="reset-filters">Reset filters</button>
+                            </div>
+                        </div>
+
+                        <div class="pager">
+                            <span id="pager-info" class="muted">Loading…</span>
+                            <div class="pager-btns">
+                                <button type="button" class="btn btn-secondary btn-sm" id="page-prev" disabled>Previous</button>
+                                <button type="button" class="btn btn-secondary btn-sm" id="page-next" disabled>Next</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page is-hidden" id="view-faculty" data-view-panel="faculty">
+                    <div class="page-head">
+                        <h1 class="page-title">Professors</h1>
+                        <div class="page-actions">
+                            <button type="button" class="btn btn-primary" data-modal-open="modal-add-professor">Add professor</button>
+                        </div>
+                    </div>
+
+                    <div class="scope-row">
+                        <p class="scope-line">Each professor sees only their section, and answers the OCEAN questionnaire once at their first sign-in. Only you can see the results (raw scores, 0 to 40).</p>
+                    </div>
+
+                    <div class="panel" data-region="faculty">
+                        <div class="filter-row">
+                            <div class="filter-field filter-search">
+                                <label class="filter-label" for="faculty-search">Search</label>
+                                <input type="search" class="input input-sm" id="faculty-search"
+                                    placeholder="Name or email">
+                            </div>
+                        </div>
+                        <div class="table-wrap" tabindex="0" role="region" aria-label="Professors table">
+                            <table class="table">
+                                <caption class="sr-only">Professors</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Professor</th>
+                                        <th scope="col">Section</th>
+                                        <th scope="col" class="col-right">Students</th>
+                                        <th scope="col">OCEAN (E · A · C · N · O)</th>
+                                        <th scope="col">Account status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="faculty-tbody"></tbody>
+                            </table>
+                            <div id="faculty-empty" class="state-block is-hidden">
+                                <p class="state-title">No professors yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page is-hidden" id="view-settings" data-view-panel="settings">
+                    <div class="page-head">
+                        <h1 class="page-title">Settings</h1>
+                    </div>
+
+                    <div class="settings-cols">
+                        <div class="settings-col">
+
+                    <h2 class="settings-group" id="your-account-title">Your account</h2>
+                    <div class="stack" aria-labelledby="your-account-title">
+                        <section class="panel panel-pad" aria-labelledby="profile-details-title">
+                            <h2 class="panel-title" id="profile-details-title">Personal details</h2>
+                            <dl class="facts">
+                                <div><dt>Name</dt><dd id="profile-name">—</dd></div>
+                                <div><dt>Email</dt><dd id="profile-email">—</dd></div>
+                            </dl>
+                        </section>
+
+                        <section class="panel panel-pad" aria-labelledby="profile-password-title">
+                            <div class="panel-row">
+                                <div>
+                                    <h2 class="panel-title" id="profile-password-title">Password</h2>
+                                    <p class="muted">Changing it signs your other devices out; this one stays signed in.</p>
+                                </div>
+                                <button type="button" class="btn btn-secondary" data-modal-open="modal-change-password">Change password</button>
+                            </div>
+                        </section>
+
+                        <section class="panel panel-pad sessions-panel" aria-labelledby="profile-sessions-title" data-region="admindevices">
+                            <h2 class="panel-title" id="profile-sessions-title">Active sessions</h2>
+                            <div id="admin-device-list"></div>
+                        </section>
+                    </div>
+                        </div>
+                        <div class="settings-col">
+                            <h2 class="settings-group" id="admins-group-title">Team</h2>
+                    <section class="panel" data-region="admins" aria-labelledby="admins-title">
+                        <div class="panel-bar">
+                            <h2 class="panel-title" id="admins-title">Administrators</h2>
+                            <button type="button" class="btn btn-outline btn-sm" data-modal-open="modal-add-admin">+ Add administrator</button>
+                        </div>
+                        <div class="table-wrap" tabindex="0" role="region" aria-label="Administrators table">
+                            <table class="table">
+                                <caption class="sr-only">Administrators</caption>
+                                <thead>
+                                    <tr><th scope="col">Admin Name</th><th scope="col">Status</th></tr>
+                                </thead>
+                                <tbody id="admin-tbody"></tbody>
+                            </table>
+                        </div>
+                    </section>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="page is-hidden" id="view-mathtask" data-view-panel="mathtask">
+                    <div class="page-head">
+                        <div class="page-head-text">
+                            <div class="with-tip">
+                                <h1 class="page-title">Math task bank</h1>
+                                <button type="button" class="info-tip" data-tip="Questions from this bank are used for new game problems. Review steps and answers before students play." aria-label="About the math task bank"><svg class="icon"><use href="#i-info"></use></svg></button>
+                            </div>
+                        </div>
+                        <div class="page-actions">
+                            <button class="btn btn-secondary" type="button" id="qb-generate-btn">
+                                <svg class="icon"><use href="#i-sparkle"></use></svg>
+                                Auto-generate
+                            </button>
+                            <button class="btn btn-primary" type="button" id="qb-add-btn">
+                                <svg class="icon"><use href="#i-plus"></use></svg>
+                                Add question
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="stack-lg">
+
+                        <div class="segment qb-topics" role="group" aria-label="Topic">
+                            <button class="segment-btn is-active" type="button" data-qb-topic="EASY" aria-pressed="true">
+                                <span class="qb-topic-num tnum" aria-hidden="true">1</span>Finding %
+                            </button>
+                            <button class="segment-btn" type="button" data-qb-topic="MEDIUM" aria-pressed="false">
+                                <span class="qb-topic-num tnum" aria-hidden="true">2</span>% Increase
+                            </button>
+                            <button class="segment-btn" type="button" data-qb-topic="HARD" aria-pressed="false">
+                                <span class="qb-topic-num tnum" aria-hidden="true">3</span>% Decrease
+                            </button>
+                        </div>
+
+                        <div class="qb-subtabs" role="tablist" aria-label="Math task sections">
+                            <button class="qb-subtab is-active" type="button" role="tab" id="qb-tab-questions" aria-selected="true" data-qb-view="questions">Questions</button>
+                            <button class="qb-subtab" type="button" role="tab" id="qb-tab-rules" aria-selected="false" data-qb-view="rules">Rules</button>
+                        </div>
+
+                        <div class="grid grid-main qb-view-questions" id="qb-views">
+
+                            <div class="card" data-region="mathtask">
+                                <div class="card-head">
+                                    <div class="card-head-text">
+                                        <h2 class="card-title" id="qb-title">Topic 1 · Finding a percentage</h2>
+                                        <p class="card-sub" id="qb-sub">Loading questions…</p>
+                                    </div>
+                                    <div class="card-tools">
+                                        <button class="btn btn-secondary" type="button" id="qb-refresh">Refresh</button>
+                                        <button class="btn btn-danger-soft" type="button" id="qb-delete-all" disabled>
+                                            <svg class="icon"><use href="#i-trash"></use></svg>
+                                            Delete all
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <form class="qb-bulk" id="qb-bulk-form" novalidate>
+                                    <label class="label" for="qb-bulk-points">Maximum (base) points for every question in this topic</label>
+                                    <div class="qb-bulk-row">
+                                        <input class="input tnum" type="number" id="qb-bulk-points" min="1" max="500"
+                                            step="1" inputmode="numeric" placeholder="Mixed" disabled>
+                                        <button class="btn btn-secondary" type="submit" id="qb-bulk-apply" disabled>Apply to all</button>
+                                    </div>
+                                    <p class="field-msg" data-msg-for="qb-bulk-points"></p>
+                                </form>
+
+                                <div class="table-wrap">
+                                    <table class="table qb-table">
+                                        <caption class="sr-only" id="qb-caption">Questions in topic 1</caption>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Problem</th>
+                                                <th scope="col" class="qb-col-answer">Final answer</th>
+                                                <th scope="col" class="qb-col-points">Max points</th>
+                                                <th scope="col" class="col-right qb-col-actions">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="qb-tbody"></tbody>
+                                    </table>
+                                    <div id="qb-empty" class="state-block is-hidden">
+                                        <span class="state-glyph"><svg class="icon icon-lg"><use href="#i-math"></use></svg></span>
+                                        <p class="state-title" id="qb-empty-title">No questions in this topic yet</p>
+                                        <p class="state-desc" id="qb-empty-desc"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <form class="card qb-config" id="qb-config-form" data-region="mathtask" novalidate>
+                                <div class="card-head">
+                                    <div class="card-head-text">
+                                        <h2 class="card-title">Adaptive rules</h2>
+                                        <p class="card-sub" id="qb-config-sub">Topic 1 · Finding %</p>
+                                    </div>
+                                    <div class="card-tools">
+
+                                        <span class="badge badge-warn qb-dirty" id="qb-dirty">Unsaved</span>
+                                    </div>
+                                </div>
+                                <div class="card-body stack">
+                                    <div class="field">
+                                        <div class="qb-range-top">
+                                            <span class="with-tip">
+                                                <label class="label" for="qb-mastery">Mastery threshold</label>
+                                                <button type="button" class="info-tip" data-tip="Accuracy a student needs on this topic to move up." aria-label="About the mastery threshold"><svg class="icon"><use href="#i-info"></use></svg></button>
+                                            </span>
+                                            <output class="qb-range-val tnum" id="qb-mastery-out" for="qb-mastery">80%</output>
+                                        </div>
+                                        <input class="qb-range" type="range" id="qb-mastery" min="50" max="100" step="5"
+                                            value="80" disabled>
+                                    </div>
+
+                                    <div class="form-grid form-grid-2">
+                                        <div class="field">
+                                            <label class="label" for="qb-min-questions">Solved to level up</label>
+                                            <input class="input tnum" type="number" id="qb-min-questions" min="1" max="10"
+                                                step="1" inputmode="numeric" value="3" disabled>
+                                            <p class="field-msg" data-msg-for="qb-min-questions"></p>
+                                        </div>
+                                        <div class="field">
+                                            <label class="label" for="qb-max-errors">Wrong to level down</label>
+                                            <input class="input tnum" type="number" id="qb-max-errors" min="1" max="10"
+                                                step="1" inputmode="numeric" value="3" disabled>
+                                            <p class="field-msg" data-msg-for="qb-max-errors"></p>
+                                        </div>
+                                    </div>
+
+                                    <fieldset class="qb-scoring" id="qb-scoring">
+                                        <legend class="label">Scoring rules <span class="qb-scope">All topics</span></legend>
+                                        <p class="qb-help">A question's score = its maximum points, minus a penalty for each wrong answer and each hint, plus a bonus for a fast answer with no wrong answer. Percentages are of that question's own maximum, so they work for any point value. The server works the score out when the question is finished; students never see it.</p>
+                                        <div class="form-grid">
+                                            <div class="field">
+                                                <label class="label" for="qb-sc-wrong">Wrong answer penalty (%)</label>
+                                                <input class="input tnum" type="number" id="qb-sc-wrong" min="0" max="100" step="1" inputmode="numeric" disabled>
+                                                <p class="field-msg" data-msg-for="qb-sc-wrong"></p>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="qb-sc-hint">Hint penalty (%)</label>
+                                                <input class="input tnum" type="number" id="qb-sc-hint" min="0" max="100" step="1" inputmode="numeric" disabled>
+                                                <p class="field-msg" data-msg-for="qb-sc-hint"></p>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="qb-sc-fast">Fast correct bonus (%)</label>
+                                                <input class="input tnum" type="number" id="qb-sc-fast" min="0" max="100" step="1" inputmode="numeric" disabled>
+                                                <p class="field-msg" data-msg-for="qb-sc-fast"></p>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="qb-sc-secs">Fast answer threshold (seconds)</label>
+                                                <input class="input tnum" type="number" id="qb-sc-secs" min="1" max="3600" step="1" inputmode="numeric" disabled>
+                                                <p class="field-msg" data-msg-for="qb-sc-secs"></p>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="qb-sc-min">Minimum score</label>
+                                                <input class="input tnum" type="number" id="qb-sc-min" min="0" max="500" step="1" inputmode="numeric" disabled>
+                                                <p class="field-msg" data-msg-for="qb-sc-min"></p>
+                                            </div>
+                                            <div class="field">
+                                                <label class="label" for="qb-sc-repeat-pct">Repeat score (% of the normal score)</label>
+                                                <input class="input tnum" type="number" id="qb-sc-repeat-pct" min="0" max="100" step="1" inputmode="numeric" disabled>
+                                                <p class="field-msg" data-msg-for="qb-sc-repeat-pct"></p>
+                                            </div>
+                                        </div>
+                                        <label class="check">
+                                            <input type="checkbox" id="qb-sc-speed" disabled>
+                                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                                            <span class="check-text">Speed bonus enabled (only for a question answered with no wrong answer; being slow never costs points)</span>
+                                        </label>
+                                        <label class="check">
+                                            <input type="checkbox" id="qb-sc-repeat" disabled>
+                                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                                            <span class="check-text">Score repeated questions (off: a question already completed in the session earns 0 when it comes around again; the student can still answer it)</span>
+                                        </label>
+                                        <p class="qb-help" id="qb-sc-example" aria-live="polite"></p>
+                                        <p class="qb-help" id="qb-sc-note">Available after the scoring database update.</p>
+                                    </fieldset>
+                                </div>
+                                <div class="card-foot">
+                                    <button class="btn btn-primary btn-block" type="submit" id="qb-config-save" disabled>
+                                        <svg class="icon"><use href="#i-check"></use></svg>
+                                        Save rules
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-register-student" role="dialog" aria-modal="true"
+        aria-labelledby="register-student-title">
+        <div class="modal modal-lg">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="register-student-title">Register student</h2>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <form id="register-student-form" novalidate>
+                    <div class="form-section">
+                        <p class="form-section-title">Identity</p>
+                        <div class="form-grid form-grid-3">
+                            <div class="field">
+                                <label class="label" for="rs-first">First name <span class="req">*</span></label>
+                                <input class="input" type="text" id="rs-first" placeholder="Maria" autocomplete="off">
+                                <p class="field-msg" data-msg-for="rs-first"></p>
+                            </div>
+                            <div class="field">
+                                <label class="label" for="rs-middle">Middle name</label>
+                                <input class="input" type="text" id="rs-middle" placeholder="Optional" autocomplete="off">
+                                <p class="field-msg" data-msg-for="rs-middle"></p>
+                            </div>
+                            <div class="field">
+                                <label class="label" for="rs-last">Last name <span class="req">*</span></label>
+                                <input class="input" type="text" id="rs-last" placeholder="Santos" autocomplete="off">
+                                <p class="field-msg" data-msg-for="rs-last"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="margin-top:16px">
+                            <div class="field">
+                                <label class="label" for="rs-email">School email <span class="req">*</span></label>
+                                <input class="input" type="email" id="rs-email"
+                                    placeholder="maria.santos@student.ue.edu.ph" autocomplete="off">
+                                <p class="field-msg" data-msg-for="rs-email"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="margin-top:16px">
+                            <div class="field">
+                                <label class="label" for="rs-number">Student number <span class="req">*</span></label>
+                                <input class="input" type="text" id="rs-number" inputmode="numeric" maxlength="14"
+                                    placeholder="2023-1230142" autocomplete="off">
+                                <p class="field-hint muted">11 digits, from the school ID. Students type it to get in.</p>
+                                <p class="field-msg" data-msg-for="rs-number"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <p class="form-section-title">Placement</p>
+                        <div class="form-grid">
+                            <div class="field">
+                                <label class="label" for="rs-section">Section <span class="req">*</span></label>
+                                <select class="select" id="rs-section" data-section-select></select>
+                                <p class="field-msg" data-msg-for="rs-section"></p>
+                            </div>
+                        </div>
+
+                        <p class="label" style="margin:8px 0 12px">Experimental condition <span class="req">*</span></p>
+                        <div class="choice-grid">
+                            <label class="choice">
+                                <input type="radio" name="rs-condition" value="assigned" checked>
+                                <span class="choice-title">EXP · Assigned persona</span>
+                            </label>
+                            <label class="choice">
+                                <input type="radio" name="rs-condition" value="non-assigned">
+                                <span class="choice-title">EXP · Free choice</span>
+                            </label>
+                            <label class="choice">
+                                <input type="radio" name="rs-condition" value="neutral">
+                                <span class="choice-title">EXP · Neutral persona</span>
+                            </label>
+                            <label class="choice">
+                                <input type="radio" name="rs-condition" value="control">
+                                <span class="choice-title">CTRL · Traditional</span>
+                            </label>
+                        </div>
+
+                        <div class="field" id="rs-tutor-field" hidden>
+                            <label class="label" for="rs-tutor">Tutor persona · automatic after OCEAN</label>
+                            <select class="select" id="rs-tutor" aria-describedby="rs-tutor-hint"></select>
+                            <p class="field-hint muted" id="rs-tutor-hint"></p>
+                            <p class="field-msg" data-msg-for="rs-tutor"></p>
+                        </div>
+
+                    </div>
+
+                    <div class="form-section">
+                        <p class="form-section-title">Consent</p>
+                        <label class="check">
+                            <input type="checkbox" id="rs-consent">
+                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                            <span class="check-text">
+                                Parental consent received <span class="req">*</span>
+                            </span>
+                        </label>
+                        <p class="field-msg" data-msg-for="rs-consent"></p>
+
+                        <label class="check">
+                            <input type="checkbox" id="rs-assent">
+                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                            <span class="check-text">
+                                Student assent received <span class="req">*</span>
+                            </span>
+                        </label>
+                        <p class="field-msg" data-msg-for="rs-assent"></p>
+                    </div>
+                </form>
+            </div>
+
+            <footer class="modal-foot">
+                <div class="modal-foot-actions">
+                    <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                    <button class="btn btn-primary" type="submit" form="register-student-form" id="rs-submit">
+                        <svg class="icon"><use href="#i-check"></use></svg>
+                        Register student
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-enroll-students" role="dialog" aria-modal="true"
+        aria-labelledby="enroll-students-title">
+        <div class="modal modal-xl modal-enroll">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="enroll-students-title">Enroll students</h2>
+                    <p class="muted" id="bn-step-label" aria-live="polite">Step 1 of 2 · Add</p>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <form id="enroll-students-form" novalidate>
+                    <div id="bn-step-add">
+                        <div class="bn-intro">
+                            <div class="field bn-section-field">
+                                <label class="label" for="bn-section" id="bn-section-label">Section <span class="req">*</span></label>
+                                <select class="select" id="bn-section" data-section-select></select>
+                                <p class="field-msg" data-msg-for="bn-section"></p>
+                            </div>
+                            <div class="field bn-emails-field">
+                                <label class="label" for="bn-emails">School emails, one per line</label>
+                                <textarea class="input" id="bn-emails" rows="8" autocomplete="off" spellcheck="false"
+                                    placeholder="lastname.firstname@ue.edu.ph" aria-describedby="bn-emails-hint"></textarea>
+                                <p class="field-hint muted" id="bn-emails-hint">Names are read from lastname.firstname@ue.edu.ph and shown for you to check on the next step.</p>
+                                <p class="field-msg" id="bn-add-msg" aria-live="polite"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="bn-step-review" class="is-hidden">
+                        <div class="bn-review-head">
+                            <button type="button" class="btn btn-ghost btn-sm" id="bn-back">&larr; Back</button>
+                            <p class="bn-review-title" id="bn-review-title"></p>
+                            <p class="bn-issues" id="bn-issues" aria-live="polite"></p>
+                        </div>
+
+                        <div class="bn-tools">
+                            <div class="filter-field">
+                                <label class="filter-label" for="bn-apply-group" id="bn-apply-group-label">Condition for everyone</label>
+                                <select class="input input-sm" id="bn-apply-group">
+                                    <option value="">Choose…</option>
+                                    <option value="assigned">EXP · Assigned persona</option><option value="non-assigned">EXP · Free choice</option><option value="neutral">EXP · Neutral persona</option><option value="control">CTRL · Traditional</option>
+                                </select>
+                            </div>
+                            <button type="button" class="btn btn-secondary btn-sm" id="bn-apply-all">Apply</button>
+                        </div>
+
+                        <div class="table-wrap" tabindex="0" role="region" aria-label="Students to enroll">
+                            <table class="table bn-table" id="bn-table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">School email</th>
+                                        <th scope="col">Condition</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col"><span class="sr-only">Remove</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bn-tbody"></tbody>
+                            </table>
+                        </div>
+                        <p class="scope-line" id="bn-summary" aria-live="polite"></p>
+                    </div>
+
+                    <div class="bn-report is-hidden" id="bn-report" aria-live="polite"></div>
+                </form>
+            </div>
+
+            <footer class="modal-foot modal-foot-split">
+                <div class="bn-foot-consent is-hidden" id="bn-consent-wrap">
+                    <label class="check">
+                        <input type="checkbox" id="bn-consent">
+                        <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                        <span class="check-text">
+                            Parental consent and student assent received for every student listed <span class="req">*</span>
+                        </span>
+                    </label>
+                    <p class="field-msg" data-msg-for="bn-consent"></p>
+                </div>
+                <div class="modal-foot-actions">
+                    <button class="btn btn-secondary" type="button" data-modal-close id="bn-cancel">Cancel</button>
+                    <button class="btn btn-primary" type="button" id="bn-continue">Continue</button>
+                    <button class="btn btn-primary is-hidden" type="submit" form="enroll-students-form" id="bn-submit" disabled>
+                        <svg class="icon"><use href="#i-check"></use></svg>
+                        <span id="bn-submit-label">Enroll students</span>
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-edit-student" role="dialog" aria-modal="true" aria-labelledby="edit-student-title">
+        <div class="modal modal-lg">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="edit-student-title">Edit participant</h2>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <form id="edit-student-form" novalidate>
+                    <input type="hidden" id="es-original-email">
+
+                    <div class="form-section">
+                        <p class="form-section-title">Identity</p>
+                        <div class="form-grid form-grid-3">
+                            <div class="field">
+                                <label class="label" for="es-first">First name <span class="req">*</span></label>
+                                <input class="input" type="text" id="es-first" autocomplete="off">
+                                <p class="field-msg" data-msg-for="es-first"></p>
+                            </div>
+                            <div class="field">
+                                <label class="label" for="es-middle">Middle name</label>
+                                <input class="input" type="text" id="es-middle" autocomplete="off">
+                                <p class="field-msg" data-msg-for="es-middle"></p>
+                            </div>
+                            <div class="field">
+                                <label class="label" for="es-last">Last name <span class="req">*</span></label>
+                                <input class="input" type="text" id="es-last" autocomplete="off">
+                                <p class="field-msg" data-msg-for="es-last"></p>
+                            </div>
+                        </div>
+
+                        <div class="form-grid" style="margin-top:16px">
+                            <div class="field">
+                                <div class="with-tip">
+                                    <label class="label" for="es-email">School email</label>
+                                    <button type="button" class="info-tip" data-tip="Locked so this participant’s research data stays linked. If it was entered wrongly, delete the account and register it again before they activate." aria-label="About the locked email"><svg class="icon"><use href="#i-info"></use></svg></button>
+                                </div>
+                                <input class="input input-locked" type="email" id="es-email" autocomplete="off" readonly>
+                                <p class="field-msg" data-msg-for="es-email"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <p class="form-section-title">Placement</p>
+                        <div class="form-grid">
+                            <div class="field">
+                                <label class="label" for="es-section">Section</label>
+                                <select class="select" id="es-section" data-section-select></select>
+                                <p class="field-msg" data-msg-for="es-section"></p>
+                            </div>
+                        </div>
+
+                        <p class="label" style="margin:8px 0 12px">Experimental condition</p>
+                        <div class="choice-grid">
+                            <label class="choice">
+                                <input type="radio" name="es-condition" value="assigned">
+                                <span class="choice-title">EXP · Assigned persona</span>
+                            </label>
+                            <label class="choice">
+                                <input type="radio" name="es-condition" value="non-assigned">
+                                <span class="choice-title">EXP · Free choice</span>
+                            </label>
+                            <label class="choice" id="es-neutral-choice">
+                                <input type="radio" name="es-condition" value="neutral">
+                                <span class="choice-title">EXP · Neutral persona</span>
+                            </label>
+                            <label class="choice">
+                                <input type="radio" name="es-condition" value="control">
+                                <span class="choice-title">CTRL · Traditional</span>
+                            </label>
+                        </div>
+
+                        <div class="field" id="es-tutor-field" hidden>
+                            <label class="label" for="es-tutor">Tutor persona · automatic after OCEAN</label>
+                            <select class="select" id="es-tutor" aria-describedby="es-tutor-hint"></select>
+                            <p class="field-hint muted" id="es-tutor-hint"></p>
+                            <p class="field-msg" data-msg-for="es-tutor"></p>
+                        </div>
+
+                    </div>
+
+                    <div class="form-section">
+                        <div class="with-tip form-section-head">
+                            <p class="form-section-title">Test scores</p>
+                            <button type="button" class="info-tip" data-tip="Transmuted score = (raw ÷ highest possible) × 50 + 50. Leave both fields blank until the student takes the test." aria-label="About transmuted scores"><svg class="icon"><use href="#i-info"></use></svg></button>
+                        </div>
+
+                        <fieldset class="score-entry">
+                            <legend class="score-entry-title">Pre-test</legend>
+                            <div class="score-fields">
+                                <div class="field">
+                                    <label class="label" for="es-pre-raw">Raw score</label>
+                                    <input class="input tnum" type="number" step="any" min="0" id="es-pre-raw"
+                                        inputmode="decimal" placeholder="e.g. 40" data-score-test="pre" data-score-part="raw">
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="es-pre-max">Highest possible</label>
+                                    <input class="input tnum" type="number" step="any" min="0" id="es-pre-max"
+                                        inputmode="decimal" placeholder="e.g. 50" data-score-test="pre" data-score-part="max">
+                                </div>
+                            </div>
+                            <p class="score-result" id="es-pre-result" aria-live="polite"></p>
+                        </fieldset>
+
+                        <fieldset class="score-entry">
+                            <legend class="score-entry-title">Post-test</legend>
+                            <div class="score-fields">
+                                <div class="field">
+                                    <label class="label" for="es-post-raw">Raw score</label>
+                                    <input class="input tnum" type="number" step="any" min="0" id="es-post-raw"
+                                        inputmode="decimal" placeholder="e.g. 45" data-score-test="post" data-score-part="raw">
+                                </div>
+                                <div class="field">
+                                    <label class="label" for="es-post-max">Highest possible</label>
+                                    <input class="input tnum" type="number" step="any" min="0" id="es-post-max"
+                                        inputmode="decimal" placeholder="e.g. 50" data-score-test="post" data-score-part="max">
+                                </div>
+                            </div>
+                            <p class="score-result" id="es-post-result" aria-live="polite"></p>
+                        </fieldset>
+                    </div>
+
+                    <div class="form-section">
+                        <p class="form-section-title">Consent</p>
+                        <label class="check">
+                            <input type="checkbox" id="es-consent">
+                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                            <span class="check-text">
+                                Parental consent received
+                                <small id="es-consent-note"></small>
+                            </span>
+                        </label>
+
+                        <label class="check">
+                            <input type="checkbox" id="es-assent">
+                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                            <span class="check-text">
+                                Student assent received
+                                <small id="es-assent-note"></small>
+                            </span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+
+            <footer class="modal-foot">
+                <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button class="btn btn-primary" type="submit" form="edit-student-form" id="es-submit">Save changes</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-new-section" role="dialog" aria-modal="true" aria-labelledby="new-section-title">
+        <div class="modal modal-sm">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="new-section-title">New section</h2>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <form id="new-section-form" novalidate>
+                    <div class="field">
+                        <label class="label" for="ns-name">Section name <span class="req">*</span></label>
+                        <input class="input" type="text" id="ns-name" placeholder="e.g. Mars" autocomplete="off">
+                        <p class="field-msg" data-msg-for="ns-name"></p>
+                    </div>
+                </form>
+            </div>
+
+            <footer class="modal-foot">
+                <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button class="btn btn-primary" type="submit" form="new-section-form" id="ns-submit">Create section</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-add-professor" role="dialog" aria-modal="true" aria-labelledby="add-prof-title">
+        <div class="modal modal-md">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="add-prof-title">Add professor</h2>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <form id="add-professor-form" novalidate>
+                    <div class="form-grid">
+                        <div class="field">
+                            <label class="label" for="ap-name">Full name <span class="req">*</span></label>
+                            <input class="input" type="text" id="ap-name" placeholder="Dr. Maria Santos" autocomplete="off">
+                            <p class="field-msg" data-msg-for="ap-name"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="ap-email">Email address <span class="req">*</span></label>
+                            <input class="input" type="email" id="ap-email" placeholder="m.santos@ue.edu.ph" autocomplete="off">
+                            <p class="field-msg" data-msg-for="ap-email"></p>
+                        </div>
+                    </div>
+                    <div class="form-grid form-grid-2" style="margin-top:16px">
+                        <div class="field">
+                            <label class="label" for="ap-dept">Department <span class="req">*</span></label>
+                            <input class="input" type="text" id="ap-dept" placeholder="Computer Science" autocomplete="off">
+                            <p class="field-msg" data-msg-for="ap-dept"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="ap-section">Assigned section</label>
+                            <select class="select" id="ap-section" data-section-select></select>
+                            <p class="field-msg" data-msg-for="ap-section"></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <footer class="modal-foot">
+                <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button class="btn btn-primary" type="submit" form="add-professor-form" id="ap-submit">Add professor</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-add-admin" role="dialog" aria-modal="true" aria-labelledby="add-admin-title">
+        <div class="modal modal-md">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="add-admin-title">Add administrator</h2>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <form id="add-admin-form" novalidate>
+                    <div class="form-grid">
+                        <div class="field">
+                            <label class="label" for="aa-name">Full name <span class="req">*</span></label>
+                            <input class="input" type="text" id="aa-name" placeholder="Dr. Ana Reyes" autocomplete="off">
+                            <p class="field-msg" data-msg-for="aa-name"></p>
+                        </div>
+                        <div class="field">
+                            <div class="with-tip">
+                                <label class="label" for="aa-email">Email address <span class="req">*</span></label>
+                                <button type="button" class="info-tip" data-tip="They get a one-time link to choose their own password. Emails already used by a professor or participant are refused." aria-label="About new administrator accounts"><svg class="icon"><use href="#i-info"></use></svg></button>
+                            </div>
+                            <input class="input" type="email" id="aa-email" placeholder="a.reyes@ue.edu.ph" autocomplete="off">
+                            <p class="field-msg" data-msg-for="aa-email"></p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <footer class="modal-foot">
+                <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button class="btn btn-primary" type="submit" form="add-admin-form" id="aa-submit">Add administrator</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-manage-sections" role="dialog" aria-modal="true" aria-labelledby="manage-sections-title">
+        <div class="modal modal-lg">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="manage-sections-title">Sections</h2>
+                    <p class="modal-sub">Rename a section, or delete one that is empty.</p>
+                </div>
+                <button class="modal-close" data-modal-close aria-label="Close dialog">
+                    <svg class="icon"><use href="#i-x"></use></svg>
+                </button>
+                <div class="modal-head-actions">
+                    <button type="button" class="btn btn-primary" data-modal-open="modal-new-section">New section</button>
+                </div>
+            </header>
+            <div class="modal-body modal-body-flush">
+                <div class="table-wrap" tabindex="0" role="region" aria-label="Sections table" style="border-top:0">
+                    <table class="table">
+                        <caption class="sr-only">Sections</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Section</th>
+                                <th scope="col" class="col-right">Students</th>
+                                <th scope="col"><span class="sr-only">Actions</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="sections-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-scores" role="dialog" aria-modal="true" aria-labelledby="scores-title">
+        <div class="modal modal-lg">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <div class="with-tip">
+                        <h2 class="modal-title" id="scores-title">Input scores</h2>
+                        <button type="button" class="info-tip" data-tip="Transmuted score = (raw ÷ highest possible) × 50 + 50. Only changed rows are saved." aria-label="About transmuted scores"><svg class="icon"><use href="#i-info"></use></svg></button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="modal-body modal-body-flush">
+
+                <div class="scores-toolbar" id="scores-toolbar">
+                    <div class="field">
+                        <label class="label" for="scores-max-pre">Pre-test · highest possible</label>
+                        <input class="input score-input tnum" type="number" step="any" min="0" inputmode="decimal"
+                            id="scores-max-pre" placeholder="e.g. 50">
+                        <p class="field-msg" data-msg-for="scores-max-pre"></p>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="scores-max-post">Post-test · highest possible</label>
+                        <input class="input score-input tnum" type="number" step="any" min="0" inputmode="decimal"
+                            id="scores-max-post" placeholder="e.g. 50">
+                        <p class="field-msg" data-msg-for="scores-max-post"></p>
+                    </div>
+                </div>
+
+                <div class="table-wrap" style="border-top:0">
+                    <table class="table scores-table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th class="col-score">Pre-test <span class="th-sub">raw score</span></th>
+                                <th class="col-score">Post-test <span class="th-sub">raw score</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="scores-tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <footer class="modal-foot modal-foot-split">
+                <p class="modal-foot-note" id="scores-note"></p>
+                <div class="modal-foot-actions">
+                    <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                    <button class="btn btn-primary" id="scores-save">Save scores</button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-device-limit" role="dialog" aria-modal="true" data-no-dismiss
+        aria-labelledby="device-limit-title">
+        <div class="modal modal-md">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="device-limit-title">Device limit reached</h2>
+                    <p class="modal-sub">Revoke an older session to continue on this device.</p>
+                </div>
+            </header>
+            <div class="modal-body">
+                <div id="device-limit-list"></div>
+            </div>
+            <footer class="modal-foot">
+                <button class="btn btn-secondary" id="device-limit-signout">Sign out instead</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-faculty" role="dialog" aria-modal="true" aria-labelledby="faculty-title">
+        <div class="modal modal-sm">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="faculty-title">Faculty profile</h2>
+                    <p class="modal-sub" id="faculty-subject">—</p>
+                </div>
+                <button class="modal-close" data-modal-close aria-label="Close dialog">
+                    <svg class="icon"><use href="#i-x"></use></svg>
+                </button>
+            </header>
+            <div class="modal-body stack">
+                <div class="kv-grid">
+                    <div class="kv">
+                        <p class="kv-label">Department</p>
+                        <p class="kv-value" id="faculty-dept">—</p>
+                    </div>
+                    <div class="kv">
+                        <p class="kv-label">Section</p>
+                        <p class="kv-value" id="faculty-section">—</p>
+                    </div>
+                    <div class="kv">
+                        <p class="kv-label">Status</p>
+                        <p class="kv-value" id="faculty-status">—</p>
+                    </div>
+                    <div class="kv">
+                        <p class="kv-label">Role</p>
+                        <p class="kv-value">Observer</p>
+                    </div>
+                    <div class="kv">
+                        <p class="kv-label">Devices</p>
+                        <p class="kv-value tnum" id="faculty-devices">—</p>
+                    </div>
+                </div>
+
+                <div class="action-list">
+
+                    <button class="action-list-item" id="faculty-reset">Reset password</button>
+
+                    <button class="action-list-item" id="faculty-signout">
+                        Sign out everywhere
+                    </button>
+                    <button class="action-list-item is-danger" id="faculty-delete">
+                        Remove faculty account
+                    </button>
+                </div>
+                <p class="form-status" id="faculty-status-msg" role="status" aria-live="polite"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-confirm" role="dialog" aria-modal="true" aria-labelledby="confirm-heading">
+        <div class="modal modal-sm">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="confirm-title">Confirm action</h2>
+                    <p class="modal-sub" id="confirm-subtitle"></p>
+                </div>
+            </header>
+            <div class="modal-body">
+                <div class="modal-hero">
+                    <span class="modal-hero-glyph" id="confirm-glyph">
+                        <svg class="icon icon-lg"><use href="#i-alert"></use></svg>
+                    </span>
+                    <p class="modal-hero-title" id="confirm-heading">Are you sure?</p>
+                    <p class="modal-hero-text" id="confirm-text"></p>
+                </div>
+            </div>
+            <footer class="modal-foot">
+                <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button class="btn btn-danger" id="confirm-accept">Proceed</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-tutoring" role="dialog" aria-modal="true" aria-labelledby="tut-title">
+        <div class="modal modal-sm tut-modal">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="tut-title">Open Tutoring</h2>
+                    <p class="modal-sub" id="tut-sub"></p>
+                </div>
+            </header>
+            <div class="modal-body">
+                <label class="tut-opt"><input type="radio" name="tut-mode" value="schedule" checked>
+                    <b>Schedule</b> <span class="muted">opens and closes by itself</span></label>
+                <div class="tut-sched" id="tut-sched">
+                    <div class="tut-row" data-tut-row="start">
+                        <span class="tut-lab">Start</span>
+                        <span class="tut-box"><input inputmode="numeric" maxlength="2" data-p="mo" aria-label="Start month" placeholder="MM"><i>/</i><input inputmode="numeric" maxlength="2" data-p="d" aria-label="Start day" placeholder="DD"><i>/</i><input inputmode="numeric" maxlength="2" data-p="y" aria-label="Start year" placeholder="YY"></span>
+                        <span class="tut-box"><input inputmode="numeric" maxlength="2" data-p="h" aria-label="Start hour" placeholder="h"><i>:</i><input inputmode="numeric" maxlength="2" data-p="mi" aria-label="Start minute" placeholder="mm"><span class="tut-ampm"><button type="button" data-ap="AM">AM</button><button type="button" data-ap="PM">PM</button></span></span>
+                        <button type="button" class="tut-cal-btn" data-tut-cal="start" aria-label="Pick the start date"><svg class="icon"><use href="#i-grid"></use></svg></button>
+                    </div>
+                    <div class="tut-row" data-tut-row="end">
+                        <span class="tut-lab">End</span>
+                        <span class="tut-box"><input inputmode="numeric" maxlength="2" data-p="mo" aria-label="End month" placeholder="MM"><i>/</i><input inputmode="numeric" maxlength="2" data-p="d" aria-label="End day" placeholder="DD"><i>/</i><input inputmode="numeric" maxlength="2" data-p="y" aria-label="End year" placeholder="YY"></span>
+                        <span class="tut-box"><input inputmode="numeric" maxlength="2" data-p="h" aria-label="End hour" placeholder="h"><i>:</i><input inputmode="numeric" maxlength="2" data-p="mi" aria-label="End minute" placeholder="mm"><span class="tut-ampm"><button type="button" data-ap="AM">AM</button><button type="button" data-ap="PM">PM</button></span></span>
+                        <button type="button" class="tut-cal-btn" data-tut-cal="end" aria-label="Pick the end date"><svg class="icon"><use href="#i-grid"></use></svg></button>
+                    </div>
+                    <div class="tut-cal" id="tut-cal" hidden></div>
+                    <p class="muted tut-summary" id="tut-summary"></p>
+                    <p class="tut-error" id="tut-error" role="alert" hidden></p>
+                </div>
+                <label class="tut-opt"><input type="radio" name="tut-mode" value="now">
+                    <b>Open now</b> <span class="muted">stays open until you close it</span></label>
+            </div>
+            <footer class="modal-foot">
+                <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button class="btn btn-primary" id="tut-accept">Schedule</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-notice" role="dialog" aria-modal="true" aria-labelledby="notice-heading">
+        <div class="modal modal-sm">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="notice-title">Notice</h2>
+                    <p class="modal-sub" id="notice-subtitle"></p>
+                </div>
+            </header>
+            <div class="modal-body stack">
+                <div class="modal-hero">
+                    <span class="modal-hero-glyph g-accent" id="notice-glyph">
+                        <svg class="icon icon-lg"><use href="#i-info"></use></svg>
+                    </span>
+                    <p class="modal-hero-title" id="notice-heading">Done</p>
+                </div>
+                <p class="notice-pre" id="notice-body"></p>
+            </div>
+            <footer class="modal-foot">
+                <button class="btn btn-primary btn-block" data-modal-close>Understood</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay drawer-overlay" id="drawer-student" role="dialog" aria-modal="true"
+        aria-labelledby="drawer-student-name">
+        <div class="drawer">
+            <header class="drawer-head">
+                <button class="btn-icon" data-modal-close aria-label="Back to students">
+                    <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
+                </button>
+                <h2 class="drawer-title">Participant profile</h2>
+            </header>
+
+            <div class="drawer-body stack-lg">
+                <div class="drawer-identity">
+                    <span class="avatar-wrap drawer-avatar-wrap">
+                        <span class="drawer-avatar" id="drawer-initials">··</span>
+                        <span class="avatar-dot is-hidden" id="drawer-presence"></span>
+                    </span>
+                    <div style="min-width:0">
+                        <span class="badge" id="drawer-condition">—</span>
+                        <h3 class="page-title" style="font-size:18px;margin-top:8px" id="drawer-student-name">—</h3>
+                        <p class="cell-mail" id="drawer-email">—</p>
+                    </div>
+                </div>
+
+                <p class="drawer-note is-hidden" id="drawer-control-note" role="note"></p>
+
+                <div class="kv-grid">
+                    <div class="kv">
+                        <p class="kv-label">Section</p>
+                        <p class="kv-value" id="drawer-section">—</p>
+                    </div>
+                    <div class="kv">
+                        <p class="kv-label">Current stage</p>
+                        <p class="kv-value" id="drawer-stage">—</p>
+                    </div>
+                    <div class="kv">
+                        <p class="kv-label">Tutor persona</p>
+                        <p class="kv-value" id="drawer-tutor">—</p>
+                    </div>
+                    <div class="kv">
+                        <p class="kv-label">Sign-in</p>
+                        <p class="kv-value" id="drawer-status">—</p>
+                    </div>
+                    <div class="kv">
+                        <p class="kv-label">Student assent</p>
+                        <p class="kv-value" id="drawer-assent">—</p>
+                    </div>
+                </div>
+
+                <div>
+
+                    <p class="eyebrow" style="margin-bottom:16px">Assessment results · BFPT</p>
+                    <div id="drawer-traits"></div>
+                </div>
+
+                <div>
+                    <p class="eyebrow" style="margin-bottom:12px">Mathematical performance</p>
+                    <div class="kv-grid">
+                        <div class="kv">
+                            <p class="kv-label">Pre-test</p>
+                            <p class="kv-value tnum" id="drawer-pre">—</p>
+                            <p class="kv-sub tnum" id="drawer-pre-detail"></p>
+                        </div>
+                        <div class="kv" style="border-color:var(--accent-line);background:var(--accent-soft)">
+                            <p class="kv-label">Post-test</p>
+                            <p class="kv-value tnum" id="drawer-post" style="color:var(--accent)">—</p>
+                            <p class="kv-sub tnum" id="drawer-post-detail"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <section aria-labelledby="drawer-tutorial-title">
+                    <p class="eyebrow" id="drawer-tutorial-title" style="margin-bottom:12px">Tutorial performance</p>
+                    <div id="drawer-tutorial-performance" role="status" aria-live="polite"></div>
+                </section>
+
+                <section aria-labelledby="drawer-session-title">
+                    <p class="eyebrow" id="drawer-session-title" style="margin-bottom:12px">Session history</p>
+                    <div id="drawer-session-history" role="status" aria-live="polite"></div>
+                </section>
+
+                <div>
+                    <p class="eyebrow" style="margin-bottom:12px">Actions</p>
+                    <div class="action-list">
+                        <button class="action-list-item" data-student-action="edit">
+                            Edit details
+                        </button>
+                        <button class="action-list-item" data-student-action="retake-ocean">
+                            Allow OCEAN retake
+                        </button>
+                        <button class="action-list-item" data-student-action="retake-character">
+                            Allow character re-selection
+                        </button>
+                        <button class="action-list-item is-danger" data-student-action="delete">
+                            Delete participant
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-change-password" role="dialog" aria-modal="true"
+        aria-labelledby="cp-title" aria-describedby="cp-sub">
+        <div class="modal modal-sm">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="cp-title">Change password</h2>
+                    <p class="modal-sub" id="cp-sub">At least 8 characters, with a letter and a number.</p>
+                </div>
+            </header>
+            <form id="change-password-form" novalidate>
+                <div class="modal-body stack">
+                    <div class="field">
+                        <label class="label" for="cp-current">Current password</label>
+                        <input class="input" type="password" id="cp-current" autocomplete="current-password" data-clear-on-close>
+                        <p class="field-msg" data-msg-for="cp-current"></p>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="cp-new">New password</label>
+                        <input class="input" type="password" id="cp-new" autocomplete="new-password" maxlength="72" data-clear-on-close>
+                        <p class="field-msg" data-msg-for="cp-new"></p>
+                    </div>
+                    <div class="field">
+                        <label class="label" for="cp-confirm">Confirm password</label>
+                        <input class="input" type="password" id="cp-confirm" autocomplete="new-password" maxlength="72" data-clear-on-close>
+                        <p class="field-msg" data-msg-for="cp-confirm"></p>
+                    </div>
+                    <label class="check">
+                        <input type="checkbox" id="cp-show">
+                        <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                        <span class="check-text">Show passwords</span>
+                    </label>
+                    <p class="form-status" id="cp-status" role="status" aria-live="polite"></p>
+                </div>
+                <footer class="modal-foot">
+                    <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="cp-submit">Update</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-qb-edit" role="dialog" aria-modal="true" aria-labelledby="qb-edit-title">
+        <div class="modal modal-lg">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="qb-edit-title">Add question</h2>
+                    <p class="modal-sub" id="qb-edit-sub">Topic 1 · Finding a percentage</p>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Close dialog">
+                    <svg class="icon"><use href="#i-x"></use></svg>
+                </button>
+            </header>
+
+            <div class="modal-body">
+                <form id="qb-edit-form" novalidate>
+                    <div class="form-section">
+                        <p class="form-section-title">Problem</p>
+                        <div class="form-grid">
+                            <div class="field">
+                                <label class="label" for="qb-question">Sentence problem <span class="req">*</span></label>
+                                <textarea class="textarea" id="qb-question" rows="3" maxlength="2000"
+                                    placeholder="A jacket originally priced at PHP 1,200 is on sale for PHP 900. What is the percentage discount?"></textarea>
+                                <p class="field-msg" data-msg-for="qb-question"></p>
+                            </div>
+                        </div>
+                        <div class="form-grid qb-answer-grid" style="margin-top:16px">
+                            <div class="field">
+                                <label class="label" for="qb-final">Final answer</label>
+                                <input class="input" type="text" id="qb-final" maxlength="200" autocomplete="off"
+                                    placeholder="25%">
+                                <p class="field-msg" data-msg-for="qb-final"></p>
+                            </div>
+                            <div class="field">
+                                <label class="label" for="qb-points">Maximum (base) points <span class="req">*</span></label>
+                                <input class="input tnum" type="number" id="qb-points" min="1" max="500" step="1"
+                                    inputmode="numeric" value="10">
+                                <p class="qb-help">The most this question can earn with no wrong answers and no hints. The scoring rules below adjust it.</p>
+                                <p class="field-msg" data-msg-for="qb-points"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="qb-steps-head">
+                            <p class="form-section-title">Step-by-step breakdown &amp; hints</p>
+                            <span class="qb-help" id="qb-step-count"></span>
+                        </div>
+                        <p class="field-msg" id="qb-step-error" role="alert" aria-live="polite"></p>
+                        <p class="qb-help">Hints only guide the student and never give the answer. Do not write the result, for example “1200 − 900 = 300”. The editor will not save a hint that gives the answer away.</p>
+                        <ol class="qb-steps" id="qb-steps"></ol>
+                    </div>
+                </form>
+            </div>
+
+            <footer class="modal-foot">
+                <button class="btn btn-primary" type="submit" form="qb-edit-form" id="qb-edit-save">Save question</button>
+            </footer>
+        </div>
+    </div>
+
+    <template id="tpl-qb-step">
+        <li class="qb-step">
+            <div class="qb-step-head">
+                <p class="qb-step-title">Step <span class="qb-step-num tnum">1</span></p>
+            </div>
+            <div class="form-grid qb-step-grid">
+                <div class="field">
+                    <label class="label" data-for="prompt">Step prompt</label>
+                    <input class="input" type="text" data-step="prompt" maxlength="300" autocomplete="off"
+                        placeholder="Calculate the discount amount">
+                </div>
+                <div class="field">
+                    <label class="label" data-for="answer">Step answer</label>
+                    <input class="input" type="text" data-step="answer" maxlength="100" autocomplete="off"
+                        placeholder="300">
+                </div>
+            </div>
+            <div class="form-grid qb-hints">
+                <div class="field">
+                    <label class="label" data-for="hint1"><span class="badge">Hint 1</span> Concept</label>
+                    <input class="input" type="text" data-step="hint1" maxlength="300" autocomplete="off"
+                        placeholder="Subtract the sale price from the original price.">
+                </div>
+                <div class="field">
+                    <label class="label" data-for="hint2"><span class="badge">Hint 2</span> Setup</label>
+                    <input class="input" type="text" data-step="hint2" maxlength="300" autocomplete="off"
+                        placeholder="1200 - 900">
+                </div>
+                <div class="field">
+                    <label class="label" data-for="hint3"><span class="badge">Hint 3</span> Next move (no result)</label>
+                    <input class="input" type="text" data-step="hint3" maxlength="300" autocomplete="off"
+                        placeholder="Subtract 900 from 1200 to find the decrease.">
+                </div>
+            </div>
+        </li>
+    </template>
+
+    <div class="overlay" id="modal-qb-generate" role="dialog" aria-modal="true" aria-labelledby="qb-gen-title">
+        <div class="modal modal-lg">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="qb-gen-title">Auto-generate questions</h2>
+                    <p class="modal-sub" id="qb-gen-sub">Topic 1 · Finding a percentage</p>
+                </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Close dialog">
+                    <svg class="icon"><use href="#i-x"></use></svg>
+                </button>
+            </header>
+
+            <div class="modal-body">
+                <form class="qb-gen-controls" id="qb-gen-form" novalidate>
+                    <div class="field">
+                        <label class="label" for="qb-gen-count">How many</label>
+                        <select class="select" id="qb-gen-count">
+                            <option value="1">1 question</option>
+                            <option value="3">3 questions</option>
+                            <option value="5" selected>5 questions</option>
+                            <option value="10">10 questions</option>
+                        </select>
+                    </div>
+                    <div class="qb-gen-range" id="qb-gen-range" role="group" aria-labelledby="qb-gen-range-label" aria-describedby="qb-gen-range-msg">
+                        <span class="label" id="qb-gen-range-label">Number range</span>
+                        <label class="check">
+                            <input type="checkbox" id="qb-gen-tens">
+                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                            <span class="check-text">Tens (10–99)</span>
+                        </label>
+                        <label class="check">
+                            <input type="checkbox" id="qb-gen-hundreds">
+                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                            <span class="check-text">Hundreds (100–999)</span>
+                        </label>
+                        <label class="check">
+                            <input type="checkbox" id="qb-gen-thousands">
+                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                            <span class="check-text">Thousands (1,000–9,999)</span>
+                        </label>
+                        <p class="field-msg" id="qb-gen-range-msg" role="alert"></p>
+                    </div>
+                    <button class="btn btn-secondary" type="submit" id="qb-gen-run">
+                        <svg class="icon"><use href="#i-sparkle"></use></svg>
+                        Generate drafts
+                    </button>
+                </form>
+
+                <p class="sr-only" id="qb-gen-status" role="status" aria-live="polite"></p>
+                <ol class="qb-previews" id="qb-previews"></ol>
+                <div class="state-block qb-gen-empty" id="qb-gen-empty">
+                    <span class="state-glyph"><svg class="icon icon-lg"><use href="#i-sparkle"></use></svg></span>
+                    <p class="state-title">No drafts yet</p>
+                </div>
+            </div>
+
+            <footer class="modal-foot">
+                <button class="btn btn-primary" type="button" id="qb-gen-save" disabled>Save to bank</button>
+            </footer>
+        </div>
+    </div>
+
+    <template id="tpl-qb-preview">
+        <li class="qb-preview">
+            <div class="qb-step-head">
+                <p class="qb-step-title">Draft <span class="qb-preview-num tnum">1</span></p>
+                <button class="btn-icon" type="button" data-qb-remove-preview aria-label="Remove draft" title="Remove draft">
+                    <svg class="icon"><use href="#i-x"></use></svg>
+                </button>
+            </div>
+            <div class="field">
+                <label class="label" data-for="q">Problem</label>
+                <textarea class="textarea qb-preview-q" data-preview="q" rows="2" maxlength="2000"></textarea>
+            </div>
+            <div class="form-grid qb-answer-grid">
+                <div class="field">
+                    <label class="label" data-for="final">Final answer</label>
+                    <input class="input" type="text" data-preview="final" maxlength="200" autocomplete="off">
+                </div>
+                <div class="field">
+                    <label class="label" data-for="points">Points</label>
+                    <input class="input tnum" type="number" data-preview="points" min="1" max="500" step="1" inputmode="numeric">
+                </div>
+            </div>
+            <p class="qb-help qb-preview-meta"></p>
+        </li>
+    </template>
+
+    <!-- Global search dialog: the right-hand search bar and Cmd/Ctrl+K open it. -->
+    <div class="overlay palette-overlay" id="palette" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="palette">
+            <div class="palette-input-row">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+                <input class="palette-input" id="palette-input" type="text" role="combobox"
+                    aria-expanded="true" aria-controls="palette-list" aria-autocomplete="list"
+                    aria-label="Search students, sections, or commands"
+                    placeholder="Search students, sections, or commands..." autocomplete="off" spellcheck="false">
+            </div>
+            <div class="palette-body" id="palette-list" role="listbox" aria-label="Results"></div>
+            <p class="sr-only" id="palette-status" role="status" aria-live="polite"></p>
+            <div class="palette-foot">
+                <span><kbd>↑↓</kbd> navigate</span><span><kbd>Enter</kbd> select</span><span><kbd>Esc</kbd> close</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast-stack" id="toast-stack" role="status" aria-live="polite"></div>
+
+    <script src="../../assets/js/shared/site-config.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/helpers.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/device.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/student-guard.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/idle-timeout.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/activity-tracking.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/session-guard.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/device-revoke.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
+    <script src="../js/admin-shell.js?v=20261027a"></script>
+
+    <script src="../../assets/js/shared/bfpt-items.js"></script>
+    <script src="../js/math-task-generator.js"></script>
+    <script src="../js/students-tools.js?v=20261029g"></script>
+    <script src="../js/add-students.js?v=20261019c"></script>
+    <script src="../js/admin-core.js?v=20261031a"></script>
+    <script src="../js/admin-dialogs.js?v=20261031a"></script>
+    <script src="../js/admin-loading.js?v=20261031a"></script>
+    <script src="../js/admin-data.js?v=20261031a"></script>
+    <script src="../js/students-table.js?v=20261031a"></script>
+    <script src="../js/student-drawer.js?v=20261031a"></script>
+    <script src="../js/student-forms.js?v=20261031a"></script>
+    <script src="../js/admin-faculty.js?v=20261031a"></script>
+    <script src="../js/stage-controls.js?v=20261031a"></script>
+    <script src="../js/admin-account.js?v=20261031a"></script>
+    <script src="../js/score-entry.js?v=20261031a"></script>
+    <script src="../js/live-updates.js?v=20261031a"></script>
+    <script src="../js/math-task-core.js?v=20261031a"></script>
+    <script src="../js/math-task-edit.js?v=20261031a"></script>
+    <script src="../js/math-task-rules.js?v=20261031a"></script>
+    <script src="../js/admin-start.js?v=20261031a"></script>
+</body>
+
+</html>

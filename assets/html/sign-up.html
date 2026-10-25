@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+
+    <script src="../js/shared/theme-boot.js"></script>
+    <meta name="robots" content="noindex">
+    <title>Set Your Password — PIA</title>
+
+    <script src="/assets/js/vendor/supabase.js"></script>
+
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/auth/auth.css">
+</head>
+
+<body>
+
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+            <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 4.2 2.8 20h18.4L12 4.2Z"/><path d="M12 10.5v3.8"/><circle cx="12" cy="17.2" r=".9" fill="currentColor" stroke="none"/></symbol>
+            <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.6 7.2 8.4 5.8 8.4-5.8"/></symbol>
+            <symbol id="i-key" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10.2" rx="2.5"/><path d="M7.8 10V7.6a4.2 4.2 0 0 1 8.4 0V10"/><circle cx="12" cy="15.2" r="1.2" fill="currentColor" stroke="none"/></symbol>
+        </defs>
+    </svg>
+
+    <div class="auth-page">
+
+        <div class="auth-brand">
+            <a class="brand-link" href="../../index.html"><img class="site-logo" src="../../assets/images/logo.svg" alt="PIA home" width="48" height="48"></a>
+            <span class="auth-brand-text">PIA System</span>
+        </div>
+
+        <main class="auth-card">
+
+            <h1 class="auth-title">Verify your email link</h1>
+            <p class="auth-lede">
+                Pick a password you'll remember. You'll use it with your school email
+                every time you sign in.
+            </p>
+
+            <div class="auth-identity" hidden>
+                <svg class="icon"><use href="#i-mail"></use></svg>
+                <div class="auth-identity-text">
+                    <p class="auth-identity-label">Setting up</p>
+                    <p class="auth-identity-value" id="setup-email">—</p>
+                </div>
+            </div>
+
+            <form class="auth-form" id="setup-password-form" novalidate hidden>
+                <div class="field">
+                    <label class="label" for="setup-password">New password</label>
+                    <input class="input" type="password" id="setup-password" minlength="8"
+                        autocomplete="new-password" aria-describedby="setup-policy setup-password-error">
+                    <p id="setup-policy" class="field-hint">Use at least 8 characters, including a letter and a number.</p>
+                    <p id="setup-password-error" class="field-msg"></p>
+                </div>
+
+                <div class="field">
+                    <label class="label" for="setup-confirm-password">Confirm password</label>
+                    <input class="input" type="password" id="setup-confirm-password" minlength="8"
+                        autocomplete="new-password" aria-describedby="setup-confirm-password-error">
+                    <p id="setup-confirm-password-error" class="field-msg"></p>
+                </div>
+
+                <label class="auth-show-row">
+                    <input type="checkbox" id="setup-show-password">
+                    <span class="auth-show-box"><svg class="icon"><use href="#i-check"></use></svg></span>
+                    <span class="auth-show-text">Show passwords</span>
+                </label>
+
+                <button class="btn btn-primary auth-submit" type="submit" id="setup-submit-btn" disabled>
+                    <svg class="icon"><use href="#i-key"></use></svg>
+                    Activate account
+                </button>
+            </form>
+
+            <p class="auth-status hidden" id="setup-status-box" role="status">
+                <svg class="icon"><use href="#i-alert"></use></svg>
+                <span></span>
+            </p>
+
+            <button type="button" class="btn btn-secondary" id="setup-retry" hidden>Retry verification</button>
+            <nav class="auth-hint" id="setup-link-actions" aria-label="Request another email" hidden>
+                <a href="../../index.html?signin=activate">Request activation email</a>
+                <a href="../../index.html?signin=forgot">Request password reset email</a>
+            </nav>
+            <a class="btn btn-primary" id="setup-signin" href="../../index.html?signin=student" hidden>Sign in</a>
+        </main>
+    </div>
+
+    <script src="../js/shared/site-config.js?v=20261031a"></script>
+    <script src="../js/shared/helpers.js?v=20261031a"></script>
+    <script src="../js/shared/device.js?v=20261031a"></script>
+    <script src="../js/shared/student-guard.js?v=20261031a"></script>
+    <script src="../js/shared/idle-timeout.js?v=20261031a"></script>
+    <script src="../js/shared/activity-tracking.js?v=20261031a"></script>
+    <script src="../js/shared/session-guard.js?v=20261031a"></script>
+    <script src="../js/shared/page-extras.js?v=20261031a"></script>
+    <script src="../js/shared/device-revoke.js?v=20261031a"></script>
+    <script src="../js/shared/stage-sync.js?v=20261031a"></script>
+    <script src="../js/sign-up/authentication.js"></script>
+</body>
+
+</html>

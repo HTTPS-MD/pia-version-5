@@ -1,0 +1,354 @@
+/*
+ * Session guard.
+ * Watches that the sign-in is still valid, and ends the session cleanly when it is not.
+ */
+const SESSION_CHECK_MS = 10 * 1000;
+
+let sessionCheckTimerId = null;
+
+let sessionCheckInFlight = false;
+
+let sessionGuardOff = false;
+
+let piaSessionEnded = false;
+
+let piaUserSigningOut = false;
+
+function tokenSessionId(token) {
+    try {
+        const part = String(token).split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+        const json = JSON.parse(atob(part + '='.repeat((4 - (part.length % 4)) % 4)));
+        return json.session_id || 'unknown';
+    } catch (e) {
+        return 'unknown';
+    }
+}
+
+async function localSessionId() {
+    try {
+        const { data } = await supabaseClient.auth.getSession();
+        const session = data && data.session;
+        return session ? tokenSessionId(session.access_token) : null;
+    } catch (e) {
+        return undefined;
+    }
+}
+
+async function fetchSessionStatus() {
+    if (!window.supabaseClient) return null;
+    try {
+        const { data, error } = await supabaseClient.rpc('check_student_session');
+        if (error) {
+            if (isMissingFunction(error)) stopSessionGuard();
+            return null;
+        }
+        const status = data && data.status;
+        return ['active', 'replaced', 'revoked', 'none'].indexOf(status) === -1 ? null : status;
+    } catch (e) {
+        return null;
+    }
+}
+
+async function checkStudentSession() {
+    if (piaSessionEnded || sessionGuardOff || sessionCheckInFlight) return;
+    if (document.hidden || navigator.onLine === false) return;
+
+    sessionCheckInFlight = true;
+    try {
+        const before = await localSessionId();
+        if (before === null) {
+            endStudentSession('ended');
+            return;
+        }
+
+        const status = await fetchSessionStatus();
+        if (status === null || status === 'active') return;
+
+        const after = await localSessionId();
+        if (after !== null && after !== before) return;
+
+        endStudentSession(status === 'none' ? 'ended' : status);
+    } finally {
+        sessionCheckInFlight = false;
+    }
+}
+
+function stopSessionGuard() {
+    sessionGuardOff = true;
+    clearInterval(sessionCheckTimerId);
+}
+
+function startSessionGuard() {
+    if (sessionCheckTimerId !== null || piaSessionEnded || !window.supabaseClient) return;
+
+    sessionCheckTimerId = setInterval(checkStudentSession, SESSION_CHECK_MS);
+    checkStudentSession();
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) checkStudentSession();
+    });
+    window.addEventListener('online', checkStudentSession);
+
+    supabaseClient.auth.onAuthStateChange((event) => {
+        if (event !== 'SIGNED_OUT' || piaUserSigningOut) return;
+        setTimeout(() => endStudentSession('ended'), 0);
+    });
+}
+
+const SESSION_ENDED_COPY = {
+    replaced: {
+        title: 'Signed in on another device',
+        text: 'Your account was logged in from another device. You have been securely logged out here.',
+        note: 'To keep working on this device instead, sign in again. The other device will be signed out.'
+    },
+    revoked: {
+        title: 'You’ve been signed out',
+        text: 'Your teacher or the study team signed this account out. You have been securely logged out here.',
+        note: ''
+    },
+    ended: {
+        title: 'Your session has ended',
+        text: 'For your security, you have been signed out on this device.',
+        note: ''
+    }
+};
+
+const STAFF_SIGNIN_PATH = '/index.html';
+
+function deviceChannelKey(deviceId) {
+    return String(deviceId || '')
+        .replace(/[^A-Za-z0-9]/g, '')
+        .slice(0, 64);
+}
+
+async function isSessionCurrentOnServer() {
+    if (!window.supabaseClient) return null;
+    try {
+        const { data, error } = await supabaseClient.rpc('jwt_is_current');
+        if (error) return null;
+        return data === true ? true : data === false ? false : null;
+    } catch (e) {
+        return null;
+    }
+}
+
+function staffSignInUrl(reason) {
+    return (
+        STAFF_SIGNIN_PATH +
+        '?signin=staff' +
+        (reason ? '&reason=' + encodeURIComponent(reason) : '')
+    );
+}
+
+async function endStaffSession(reason) {
+    if (piaSessionEnded) return;
+    piaSessionEnded = true;
+
+    stopSessionGuard();
+    if (staffWatch) clearInterval(staffWatch.timer);
+    clearInterval(presenceTimerId);
+    clearTimeout(idleTimeoutId);
+    clearInterval(idleCountdownId);
+    removeAllChannels();
+
+    try {
+        await Promise.race([
+            supabaseClient.auth.signOut({ scope: 'local' }),
+            new Promise((resolve) => setTimeout(resolve, 3000))
+        ]);
+    } catch (e) {}
+    clearLocalSession();
+    window.location.replace(staffSignInUrl(reason || 'ended'));
+}
+
+let staffWatch = null;
+
+function startStaffSessionWatch() {
+    if (staffWatch || piaSessionEnded || !window.supabaseClient) return;
+    staffWatch = { timer: null, busy: false };
+
+    const check = async () => {
+        if (piaSessionEnded || staffWatch.busy) return;
+        if (document.hidden || navigator.onLine === false) return;
+        staffWatch.busy = true;
+        try {
+            const { data } = await supabaseClient.auth.getSession();
+            if (!data || !data.session) {
+                endStaffSession('ended');
+                return;
+            }
+            if ((await isSessionCurrentOnServer()) === false) endStaffSession('revoked');
+        } catch (e) {
+        } finally {
+            staffWatch.busy = false;
+        }
+    };
+
+    staffWatch.timer = setInterval(check, SESSION_CHECK_MS);
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) check();
+    });
+    window.addEventListener('focus', check);
+    window.addEventListener('online', check);
+
+    supabaseClient.auth.onAuthStateChange((event) => {
+        if (event !== 'SIGNED_OUT' || piaUserSigningOut) return;
+        setTimeout(() => endStaffSession('ended'), 0);
+    });
+
+    let deviceId = null;
+    try {
+        deviceId = localStorage.getItem('pia_device_id');
+    } catch (e) {}
+    const key = deviceChannelKey(deviceId);
+    if (key && typeof registerChannel === 'function') {
+        registerChannel('pia-device-' + key, (ch) =>
+            ch
+                .on('broadcast', { event: 'recheck' }, () => {
+                    check();
+                })
+                .subscribe()
+        );
+    }
+
+    check();
+}
+
+function nudgeDevice(deviceId) {
+    const key = deviceChannelKey(deviceId);
+    if (!key || !window.supabaseClient) return;
+
+    const ch = supabaseClient.channel('pia-device-' + key);
+    let done = false;
+    const finish = () => {
+        if (done) return;
+        done = true;
+        try {
+            supabaseClient.removeChannel(ch);
+        } catch (e) {}
+    };
+
+    ch.subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+            Promise.resolve(ch.send({ type: 'broadcast', event: 'recheck', payload: {} })).then(
+                finish,
+                finish
+            );
+        } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
+            finish();
+        }
+    });
+    setTimeout(finish, 5000);
+}
+
+function clearLocalSession() {
+    try {
+        const deviceId = localStorage.getItem('pia_device_id');
+        const theme = localStorage.getItem('pia_theme');
+        localStorage.clear();
+        sessionStorage.clear();
+        if (deviceId) localStorage.setItem('pia_device_id', deviceId);
+        if (theme) localStorage.setItem('pia_theme', theme);
+    } catch (e) {}
+}
+
+async function endStudentSession(reason) {
+    if (piaSessionEnded) return;
+    piaSessionEnded = true;
+
+    stopSessionGuard();
+    clearInterval(presenceTimerId);
+    clearTimeout(idleTimeoutId);
+    clearInterval(idleCountdownId);
+    const idleModal = document.getElementById('pia-idle-modal');
+    if (idleModal) idleModal.remove();
+    removeAllChannels();
+
+    // (2) Say why, before any network call can stall.
+    showSessionEnded(SESSION_ENDED_COPY[reason] ? reason : 'ended');
+    window.dispatchEvent(new CustomEvent('pia:session-ended', { detail: { reason } }));
+
+    try {
+        await Promise.race([
+            supabaseClient.auth.signOut({ scope: 'local' }),
+            new Promise((resolve) => setTimeout(resolve, 4000))
+        ]);
+    } catch (e) {}
+    clearLocalSession();
+}
+
+function showSessionEnded(reason) {
+    if (document.getElementById('pia-session-ended')) return;
+    const copy = SESSION_ENDED_COPY[reason];
+
+    Array.prototype.forEach.call(document.body.children, (node) => {
+        if (node.tagName !== 'SCRIPT') node.inert = true;
+    });
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
+
+    document.body.classList.remove('opacity-0');
+
+    const root = document.createElement('div');
+    root.id = 'pia-session-ended';
+    root.className = 'session-ended';
+    root.setAttribute('role', 'alertdialog');
+    root.setAttribute('aria-modal', 'true');
+    root.setAttribute('aria-labelledby', 'pia-session-ended-title');
+    root.setAttribute('aria-describedby', 'pia-session-ended-text');
+
+    const card = document.createElement('div');
+    card.className = 'session-ended-card';
+
+    const glyph = document.createElement('span');
+    glyph.className = 'session-ended-glyph';
+    glyph.setAttribute('aria-hidden', 'true');
+    glyph.innerHTML =
+        '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" ' +
+        'stroke-linecap="round" stroke-linejoin="round" focusable="false">' +
+        '<rect x="2.5" y="4" width="13" height="9.5" rx="1.5"/><path d="M6 17h6"/>' +
+        '<rect x="15.5" y="9" width="6" height="11" rx="1.5"/><path d="M18.5 17.5h.01"/></svg>';
+
+    const title = document.createElement('h2');
+    title.className = 'session-ended-title';
+    title.id = 'pia-session-ended-title';
+    title.textContent = copy.title;
+
+    const text = document.createElement('p');
+    text.className = 'session-ended-text';
+    text.id = 'pia-session-ended-text';
+    text.textContent = copy.text;
+
+    card.append(glyph, title, text);
+
+    if (copy.note) {
+        const note = document.createElement('p');
+        note.className = 'session-ended-note';
+        note.textContent = copy.note;
+        card.append(note);
+    }
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-primary session-ended-btn';
+    btn.textContent = 'Sign in again';
+    btn.addEventListener('click', () => {
+        btn.disabled = true;
+        btn.textContent = 'Opening sign-in…';
+        clearLocalSession();
+        window.location.replace('/index.html');
+    });
+    card.append(btn);
+
+    root.append(card);
+    document.body.append(root);
+
+    let opened = false;
+    const open = () => {
+        if (opened) return;
+        opened = true;
+        root.classList.add('is-open');
+        btn.focus({ preventScroll: true });
+    };
+    requestAnimationFrame(open);
+    setTimeout(open, 100);
+}

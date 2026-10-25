@@ -1,0 +1,93 @@
+/* PIA SYSTEM — ERROR PAGE */
+
+.error-page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-6);
+    text-align: center;
+}
+
+.error-ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image: var(--grain);
+    background-size: 11.25rem 11.25rem;
+}
+
+.error-page > * {
+    position: relative;
+    z-index: 1;
+}
+
+.error-card {
+    width: 100%;
+    max-width: 480px;
+    padding: var(--sp-8);
+    border-radius: var(--r-xl);
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-card);
+}
+
+.error-glyph {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--sp-5);
+    border-radius: var(--r-lg);
+    display: grid;
+    place-items: center;
+    background: var(--warning-soft);
+    color: var(--warning);
+}
+
+.error-code {
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+}
+
+.error-title {
+    margin-top: var(--sp-2);
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 800;
+    letter-spacing: -0.028em;
+    line-height: 1.15;
+    text-wrap: balance;
+}
+
+.error-lede {
+    margin: var(--sp-3) auto 0;
+    max-width: 42ch;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--text-muted);
+}
+
+.error-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--sp-3);
+    margin-top: var(--sp-7);
+    flex-wrap: wrap;
+}
+
+.error-actions .btn {
+    height: 46px;
+    padding: 0 var(--sp-5);
+}
+
+@media (max-width: 480px) {
+    .error-card {
+        padding: var(--sp-7) var(--sp-5);
+    }
+    .error-actions .btn {
+        flex: 1 1 100%;
+    }
+}

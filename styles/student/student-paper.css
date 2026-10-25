@@ -1,0 +1,641 @@
+/* PIA -- the "paper" look of the student pages (questionnaire, waiting room, choose a tutor, welcome). */
+
+:root[data-theme='dark'] .paper {
+    --q-paper: var(--hex-111a47);
+    --q-ink: var(--palette-paper);
+    --q-soft: var(--hex-b9c0e0);
+    --q-field: var(--hex-17225c);
+}
+:root[data-theme='light'] .paper {
+    --q-paper: var(--palette-paper);
+    --q-ink: var(--palette-ink);
+    --q-soft: var(--hex-4a5170);
+    --q-field: var(--hex-ffffff);
+}
+.paper-scene,
+.learn > .paper-scene {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+.paper-scene,
+.journey-ambient--classroom {
+    background-image: var(--grain),
+        linear-gradient(
+            color-mix(in srgb, var(--bg) 56%, transparent),
+            color-mix(in srgb, var(--bg) 64%, transparent)
+        ),
+        url('../../assets/images/backgrounds/classroom-bg-light.webp');
+    background-size:
+        11.25rem 11.25rem,
+        cover,
+        cover;
+    background-position:
+        0 0,
+        center,
+        center bottom;
+    background-repeat: repeat, no-repeat, no-repeat;
+}
+:root[data-theme='dark'] .paper-scene,
+:root[data-theme='dark'] .journey-ambient--classroom {
+    background-image: var(--grain),
+        linear-gradient(
+            color-mix(in srgb, var(--bg) 56%, transparent),
+            color-mix(in srgb, var(--bg) 64%, transparent)
+        ),
+        url('../../assets/images/backgrounds/classroom-bg-dark.webp');
+}
+body.is-playing .paper-scene {
+    display: none;
+}
+.paper .journey-bar-right,
+.paper .learn-bar-right {
+    gap: 10px;
+}
+.btn-theme {
+    width: 44px;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+}
+.btn-theme svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+:root[data-theme='dark'] .btn-theme .theme-moon,
+:root[data-theme='light'] .btn-theme .theme-sun {
+    display: none;
+}
+.paper-card {
+    width: 100%;
+    max-width: 44rem;
+    margin: 0 auto;
+    padding: 2.4rem 2.5rem 2rem;
+    border: 3px solid var(--q-ink);
+    border-radius: 0;
+    background: var(--q-paper);
+    color: var(--q-ink);
+    box-shadow: none;
+}
+
+.paper-title {
+    margin: 0 0 0.6rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.4vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.12;
+    text-wrap: auto;
+}
+.paper-title mark {
+    padding: 0.08em 0.2em;
+    background: var(--palette-volt);
+    color: var(--palette-ink);
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+.paper-lede {
+    max-width: none;
+    margin: 0 0 1.2rem;
+    color: var(--q-soft);
+    font-size: 1.0625rem;
+    line-height: 1.5;
+}
+
+ul.paper-chips[hidden] {
+    display: none;
+}
+ul.paper-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    list-style: none;
+}
+.paper-chips li {
+    padding: 0.35rem 0.7rem;
+    border: 2px solid var(--q-ink);
+    background: var(--q-field);
+    color: var(--q-ink);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+.paper-card .btn {
+    height: 50px;
+    padding: 0 1.4rem;
+    border: 3px solid var(--q-ink);
+    border-radius: 0;
+    background: transparent;
+    color: var(--q-ink);
+    box-shadow: none;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.paper-card .btn-primary {
+    background: var(--palette-violet);
+    color: var(--palette-ink);
+}
+.paper-card .btn:disabled {
+    border-style: dashed;
+    background: transparent;
+    color: var(--q-soft);
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.paper .journey-main {
+    align-items: center;
+    padding: var(--sp-5) 0;
+}
+.wait-card .paper-lede {
+    margin-bottom: 1.4rem;
+}
+.wait-dots {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.wait-dots li {
+    width: 14px;
+    height: 14px;
+    border: 2px solid var(--q-ink);
+    background: var(--palette-violet);
+}
+.wait-dots li:nth-child(2) {
+    background: var(--palette-volt);
+}
+.wait-dots li:nth-child(3) {
+    background: var(--palette-green);
+}
+.pick-scene {
+    display: grid;
+    grid-template-columns: 20rem minmax(0, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 70rem;
+    height: calc(100dvh - 68px - var(--sp-5) * 2);
+    min-height: 30rem;
+    margin: 0 auto;
+}
+
+.persona-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.55rem;
+}
+.persona-card {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.55rem 0.8rem;
+    border: 3px solid var(--q-ink);
+    border-radius: 0;
+    background: var(--q-paper);
+    box-shadow: none;
+    color: var(--q-ink);
+    text-align: left;
+    cursor: pointer;
+}
+.persona-card:hover:not(.selected) {
+    border-color: var(--palette-violet);
+}
+.persona-card.selected {
+    background: var(--palette-volt);
+    color: var(--palette-ink);
+    border-color: var(--palette-ink);
+}
+.persona-thumb {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 52px;
+    height: 52px;
+    overflow: hidden;
+    border: 2px solid var(--q-ink);
+    border-radius: 50%;
+    background: var(--hex-ffffff);
+}
+.persona-card.selected .persona-thumb {
+    border-color: var(--palette-ink);
+}
+.persona-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.persona-text {
+    display: block;
+    min-width: 0;
+}
+.persona-name {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+.persona-tag {
+    display: block;
+    font-size: 0.82rem;
+    line-height: 1.2;
+    color: var(--q-soft);
+}
+.persona-card.selected .persona-tag {
+    color: var(--palette-ink);
+}
+.pick-stage {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 0;
+    padding-bottom: 4.4rem;
+}
+.pick-hello {
+    position: absolute;
+    top: 0.4rem;
+    left: 0;
+    margin: 0;
+    padding: 0.5rem 1.2rem;
+    border: 3px solid var(--palette-ink);
+    background: var(--palette-volt);
+    color: var(--palette-ink);
+    font-family: var(--font-display);
+    font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    transform: rotate(-1.5deg);
+}
+.pick-stage:not(.has-pick) .pick-hello {
+    position: static;
+    margin: auto 0;
+}
+.pick-arrow {
+    display: inline-block;
+    margin-right: 0.3rem;
+    animation: pickNudge 1s ease-in-out infinite;
+}
+@keyframes pickNudge {
+    50% {
+        transform: translateX(-6px);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .pick-arrow,
+    .pick-big.is-hop {
+        animation: none;
+    }
+}
+
+.pick-bubble {
+    position: absolute;
+    z-index: 3;
+    right: -3%;
+    top: 1.6rem;
+    width: min(24rem, 52%);
+    aspect-ratio: 4 / 3;
+    color: var(--palette-ink);
+    font-size: 0.92rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+.pick-bubble[hidden] {
+    display: none;
+}
+.pick-bubble-art {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    pointer-events: none;
+}
+.pick-bubble-text {
+    position: relative;
+    height: 100%;
+    padding: 17% 15% 28% 22%;
+    overflow: hidden;
+}
+.pick-bubble b {
+    display: block;
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+}
+.pick-bubble.no-art {
+    aspect-ratio: auto;
+    background: var(--hex-ffffff);
+    border: 3px solid var(--palette-ink);
+}
+.pick-bubble.no-art .pick-bubble-art {
+    display: none;
+}
+.pick-bubble.no-art .pick-bubble-text {
+    height: auto;
+    padding: 0.7rem 1rem;
+}
+
+.pick-big {
+    height: calc(100% - 5.2rem);
+    margin: 0 24% -4% 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    filter: drop-shadow(0 10px 12px var(--black-a40));
+}
+.pick-big[hidden] {
+    display: none;
+}
+.pick-big img {
+    display: block;
+    width: auto;
+    height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+.pick-big.is-hop {
+    animation: pickHop 0.5s ease 1;
+}
+@keyframes pickHop {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-22px);
+    }
+}
+.pick-spot {
+    position: absolute;
+    bottom: 4.1rem;
+    width: 40%;
+    max-width: 18rem;
+    height: 1.2rem;
+    margin-right: 24%;
+    border-radius: 50%;
+    background: radial-gradient(var(--palette-volt), var(--rgb255-216-61-a0) 70%);
+}
+.pick-stage:not(.has-pick) .pick-spot {
+    display: none;
+}
+
+.pick-act {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: min(100%, 22rem);
+    transform: translateX(-50%);
+}
+.pick-act .btn {
+    width: 100%;
+    height: 50px;
+    padding: 0 1.4rem;
+    border: 3px solid var(--q-ink);
+    border-radius: 0;
+    background: var(--palette-violet);
+    color: var(--palette-ink);
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: none;
+}
+.pick-act .btn[hidden] {
+    display: none;
+}
+.pick-status {
+    margin: 0;
+    min-height: 0;
+    text-align: center;
+    color: var(--q-ink);
+    font-weight: 700;
+}
+.pick-status:empty {
+    display: none;
+}
+.pick-status.is-done {
+    width: fit-content;
+    margin: 0 auto;
+    padding: 0.7rem 1.4rem;
+    border: 3px solid var(--palette-ink);
+    background: var(--palette-volt);
+    color: var(--palette-ink);
+}
+.is-locked .persona-card {
+    pointer-events: none;
+    opacity: 0.4;
+}
+.is-locked .persona-card.selected {
+    opacity: 1;
+}
+.persona-thumb[data-mono]::after {
+    content: attr(data-mono);
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--palette-ink);
+}
+.persona-thumb[data-mono] img {
+    display: none;
+}
+.paper .start-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: center;
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 2.4rem 2.5rem;
+    border: 3px solid var(--q-ink);
+    background: var(--q-paper);
+    color: var(--q-ink);
+    box-shadow: none;
+}
+.paper .start-card {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+.paper .start-hello {
+    margin: 0 0 0.6rem;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4.4vw, 2.8rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.12;
+}
+.paper .start-hello mark {
+    padding: 0.08em 0.2em;
+    background: var(--palette-volt);
+    color: var(--palette-ink);
+}
+.paper .start-lede {
+    margin: 0 0 1.2rem;
+    color: var(--q-soft);
+    font-size: 1.0625rem;
+    line-height: 1.5;
+}
+.paper .start-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+}
+.paper .start-wrap .btn {
+    height: 50px;
+    padding: 0 1.4rem;
+    border: 3px solid var(--q-ink);
+    border-radius: 0;
+    background: transparent;
+    color: var(--q-ink);
+    box-shadow: none;
+    font-size: 1rem;
+    font-weight: 700;
+}
+.paper .start-wrap .btn-primary {
+    background: var(--palette-violet);
+    color: var(--palette-ink);
+}
+.paper .start-wrap .btn:disabled {
+    border-style: dashed;
+    color: var(--q-soft);
+    opacity: 0.7;
+}
+.paper .agent-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    text-align: center;
+}
+.paper .agent-portrait {
+    width: 100%;
+    max-width: 210px;
+    height: 230px;
+    background: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+.paper .agent-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.paper .agent-name {
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    color: var(--q-ink);
+}
+.paper .agent-role {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--q-soft);
+}
+.paper .learn-main:has(#screen-start.is-active) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.paper .learn-main:has(#screen-start.is-active) > #screen-start {
+    width: 100%;
+}
+@media (max-width: 46rem) {
+    .paper-card {
+        padding: 2.6rem 1.1rem 1.2rem;
+    }
+    .paper .journey-main {
+        padding: 12px 0;
+    }
+    .pick-scene {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+        gap: 0.6rem;
+        height: calc(100dvh - 68px - 24px);
+        min-height: 0;
+    }
+    .persona-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.4rem;
+        justify-content: stretch;
+    }
+    .persona-card {
+        flex-direction: column;
+        gap: 0.15rem;
+        padding: 0.4rem 0.2rem;
+        border-width: 2px;
+        text-align: center;
+    }
+    .persona-thumb {
+        width: 38px;
+        height: 38px;
+    }
+    .persona-tag {
+        display: none;
+    }
+    .persona-name {
+        font-size: 0.9rem;
+    }
+    .pick-stage {
+        padding-bottom: 3.8rem;
+    }
+    .pick-bubble {
+        top: 2.4rem;
+        width: 66%;
+        font-size: 0.68rem;
+        line-height: 1.2;
+    }
+    .pick-bubble-text {
+        padding: 17% 17% 27% 21%;
+    }
+    .pick-bubble b {
+        font-size: 0.9rem;
+    }
+    .pick-hello {
+        font-size: 1rem;
+        padding: 0.35rem 0.9rem;
+    }
+    .pick-arrow {
+        transform: rotate(90deg);
+        animation: none;
+    }
+    .pick-big {
+        height: calc(100% - 4.6rem);
+        margin-right: 30%;
+    }
+    .pick-spot {
+        margin-right: 30%;
+    }
+    .paper .start-wrap {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 0.6rem;
+        padding: 1.6rem 1.1rem;
+    }
+    .paper .agent-card {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.8rem;
+        order: -1;
+        text-align: left;
+    }
+    .paper .agent-portrait {
+        width: 84px;
+        height: 92px;
+        flex: none;
+    }
+    .paper .start-actions .btn {
+        flex: 1 1 auto;
+    }
+}

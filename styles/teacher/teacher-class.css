@@ -1,0 +1,311 @@
+/* PIA TEACHER PAGE -- one read-only roster in the homepage look */
+
+.t-boot {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    background: var(--bg-body);
+    color: var(--text);
+    font-size: var(--fs-body);
+}
+.t-boot p {
+    margin: 0;
+}
+.t-boot[hidden] {
+    display: none;
+}
+
+.t-app[hidden] {
+    display: none;
+}
+.t-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    gap: 12px;
+    height: 64px;
+    padding-inline: var(--bar-edge);
+    background: color-mix(in srgb, var(--bg-body) 82%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+}
+.t-brand {
+    display: inline-flex;
+    border-radius: 12px;
+    justify-self: start;
+}
+.t-brand .site-logo {
+    display: block;
+    width: auto;
+    height: auto;
+    max-height: var(--logo-h);
+}
+.t-bar-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 0;
+}
+.theme-toggle .icon-moon {
+    display: none;
+}
+:root[data-theme='light'] .theme-toggle .icon-sun {
+    display: none;
+}
+:root[data-theme='light'] .theme-toggle .icon-moon {
+    display: block;
+}
+
+.t-main {
+    padding: 8px var(--bar-edge) 48px;
+}
+.t-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+.t-title select {
+    width: auto;
+    max-width: 14rem;
+}
+
+.t-empty-section {
+    margin: 0 0 16px;
+    padding: 18px 20px;
+    border: 1px dashed var(--line-input);
+    border-radius: var(--r-card);
+    color: var(--text-muted);
+}
+.t-name {
+    font-weight: 600;
+}
+.t-hide-names .t-name {
+    position: relative;
+    display: inline-block;
+    min-width: 9ch;
+    color: transparent !important;
+    user-select: none;
+}
+.t-hide-names .t-name::after {
+    content: '********';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    color: var(--text);
+    letter-spacing: 2px;
+    font-weight: 400;
+}
+
+.t-dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: var(--track);
+}
+.t-dot.is-on {
+    background: var(--ok);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent);
+}
+.t-att-present {
+    color: var(--ok);
+    font-weight: 600;
+}
+.t-att-absent {
+    color: var(--danger);
+}
+
+@media (max-width: 40rem) {
+    .t-main {
+        padding-inline: 16px;
+    }
+    .t-bar {
+        padding-inline: 16px;
+    }
+}
+
+.t-main [hidden] {
+    display: none !important;
+}
+.t-main .scope-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+.t-main .scope-line {
+    margin: 0;
+}
+.t-main .head-search .input {
+    padding-right: 16px;
+}
+.t-main .page-head {
+    margin-bottom: 12px;
+}
+.t-main .head-search {
+    order: 0;
+    margin-left: auto;
+}
+.t-multi .page-title {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+html[data-surface='admin'] .t-title.t-multi select {
+    height: auto;
+    min-height: 0;
+    padding: 2px 34px 2px 4px;
+    border-radius: 12px;
+    border: 0;
+    box-shadow: none;
+    background-color: transparent;
+    font: 700 1.75rem var(--font-display);
+    letter-spacing: -0.03em;
+    color: var(--text);
+    cursor: pointer;
+}
+.t-main .table td {
+    white-space: nowrap;
+}
+.t-nav {
+    display: flex;
+    gap: 6px;
+}
+.t-tab {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-decoration: none;
+}
+.t-tab:hover {
+    background: var(--bg-chip);
+    color: var(--text);
+}
+.t-tab.is-active {
+    background: var(--admin-pill);
+    color: var(--admin-pill-ink);
+    box-shadow: 0 6px 16px var(--black-a16);
+}
+.t-account {
+    position: relative;
+}
+.t-avatar {
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0;
+    background: var(--bg-chip);
+    color: var(--text);
+    box-shadow: 0 0 0 2px var(--admin-pill);
+    font: 700 0.8125rem var(--font-body);
+    cursor: pointer;
+}
+.t-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 8px);
+    z-index: 60;
+    min-width: 12rem;
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--bg-surface);
+    box-shadow: 0 14px 34px var(--black-a22);
+}
+.t-menu[hidden] {
+    display: none;
+}
+.t-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+}
+.t-menu-item:hover,
+.t-menu-item:focus-visible {
+    background: var(--bg-chip);
+}
+.t-menu-item .icon {
+    width: 16px;
+    height: 16px;
+    flex: none;
+}
+.t-menu-item.is-signout {
+    color: var(--danger);
+}
+.t-settings {
+    max-width: 40rem;
+}
+.t-settings .settings-group {
+    margin: 0 0 10px;
+}
+.t-settings .stack {
+    display: grid;
+    gap: 12px;
+}
+
+.t-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: var(--fs-sm);
+    cursor: pointer;
+}
+.t-device-note {
+    margin: 0 0 8px;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+}
+
+.t-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 90;
+    max-width: min(30rem, calc(100vw - 32px));
+    padding: 12px 18px;
+    border-radius: 16px;
+    background: var(--bg-surface-hi);
+    color: var(--text);
+    border: 1px solid var(--line);
+    box-shadow: 0 14px 34px var(--black-a30);
+    font-size: var(--fs-sm);
+}
+.t-toast[hidden] {
+    display: none;
+}
