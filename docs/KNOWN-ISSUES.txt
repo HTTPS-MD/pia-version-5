@@ -1,0 +1,30 @@
+KNOWN ISSUES AND TO-DO (Version 05, staging)
+Written 2026-10-26. Nothing here has been changed in code yet.
+
+1. Opening a stage only lets in the students who are ready at that moment
+   - Turning on "Tutoring dashboard" (or the other stage switches) runs admin_grant_stage once.
+     It moves the students who qualify right then. Students who are not ready yet are skipped
+     and are NOT picked up later. They stay in the Waiting Room, and refreshing does not help.
+   - Seen on staging: Test Student Two (Free choice, Ava chosen) and Test Student Three (Neutral)
+     stayed in the Waiting Room after the Tutoring switch was on.
+     Switching Tutoring OFF and ON again let both in.
+   - The cause for Test Student Three is NOT confirmed. The "no character chosen yet" reason
+     only explains Test Student Two. Timing (switch turned on before they finished) is a guess.
+   - Not tested on dev. The code is the same copy (admin_grant_stage, waiting-room.js),
+     so dev probably behaves the same, but this is not proven.
+   - Why it matters: in a real class students finish at different speeds.
+   - Workaround for now: open Tutoring only after everyone is done, or switch OFF and ON again.
+   - Possible fix (to decide and test, never on dev): when the stage is open for the section,
+     let any qualifying student in when they reach the Waiting Room or when they refresh.
+
+2. Not tested yet on staging
+   - Solving problems and hints under Free choice and Neutral.
+   - A whole class at the same time (more than 3 students).
+   - ML service / learning profile (not connected in staging).
+   - Real data (old scores, existing sections).
+
+3. Decisions still open
+   - Which version to show at the defense (Nov 14): recommended Version 05 staging.
+   - Replacing the real production site: not recommended before the defense.
+   - Push Version 05 to GitHub (needs your OK).
+   - Keep or change the pia-version-5.pages.dev name: decided to keep it.
