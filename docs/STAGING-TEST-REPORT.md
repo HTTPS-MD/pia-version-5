@@ -19,12 +19,13 @@ Supabase project. No real student data was involved.
 | 10 | Game: wrong answer, hint (does not give the answer), correct answer, next question | Pass |
 | 11 | Admin sees the student online, stage, minutes per stage, active session | Pass |
 | 12 | Student quits; active session goes to 0 and the student shows offline | Pass |
+| 13 | Admin sends Reset password to the teacher; the email arrives and the link opens "Choose a new password" | Pass |
+| 14 | Teacher sets a password and signs in through Teacher / Admin; the teacher OCEAN opens on first sign-in | Pass |
+| 15 | Teacher dashboard shows the section, the student, status, stage and attendance (read-only) | Pass |
 
 ## Not tested here
 
-- Teacher page (needs a teacher account).
 - Learning profile with the ML service (the ML service is not connected in staging; the page keeps its default wording).
-- Email links (activation and password reset).
 - Conditions other than Assigned (free choice, neutral, control), and a whole class at once.
 - Anything that depends on the real data (old scores, existing sections).
 
