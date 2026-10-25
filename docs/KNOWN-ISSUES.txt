@@ -8,8 +8,10 @@ Written 2026-10-26. Nothing here has been changed in code yet.
    - Seen on staging: Test Student Two (Free choice, Ava chosen) and Test Student Three (Neutral)
      stayed in the Waiting Room after the Tutoring switch was on.
      Switching Tutoring OFF and ON again let both in.
-   - The cause for Test Student Three is NOT confirmed. The "no character chosen yet" reason
-     only explains Test Student Two. Timing (switch turned on before they finished) is a guess.
+   - Cause for Test Student Three, retested on 2026-10-26: it was timing. With Three already in the
+     Waiting Room (OCEAN done) and Tutoring OFF, one click on ON sent Three straight into tutoring.
+     So the grant works for students who are ready at that moment, and skips the others for good.
+     (Test Student Two was skipped because no character was chosen yet at that time.)
    - Not tested on dev. The code is the same copy (admin_grant_stage, waiting-room.js),
      so dev probably behaves the same, but this is not proven.
    - Why it matters: in a real class students finish at different speeds.
@@ -18,9 +20,8 @@ Written 2026-10-26. Nothing here has been changed in code yet.
      let any qualifying student in when they reach the Waiting Room or when they refresh.
 
    PROPOSED SOLUTION for item 1 (not done yet; to be tested on staging first)
-   Step 1. Find out why Test Student Three was not let in the first time. Turn the Tutoring switch
-           ON while a Neutral student is already in the Waiting Room with OCEAN done, and read the
-           "granted" and "skipped" lists that admin_grant_stage returns. This gives the real cause.
+   Step 1. DONE (see above): the cause is timing. Still check the "skipped" list that
+           admin_grant_stage returns, so the admin can see who was left out.
    Step 2. Fix the rule, not the order of the admin's clicks. The section already has a record that
            the stage is open (table stage_overrides, the switch shows "Open"). When a student who
            qualifies (OCEAN done, character chosen if needed, not control) opens or refreshes the
