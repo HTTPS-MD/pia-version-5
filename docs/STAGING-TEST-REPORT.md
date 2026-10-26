@@ -25,13 +25,13 @@ Supabase project. No real student data was involved.
 | 16 | Free choice: student picks a tutor (Ava) and tutoring uses that tutor | Pass |
 | 17 | Neutral: no choice, tutor Noel assigned, two-step question solved, errors logged | Pass |
 | 17b | Neutral: Request Hint (Tier 1/3) gives a method hint without the answer | Pass |
+| 17c | Free choice: Request Hint (Tier 1/3) from Ava gives a method hint without the answer | Pass |
 | 18 | Control: questionnaire only, no tutoring ("That is everything for now") | Pass |
 | 19 | Students who arrive after the Tutoring switch is on go straight into tutoring (waiting room fix) | Pass |
 
 ## Not tested here
 
 - Learning profile with the ML service (the ML service is not connected in staging; the page keeps its default wording).
-- Hint under Free choice was not seen (passed under Assigned and Neutral; same code).
 - A whole class at once (more than 3 students).
 - Anything that depends on the real data (old scores, existing sections).
 
