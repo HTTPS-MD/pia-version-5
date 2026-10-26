@@ -756,8 +756,15 @@
 .landing-look .start-actions {
     justify-content: center;
 }
-.landing-look .btn-tutorial.is-spotlight {
-    outline-color: var(--volt);
+.landing-look .learn-bar .btn-tutorial {
+    border: 0;
+    border-radius: var(--ll-btn-radius);
+    background: var(--volt);
+    color: var(--on-volt);
+    font-weight: 700;
+}
+.landing-look .learn-bar .btn-tutorial:hover {
+    background: var(--hex-ffe66d);
 }
 .landing-look .agent-stage {
     position: relative;

@@ -24,14 +24,13 @@
     ];
 
     var sb = null;
-    var overlay, titleEl, textEl, stepEl, backBtn, nextBtn, skipBtn, helpBtn, appRoot;
+    var overlay, titleEl, textEl, stepEl, backBtn, nextBtn, helpBtn, appRoot;
     var index = 0;
     var isOpen = false;
     var returnFocus = null;
     var seenKnown = false;
     var seenThisPage = false;
     var saving = null;
-    var spotlightTimer = null;
 
     function reducedMotion() {
         return !!(
@@ -96,11 +95,6 @@
         if (!isOpen) {
             return;
         }
-        if (e.key === 'Escape') {
-            e.preventDefault();
-            close(true);
-            return;
-        }
         if (e.key !== 'Tab') {
             return;
         }
@@ -123,7 +117,6 @@
         if (isOpen) {
             return;
         }
-        clearSpotlight();
         isOpen = true;
         index = 0;
         returnFocus = document.activeElement;
@@ -138,7 +131,7 @@
         nextBtn.focus({ preventScroll: true });
     }
 
-    function close(skipped) {
+    function close() {
         if (!isOpen) {
             return;
         }
@@ -158,50 +151,6 @@
         if (returnFocus && returnFocus.focus) {
             returnFocus.focus({ preventScroll: true });
         }
-        if (skipped) {
-            showHelpHint();
-        }
-    }
-
-    function clearSpotlight() {
-        clearTimeout(spotlightTimer);
-        if (!helpBtn) {
-            return;
-        }
-        helpBtn.classList.remove('is-spotlight');
-        var n = $('.tutorial-callout');
-        if (n) {
-            n.remove();
-        }
-    }
-
-    /* After Skip: the How it works button is outlined for a few seconds and a note says
-       where it is. The note is announced to screen readers. */
-    function showHelpHint() {
-        if (!helpBtn) {
-            return;
-        }
-        clearSpotlight();
-
-        var bar = document.querySelector('.learn-bar');
-        var note = document.createElement('div');
-        note.className = 'tutorial-callout';
-        note.setAttribute('role', 'status');
-        var inner = document.createElement('p');
-        inner.className = 'learn-shell tutorial-callout-text';
-        note.appendChild(inner);
-        if (bar && bar.parentNode) {
-            bar.parentNode.insertBefore(note, bar.nextSibling);
-        } else {
-            document.body.insertBefore(note, document.body.firstChild);
-        }
-        setTimeout(function () {
-            inner.textContent =
-                'You can replay the tutorial any time with the How it works button.';
-        }, 50);
-
-        helpBtn.classList.add('is-spotlight');
-        spotlightTimer = setTimeout(clearSpotlight, 7000);
     }
 
     function init(client) {
@@ -217,12 +166,8 @@
         stepEl = $('#tutorial-step');
         backBtn = $('#tutorial-back');
         nextBtn = $('#tutorial-next');
-        skipBtn = $('#tutorial-skip');
 
         helpBtn.addEventListener('click', open);
-        skipBtn.addEventListener('click', function () {
-            close(true);
-        });
         backBtn.addEventListener('click', function () {
             if (index > 0) {
                 index -= 1;
@@ -234,19 +179,10 @@
                 index += 1;
                 render();
             } else {
-                close(false);
+                close();
             }
         });
         document.addEventListener('keydown', onKey);
-        document.addEventListener(
-            'pointerdown',
-            function () {
-                if (!isOpen) {
-                    clearSpotlight();
-                }
-            },
-            true
-        );
 
         return readSeen().then(function (seen) {
             if (seen === null) {
