@@ -427,7 +427,7 @@
             return s.section === section;
         }).length;
         $('#tut-title').textContent =
-            (editing ? 'Change Tutoring schedule for ' : 'Open Tutoring for ') + section;
+            (editing ? 'Change game schedule for ' : 'Open the game for ') + section;
         $('#tut-sub').textContent =
             members +
             (members === 1 ? ' student' : ' students') +
@@ -633,7 +633,7 @@
                 var ok = await saveTutoringSchedule(section, opens, closes, false);
                 if (ok) {
                     Admin.toastOk(
-                        mode === 'now' ? 'Tutoring is open' : 'Tutoring scheduled',
+                        mode === 'now' ? 'Game is open' : 'Game scheduled',
                         mode === 'now'
                             ? section + ' stays open until you close it.'
                             : section +

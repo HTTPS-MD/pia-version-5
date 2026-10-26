@@ -51,4 +51,4 @@ Supabase project. No real student data was involved.
 - Waiting room: a student who already has a tutor (Assigned, Neutral, or Free choice after locking) sees "<Tutor> is ready!" with the tutor's picture. A student still waiting for OCEAN or for the tutor choice sees "Hang tight!".
 - Waiting room: when the stage is already open for the section, the student moves on at once (no wait of up to 5 seconds).
 - Choose a tutor: after "Yes, lock it in" the student sees "You picked <name>!" for about 2 seconds, then goes to the welcome page if Tutoring is open, or to the waiting room if it is not. There is no Continue button any more.
-- Admin: the toggles are called "Choose tutor" and "Tutoring" (they were "Character select" and "Tutoring dashboard").
+- Admin: the toggles are called "OCEAN test", "Choose tutor" and "Game" (they were "Character select" and "Tutoring dashboard").

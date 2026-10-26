@@ -9,7 +9,7 @@
     var esc = escapeHTML;
 
     var POLL_MS = 10000;
-    var STAGE_LABEL = { setting_up: 'Setting up', waiting: 'Waiting', tutoring: 'Tutoring' };
+    var STAGE_LABEL = { setting_up: 'Setting up', waiting: 'Waiting', tutoring: 'Game' };
 
     var state = {
         email: '',
