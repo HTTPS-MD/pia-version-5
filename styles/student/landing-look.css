@@ -60,7 +60,7 @@
 
 /* cards and modals */
 .landing-look .paper-card,
-.landing-look .start-wrap,
+.landing-look .start-card,
 .landing-look.quiz .gate-wrap.gate-open,
 .landing-look.quiz .question-card,
 .landing-look .modal {
@@ -711,5 +711,70 @@
         justify-self: center;
         height: 8rem;
         margin-bottom: var(--sp-3);
+    }
+}
+
+/* welcome screen: a greeting card and the tutor standing on the classroom stage */
+.landing-look .start-wrap {
+    max-width: 64rem;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: var(--sp-6);
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    color: inherit;
+}
+.landing-look .start-card {
+    padding: 2.4rem 2.5rem;
+}
+.landing-look .agent-stage {
+    position: relative;
+    width: 100%;
+    max-width: 32rem;
+    aspect-ratio: 1;
+    margin-inline: auto;
+    background: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp') center bottom /
+        contain no-repeat;
+}
+:root[data-theme='light'] .landing-look .agent-stage {
+    background-image: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-light.webp');
+}
+.landing-look .agent-portrait {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    width: auto;
+    max-width: none;
+    height: 96%;
+    transform: translateX(-50%);
+}
+.landing-look .agent-portrait img {
+    display: block;
+    width: auto;
+    height: 100%;
+}
+.landing-look .agent-name {
+    color: var(--text);
+}
+.landing-look .agent-role {
+    color: var(--text-muted);
+}
+@media (max-width: 46rem) {
+    .landing-look .start-wrap {
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--sp-4);
+        padding: 0;
+    }
+    .landing-look .agent-card {
+        flex-direction: column;
+        order: -1;
+        text-align: center;
+    }
+    .landing-look .agent-stage {
+        max-width: 20rem;
+    }
+    .landing-look .start-card {
+        padding: 1.6rem 1.2rem;
     }
 }

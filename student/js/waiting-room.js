@@ -1,11 +1,11 @@
-const TUTOR_IMG = '../../assets/images/personas/';
+const TUTOR_IMG = '../../assets/images/welcome/';
 const TUTORS = {
-    'pia-open': { name: 'Ava', img: 'Openness/default.webp' },
-    'pia-conscientious': { name: 'Cara', img: 'Conscientiousness/default.webp' },
-    'pia-extravert': { name: 'Theo', img: 'Extraverted/default.webp' },
-    'pia-agreeable': { name: 'Amy', img: 'Agreeableness/default.webp' },
-    'pia-calm': { name: 'Kai', img: 'Neuroticism/default.webp' },
-    'pia-neutral': { name: 'Noel', img: 'Neutral/default.webp' }
+    'pia-open': { name: 'Ava' },
+    'pia-conscientious': { name: 'Cara' },
+    'pia-extravert': { name: 'Theo' },
+    'pia-agreeable': { name: 'Amy' },
+    'pia-calm': { name: 'Kai' },
+    'pia-neutral': { name: 'Noel' }
 };
 
 // A student who already has a tutor is waiting for tutoring: show the tutor, not "Hang tight".
@@ -17,7 +17,8 @@ async function showTutorIfReady(profile) {
     document.getElementById('waiting-desc').textContent =
         'Your teacher will start the game soon. This page moves on by itself.';
     const img = document.getElementById('wait-tutor');
-    img.src = TUTOR_IMG + tutor.img;
+    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    img.src = TUTOR_IMG + profile.selected_character + (still ? '-still' : '') + '.webp';
     img.alt = tutor.name + ', your tutor';
     img.hidden = false;
     document.querySelector('.wait-card').classList.add('has-tutor');

@@ -335,6 +335,24 @@
             img.setAttribute('src', moodSrc('default'));
             img.setAttribute('alt', 'Your tutor, ' + first);
         });
+
+        // The welcome screen shows the animated tutor (a still picture if the device asks for less motion).
+        var start = $('#agent-img-start');
+        if (start) {
+            var still =
+                window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            start.addEventListener(
+                'error',
+                function () {
+                    start.setAttribute('src', moodSrc('default'));
+                },
+                { once: true }
+            );
+            start.setAttribute(
+                'src',
+                '../../assets/images/welcome/' + key + (still ? '-still' : '') + '.webp'
+            );
+        }
         return true;
     }
     Dash.applyCharacter = applyCharacter;

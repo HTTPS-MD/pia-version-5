@@ -52,3 +52,9 @@ Supabase project. No real student data was involved.
 - Waiting room: when the stage is already open for the section, the student moves on at once (no wait of up to 5 seconds).
 - Choose a tutor: after "Yes, lock it in" the student sees "You picked <name>!" for about 2 seconds, then goes to the welcome page if Tutoring is open, or to the waiting room if it is not. There is no Continue button any more.
 - Admin: the toggles are called "OCEAN test", "Choose tutor" and "Game" (they were "Character select" and "Tutoring dashboard").
+
+## To check after the new tutor animations of 2026-10-27
+
+- The welcome page (after choosing a tutor, or after the OCEAN for Assigned and Neutral) shows the tutor standing on the classroom stage as a short animation, in the school uniform. The files are in assets/images/welcome (one animated and one still picture per tutor; the still one is used when the device asks for less motion). They were made from the GIFs in character-gifs-v3 and converted to animated WebP (about 450 to 800 KB each instead of about 2.3 MB).
+- The waiting room card ("<Tutor> is ready!") shows the same animation.
+- Not changed yet: the character selection page and the game itself still use the original pictures (the tutors wear different clothes there).
