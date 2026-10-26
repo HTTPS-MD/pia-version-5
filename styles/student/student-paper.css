@@ -190,6 +190,25 @@ ul.paper-chips {
 .landing-look .paper-card .btn-primary:hover:not(:disabled) {
     background: var(--hex-ffe66d);
 }
+/* a plain gradient instead of the classroom picture */
+:root[data-theme='dark'] .landing-look .journey-ambient--classroom {
+    background-image: var(--grain),
+        linear-gradient(160deg, var(--hex-0d1230) 0%, var(--hex-17225c) 100%);
+    background-size: 11.25rem 11.25rem, cover;
+    background-position: 0 0, center;
+    background-repeat: repeat, no-repeat;
+}
+:root[data-theme='light'] .landing-look .journey-ambient--classroom {
+    background-image: var(--grain),
+        linear-gradient(
+            160deg,
+            color-mix(in srgb, var(--palette-violet) 14%, var(--hex-fff8e7)) 0%,
+            color-mix(in srgb, var(--palette-violet) 38%, var(--hex-fff8e7)) 100%
+        );
+    background-size: 11.25rem 11.25rem, cover;
+    background-position: 0 0, center;
+    background-repeat: repeat, no-repeat;
+}
 .landing-look .wait-dots li {
     border: 0;
     border-radius: 50%;
