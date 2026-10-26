@@ -6,14 +6,14 @@
 //   { action: 'lookup', number }   -> { ok, name, section }
 //   { action: 'enter',  number }   -> { ok, status: 'let_in', email, token_hash }
 //
-// The flow: while an attendance is open the admin calls the names and marks each
+// The flow: while a class is open the admin calls the names and marks each
 // student present or absent. A student types the number and confirms the name
 // (lookup), then enters. Only a student marked present gets a one-time sign-in
 // token. A number can enter again (a closed browser, another computer): the newest
 // sign-in wins and the older one is signed out by the database. Each re-entry is
 // counted so the admin sees it on that student's row.
 //
-// A number is accepted only while an admin has an attendance open for the
+// A number is accepted only while an admin has the class open for the
 // student's section. While nothing is open, the answer is the same for every
 // number and no name is read, so nothing about the roster leaks.
 export const MAX_FAILURES_PER_NUMBER = 5;
@@ -24,8 +24,8 @@ export const MAX_FAILURES_PER_IP = 60; // a whole lab shares one address
 export const MAX_FAILURES_ALL = 200;
 export const WINDOW_MS = 10 * 60_000;
 export const MESSAGES = {
-    notReady: 'Attendance has not started yet. Please wait.',
-    notFound: 'We could not find you in today’s attendance. Tell your admin.',
+    notReady: 'Class is not open yet. Please wait.',
+    notFound: 'We could not find you in this class today. Tell your admin.',
     throttled: 'Too many tries. Please wait a few minutes, or tell your admin.',
     badNumber: 'Type your 11-digit student number.',
     notMarked: 'Your admin has not marked you present. Tell your admin.',

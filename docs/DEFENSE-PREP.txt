@@ -37,7 +37,7 @@ This is not legal advice. The adviser (Dr. Geronimo) and the CERC have the final
 5. DEFENSE DAY CHECKLIST
    Nov 10 to 12:
    [ ] Open the staging site. If the Supabase project was paused (free plan, about 1 week without use), click Restore.
-   [ ] Sign in as admin. Start attendance, add fresh test students, mark them present.
+   [ ] Sign in as admin. Open the class, add fresh test students, mark them present.
    [ ] Run one full student flow (join, OCEAN, stages, tutoring, hint, quit).
    [ ] Sign in as teacher (reset password email still works).
    [ ] Charge the laptop, phone and iPad. Check the internet. Keep a phone hotspot as backup.

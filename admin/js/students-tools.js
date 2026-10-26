@@ -68,7 +68,7 @@
         }
         var admin = window.PIAAdmin;
         if (admin) {
-            (isError ? admin.toastErr : admin.toastOk)(isError ? 'Attendance' : 'Done', message);
+            (isError ? admin.toastErr : admin.toastOk)(isError ? 'Class' : 'Done', message);
         }
     }
 
@@ -685,7 +685,7 @@
         if (btn) {
             btn.hidden = !section;
             var open = !!section && !!openFor(section);
-            btn.textContent = open ? 'Stop attendance' : 'Start attendance';
+            btn.textContent = open ? 'Close class' : 'Open class';
             btn.setAttribute('data-ci', open ? 'stop' : 'start');
             btn.className = 'btn btn-sm ' + (open ? 'btn-secondary' : 'btn-primary');
         }
@@ -924,7 +924,7 @@
         toggle.id = 'att-toggle';
         toggle.hidden = true;
         toggle.className = 'btn btn-sm btn-primary';
-        toggle.textContent = 'Start attendance';
+        toggle.textContent = 'Open class';
         toggle.style.marginLeft = 'auto';
         bar.appendChild(toggle);
         toggle.addEventListener('click', function () {

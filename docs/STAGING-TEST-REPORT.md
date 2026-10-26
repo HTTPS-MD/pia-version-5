@@ -9,7 +9,7 @@ Supabase project. No real student data was involved.
 |---|---|---|
 | 1 | Admin sign-in with email and password | Pass |
 | 2 | Add a student to a section (TEST-A, condition Assigned) | Pass |
-| 3 | Start attendance, mark the student present, open the OCEAN stage | Pass |
+| 3 | Open the class (called "Start attendance" until 2026-10-27), mark the student present, open the OCEAN stage | Pass |
 | 4 | Student enters with the student number (Edge Function `join-with-number`, JavaScript version) | Pass |
 | 5 | (Old rule, replaced on 2026-10-27) A second attempt was refused and the admin used "Let back in". Now the newest entry wins: see the retest in "To retest after the change" | Replaced |
 | 6 | Name confirmation window ("Is this you?") | Pass |

@@ -18,8 +18,8 @@
 //
 // WHAT THIS DOES NOT PROVE: who is typing. A student number is known to a
 // student's classmates. What limits it: only a student the admin marked present
-// gets in, a number gets in once per attendance, and the real student, finding
-// the number already used, tells the admin, who can let them back in.
+// gets in, only one session per student stays alive (the newest entry wins), and
+// every re-entry is counted in attendance_marks.refused_count.
 //
 // A student who never activated has a profile but no auth user: the function
 // creates it (email confirmed, a random password nobody knows) the first time
