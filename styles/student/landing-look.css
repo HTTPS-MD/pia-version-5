@@ -677,3 +677,39 @@
         padding: 1rem;
     }
 }
+
+/* waiting room: the tutor next to the message */
+.landing-look .wait-tutor[hidden] {
+    display: none;
+}
+.landing-look .wait-card.has-tutor {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: var(--sp-6);
+}
+.landing-look .wait-card.has-tutor > :not(.wait-tutor) {
+    grid-column: 1;
+}
+.landing-look .wait-tutor {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    display: block;
+    width: auto;
+    height: 12rem;
+}
+@media (max-width: 46rem) {
+    .landing-look .wait-card.has-tutor {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .landing-look .wait-card.has-tutor > :not(.wait-tutor) {
+        grid-column: 1;
+    }
+    .landing-look .wait-tutor {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: center;
+        height: 8rem;
+        margin-bottom: var(--sp-3);
+    }
+}

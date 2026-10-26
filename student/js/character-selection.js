@@ -193,15 +193,15 @@ async function finalLockIn() {
 
     document.getElementById('lock-in-btn').style.display = 'none';
 
-    if (await isStageOpen('stage_dash')) {
-        document.getElementById('continue-btn').style.display = 'block';
-    } else {
-        window.location.href = 'waiting-room.html';
-    }
+    // Let the student see the pick for a moment, then on to tutoring, or the waiting room if it is not open yet.
+    setTimeout(goOn, LOCK_IN_PAUSE_MS);
 }
 
-function goToDashboard() {
-    window.location.href = 'student-dashboard.html';
+const LOCK_IN_PAUSE_MS = 2000;
+
+async function goOn() {
+    const { data } = await supabaseClient.rpc('set_student_stage', { p_stage: 'Tutoring Dashboard' });
+    window.location.href = data && data.granted ? 'student-dashboard.html' : 'waiting-room.html';
 }
 
 if (supabaseClient) {
@@ -230,7 +230,6 @@ if (supabaseClient) {
 
 const ACTIONS = {
     confirm: openConfirmModal,
-    continue: goToDashboard,
     close: closeConfirmModal,
     lock: finalLockIn
 };

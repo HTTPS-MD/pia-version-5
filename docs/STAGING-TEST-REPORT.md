@@ -45,3 +45,10 @@ Supabase project. No real student data was involved.
 - Enter with a student number on device A, then enter with the same number on device B: B gets in, A is signed out with a message.
 - The admin row has no "Let back in" button. The number of re-entries is still counted in attendance_marks.refused_count (not shown on the row).
 - Needs: deploy the join-with-number function to staging first.
+
+## To retest after the stage-flow changes of 2026-10-27
+
+- Waiting room: a student who already has a tutor (Assigned, Neutral, or Free choice after locking) sees "<Tutor> is ready!" with the tutor's picture. A student still waiting for OCEAN or for the tutor choice sees "Hang tight!".
+- Waiting room: when the stage is already open for the section, the student moves on at once (no wait of up to 5 seconds).
+- Choose a tutor: after "Yes, lock it in" the student sees "You picked <name>!" for about 2 seconds, then goes to the welcome page if Tutoring is open, or to the waiting room if it is not. There is no Continue button any more.
+- Admin: the toggles are called "Choose tutor" and "Tutoring" (they were "Character select" and "Tutoring dashboard").

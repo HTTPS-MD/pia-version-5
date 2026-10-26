@@ -1,8 +1,37 @@
+const TUTOR_IMG = '../../assets/images/personas/';
+const TUTORS = {
+    'pia-open': { name: 'Ava', img: 'Openness/default.webp' },
+    'pia-conscientious': { name: 'Cara', img: 'Conscientiousness/default.webp' },
+    'pia-extravert': { name: 'Theo', img: 'Extraverted/default.webp' },
+    'pia-agreeable': { name: 'Amy', img: 'Agreeableness/default.webp' },
+    'pia-calm': { name: 'Kai', img: 'Neuroticism/default.webp' },
+    'pia-neutral': { name: 'Noel', img: 'Neutral/default.webp' }
+};
+
+// A student who already has a tutor is waiting for tutoring: show the tutor, not "Hang tight".
+async function showTutorIfReady(profile) {
+    const tutor = TUTORS[profile.selected_character];
+    if (!tutor || !profile.is_ocean_done || isControlGroup(profile)) return;
+
+    document.getElementById('waiting-title').innerHTML = tutor.name + ' is ready<mark>!</mark>';
+    document.getElementById('waiting-desc').textContent =
+        'Your teacher will start tutoring soon. This page moves on by itself.';
+    const img = document.getElementById('wait-tutor');
+    img.src = TUTOR_IMG + tutor.img;
+    img.alt = tutor.name + ', your tutor';
+    img.hidden = false;
+    document.querySelector('.wait-card').classList.add('has-tutor');
+    try {
+        await img.decode();
+    } catch (e) {}
+}
+
 /* Evaluates the student's progress state and routes them accordingly without overriding targeted access. */
 async function checkUserAndStage() {
     const profile = await requireStudentSession();
     if (!profile) return;
 
+    await showTutorIfReady(profile);
     document.body.classList.remove('opacity-0');
 
     const targeted = {
@@ -32,7 +61,7 @@ async function checkUserAndStage() {
 
 const SECTION_OPEN_CHECK_MS = 5000;
 
-// A section the admin opened lets in students who finish later: ask the server every few seconds.
+// A section the admin opened lets in students who finish later: ask the server at once, then every few seconds.
 async function sectionOpenForMe(stageName) {
     const { data } = await supabaseClient.rpc('set_student_stage', { p_stage: stageName });
     return !!(data && data.granted);
@@ -40,6 +69,11 @@ async function sectionOpenForMe(stageName) {
 
 async function checkAndListen(stageKey, redirectUrl, stageName) {
     if (await isStageOpen(stageKey)) {
+        window.location.replace(redirectUrl);
+        return;
+    }
+
+    if (await sectionOpenForMe(stageName)) {
         window.location.replace(redirectUrl);
         return;
     }

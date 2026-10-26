@@ -202,8 +202,8 @@
 
     var STAGE_META = {
         OCEAN: { label: 'OCEAN test', badge: 'badge-warn', fill: 'f-warn' },
-        'Character Selection': { label: 'Character select', badge: 'badge', fill: 'f-muted' },
-        'Tutoring Dashboard': { label: 'Tutoring dashboard', badge: '', fill: 'f-muted' },
+        'Character Selection': { label: 'Choose tutor', badge: 'badge', fill: 'f-muted' },
+        'Tutoring Dashboard': { label: 'Tutoring', badge: '', fill: 'f-muted' },
         'Active Game': { label: 'Active session', badge: 'badge-accent', fill: '' }
     };
     Admin.STAGE_META = STAGE_META;
@@ -227,14 +227,14 @@
         {
             key: 'char',
             stage: 'Stage 2',
-            title: 'Character selection',
+            title: 'Choose a tutor',
             open: false,
             label: 'Character Selection'
         },
         {
             key: 'dash',
             stage: 'Stage 3',
-            title: 'Tutoring dashboard',
+            title: 'Tutoring',
             open: false,
             label: 'Tutoring Dashboard'
         }
