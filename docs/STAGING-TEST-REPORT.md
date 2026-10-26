@@ -11,7 +11,7 @@ Supabase project. No real student data was involved.
 | 2 | Add a student to a section (TEST-A, condition Assigned) | Pass |
 | 3 | Start attendance, mark the student present, open the OCEAN stage | Pass |
 | 4 | Student enters with the student number (Edge Function `join-with-number`, JavaScript version) | Pass |
-| 5 | Second attempt is refused ("already in on another computer"); admin sees "Tried again" and uses "Let back in" | Pass |
+| 5 | (Old rule, replaced on 2026-10-27) A second attempt was refused and the admin used "Let back in". Now the newest entry wins: see the retest in "To retest after the change" | Replaced |
 | 6 | Name confirmation window ("Is this you?") | Pass |
 | 7 | OCEAN test, 50 statements, saved; student waits in the waiting room | Pass |
 | 8 | Admin opens the tutoring stage; the student page moves on by itself (live updates) | Pass |
@@ -39,3 +39,9 @@ Supabase project. No real student data was involved.
 
 - The two Edge Functions are the JavaScript versions and need `supabase/config.toml` to be deployed.
 - The staging database was built from a read-only copy of the real database structure (no data).
+
+## To retest after the change of 2026-10-27 (newest entry wins)
+
+- Enter with a student number on device A, then enter with the same number on device B: B gets in, A is signed out with a message.
+- The admin row shows "Entered again x1" and there is no "Let back in" button.
+- Needs: deploy the join-with-number function to staging first.

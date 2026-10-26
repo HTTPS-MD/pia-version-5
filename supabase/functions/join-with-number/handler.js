@@ -9,8 +9,9 @@
 // The flow: while an attendance is open the admin calls the names and marks each
 // student present or absent. A student types the number and confirms the name
 // (lookup), then enters. Only a student marked present gets a one-time sign-in
-// token, and a number gets in ONCE per attendance: a second computer is refused
-// and the admin sees it on that student's row.
+// token. A number can enter again (a closed browser, another computer): the newest
+// sign-in wins and the older one is signed out by the database. Each re-entry is
+// counted so the admin sees it on that student's row.
 //
 // A number is accepted only while an admin has an attendance open for the
 // student's section. While nothing is open, the answer is the same for every
@@ -28,7 +29,6 @@ export const MESSAGES = {
     throttled: 'Too many tries. Please wait a few minutes, or tell your admin.',
     badNumber: 'Type your 11-digit student number.',
     notMarked: 'Your admin has not marked you present. Tell your admin.',
-    alreadyIn: 'This number is already in on another computer. Tell your admin.',
     server: 'Something went wrong. Please try again.'
 };
 /** Digits only: "2023-1230142" and "20231230142" are one number. A student number has 11 digits. */
@@ -89,25 +89,19 @@ export async function handleJoin(body, ip, deps) {
     const mark = await deps.attendanceFor(student.section, email);
     if (mark === 'none' || mark === 'absent')
         return { status: 403, body: { error: MESSAGES.notMarked } };
-    if (mark === 'entered') {
-        await deps.noteRefusal(student.section, email);
-        return { status: 409, body: { error: MESSAGES.alreadyIn } };
-    }
-    // present: the place is taken first, so two computers typing at once cannot both get in.
-    if (!(await deps.claimEntry(student.section, email))) {
-        await deps.noteRefusal(student.section, email);
-        return { status: 409, body: { error: MESSAGES.alreadyIn } };
-    }
+    // The first entry takes the place; any later one is a re-entry and is only counted.
+    const firstEntry = mark === 'present' && (await deps.claimEntry(student.section, email));
+    if (!firstEntry) await deps.noteReentry(student.section, email);
     try {
         await deps.ensureAccount(email);
         const tokenHash = await deps.mintToken(email);
         if (!tokenHash) {
-            await deps.releaseEntry(student.section, email);
+            if (firstEntry) await deps.releaseEntry(student.section, email);
             return { status: 500, body: { error: MESSAGES.server } };
         }
         return { status: 200, body: { ok: true, status: 'let_in', email, token_hash: tokenHash } };
     } catch {
-        await deps.releaseEntry(student.section, email);
+        if (firstEntry) await deps.releaseEntry(student.section, email);
         return { status: 500, body: { error: MESSAGES.server } };
     }
 }

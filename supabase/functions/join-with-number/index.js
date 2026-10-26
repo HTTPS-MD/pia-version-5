@@ -160,7 +160,7 @@ Deno.serve(async (req) => {
                     .eq('checkin_id', id)
                     .eq('email', email);
         },
-        async noteRefusal(section, email) {
+        async noteReentry(section, email) {
             const id = await openCheckinId(section);
             if (!id) return;
             const { data } = await admin

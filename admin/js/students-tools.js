@@ -712,10 +712,9 @@
         }
         if (m && m.refused > 0) {
             html +=
-                ' <span class="badge badge-warn" title="Another computer tried this number">Tried again ×' +
+                ' <span class="badge badge-warn" title="This number entered again (the newest sign-in wins)">Entered again ×' +
                 m.refused +
-                '</span>' +
-                ' <button type="button" class="btn btn-secondary btn-sm" data-mk="back">Let back in</button>';
+                '</span>';
         }
         return html;
     }
@@ -778,30 +777,22 @@
         var email = String(rawEmail).toLowerCase();
         var kind = btn.getAttribute('data-mk');
         try {
-            if (kind === 'back') {
-                await call('admin_let_back_in', { p_section: section, p_email: email });
-                if (marks[email]) {
-                    marks[email].entered = false;
-                    marks[email].refused = 0;
-                }
+            var want = kind === 'present';
+            var now = marks[email];
+            var next = now && now.present === want ? null : want;
+            await call('admin_set_attendance', {
+                p_section: section,
+                p_email: email,
+                p_present: next
+            });
+            if (next === null) {
+                delete marks[email];
             } else {
-                var want = kind === 'present';
-                var now = marks[email];
-                var next = now && now.present === want ? null : want;
-                await call('admin_set_attendance', {
-                    p_section: section,
-                    p_email: email,
-                    p_present: next
-                });
-                if (next === null) {
-                    delete marks[email];
-                } else {
-                    marks[email] = {
-                        present: next,
-                        entered: now ? now.entered : false,
-                        refused: now ? now.refused : 0
-                    };
-                }
+                marks[email] = {
+                    present: next,
+                    entered: now ? now.entered : false,
+                    refused: now ? now.refused : 0
+                };
             }
             say('');
         } catch (error) {
