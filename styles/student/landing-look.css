@@ -351,7 +351,7 @@
 }
 .landing-look .pick-act {
     position: static;
-    grid-column: 1 / -1;
+    grid-column: 1;
     grid-row: 2;
     justify-self: center;
     width: min(100%, 22rem);
