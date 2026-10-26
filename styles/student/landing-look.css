@@ -60,7 +60,6 @@
 
 /* cards and modals */
 .landing-look .paper-card,
-.landing-look .start-card,
 .landing-look.quiz .gate-wrap.gate-open,
 .landing-look.quiz .question-card,
 .landing-look .modal {
@@ -714,24 +713,41 @@
     }
 }
 
-/* welcome screen: a greeting card and the tutor standing on the classroom stage */
+/* welcome screen: the tutor on the classroom stage, centred, with the greeting and Start below */
 .landing-look .start-wrap {
-    max-width: 64rem;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-    gap: var(--sp-6);
+    max-width: 36rem;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sp-4);
     padding: 0;
     border: 0;
     background: none;
     box-shadow: none;
-    color: inherit;
+    color: var(--text);
+    text-align: center;
 }
 .landing-look .start-card {
-    padding: 2.4rem 2.5rem;
+    padding: 0;
+}
+.landing-look .start-hello,
+.landing-look .start-lede {
+    color: var(--text);
+}
+.landing-look .start-lede {
+    margin-inline: auto;
+}
+.landing-look .paper-chips {
+    justify-content: center;
+}
+.landing-look .start-actions {
+    justify-content: center;
+}
+.landing-look .btn-tutorial.is-spotlight {
+    outline-color: var(--volt);
 }
 .landing-look .agent-stage {
     position: relative;
     width: 100%;
-    max-width: 32rem;
+    max-width: min(30rem, 46vh);
     aspect-ratio: 1;
     margin-inline: auto;
     background: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp') center bottom /
@@ -760,21 +776,14 @@
 .landing-look .agent-role {
     color: var(--text-muted);
 }
+.landing-look .agent-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
 @media (max-width: 46rem) {
-    .landing-look .start-wrap {
-        grid-template-columns: minmax(0, 1fr);
-        gap: var(--sp-4);
-        padding: 0;
-    }
-    .landing-look .agent-card {
-        flex-direction: column;
-        order: -1;
-        text-align: center;
-    }
     .landing-look .agent-stage {
-        max-width: 20rem;
-    }
-    .landing-look .start-card {
-        padding: 1.6rem 1.2rem;
+        max-width: min(20rem, 46vh);
     }
 }

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="../../styles/student/student-dashboard.css">
     <link rel="stylesheet" href="../../styles/student/student-game.css">
     <link rel="stylesheet" href="../../styles/student/student-paper.css">
-    <link rel="stylesheet" href="../../styles/student/landing-look.css">
+    <link rel="stylesheet" href="../../styles/student/landing-look.css?v=20261029d">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -56,6 +56,7 @@
                 </div>
 
                 <div class="learn-bar-right">
+                    <button class="btn btn-tutorial" id="tutorial-btn" type="button" aria-haspopup="dialog">How it works</button>
                     <button class="btn btn-signout" id="signout-btn" data-no-who>Quit</button>
                     <button type="button" class="btn btn-signout btn-theme" id="theme-toggle" aria-label="Switch to light theme">
                         <svg class="theme-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
@@ -69,6 +70,17 @@
 
             <section class="learn-shell screen is-active" id="screen-start">
                 <div class="start-wrap">
+                    <aside class="agent-card">
+                        <div class="agent-stage">
+                            <div class="agent-portrait">
+                                <img id="agent-img-start" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Your tutor"
+                                    width="576" height="768">
+                            </div>
+                        </div>
+                        <p class="agent-name" id="agent-name-start">Your tutor</p>
+                        <p class="agent-role">Your tutor</p>
+                    </aside>
+
                     <div class="start-card">
                         <h1 class="start-hello" id="start-hello">Hi!</h1>
                         <p class="start-lede" id="start-lede">
@@ -80,23 +92,11 @@
                         </ul>
 
                         <div class="start-actions">
-                            <button class="btn btn-tutorial" id="tutorial-btn" type="button" aria-haspopup="dialog">How it works</button>
                             <button class="btn btn-primary btn-start" id="start-btn">
                                 <span id="start-btn-label">Start</span>
                             </button>
                         </div>
                     </div>
-
-                    <aside class="agent-card">
-                        <div class="agent-stage">
-                            <div class="agent-portrait">
-                                <img id="agent-img-start" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="Your tutor"
-                                    width="576" height="768">
-                            </div>
-                        </div>
-                        <p class="agent-name" id="agent-name-start">Your tutor</p>
-                        <p class="agent-role">Your tutor</p>
-                    </aside>
                 </div>
             </section>
 
