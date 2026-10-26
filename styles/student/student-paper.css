@@ -148,80 +148,9 @@ ul.paper-chips {
     cursor: not-allowed;
 }
 
-/* Waiting room and thank-you page: the same look as the landing page (cream card, yellow button, round header buttons). */
-.landing-look .journey-bar-right .btn-signout {
-    height: 40px;
-    padding: 0 var(--sp-5);
-    border-radius: 999px;
-    box-shadow: inset 0 0 0 2px currentColor;
-    font-family: var(--font-display);
-    font-size: 0.9375rem;
-    letter-spacing: -0.01em;
-    text-transform: none;
-}
-.landing-look .journey-bar-right .btn-signout:hover:not(:disabled) {
-    background: var(--text);
-    color: var(--bg);
-}
-.landing-look .journey-bar-right .btn-theme {
-    width: 40px;
-    padding: 0;
-    border-radius: 50%;
-}
-.landing-look .paper-card {
-    border: 0;
-    border-radius: 1.1rem;
-    background: var(--hex-fff8e7);
-    color: var(--hex-0d1230);
-    box-shadow: 0 0.75rem 2rem var(--black-a28);
-}
-.landing-look .paper-lede {
-    color: color-mix(in srgb, var(--hex-0d1230) 74%, var(--hex-fff8e7));
-}
-.landing-look .paper-title mark {
-    border-radius: 0.2em;
-}
-.landing-look .paper-card .btn-primary {
-    border: 0;
-    border-radius: 0.8rem;
-    background: var(--volt);
-    color: var(--on-volt);
-}
-.landing-look .paper-card .btn-primary:hover:not(:disabled) {
-    background: var(--hex-ffe66d);
-}
-/* a plain gradient instead of the classroom picture */
-:root[data-theme='dark'] .landing-look .journey-ambient--classroom {
-    background-image: var(--grain),
-        linear-gradient(160deg, var(--hex-0d1230) 0%, var(--hex-17225c) 100%);
-    background-size: 11.25rem 11.25rem, cover;
-    background-position: 0 0, center;
-    background-repeat: repeat, no-repeat;
-}
-:root[data-theme='light'] .landing-look .journey-ambient--classroom {
-    background-image: var(--grain),
-        linear-gradient(
-            160deg,
-            color-mix(in srgb, var(--palette-violet) 14%, var(--hex-fff8e7)) 0%,
-            color-mix(in srgb, var(--palette-violet) 38%, var(--hex-fff8e7)) 100%
-        );
-    background-size: 11.25rem 11.25rem, cover;
-    background-position: 0 0, center;
-    background-repeat: repeat, no-repeat;
-}
-.landing-look .wait-dots li {
-    border: 0;
-    border-radius: 50%;
-}
 .paper .journey-main {
     align-items: center;
     padding: var(--sp-5) 0;
-}
-.thanks-card .btn {
-    min-width: 12rem;
-}
-.thanks-card .paper-lede:last-of-type {
-    margin-bottom: 1.6rem;
 }
 .wait-card .paper-lede {
     margin-bottom: 1.4rem;

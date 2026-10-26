@@ -1,0 +1,146 @@
+/*
+ * The landing look, for the student pages.
+ * Add class "landing-look" to <body> (next to "paper") and link this file after student-paper.css.
+ * It gives: the gradient background, the cream cards, yellow primary buttons, round header buttons and modals.
+ */
+:root[data-theme] .paper.landing-look {
+    --q-paper: var(--hex-fff8e7);
+    --q-ink: var(--hex-0d1230);
+    --q-soft: color-mix(in srgb, var(--hex-0d1230) 74%, var(--hex-fff8e7));
+    --q-field: color-mix(in srgb, var(--hex-0d1230) 7%, var(--hex-fff8e7));
+    --ll-radius: 1.1rem;
+    --ll-btn-radius: 0.8rem;
+    --ll-shadow: 0 0.75rem 2rem var(--black-a28);
+}
+
+/* background: the landing's navy with two soft glows */
+:root[data-theme='dark'] .landing-look .journey-ambient--classroom {
+    background-image: var(--grain),
+        radial-gradient(ellipse 45% 55% at 28% 55%, var(--rgb86-144-255-a34), transparent),
+        radial-gradient(ellipse 35% 50% at 75% 50%, var(--rgb255-176-96-a16), transparent),
+        linear-gradient(160deg, var(--hex-0d1230) 0%, var(--hex-17225c) 100%);
+    background-size: 11.25rem 11.25rem, cover, cover, cover;
+    background-position: 0 0, center, center, center;
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+}
+:root[data-theme='light'] .landing-look .journey-ambient--classroom {
+    background-image: var(--grain),
+        radial-gradient(ellipse 45% 55% at 28% 55%, var(--white-a75), transparent),
+        radial-gradient(ellipse 35% 50% at 75% 50%, var(--rgb120-160-255-a28), transparent),
+        linear-gradient(
+            160deg,
+            color-mix(in srgb, var(--palette-violet) 14%, var(--hex-fff8e7)) 0%,
+            color-mix(in srgb, var(--palette-violet) 38%, var(--hex-fff8e7)) 100%
+        );
+    background-size: 11.25rem 11.25rem, cover, cover, cover;
+    background-position: 0 0, center, center, center;
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+}
+
+/* header buttons */
+.landing-look .journey-bar-right .btn-signout {
+    height: 40px;
+    padding: 0 var(--sp-5);
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 2px currentColor;
+    font-family: var(--font-display);
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    text-transform: none;
+}
+.landing-look .journey-bar-right .btn-signout:hover:not(:disabled) {
+    background: var(--text);
+    color: var(--bg);
+}
+.landing-look .journey-bar-right .btn-theme {
+    width: 40px;
+    padding: 0;
+    border-radius: 50%;
+}
+
+/* cards and modals */
+.landing-look .paper-card,
+.landing-look.quiz .gate-wrap.gate-open,
+.landing-look.quiz .question-card,
+.landing-look .modal {
+    border: 0;
+    border-radius: var(--ll-radius);
+    background: var(--q-paper);
+    color: var(--q-ink);
+    box-shadow: var(--ll-shadow);
+}
+.landing-look .paper-title mark,
+.landing-look.quiz .gate-title mark {
+    border-radius: 0.2em;
+}
+.landing-look .modal-sub,
+.landing-look .modal-text,
+.landing-look .quit-progress-row {
+    color: var(--q-soft);
+}
+.landing-look .quit-progress-row b {
+    color: var(--q-ink);
+}
+.landing-look .modal .bar {
+    background: var(--q-field);
+}
+.landing-look .modal-foot {
+    background: transparent;
+    box-shadow: none;
+}
+.landing-look .overlay {
+    background: color-mix(in srgb, var(--hex-0d1230) 55%, transparent);
+    backdrop-filter: blur(4px);
+}
+
+/* chips and the privacy note */
+.landing-look .paper-chips li,
+.landing-look .gate-chips li {
+    border: 0;
+    border-radius: 999px;
+}
+.landing-look.quiz .privacy-note {
+    border-left: 0;
+    border-radius: 0.8rem;
+    box-shadow: inset 4px 0 0 var(--green);
+}
+
+/* buttons: yellow primary, outlined secondary */
+.landing-look .paper-card .btn,
+.landing-look.quiz .gate-wrap .btn,
+.landing-look.quiz .question-card .btn,
+.landing-look .modal .btn {
+    border: 2px solid var(--q-ink);
+    border-radius: var(--ll-btn-radius);
+    background: transparent;
+    color: var(--q-ink);
+}
+.landing-look .paper-card .btn-primary,
+.landing-look.quiz .gate-wrap .btn-primary,
+.landing-look.quiz .question-card .btn-primary,
+.landing-look .modal .btn-primary {
+    border-color: transparent;
+    background: var(--volt);
+    color: var(--on-volt);
+}
+.landing-look .paper-card .btn-primary:hover:not(:disabled),
+.landing-look.quiz .gate-wrap .btn-primary:hover:not(:disabled),
+.landing-look.quiz .question-card .btn-primary:hover:not(:disabled),
+.landing-look .modal .btn-primary:hover:not(:disabled) {
+    background: var(--hex-ffe66d);
+}
+
+/* questionnaire answers */
+.landing-look.quiz .ocean-answer-btn {
+    border: 2px solid transparent;
+    border-radius: var(--ll-btn-radius);
+}
+.landing-look.quiz .ocean-answer-btn.is-selected {
+    border-color: var(--q-ink);
+}
+
+/* waiting room dots */
+.landing-look .wait-dots li {
+    border: 0;
+    border-radius: 50%;
+}
