@@ -23,8 +23,8 @@ C. Edge Functions (real Supabase)
    3. Check the function secrets exist on the real project (never put them in the repo).
 
 D. Website (Cloudflare Pages and GitHub)
-   1. assets/js/shared/site-config.js: put back the REAL Supabase URL and publishable key, set PUBLIC_SITE_URL to the real address,
-      and remove the red STAGING banner.
+   1. assets/js/shared/site-config.js: put back the REAL Supabase URL and publishable key and set PUBLIC_SITE_URL to the real address.
+      (The red STAGING banner was removed on 2026-10-26; the staging site is now told apart only by its address.)
    2. config/robots.txt and the noindex setting: put back what production needs.
    3. config/_headers (CSP): add the real Supabase domain if it differs; check nothing is blocked.
    4. Build: root build.sh stub calls config/build.sh and publishes dist.
