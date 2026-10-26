@@ -447,7 +447,7 @@ async function submitTestResults() {
 
     if (!STAFF) await finalizeStageTime('OCEAN');
 
-    const next = isControlGroup(verifiedProfile) ? 'thank-you.html' : 'assessment-complete.html';
+    const next = isControlGroup(verifiedProfile) ? 'thank-you.html' : 'waiting-room.html';
     window.location.replace(STAFF ? TEACHER_DASHBOARD : next);
 }
 
