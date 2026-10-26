@@ -22,11 +22,16 @@ Supabase project. No real student data was involved.
 | 13 | Admin sends Reset password to the teacher; the email arrives and the link opens "Choose a new password" | Pass |
 | 14 | Teacher sets a password and signs in through Teacher / Admin; the teacher OCEAN opens on first sign-in | Pass |
 | 15 | Teacher dashboard shows the section, the student, status, stage and attendance (read-only) | Pass |
+| 16 | Free choice: student picks a tutor (Ava) and tutoring uses that tutor | Pass |
+| 17 | Neutral: no choice, tutor Noel assigned, two-step question solved, errors logged | Pass |
+| 18 | Control: questionnaire only, no tutoring ("That is everything for now") | Pass |
+| 19 | Students who arrive after the Tutoring switch is on go straight into tutoring (waiting room fix) | Pass |
 
 ## Not tested here
 
 - Learning profile with the ML service (the ML service is not connected in staging; the page keeps its default wording).
-- Conditions other than Assigned (free choice, neutral, control), and a whole class at once.
+- Hints under Free choice and Neutral were not seen (hint passed under Assigned, test 10; same code).
+- A whole class at once (more than 3 students).
 - Anything that depends on the real data (old scores, existing sections).
 
 ## Notes
