@@ -726,7 +726,22 @@
     text-align: center;
 }
 .landing-look .start-card {
-    padding: 0;
+    display: contents;
+}
+.landing-look .start-hello {
+    order: 1;
+}
+.landing-look .start-lede {
+    order: 2;
+}
+.landing-look .paper-chips {
+    order: 3;
+}
+.landing-look .agent-card {
+    order: 4;
+}
+.landing-look .start-actions {
+    order: 5;
 }
 .landing-look .start-hello,
 .landing-look .start-lede {
