@@ -15,7 +15,7 @@
 
     async function heroJoin(form) {
         var number = $('.join-in', form).value.replace(/\D/g, '');
-        if (heroJoinPending) {
+        if (heroJoinPending || number.length === 0) {
             return;
         }
         if (typeof sb === 'undefined' || !sb) {

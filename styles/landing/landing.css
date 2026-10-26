@@ -2819,6 +2819,9 @@ h4 {
 .join-btn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
+    min-width: 8rem;
+    white-space: nowrap;
     gap: 0.5rem;
     padding: 0.8rem 1.6rem;
     border: 0;

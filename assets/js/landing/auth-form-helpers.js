@@ -175,14 +175,14 @@
         var html = button.innerHTML;
         var width = button.getBoundingClientRect().width;
 
-        button.style.width = Math.ceil(width) + 'px';
+        button.style.minWidth = Math.ceil(width) + 'px';
         button.disabled = true;
         button.innerHTML = Auth.esc(busyLabel || 'Working…');
 
         return function release() {
             button.innerHTML = html;
             button.disabled = false;
-            button.style.width = '';
+            button.style.minWidth = '';
         };
     }
     Auth.setBusy = setBusy;
