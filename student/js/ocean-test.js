@@ -447,7 +447,8 @@ async function submitTestResults() {
 
     if (!STAFF) await finalizeStageTime('OCEAN');
 
-    window.location.replace(STAFF ? TEACHER_DASHBOARD : 'assessment-complete.html');
+    const next = isControlGroup(verifiedProfile) ? 'thank-you.html' : 'assessment-complete.html';
+    window.location.replace(STAFF ? TEACHER_DASHBOARD : next);
 }
 
 let isQuittingDeliberately = false;

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-surface="comic">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+
+    <script src="../../assets/js/shared/theme-boot.js"></script>
+    <title>Thank You — PIA</title>
+
+    <script src="/assets/js/vendor/supabase.js"></script>
+
+    <link rel="stylesheet" href="../../styles/global.css">
+    <link rel="stylesheet" href="../../styles/student/student-journey.css">
+    <link rel="stylesheet" href="../../styles/student/student-paper.css">
+</head>
+
+<body class="opacity-0 paper" data-own-quit>
+
+    <div class="journey">
+        <div class="journey-ambient journey-ambient--classroom" aria-hidden="true"></div>
+
+        <header class="journey-bar">
+            <div class="journey-shell journey-bar-inner">
+                <div class="journey-brand">
+                    <span class="brand-link"><img class="site-logo" src="../../assets/images/logo.svg" alt="PIA" width="48" height="48"></span>
+                </div>
+
+                <div class="journey-bar-right">
+                    <button type="button" class="btn btn-signout btn-theme" id="theme-toggle" aria-label="Switch to light theme">
+                        <svg class="theme-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
+                        <svg class="theme-moon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4 8 8 0 1 0 20 14.5Z"/></svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="journey-main">
+            <div class="journey-shell">
+                <section class="paper-card thanks-card" aria-labelledby="thanks-title">
+                    <h1 class="paper-title" id="thanks-title">Thank you<mark>!</mark></h1>
+                    <p class="paper-lede">You finished the questions. Your answers are saved.</p>
+                    <p class="paper-lede">You can exit now.</p>
+                    <button type="button" class="btn btn-primary" id="signout-btn" data-signout data-no-who>Exit</button>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="../../assets/js/shared/site-config.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/helpers.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/device.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/student-guard.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/idle-timeout.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/activity-tracking.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/session-guard.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/device-revoke.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
+    <script src="../js/journey-header.js"></script>
+    <script src="../js/thank-you.js"></script>
+</body>
+
+</html>

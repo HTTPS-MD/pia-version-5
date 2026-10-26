@@ -24,7 +24,7 @@ async function checkUserAndStage() {
     } else if (canEnterStage(profile, 'char')) {
         checkAndListen('stage_char', 'character-selection.html', 'Character Selection');
     } else if (isControlGroup(profile)) {
-        window.location.replace('assessment-complete.html');
+        window.location.replace('thank-you.html');
     } else {
         checkAndListen('stage_dash', 'student-dashboard.html', 'Tutoring Dashboard');
     }

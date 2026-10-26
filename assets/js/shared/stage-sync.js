@@ -11,7 +11,7 @@ const STAGE_PAGES = {
     OCEAN: { url: 'ocean-test.html', pages: ['ocean-test.html'] },
     'Character Selection': { url: 'character-selection.html', pages: ['character-selection.html'] },
     'Tutoring Dashboard': { url: 'student-dashboard.html', pages: ['student-dashboard.html'] },
-    'Waiting Room': { url: 'waiting-room.html', pages: ['waiting-room.html'] }
+    'Waiting Room': { url: 'waiting-room.html', pages: ['waiting-room.html', 'thank-you.html'] }
 };
 
 function setupStudentRealtimeStageSync() {

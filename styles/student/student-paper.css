@@ -152,6 +152,12 @@ ul.paper-chips {
     align-items: center;
     padding: var(--sp-5) 0;
 }
+.thanks-card .btn {
+    min-width: 12rem;
+}
+.thanks-card .paper-lede:last-of-type {
+    margin-bottom: 1.6rem;
+}
 .wait-card .paper-lede {
     margin-bottom: 1.4rem;
 }
@@ -552,6 +558,9 @@ ul.paper-chips {
     width: 100%;
 }
 @media (max-width: 46rem) {
+    .thanks-card .btn {
+        width: 100%;
+    }
     .paper-card {
         padding: 2.6rem 1.1rem 1.2rem;
     }

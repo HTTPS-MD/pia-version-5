@@ -14,7 +14,7 @@ async function resolveStudentRedirect(profile) {
             : '/student/html/waiting-room.html';
     }
 
-    if (isControlGroup(profile)) return '/student/html/assessment-complete.html';
+    if (isControlGroup(profile)) return '/student/html/thank-you.html';
     return (await isStageOpen('stage_dash'))
         ? '/student/html/student-dashboard.html'
         : '/student/html/waiting-room.html';
