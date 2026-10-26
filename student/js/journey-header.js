@@ -42,7 +42,7 @@
                 '<header class="modal-head"><div class="modal-head-text">' +
                 '<h2 class="modal-title" id="quit-heading">Quit for now?</h2>' +
                 '<p class="modal-sub">You will be signed out.</p></div></header>' +
-                '<div class="modal-body"><p class="modal-text">You can sign in again any time with your school email.</p></div>' +
+                '<div class="modal-body"><p class="modal-text">You can come back any time with your student number.</p></div>' +
                 '<footer class="modal-foot">' +
                 '<button type="button" class="btn btn-secondary" data-quit="stay">Stay</button>' +
                 '<button type="button" class="btn btn-primary" data-quit="leave">Quit</button>' +
