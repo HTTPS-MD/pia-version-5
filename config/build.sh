@@ -12,6 +12,7 @@ rm -rf dist
 mkdir dist
 cp -R index.html admin student teacher assets styles dist/
 cp config/robots.txt config/_headers dist/
+cp assets/images/favicon.ico dist/favicon.ico
 find dist -name '.DS_Store' -delete
 
 # A top-level 404.html makes Cloudflare Pages answer unknown URLs with a real
