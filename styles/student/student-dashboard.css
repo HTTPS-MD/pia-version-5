@@ -271,16 +271,12 @@ body:not([data-boot='pending']) .learn-veil[hidden] {
     min-height: 44px;
 }
 
-/* "Replay it here": ring on the button, a short note, and (without reduced
-   motion) a mock cursor that glides over and clicks. */
+/* "Replay it here": a ring on the button and a short note. */
 .btn-tutorial.is-spotlight {
     position: relative;
     z-index: calc(var(--z-sticky) + 1);
     outline: 3px solid var(--accent-text, var(--accent));
     outline-offset: 3px;
-}
-.btn-tutorial.is-clicked {
-    transform: scale(0.96);
 }
 
 .tutorial-callout {
@@ -297,18 +293,4 @@ body:not([data-boot='pending']) .learn-veil[hidden] {
     overflow-wrap: anywhere;
 }
 
-.tutorial-cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: calc(var(--z-overlay) + 6);
-    pointer-events: none;
-    color: var(--text);
-    opacity: 0;
-}
 
-@media (prefers-reduced-motion: reduce) {
-    .btn-tutorial.is-clicked {
-        transform: none;
-    }
-}

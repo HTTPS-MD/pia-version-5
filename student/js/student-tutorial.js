@@ -168,20 +168,15 @@
         if (!helpBtn) {
             return;
         }
-        helpBtn.classList.remove('is-spotlight', 'is-clicked');
-        var c = $('.tutorial-cursor');
-        if (c) {
-            c.remove();
-        }
+        helpBtn.classList.remove('is-spotlight');
         var n = $('.tutorial-callout');
         if (n) {
             n.remove();
         }
     }
 
-    /* After Skip: a mock cursor glides to the Tutorial button and "clicks" it.
-       With reduced motion there is no cursor: the button is simply outlined
-       and a note says where it is. Either way the note is announced. */
+    /* After Skip: the How it works button is outlined for a few seconds and a note says
+       where it is. The note is announced to screen readers. */
     function showHelpHint() {
         if (!helpBtn) {
             return;
@@ -205,51 +200,8 @@
                 'You can replay the tutorial any time with the How it works button.';
         }, 50);
 
-        /* Measured AFTER the note is in the page: it takes a fixed height (see .tutorial-callout), so the button does not
-           move again when its words arrive. */
-        var rect = helpBtn.getBoundingClientRect();
-
         helpBtn.classList.add('is-spotlight');
-        var done = function () {
-            clearSpotlight();
-        };
-
-        if (reducedMotion() || typeof Element.prototype.animate !== 'function') {
-            spotlightTimer = setTimeout(done, 7000);
-            return;
-        }
-
-        var cursor = document.createElement('span');
-        cursor.className = 'tutorial-cursor';
-        cursor.setAttribute('aria-hidden', 'true');
-        cursor.innerHTML =
-            '<svg viewBox="0 0 24 24" width="28" height="28"><path d="M5 3l14 8-6 1.8L9.8 19 5 3z" fill="currentColor" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>';
-        document.body.appendChild(cursor);
-
-        var tx = rect.left + rect.width / 2 - 6,
-            ty = rect.top + rect.height / 2 - 4;
-        var sx = Math.max(8, tx - 220),
-            sy = Math.min(window.innerHeight - 40, ty + 190);
-        var glide = cursor.animate(
-            [
-                { transform: 'translate(' + sx + 'px,' + sy + 'px)', opacity: 0 },
-                { transform: 'translate(' + sx + 'px,' + sy + 'px)', opacity: 1, offset: 0.12 },
-                { transform: 'translate(' + tx + 'px,' + ty + 'px)', opacity: 1 }
-            ],
-            { duration: 1000, easing: 'cubic-bezier(.4,0,.2,1)', fill: 'forwards' }
-        );
-        glide.onfinish = function () {
-            helpBtn.classList.add('is-clicked');
-            cursor.animate(
-                [
-                    { transform: 'translate(' + tx + 'px,' + ty + 'px) scale(1)' },
-                    { transform: 'translate(' + tx + 'px,' + ty + 'px) scale(.82)' },
-                    { transform: 'translate(' + tx + 'px,' + ty + 'px) scale(1)' }
-                ],
-                { duration: 280, fill: 'forwards' }
-            );
-            spotlightTimer = setTimeout(done, 3200);
-        };
+        spotlightTimer = setTimeout(clearSpotlight, 7000);
     }
 
     function init(client) {
