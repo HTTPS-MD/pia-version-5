@@ -175,12 +175,15 @@
     color: var(--text-muted);
 }
 .landing-look .pick-scene {
-    grid-template-columns: 5.5rem minmax(0, 1fr);
+    grid-template-columns: 17rem minmax(0, 1fr) 17rem;
+    column-gap: 0;
     height: calc(100dvh - 68px - 9.5rem);
     min-height: 26rem;
     max-width: 66rem;
 }
 .landing-look .persona-grid {
+    justify-self: end;
+    padding-right: var(--sp-4);
     gap: 0.7rem;
 }
 .landing-look .persona-card,
@@ -226,9 +229,10 @@
 /* the stage: the 3D classroom picture behind the tutor, the card on the right */
 .landing-look .pick-stage {
     display: grid;
+    grid-column: 2 / 4;
     grid-template-columns: minmax(0, 1fr) 17rem;
     grid-template-rows: minmax(0, 1fr) auto;
-    column-gap: var(--sp-5);
+    column-gap: 0;
     align-items: center;
     padding: 0;
 }
@@ -236,7 +240,7 @@
     content: '';
     position: absolute;
     inset: 0 auto 0 0;
-    width: calc(100% - 17rem - var(--sp-5));
+    width: calc(100% - 17rem);
     background: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp') center bottom /
         contain no-repeat;
     pointer-events: none;
@@ -280,6 +284,7 @@
     font-family: var(--font-display);
     font-size: 0.9rem;
     font-weight: 700;
+    white-space: nowrap;
     pointer-events: none;
 }
 .landing-look .is-locked .pick-big::after {
@@ -378,6 +383,8 @@
         gap: var(--sp-4);
     }
     .landing-look .persona-grid {
+        justify-self: stretch;
+        padding-right: 0;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -392,6 +399,7 @@
         height: 3.25rem;
     }
     .landing-look .pick-stage {
+        grid-column: 1;
         display: flex;
         flex-direction: column;
         align-items: stretch;
