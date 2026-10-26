@@ -52,6 +52,8 @@ function previewCharacter(element) {
     poseIndex = 0;
 
     document.getElementById('preview-name').textContent = name;
+    document.getElementById('pick-tag').textContent = element.getAttribute('data-tag') || '';
+    document.getElementById('pick-more').textContent = element.getAttribute('data-more') || '';
     document.getElementById('pick-hello').textContent = 'Say hi to ' + name + '!';
     document.getElementById('pick-big').setAttribute('aria-label', 'Tap ' + name + ' to hear more');
     document.getElementById('pick-big').hidden = false;
