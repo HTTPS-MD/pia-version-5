@@ -710,12 +710,6 @@
         if (m && m.entered) {
             html += ' <span class="badge badge-accent">In</span>';
         }
-        if (m && m.refused > 0) {
-            html +=
-                ' <span class="badge badge-warn" title="This number entered again (the newest sign-in wins)">Entered again ×' +
-                m.refused +
-                '</span>';
-        }
         return html;
     }
 

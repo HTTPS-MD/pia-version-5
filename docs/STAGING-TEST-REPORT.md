@@ -43,5 +43,5 @@ Supabase project. No real student data was involved.
 ## To retest after the change of 2026-10-27 (newest entry wins)
 
 - Enter with a student number on device A, then enter with the same number on device B: B gets in, A is signed out with a message.
-- The admin row shows "Entered again x1" and there is no "Let back in" button.
+- The admin row has no "Let back in" button. The number of re-entries is still counted in attendance_marks.refused_count (not shown on the row).
 - Needs: deploy the join-with-number function to staging first.
