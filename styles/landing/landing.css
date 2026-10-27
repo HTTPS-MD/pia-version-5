@@ -5493,3 +5493,23 @@ h4 {
 .join-btn {
     white-space: nowrap;
 }
+
+/* Teacher / Admin sign in: in the menu on phones, in the bar everywhere else */
+.nav-staff-item {
+    display: none;
+}
+.nav-link-staff {
+    width: 100%;
+    border: 0;
+    background: none;
+    text-align: start;
+    cursor: pointer;
+}
+@media (max-width: 39.99rem) {
+    .nav-staff-item {
+        display: block;
+    }
+    .nav .nav-signin {
+        display: none;
+    }
+}
