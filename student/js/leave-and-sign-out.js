@@ -26,7 +26,7 @@
             heading: mid ? 'Quit this session?' : 'Quit for now?',
             message: mid
                 ? 'Your progress is saved. When you sign back in you will pick up from the same problem.'
-                : 'You will be signed out. You can come back any time with your student number.',
+                : 'You will be signed out. You can come back any time with your code.',
             confirmLabel: 'Quit'
         });
         if (!ok) {

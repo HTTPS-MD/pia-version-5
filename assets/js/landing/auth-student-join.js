@@ -39,7 +39,7 @@
         $('#join-back').textContent = 'No, that is not me';
         $('#si-submit').hidden = false;
         $('#si-submit').textContent = confirm ? 'Yes, that is me' : 'Next';
-        $('#signin-title').textContent = confirm ? 'Is this you?' : 'Enter your student number';
+        $('#signin-title').textContent = confirm ? 'Is this you?' : 'Enter your code';
         $('#signin-sub').textContent = confirm
             ? 'Check the name and section before you continue.'
             : 'Type the number on your school ID.';
@@ -182,7 +182,7 @@
             if (
                 !Auth.setFieldError(
                     'join-number',
-                    number.length === 11 ? '' : 'Type your 11-digit student number.'
+                    number.length === 11 ? '' : 'Type your code.'
                 )
             ) {
                 $('#join-number').focus();

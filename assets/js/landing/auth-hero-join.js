@@ -23,7 +23,7 @@
             return;
         }
         if (number.length !== 11) {
-            showJoinError('Type your 11-digit student number.');
+            showJoinError('Type your code.');
             return;
         }
 

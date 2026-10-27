@@ -124,15 +124,15 @@
 
                             <div class="hero-cta hero-join" id="hero-cta" data-reveal>
                                 <form class="join" id="hero-join" novalidate>
-                                    <label class="sr-only" for="join-num">Student number</label>
+                                    <label class="sr-only" for="join-num">Your code</label>
                                     <svg class="join-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
                                     <input class="join-in" id="join-num" type="text" inputmode="numeric"
                                         autocomplete="off" spellcheck="false" maxlength="14"
-                                        placeholder="Student number">
+                                        placeholder="Enter your code">
                                     <button type="submit" class="join-btn">Join</button>
                                 </form>
                                 <button type="button" class="tap cta cta-primary hero-resume" data-auth-open="signin">
-                                    <span class="cta-label">Enter student number</span>
+                                    <span class="cta-label">Enter your code</span>
                                     <span class="cta-orb" aria-hidden="true">
                                         <svg class="icon">
                                             <use href="/assets/icons-landing.svg#i-login"></use>
@@ -140,7 +140,7 @@
                                     </span>
                                 </button>
                             </div>
-                            <p class="account-guidance signed-out-copy">Type the student number on your ID.<br>Your
+                            <p class="account-guidance signed-out-copy">Use the code your teacher told you.<br>Your
                                 admin marks you present first.</p>
                         </div>
 
@@ -152,7 +152,7 @@
             <div class="shell">
                 <header class="band-head">
                     <h2 class="band-title" id="how-title" data-reveal>See how <em class="help-mark">PIA works</em></h2>
-                    <p class="band-lede" data-reveal>A quick tour, from typing your number to your first answer.</p>
+                    <p class="band-lede" data-reveal>A quick tour, from typing your code to your first answer.</p>
                 </header>
                 <div class="video-frame" data-reveal>
                     <video id="how-video" controls preload="none" playsinline width="1280" height="720"
@@ -163,7 +163,7 @@
                     <button type="button" class="video-play" id="how-play" aria-label="Play the video"></button>
                 </div>
                 <ol class="how-steps">
-                    <li data-reveal><span class="how-num" aria-hidden="true">1</span>Type your number</li>
+                    <li data-reveal><span class="how-num" aria-hidden="true">1</span>Type your code</li>
                     <li data-reveal><span class="how-num" aria-hidden="true">2</span>Solve one step at a time</li>
                     <li data-reveal><span class="how-num" aria-hidden="true">3</span>Ask for a hint if you&rsquo;re stuck</li>
                 </ol>
@@ -461,7 +461,7 @@
 
                         <div class="select-foot" data-reveal>
                             <button type="button" class="tap cta cta-primary" data-auth-open="signin">
-                                <span class="cta-label">Enter your student number to start</span>
+                                <span class="cta-label">Enter your code to start</span>
                                 <span class="cta-orb" aria-hidden="true">
                                     <svg class="icon cta-arrow">
                                         <use href="/assets/icons-landing.svg#i-arrow-right"></use>
@@ -543,15 +543,15 @@
                 <div class="foot-join">
                     <h2 class="foot-title" id="cta-title">Ready? Let&rsquo;s go!</h2>
                     <form class="join" id="foot-join" novalidate>
-                        <label class="sr-only" for="foot-num">Student number</label>
+                        <label class="sr-only" for="foot-num">Your code</label>
                         <svg class="join-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
                         <input class="join-in" id="foot-num" type="text" inputmode="numeric"
                             autocomplete="off" spellcheck="false" maxlength="14"
-                            placeholder="Student number">
+                            placeholder="Enter your code">
                         <button type="submit" class="join-btn">Join</button>
                     </form>
                     <button type="button" class="tap cta cta-primary hero-resume" data-auth-open="signin">
-                        <span class="cta-label">Enter student number</span>
+                        <span class="cta-label">Enter your code</span>
                     </button>
                 </div>
 
@@ -584,7 +584,7 @@
         <div class="modal modal-sm">
             <header class="modal-head">
                 <div class="modal-head-text">
-                    <h2 class="modal-title" id="signin-title">Enter your student number</h2>
+                    <h2 class="modal-title" id="signin-title">Enter your code</h2>
                     <p class="modal-sub" id="signin-sub">Type the number on your school ID.</p>
                 </div>
                 <button class="modal-close" data-modal-close aria-label="Close dialog">
@@ -599,10 +599,10 @@
                 <form id="signin-form" class="portal-form" novalidate>
                     <div class="form-grid" id="join-step-code">
                         <div class="field">
-                            <label class="label" for="join-number">Student number</label>
+                            <label class="label" for="join-number">Your code</label>
                             <input class="input" type="text" id="join-number" name="number" autocomplete="off"
                                 spellcheck="false" maxlength="14" inputmode="numeric" enterkeyhint="go"
-                                placeholder="11 digits" aria-describedby="join-number-msg" data-autofocus>
+                                placeholder="Your code" aria-describedby="join-number-msg" data-autofocus>
                             <p class="field-msg" id="join-number-msg" data-msg-for="join-number"></p>
                         </div>
                     </div>
@@ -881,12 +881,12 @@
     <script defer src="assets/js/landing/auth-modals.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-form-helpers.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-sign-in.js?v=20261031a"></script>
-    <script defer src="assets/js/landing/auth-student-join.js?v=20261031a"></script>
+    <script defer src="assets/js/landing/auth-student-join.js?v=20261031b"></script>
     <script defer src="assets/js/landing/auth-device-reset.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-email-requests.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-greeting.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-resume.js?v=20261031a"></script>
-    <script defer src="assets/js/landing/auth-hero-join.js?v=20261031a"></script>
+    <script defer src="assets/js/landing/auth-hero-join.js?v=20261031b"></script>
     <script defer src="assets/js/landing/auth-start.js?v=20261031a"></script>
     <script defer src="assets/js/landing/scroll-engine.js?v=20261031a"></script>
     <script defer src="assets/js/landing/page-basics.js?v=20261031b"></script>
