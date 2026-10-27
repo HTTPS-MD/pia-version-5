@@ -450,8 +450,16 @@
     border: 0;
     border-radius: var(--ll-radius);
     background: var(--hex-0d1230) url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp')
-        center bottom / cover no-repeat;
+        center calc(100% - 3.5rem) / 100% auto no-repeat;
     box-shadow: var(--ll-shadow);
+}
+/* the tutor stands as big on the stage as on the landing page */
+.landing-look .mentor-overlay-avatar {
+    height: min(112cqw, calc(100cqh - var(--bubble-h, 9.25rem) - 24px - 16px - 14px));
+    max-height: none;
+    max-width: none;
+    width: auto;
+    margin-bottom: 0.4rem;
 }
 :root[data-theme='light'] .landing-look .video-mentor-sidebar {
     background-image: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-light.webp');
@@ -781,10 +789,10 @@
 .landing-look .agent-portrait {
     position: absolute;
     left: 50%;
-    bottom: 10%;
+    bottom: 1%;
     width: auto;
     max-width: none;
-    height: 96%;
+    height: 125%;
     transform: translateX(-50%);
 }
 .landing-look .agent-portrait img {
