@@ -55,6 +55,6 @@ Supabase project. No real student data was involved.
 
 ## To check after the new tutor animations of 2026-10-27
 
-- The welcome page (after choosing a tutor, or after the OCEAN for Assigned and Neutral) shows the tutor standing on the classroom stage as a short animation, in the school uniform. The files are in assets/images/welcome (one animated and one still picture per tutor; the still one is used when the device asks for less motion). They were made from the GIFs in character-gifs-v3 and converted to animated WebP (about 450 to 800 KB each instead of about 2.3 MB).
+- The welcome page (after choosing a tutor, or after the OCEAN for Assigned and Neutral) shows the tutor standing on the classroom stage as a short animation, in the school uniform. The files are in assets/images/welcome (one animated and one still picture per tutor; the still one is used when the device asks for less motion). Replaced on 2026-10-27 with the hair-and-blink idle animations (characters-hair-blink-v2, 384 x 512). The old GIF-based files are gone.
 - The waiting room card ("<Tutor> is ready!") shows the same animation.
 - Not changed yet: the character selection page and the game itself still use the original pictures (the tutors wear different clothes there).
