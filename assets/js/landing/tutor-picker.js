@@ -40,9 +40,6 @@
 
             var fig = figureFor(tid);
             var pan = panelFor(tid);
-            if (fig && !on && fig._reset) {
-                fig._reset();
-            }
             if (fig) {
                 fig.hidden = !on;
             }
@@ -66,97 +63,6 @@
             select(tab, { focus: false });
         });
     });
-
-    Array.prototype.forEach.call(
-        root.querySelectorAll('.stage-figure[data-poses]'),
-        function (fig) {
-            var poses = fig.getAttribute('data-poses').split(/\s+/).filter(Boolean);
-            var img = fig.querySelector('.stage-art img');
-            if (poses.length < 2 || !img) {
-                return;
-            }
-
-            var preloaded = false;
-            function preload() {
-                if (preloaded) {
-                    return;
-                }
-                preloaded = true;
-                poses.forEach(function (src) {
-                    new Image().src = src;
-                });
-            }
-            if (!fig.hidden) {
-                if ('IntersectionObserver' in window) {
-                    var near = new IntersectionObserver(
-                        function (entries) {
-                            if (entries[0].isIntersecting) {
-                                near.disconnect();
-                                preload();
-                            }
-                        },
-                        { rootMargin: '600px 0px' }
-                    );
-                    near.observe(fig);
-                } else {
-                    preload();
-                }
-            }
-            if ('MutationObserver' in window) {
-                new MutationObserver(function () {
-                    if (!fig.hidden) {
-                        preload();
-                    }
-                }).observe(fig, { attributes: true, attributeFilter: ['hidden'] });
-            }
-
-            var tab = tabs.filter(function (t) {
-                return t.getAttribute('data-agent') === fig.getAttribute('data-figure');
-            })[0];
-            var name = tab ? tab.querySelector('.roster-name').textContent.trim() : 'the tutor';
-
-            var poke = document.createElement('button');
-            poke.type = 'button';
-            poke.className = 'stage-poke';
-            poke.setAttribute('aria-label', 'Hear more from ' + name);
-            fig.appendChild(poke);
-
-            var lines = (fig.getAttribute('data-lines') || '').split('|').filter(Boolean);
-            var panel = panelFor(fig.getAttribute('data-figure'));
-            var say = panel ? panel.querySelector('.detail-line') : null;
-
-            var i = 0;
-            function show() {
-                img.src = poses[i];
-                if (say && lines.length) {
-                    say.textContent = lines[i] || lines[0];
-                    say.classList.remove('is-talking');
-                    void say.offsetWidth;
-                    say.classList.add('is-talking');
-                }
-            }
-
-            fig._reset = function () {
-                if (i === 0) {
-                    return;
-                }
-                i = 0;
-                img.src = poses[0];
-                if (say && lines.length) {
-                    say.textContent = lines[0];
-                }
-            };
-
-            poke.addEventListener('click', function () {
-                i = (i + 1) % poses.length;
-                show();
-                fig.classList.add('has-poked');
-                fig.classList.remove('is-poked');
-                void fig.offsetWidth;
-                fig.classList.add('is-poked');
-            });
-        }
-    );
 
     document.addEventListener('click', function (e) {
         var link = e.target.closest ? e.target.closest('[data-pick]') : null;
