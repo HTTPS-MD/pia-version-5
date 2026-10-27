@@ -31,14 +31,9 @@
 
         var text = $('[data-wire-text]', wire);
         var offline = false;
-        var crashed = false;
 
         function render() {
-            if (crashed) {
-                return;
-            }
             wire.hidden = !offline;
-            wire.classList.remove('is-error');
             if (offline && text) {
                 text.textContent = "You're offline. The page still works — signing in won't.";
             }
@@ -58,35 +53,6 @@
         if (navigator.onLine === false) {
             goOffline();
         }
-
-        function crash(detail) {
-            if (crashed) {
-                return;
-            }
-            crashed = true;
-            console.error('[PIA] landing page error:', detail);
-
-            wire.hidden = false;
-            wire.classList.add('is-error');
-            if (text) {
-                text.textContent =
-                    'Part of this page could not load. Reload the page to try again.';
-            }
-
-            $$('[data-reveal]').forEach(function (el) {
-                el.classList.add('is-in', 'is-done');
-            });
-            $$('.scrub-w').forEach(function (el) {
-                el.classList.add('is-lit');
-            });
-        }
-
-        window.addEventListener('error', function (e) {
-            crash(e.error || e.message);
-        });
-        window.addEventListener('unhandledrejection', function (e) {
-            crash(e.reason);
-        });
     }
 
     function initTheme() {

@@ -676,12 +676,6 @@ h4 {
     font-weight: 500;
 }
 
-.wire.is-error .wire-text {
-    background: var(--volt);
-    color: var(--on-volt);
-    border-color: var(--on-volt);
-}
-
 .wire-dot {
     width: 0.5625rem;
     aspect-ratio: 1;
