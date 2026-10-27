@@ -789,11 +789,11 @@
 .landing-look .agent-portrait {
     position: absolute;
     left: 50%;
-    bottom: 1%;
+    bottom: -3%;
     width: auto;
     max-width: none;
     height: 125%;
-    transform: translateX(-53.5%);
+    transform: translateX(-54%);
 }
 .landing-look .agent-portrait img {
     display: block;
