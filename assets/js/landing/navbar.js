@@ -201,7 +201,8 @@
 
         $$('.nav-link', sheet).forEach(function (link) {
             link.addEventListener('click', function () {
-                var target = document.getElementById(link.getAttribute('href').slice(1));
+                var href = link.getAttribute('href');
+                var target = href && document.getElementById(href.slice(1));
                 if (!target) {
                     return;
                 }
