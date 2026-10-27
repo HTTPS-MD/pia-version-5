@@ -18,7 +18,7 @@
     <script src="../../assets/js/shared/admin-fonts.js"></script>
 
     <link rel="stylesheet" href="../../styles/global.css">
-    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261030a">
+    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261030b">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261027b">
     <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261029c">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
@@ -530,222 +530,6 @@
                 </section>
 
             </main>
-        </div>
-    </div>
-
-    <div class="overlay" id="modal-register-student" role="dialog" aria-modal="true"
-        aria-labelledby="register-student-title">
-        <div class="modal modal-lg">
-            <header class="modal-head">
-                <div class="modal-head-text">
-                    <h2 class="modal-title" id="register-student-title">Register student</h2>
-                </div>
-            </header>
-
-            <div class="modal-body">
-                <form id="register-student-form" novalidate>
-                    <div class="form-section">
-                        <p class="form-section-title">Identity</p>
-                        <div class="form-grid form-grid-3">
-                            <div class="field">
-                                <label class="label" for="rs-first">First name <span class="req">*</span></label>
-                                <input class="input" type="text" id="rs-first" placeholder="Maria" autocomplete="off">
-                                <p class="field-msg" data-msg-for="rs-first"></p>
-                            </div>
-                            <div class="field">
-                                <label class="label" for="rs-middle">Middle name</label>
-                                <input class="input" type="text" id="rs-middle" placeholder="Optional" autocomplete="off">
-                                <p class="field-msg" data-msg-for="rs-middle"></p>
-                            </div>
-                            <div class="field">
-                                <label class="label" for="rs-last">Last name <span class="req">*</span></label>
-                                <input class="input" type="text" id="rs-last" placeholder="Santos" autocomplete="off">
-                                <p class="field-msg" data-msg-for="rs-last"></p>
-                            </div>
-                        </div>
-
-                        <div class="form-grid" style="margin-top:16px">
-                            <div class="field">
-                                <label class="label" for="rs-email">School email <span class="req">*</span></label>
-                                <input class="input" type="email" id="rs-email"
-                                    placeholder="maria.santos@student.ue.edu.ph" autocomplete="off">
-                                <p class="field-msg" data-msg-for="rs-email"></p>
-                            </div>
-                        </div>
-
-                        <div class="form-grid" style="margin-top:16px">
-                            <div class="field">
-                                <label class="label" for="rs-number">Student number <span class="req">*</span></label>
-                                <input class="input" type="text" id="rs-number" inputmode="numeric" maxlength="14"
-                                    placeholder="2023-1230142" autocomplete="off">
-                                <p class="field-hint muted">11 digits, from the school ID. Students type it to get in.</p>
-                                <p class="field-msg" data-msg-for="rs-number"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-section">
-                        <p class="form-section-title">Placement</p>
-                        <div class="form-grid">
-                            <div class="field">
-                                <label class="label" for="rs-section">Section <span class="req">*</span></label>
-                                <select class="select" id="rs-section" data-section-select></select>
-                                <p class="field-msg" data-msg-for="rs-section"></p>
-                            </div>
-                        </div>
-
-                        <p class="label" style="margin:8px 0 12px">Experimental condition <span class="req">*</span></p>
-                        <div class="choice-grid">
-                            <label class="choice">
-                                <input type="radio" name="rs-condition" value="assigned" checked>
-                                <span class="choice-title">EXP · Assigned persona</span>
-                            </label>
-                            <label class="choice">
-                                <input type="radio" name="rs-condition" value="non-assigned">
-                                <span class="choice-title">EXP · Free choice</span>
-                            </label>
-                            <label class="choice">
-                                <input type="radio" name="rs-condition" value="neutral">
-                                <span class="choice-title">EXP · Neutral persona</span>
-                            </label>
-                            <label class="choice">
-                                <input type="radio" name="rs-condition" value="control">
-                                <span class="choice-title">CTRL · Traditional</span>
-                            </label>
-                        </div>
-
-                        <div class="field" id="rs-tutor-field" hidden>
-                            <label class="label" for="rs-tutor">Tutor persona · automatic after OCEAN</label>
-                            <select class="select" id="rs-tutor" aria-describedby="rs-tutor-hint"></select>
-                            <p class="field-hint muted" id="rs-tutor-hint"></p>
-                            <p class="field-msg" data-msg-for="rs-tutor"></p>
-                        </div>
-
-                    </div>
-
-                    <div class="form-section">
-                        <p class="form-section-title">Consent</p>
-                        <label class="check">
-                            <input type="checkbox" id="rs-consent">
-                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
-                            <span class="check-text">
-                                Parental consent received <span class="req">*</span>
-                            </span>
-                        </label>
-                        <p class="field-msg" data-msg-for="rs-consent"></p>
-
-                        <label class="check">
-                            <input type="checkbox" id="rs-assent">
-                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
-                            <span class="check-text">
-                                Student assent received <span class="req">*</span>
-                            </span>
-                        </label>
-                        <p class="field-msg" data-msg-for="rs-assent"></p>
-                    </div>
-                </form>
-            </div>
-
-            <footer class="modal-foot">
-                <div class="modal-foot-actions">
-                    <button class="btn btn-secondary" data-modal-close>Cancel</button>
-                    <button class="btn btn-primary" type="submit" form="register-student-form" id="rs-submit">
-                        <svg class="icon"><use href="#i-check"></use></svg>
-                        Register student
-                    </button>
-                </div>
-            </footer>
-        </div>
-    </div>
-
-    <div class="overlay" id="modal-enroll-students" role="dialog" aria-modal="true"
-        aria-labelledby="enroll-students-title">
-        <div class="modal modal-xl modal-enroll">
-            <header class="modal-head">
-                <div class="modal-head-text">
-                    <h2 class="modal-title" id="enroll-students-title">Enroll students</h2>
-                    <p class="muted" id="bn-step-label" aria-live="polite">Step 1 of 2 · Add</p>
-                </div>
-            </header>
-
-            <div class="modal-body">
-                <form id="enroll-students-form" novalidate>
-                    <div id="bn-step-add">
-                        <div class="bn-intro">
-                            <div class="field bn-section-field">
-                                <label class="label" for="bn-section" id="bn-section-label">Section <span class="req">*</span></label>
-                                <select class="select" id="bn-section" data-section-select></select>
-                                <p class="field-msg" data-msg-for="bn-section"></p>
-                            </div>
-                            <div class="field bn-emails-field">
-                                <label class="label" for="bn-emails">School emails, one per line</label>
-                                <textarea class="input" id="bn-emails" rows="8" autocomplete="off" spellcheck="false"
-                                    placeholder="lastname.firstname@ue.edu.ph" aria-describedby="bn-emails-hint"></textarea>
-                                <p class="field-hint muted" id="bn-emails-hint">Names are read from lastname.firstname@ue.edu.ph and shown for you to check on the next step.</p>
-                                <p class="field-msg" id="bn-add-msg" aria-live="polite"></p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="bn-step-review" class="is-hidden">
-                        <div class="bn-review-head">
-                            <button type="button" class="btn btn-ghost btn-sm" id="bn-back">&larr; Back</button>
-                            <p class="bn-review-title" id="bn-review-title"></p>
-                            <p class="bn-issues" id="bn-issues" aria-live="polite"></p>
-                        </div>
-
-                        <div class="bn-tools">
-                            <div class="filter-field">
-                                <label class="filter-label" for="bn-apply-group" id="bn-apply-group-label">Condition for everyone</label>
-                                <select class="input input-sm" id="bn-apply-group">
-                                    <option value="">Choose…</option>
-                                    <option value="assigned">EXP · Assigned persona</option><option value="non-assigned">EXP · Free choice</option><option value="neutral">EXP · Neutral persona</option><option value="control">CTRL · Traditional</option>
-                                </select>
-                            </div>
-                            <button type="button" class="btn btn-secondary btn-sm" id="bn-apply-all">Apply</button>
-                        </div>
-
-                        <div class="table-wrap" tabindex="0" role="region" aria-label="Students to enroll">
-                            <table class="table bn-table" id="bn-table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">School email</th>
-                                        <th scope="col">Condition</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col"><span class="sr-only">Remove</span></th>
-                                    </tr>
-                                </thead>
-                                <tbody id="bn-tbody"></tbody>
-                            </table>
-                        </div>
-                        <p class="scope-line" id="bn-summary" aria-live="polite"></p>
-                    </div>
-
-                    <div class="bn-report is-hidden" id="bn-report" aria-live="polite"></div>
-                </form>
-            </div>
-
-            <footer class="modal-foot modal-foot-split">
-                <div class="bn-foot-consent is-hidden" id="bn-consent-wrap">
-                    <label class="check">
-                        <input type="checkbox" id="bn-consent">
-                        <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
-                        <span class="check-text">
-                            Parental consent and student assent received for every student listed <span class="req">*</span>
-                        </span>
-                    </label>
-                    <p class="field-msg" data-msg-for="bn-consent"></p>
-                </div>
-                <div class="modal-foot-actions">
-                    <button class="btn btn-secondary" type="button" data-modal-close id="bn-cancel">Cancel</button>
-                    <button class="btn btn-primary" type="button" id="bn-continue">Continue</button>
-                    <button class="btn btn-primary is-hidden" type="submit" form="enroll-students-form" id="bn-submit" disabled>
-                        <svg class="icon"><use href="#i-check"></use></svg>
-                        <span id="bn-submit-label">Enroll students</span>
-                    </button>
-                </div>
-            </footer>
         </div>
     </div>
 
@@ -1610,10 +1394,10 @@
     <script src="../js/admin-core.js?v=20261031a"></script>
     <script src="../js/admin-dialogs.js?v=20261031a"></script>
     <script src="../js/admin-loading.js?v=20261031a"></script>
-    <script src="../js/admin-data.js?v=20261031a"></script>
+    <script src="../js/admin-data.js?v=20261031b"></script>
     <script src="../js/students-table.js?v=20261031a"></script>
     <script src="../js/student-drawer.js?v=20261031a"></script>
-    <script src="../js/student-forms.js?v=20261031a"></script>
+    <script src="../js/student-forms.js?v=20261031b"></script>
     <script src="../js/admin-faculty.js?v=20261031a"></script>
     <script src="../js/stage-controls.js?v=20261031a"></script>
     <script src="../js/admin-account.js?v=20261031a"></script>
@@ -1622,7 +1406,7 @@
     <script src="../js/math-task-core.js?v=20261031a"></script>
     <script src="../js/math-task-edit.js?v=20261031a"></script>
     <script src="../js/math-task-rules.js?v=20261031a"></script>
-    <script src="../js/admin-start.js?v=20261031a"></script>
+    <script src="../js/admin-start.js?v=20261031b"></script>
 </body>
 
 </html>

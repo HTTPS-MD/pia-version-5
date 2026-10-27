@@ -90,8 +90,6 @@
 
     function initForms() {
         Admin.initTutorFields();
-        $('#register-student-form').addEventListener('submit', Admin.handleRegisterStudent);
-        Admin.initEnrollStudents();
         $('#edit-student-form').addEventListener('submit', Admin.handleUpdateStudent);
         $$('#edit-student-form [data-score-test]').forEach(function (input) {
             input.addEventListener('input', function () {

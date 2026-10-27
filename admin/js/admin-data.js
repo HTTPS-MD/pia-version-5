@@ -356,7 +356,6 @@
                 select.value = current;
             }
         });
-        Admin.refreshCustomSelect('bn-section');
 
         var filter = $('#section-filter');
         if (filter) {
