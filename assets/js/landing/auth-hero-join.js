@@ -23,7 +23,7 @@
             return;
         }
         if (number.length !== 11) {
-            showJoinError('Type your code.');
+            showJoinError('Your code is not complete. Check it and try again.');
             return;
         }
 
