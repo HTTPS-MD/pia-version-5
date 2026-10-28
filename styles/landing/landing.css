@@ -4826,9 +4826,6 @@ h4 {
     line-height: 1.55;
     opacity: 0.85;
 }
-.band.band-privacy {
-    container-type: inline-size;
-}
 .pv-deco {
     position: absolute;
     z-index: 0;
@@ -4840,38 +4837,40 @@ h4 {
     pointer-events: none;
     filter: drop-shadow(0 12px 16px var(--black-a28));
     opacity: min(1, calc(var(--burst, 1) * 2.5));
-    translate: calc(var(--ox) * var(--burst, 1) - 50%)
-        calc(var(--oy) * var(--burst, 1) - 50% + var(--bob, 0px));
-    scale: calc(0.15 + 0.85 * var(--burst, 1));
-    transform: rotate(calc((1 - var(--burst, 1)) * var(--spin, 0deg)));
+    transform: translate(
+            calc(var(--ox) * var(--burst, 1) - 50%),
+            calc(var(--oy) * var(--burst, 1) - 50%)
+        )
+        rotate(calc((1 - var(--burst, 1)) * var(--spin, 0deg)))
+        scale(calc(0.15 + 0.85 * var(--burst, 1)));
 }
 .pv-lock-a {
-    --w: clamp(5.5rem, 15cqi, 13rem);
-    --ox: -37cqi;
+    --w: clamp(5.5rem, 15vw, 13rem);
+    --ox: -37vw;
     --oy: -3.5rem;
     --spin: -200deg;
     --r0: -10deg;
     --r1: 4deg;
 }
 .pv-key-a {
-    --w: clamp(5.5rem, 15cqi, 13rem);
-    --ox: 37cqi;
+    --w: clamp(5.5rem, 15vw, 13rem);
+    --ox: 37vw;
     --oy: 4rem;
     --spin: 220deg;
     --r0: 14deg;
     --r1: -2deg;
 }
 .pv-lock-b {
-    --w: clamp(3rem, 7cqi, 6rem);
-    --ox: 29cqi;
+    --w: clamp(3rem, 7vw, 6rem);
+    --ox: 29vw;
     --oy: -7rem;
     --spin: 260deg;
     --r0: 8deg;
     --r1: -8deg;
 }
 .pv-key-b {
-    --w: clamp(3rem, 7cqi, 6rem);
-    --ox: -29cqi;
+    --w: clamp(3rem, 7vw, 6rem);
+    --ox: -29vw;
     --oy: 7rem;
     --spin: -240deg;
     --r0: -20deg;
@@ -4880,22 +4879,22 @@ h4 {
 @media (max-width: 64rem) {
     .pv-lock-a {
         --w: 5.5rem;
-        --ox: -31cqi;
+        --ox: -31vw;
         --oy: -10.5rem;
     }
     .pv-key-a {
         --w: 5.5rem;
-        --ox: 31cqi;
+        --ox: 31vw;
         --oy: 10.5rem;
     }
     .pv-lock-b {
         --w: 3.25rem;
-        --ox: 34cqi;
+        --ox: 34vw;
         --oy: -10.5rem;
     }
     .pv-key-b {
         --w: 3.25rem;
-        --ox: -34cqi;
+        --ox: -34vw;
         --oy: 10.5rem;
     }
 }
@@ -4920,19 +4919,14 @@ h4 {
         --d: -4s;
     }
 }
-@property --bob {
-    syntax: '<length>';
-    inherits: false;
-    initial-value: 0px;
-}
 @keyframes pvFloat {
     0%,
     100% {
-        --bob: 0px;
+        translate: 0 0;
         rotate: var(--r0, -6deg);
     }
     50% {
-        --bob: -1rem;
+        translate: 0 -1rem;
         rotate: var(--r1, 6deg);
     }
 }
