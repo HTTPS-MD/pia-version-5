@@ -4837,6 +4837,7 @@ h4 {
     pointer-events: none;
     filter: drop-shadow(0 12px 16px var(--black-a28));
     opacity: min(1, calc(var(--burst, 1) * 2.5));
+    rotate: var(--r1, 0deg);
     transform: translate(-50%, -50%) rotate(calc((1 - var(--burst, 1)) * var(--spin, 0deg)))
         scale(calc(0.15 + 0.85 * var(--burst, 1)));
 }
@@ -4846,7 +4847,6 @@ h4 {
     --tx: 13%;
     --ty: 40%;
     --spin: -200deg;
-    --r0: -10deg;
     --r1: 4deg;
 }
 .pv-key-a {
@@ -4854,7 +4854,6 @@ h4 {
     --tx: 87%;
     --ty: 62%;
     --spin: 220deg;
-    --r0: 14deg;
     --r1: -2deg;
 }
 .pv-lock-b {
@@ -4862,7 +4861,6 @@ h4 {
     --tx: 79%;
     --ty: 28%;
     --spin: 260deg;
-    --r0: 8deg;
     --r1: -8deg;
 }
 .pv-key-b {
@@ -4870,7 +4868,6 @@ h4 {
     --tx: 21%;
     --ty: 72%;
     --spin: -240deg;
-    --r0: -20deg;
     --r1: -4deg;
 }
 @media (max-width: 64rem) {
@@ -4893,38 +4890,6 @@ h4 {
         --w: 3.25rem;
         --tx: 16%;
         --ty: 87%;
-    }
-}
-@media (prefers-reduced-motion: no-preference) {
-    .pv-deco {
-        animation: pvFloat var(--t, 7s) ease-in-out var(--d, 0s) infinite;
-    }
-    .pv-lock-a {
-        --t: 6s;
-        --d: -1s;
-    }
-    .pv-key-a {
-        --t: 8s;
-        --d: -3s;
-    }
-    .pv-lock-b {
-        --t: 5s;
-        --d: -2s;
-    }
-    .pv-key-b {
-        --t: 7s;
-        --d: -4s;
-    }
-}
-@keyframes pvFloat {
-    0%,
-    100% {
-        translate: 0 0;
-        rotate: var(--r0, -6deg);
-    }
-    50% {
-        translate: 0 -1rem;
-        rotate: var(--r1, 6deg);
     }
 }
 #hero [data-reveal],
