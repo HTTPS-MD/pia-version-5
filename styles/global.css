@@ -800,9 +800,6 @@ body {
     opacity: 0.45;
     cursor: not-allowed;
 }
-.btn-icon.is-bordered {
-    background: var(--bg-chip);
-}
 .field {
     display: flex;
     flex-direction: column;
@@ -1113,10 +1110,6 @@ body {
 .badge-accent {
     background: var(--accent-soft);
     color: var(--accent);
-}
-.badge-danger {
-    background: var(--danger-soft);
-    color: var(--danger);
 }
 .badge-warn {
     background: var(--warning-soft);

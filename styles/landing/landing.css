@@ -103,13 +103,6 @@ h4 {
     outline-offset: 2px;
 }
 
-.sprite {
-    position: absolute;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-}
-
 /* WCAG 2.5.8: the HIT area is at least 44x44 even where the drawn box is
    smaller. */
 .tap {
@@ -1442,33 +1435,6 @@ h4 {
     margin-block-start: var(--sp-2);
     color: var(--text);
 }
-.detail-line {
-    margin-block-start: var(--sp-6);
-    max-width: 28ch;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--rule);
-    position: relative;
-    background: var(--bg-surface);
-    font-family: var(--font-display);
-    font-size: clamp(1.125rem, 1.6vw, 1.3125rem);
-    font-weight: 700;
-    line-height: 1.25;
-    letter-spacing: -0.025em;
-    color: var(--text);
-}
-
-.detail-line::before {
-    content: '';
-    position: absolute;
-    inset-block-start: -0.4375rem;
-    inset-inline-start: 1.5rem;
-    width: 0.75rem;
-    aspect-ratio: 1;
-    background: inherit;
-    border-block-start: 1px solid var(--rule);
-    border-inline-start: 1px solid var(--rule);
-    transform: rotate(45deg);
-}
 
 .detail-desc {
     margin-block-start: var(--sp-4);
@@ -1506,104 +1472,11 @@ h4 {
     color: var(--palette-ink);
 }
 
-.detail-line {
-    margin: 3cqi 0 0;
-    max-width: none;
-    padding: 0;
-    border: 0;
-    background: none;
-    font-size: 4.4cqi;
-    line-height: 1.2;
-    overflow-wrap: anywhere;
-    color: var(--palette-ink);
-}
 
-.detail-line::before {
-    display: none;
-}
-.detail-line.is-talking {
-    animation: lineIn 220ms var(--ease-snap);
-}
 
-@keyframes lineIn {
-    from {
-        opacity: 0;
-        transform: translateY(0.3rem);
-    }
-    to {
-        opacity: 1;
-        transform: none;
-    }
-}
-.stage-figure:not(.has-poked) .stage-poke::after {
-    content: 'Tap me!' / '';
-    position: absolute;
-    inset-block-end: 12%;
-    inset-inline-end: 5%;
-    padding: 0.25rem 0.5rem;
-    border: 2px solid var(--palette-ink);
-    background: var(--volt);
-    color: var(--on-volt);
-    box-shadow: 3px 3px 0 var(--palette-ink);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    animation: tapBob 1.2s ease-in-out infinite;
-}
 
-@keyframes tapBob {
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-0.3rem);
-    }
-}
-.stage-poke {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-}
 
-.stage-poke:focus-visible {
-    outline: 3px solid var(--focus);
-    outline-offset: -6px;
-}
 
-.stage-figure.is-poked .stage-art {
-    animation: pokeBounce 360ms var(--ease-snap);
-}
-
-@keyframes pokeBounce {
-    0% {
-        transform: none;
-    }
-    35% {
-        transform: translateY(-3%) scale(1.03);
-    }
-    100% {
-        transform: none;
-    }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .stage-figure.is-poked .stage-art {
-        animation: none;
-    }
-    .detail-line.is-talking {
-        animation: none;
-    }
-    .stage-figure:not(.has-poked) .stage-poke::after {
-        animation: none;
-    }
-}
 .select-foot {
     display: flex;
     flex-wrap: wrap;
@@ -1732,8 +1605,7 @@ h4 {
     line-height: 1.75;
     color: var(--text-muted);
 }
-.panel,
-.cap {
+.panel {
     position: relative;
     border: var(--edge-w) solid var(--rule);
     background: var(--bg);
@@ -1744,19 +1616,6 @@ h4 {
         color var(--t-snap) linear,
         transform var(--t-snap) var(--ease-snap),
         box-shadow var(--t-snap) var(--ease-snap);
-}
-
-.cap.is-keen {
-    background: var(--fg);
-    color: var(--bg);
-    transform: translate(-3px, -3px);
-    box-shadow: calc(var(--hard) + 3px) calc(var(--hard) + 3px) 0 var(--pop);
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .cap.is-keen {
-        transform: none;
-    }
 }
 .band-strip {
     padding-block-start: calc(var(--band-pad) + 1.25rem);
@@ -1895,9 +1754,6 @@ h4 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: clamp(1.5rem, 3vw, 2rem);
     }
-    .cap:nth-child(even) {
-        margin-block-start: clamp(1.5rem, 5vh, 3rem);
-    }
 }
 
 @media (min-width: 64rem) {
@@ -1906,35 +1762,6 @@ h4 {
         gap: 2rem;
         align-items: start;
     }
-    .cap:nth-child(1) {
-        grid-column: 1 / span 5;
-    }
-    .cap:nth-child(2) {
-        grid-column: 6 / span 7;
-        margin-block-start: 2.5rem;
-    }
-    .cap:nth-child(3) {
-        grid-column: 2 / span 6;
-    }
-    .cap:nth-child(4) {
-        grid-column: 8 / span 5;
-        margin-block-start: -1.5rem;
-    }
-    .cap:nth-child(5) {
-        grid-column: 1 / span 7;
-    }
-    .cap:nth-child(6) {
-        grid-column: 8 / span 5;
-        margin-block-start: 2rem;
-    }
-}
-
-.cap {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: var(--sp-3);
-    padding: clamp(1.5rem, 3vw, 2rem);
 }
 
 .finale-sub {
@@ -2227,17 +2054,13 @@ h4 {
 .js [data-reveal].is-done {
     will-change: auto;
 }
-.js .panel[data-reveal].is-done,
-.js .cap[data-reveal].is-done {
+.js .panel[data-reveal].is-done {
     transition:
         background-color var(--t-snap) linear,
         color var(--t-snap) linear,
         transform var(--t-snap) var(--ease-snap),
         box-shadow var(--t-snap) var(--ease-snap);
     transition-delay: 0ms;
-}
-.js .cap[data-reveal].is-in.is-keen {
-    transform: translate(-3px, -3px);
 }
 
 .js .select-head [data-reveal] {
@@ -2262,22 +2085,6 @@ h4 {
 }
 .js .panel:nth-child(4) {
     --d: 270ms;
-}
-
-.js .cap:nth-child(2) {
-    --d: 60ms;
-}
-.js .cap:nth-child(3) {
-    --d: 120ms;
-}
-.js .cap:nth-child(4) {
-    --d: 180ms;
-}
-.js .cap:nth-child(5) {
-    --d: 240ms;
-}
-.js .cap:nth-child(6) {
-    --d: 300ms;
 }
 .scrub-w {
     color: color-mix(in srgb, var(--text) 40%, transparent);
@@ -2439,21 +2246,6 @@ h4 {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
     gap: var(--sp-6);
-}
-.caps .cap {
-    grid-column: auto;
-    margin-block-start: 0;
-    transform: none;
-    box-shadow: none;
-    background: none;
-    color: var(--text);
-    border: 0;
-    border-top: 1px solid var(--rule);
-    padding: var(--sp-5) 0;
-}
-.cap::before,
-.cap::after {
-    display: none;
 }
 
 .reel-flow {
@@ -3402,11 +3194,6 @@ h4 {
     order: 1;
     font-size: 11cqi;
 }
-.act-select .detail-line {
-    order: 3;
-    margin-block-start: 3cqi;
-    font-size: 4.6cqi;
-}
 .act-select .detail-desc {
     display: block;
     order: 4;
@@ -3508,16 +3295,6 @@ h4 {
     .act-select .roster-text {
         align-items: center;
     }
-}
-.act-select .stage-figure:not(.has-poked) .stage-poke::after {
-    border: 0;
-    border-radius: 999px;
-    box-shadow: 0 6px 14px var(--black-a25);
-    font-family: var(--font-body);
-    font-size: 0.875rem;
-    letter-spacing: 0;
-    text-transform: none;
-    padding: 0.35rem 0.85rem;
 }
 .act-select .select-board {
     overflow: visible;
@@ -3773,9 +3550,6 @@ h4 {
     .act-select .detail-strength {
         font-size: 3.9cqi;
     }
-    .act-select .detail-line {
-        font-size: 5.4cqi;
-    }
     .act-select .detail-desc {
         font-size: 4.2cqi;
     }
@@ -3822,9 +3596,6 @@ h4 {
 }
 .act-select .stage-art img {
     filter: drop-shadow(0 10px 12px var(--black-a28));
-}
-.act-select .stage-poke {
-    z-index: 3;
 }
 .overlay {
     background: var(--rgb6-10-34-a62);
@@ -4264,9 +4035,6 @@ h4 {
     .act-select .stage-art img {
         filter: drop-shadow(0 10px 12px var(--black-a28));
     }
-    .act-select .stage-poke {
-        z-index: 3;
-    }
     .act-select .detail {
         z-index: 2;
         inset-block-start: 0.75rem;
@@ -4284,11 +4052,6 @@ h4 {
         margin-block-start: 0.4rem;
         padding: 0.2rem 0.65rem;
         font-size: 0.75rem;
-    }
-    .act-select .detail-line {
-        margin-block-start: 0.55rem;
-        font-size: 0.875rem;
-        line-height: 1.4;
     }
     .act-select .detail-desc {
         display: none;
@@ -4775,11 +4538,6 @@ h4 {
         margin-block-start: 0.5rem;
         padding: 0.2rem 0.7rem;
         font-size: 0.8125rem;
-    }
-    .act-select .detail-line {
-        margin-block-start: 0.75rem;
-        font-size: 1rem;
-        line-height: 1.4;
     }
     .act-select .detail-desc {
         margin-block-start: 0.6rem;

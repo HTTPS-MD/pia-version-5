@@ -606,7 +606,7 @@ html[data-surface='admin'] .modal-head {
     html[data-surface='admin'] .main {
         padding-inline: var(--bar-edge);
     }
-    html[data-surface='admin'] .page:not(.page-narrow) {
+    html[data-surface='admin'] .page {
         max-width: none;
     }
 }

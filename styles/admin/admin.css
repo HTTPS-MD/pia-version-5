@@ -1476,8 +1476,6 @@ body[data-loading] .loadbar {
         opacity: 0.55;
     }
 }
-@media (max-width: 30rem) {
-}
 .with-tip {
     display: flex;
     align-items: center;
@@ -2208,23 +2206,12 @@ html[data-surface='admin'] :focus-visible {
     flex: 0 1 auto;
     min-width: 0;
 }
-.panel-tools {
-    display: flex;
-    align-items: center;
-    flex-wrap: nowrap;
-    gap: 8px;
-    flex: 0 0 auto;
-}
 .panel-title {
     font-size: var(--fs-body);
     font-weight: 600;
 }
 .section-title {
     margin: 0 0 8px;
-}
-.panel-note {
-    font-size: var(--fs-sm);
-    margin: 0;
 }
 .panel-foot {
     padding: 8px 12px;
@@ -2427,10 +2414,6 @@ html[data-surface='admin'] .search .input {
     width: 10rem;
     min-width: 0;
 }
-html[data-surface='admin'] .panel-tools .select,
-html[data-surface='admin'] .panel-tools select.input {
-    width: 9rem;
-}
 .table-wrap {
     overflow-x: auto;
     max-width: 100%;
@@ -2577,11 +2560,6 @@ html[data-surface='admin'] .table thead th.col-right {
     background: var(--warning-soft);
     border-color: var(--warning-line);
     color: var(--warning);
-}
-.badge-danger {
-    background: var(--danger-soft);
-    border-color: var(--danger-line);
-    color: var(--danger);
 }
 
 .state-block {
@@ -2784,11 +2762,6 @@ html[data-surface='admin'] .table thead th.col-right {
 }
 .info-tip {
     display: none;
-}
-.gates {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
 }
 .gate {
     border: 1px solid var(--line);
@@ -3221,10 +3194,6 @@ html[data-surface='admin'] .palette-input:focus-visible {
     }
     .search {
         flex: 1 1 12rem;
-    }
-    .panel-tools {
-        width: 100%;
-        flex-wrap: wrap;
     }
     .filter-field {
         flex: 1 1 100%;
