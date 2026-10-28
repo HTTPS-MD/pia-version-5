@@ -4829,49 +4829,46 @@ h4 {
 .pv-deco {
     position: absolute;
     z-index: 0;
-    inset-inline-start: 50%;
-    inset-block-start: 50%;
+    inset-inline-start: calc(50% + (var(--tx) - 50%) * var(--burst, 1));
+    inset-block-start: calc(50% + (var(--ty) - 50%) * var(--burst, 1));
     width: var(--w);
     height: auto;
     display: block;
     pointer-events: none;
     filter: drop-shadow(0 12px 16px var(--black-a28));
     opacity: min(1, calc(var(--burst, 1) * 2.5));
-    transform: translate(
-            calc(var(--ox) * var(--burst, 1) - 50%),
-            calc(var(--oy) * var(--burst, 1) - 50%)
-        )
-        rotate(calc((1 - var(--burst, 1)) * var(--spin, 0deg)))
+    transform: translate(-50%, -50%) rotate(calc((1 - var(--burst, 1)) * var(--spin, 0deg)))
         scale(calc(0.15 + 0.85 * var(--burst, 1)));
 }
+/* --tx and --ty are where each one ends up, as a share of the section, so none can sit outside it */
 .pv-lock-a {
     --w: clamp(5.5rem, 15vw, 13rem);
-    --ox: -37vw;
-    --oy: -3.5rem;
+    --tx: 13%;
+    --ty: 40%;
     --spin: -200deg;
     --r0: -10deg;
     --r1: 4deg;
 }
 .pv-key-a {
     --w: clamp(5.5rem, 15vw, 13rem);
-    --ox: 37vw;
-    --oy: 4rem;
+    --tx: 87%;
+    --ty: 62%;
     --spin: 220deg;
     --r0: 14deg;
     --r1: -2deg;
 }
 .pv-lock-b {
     --w: clamp(3rem, 7vw, 6rem);
-    --ox: 29vw;
-    --oy: -7rem;
+    --tx: 79%;
+    --ty: 28%;
     --spin: 260deg;
     --r0: 8deg;
     --r1: -8deg;
 }
 .pv-key-b {
     --w: clamp(3rem, 7vw, 6rem);
-    --ox: -29vw;
-    --oy: 7rem;
+    --tx: 21%;
+    --ty: 72%;
     --spin: -240deg;
     --r0: -20deg;
     --r1: -4deg;
@@ -4879,23 +4876,23 @@ h4 {
 @media (max-width: 64rem) {
     .pv-lock-a {
         --w: 5.5rem;
-        --ox: -31vw;
-        --oy: -10.5rem;
+        --tx: 19%;
+        --ty: 14%;
     }
     .pv-key-a {
         --w: 5.5rem;
-        --ox: 31vw;
-        --oy: 10.5rem;
+        --tx: 81%;
+        --ty: 87%;
     }
     .pv-lock-b {
         --w: 3.25rem;
-        --ox: 34vw;
-        --oy: -10.5rem;
+        --tx: 84%;
+        --ty: 14%;
     }
     .pv-key-b {
         --w: 3.25rem;
-        --ox: -34vw;
-        --oy: 10.5rem;
+        --tx: 16%;
+        --ty: 87%;
     }
 }
 @media (prefers-reduced-motion: no-preference) {
@@ -5436,20 +5433,6 @@ h4 {
 @media (max-width: 64rem) {
     .band.band-privacy {
         padding-block: calc(var(--band-pad) + 1rem) calc(var(--band-pad) + 3.5rem);
-    }
-}
-@media (min-width: 40rem) and (max-width: 64rem) {
-    .pv-lock-a {
-        --oy: -8.5rem;
-    }
-    .pv-key-a {
-        --oy: 8.5rem;
-    }
-    .pv-lock-b {
-        --oy: -8.5rem;
-    }
-    .pv-key-b {
-        --oy: 8.5rem;
     }
 }
 .join-btn {
