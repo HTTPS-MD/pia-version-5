@@ -27,8 +27,6 @@ export const MESSAGES = {
     notReady: 'Class is not open yet. Please wait.',
     notFound: 'We could not find you in this class today. Tell your admin.',
     throttled: 'Too many tries. Please wait a few minutes, or tell your admin.',
-    badNumber: 'Type your 11-digit student number.',
-    notMarked: 'Your admin has not marked you present. Tell your admin.',
     server: 'Something went wrong. Please try again.'
 };
 /** Digits only: "2023-1230142" and "20231230142" are one number. A student number has 11 digits. */
@@ -43,7 +41,7 @@ export async function handleJoin(body, ip, deps) {
     if (action !== 'lookup' && action !== 'enter')
         return { status: 400, body: { error: 'Unknown action.' } };
     const key = normalizeNumber(body.number);
-    if (!NUMBER_PATTERN.test(key)) return { status: 422, body: { error: MESSAGES.badNumber } };
+    if (!NUMBER_PATTERN.test(key)) return { status: 404, body: { error: MESSAGES.notFound } };
     const since = deps.now() - WINDOW_MS;
     const [byNumber, byIp, byAll] = await Promise.all([
         deps.countFailures('n:' + key, since),
@@ -87,8 +85,9 @@ export async function handleJoin(body, ip, deps) {
     // ---- enter ----------------------------------------------------------------
     const email = student.email.trim().toLowerCase();
     const mark = await deps.attendanceFor(student.section, email);
+    // Same words and same status as an unknown number: the reply says nothing about which it was.
     if (mark === 'none' || mark === 'absent')
-        return { status: 403, body: { error: MESSAGES.notMarked } };
+        return { status: 404, body: { error: MESSAGES.notFound } };
     // The first entry takes the place; any later one is a re-entry and is only counted.
     const firstEntry = mark === 'present' && (await deps.claimEntry(student.section, email));
     if (!firstEntry) await deps.noteReentry(student.section, email);

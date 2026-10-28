@@ -58,3 +58,10 @@ Supabase project. No real student data was involved.
 - The welcome page (after choosing a tutor, or after the OCEAN for Assigned and Neutral) shows the tutor standing on the classroom stage as a short animation, in the school uniform. The files are in assets/images/welcome (one animated and one still picture per tutor; the still one is used when the device asks for less motion). Replaced on 2026-10-27 with the hair-and-blink idle animations (characters-hair-blink-v2, 384 x 512). The old GIF-based files are gone.
 - The waiting room card ("<Tutor> is ready!") shows the same animation.
 - Not changed yet: the character selection page and the game itself still use the original pictures (the tutors wear different clothes there).
+
+## To retest after the same-message change of 2026-10-28
+
+- Needs: deploy the join-with-number function to staging first.
+- Enter a number that is not on the roster, and a number that is on the roster but not marked present: both show "We could not find you in this class today. Tell your admin." (same words, same status 404).
+- A number marked present still gets in.
+- Known gap: the name confirmation step ("Is this you?") still shows the name for a number that is on the roster while the class is open.
