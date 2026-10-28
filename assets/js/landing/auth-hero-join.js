@@ -23,7 +23,7 @@
             return;
         }
         if (number.length !== 11) {
-            showJoinError('Your code is not complete. Check it and try again.');
+            showJoinError('We could not find you in this class today. Tell your admin.');
             return;
         }
 

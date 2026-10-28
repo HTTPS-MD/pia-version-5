@@ -182,7 +182,7 @@
             if (
                 !Auth.setFieldError(
                     'join-number',
-                    number.length === 11 ? '' : 'Your code is not complete. Check it and try again.'
+                    number.length === 11 ? '' : 'We could not find you in this class today. Tell your admin.'
                 )
             ) {
                 $('#join-number').focus();
