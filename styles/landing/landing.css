@@ -5195,7 +5195,7 @@ h4 {
 @media (min-width: 56rem) {
     .act.act-select {
         min-height: 0;
-        padding-block: calc(var(--topbar-h) + 1.25rem) 1.5rem;
+        padding-block: calc(var(--topbar-h) + 1.25rem) 5rem;
     }
     .act-select .select-shell,
     .act-select .select-layout {
@@ -5208,7 +5208,7 @@ h4 {
         font-size: clamp(0.95rem, 2.3vh, 1.125rem);
     }
     .act-select .select-board {
-        height: clamp(20rem, calc(100svh - var(--topbar-h) - 15.5rem), 31rem);
+        height: clamp(20rem, calc(100svh - var(--topbar-h) - 19.5rem), 31rem);
     }
     .act-select .roster-item {
         padding-block: 0.2rem;
