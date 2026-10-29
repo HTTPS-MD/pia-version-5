@@ -5181,3 +5181,13 @@ h4 {
         display: none;
     }
 }
+
+#lesson,
+#why-pia,
+#privacy {
+    min-height: calc(100vh - var(--topbar-h));
+    min-height: calc(100svh - var(--topbar-h));
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
