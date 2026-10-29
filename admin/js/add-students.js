@@ -11,7 +11,7 @@
         ['neutral', 'EXP · Neutral persona'],
         ['control', 'CTRL · Traditional']
     ];
-    var FIELDS = ['last', 'first', 'mid', 'num'];
+    var FIELDS = ['last', 'first', 'mid', 'num', 'grp'];
     var START_ROWS = 1;
 
     var MSG = {
@@ -26,7 +26,7 @@
             return 'This number is also in row ' + n;
         },
         section: 'Choose a section',
-        group: 'Choose a condition',
+        group: 'Choose a condition for this student',
         consent: 'Confirm that parental consent and student assent were received',
         nobody: 'Add at least one student',
         problem: 'There is a problem',
@@ -64,8 +64,7 @@
         return String(s || '').replace(/\D/g, '');
     }
     function pretty(s) {
-        var d = digits(s).slice(0, 11);
-        return d.length > 4 ? d.slice(0, 4) + '-' + d.slice(4) : d;
+        return digits(s).slice(0, 11);
     }
 
     function tidyName(s) {
@@ -80,8 +79,8 @@
         return v;
     }
 
-    function blankRow() {
-        return { id: nextId++, last: '', first: '', mid: '', num: '', touched: {} };
+    function blankRow(grp) {
+        return { id: nextId++, last: '', first: '', mid: '', num: '', grp: grp || '', touched: {} };
     }
     function isBlank(r) {
         return !r.last.trim() && !r.first.trim() && !r.mid.trim() && !digits(r.num);
@@ -148,6 +147,9 @@
         if (!r.first.trim()) {
             out.push({ field: 'first', text: MSG.first });
         }
+        if (!r.grp) {
+            out.push({ field: 'grp', text: MSG.group });
+        }
         var d = digits(r.num);
         if (!d) {
             out.push({ field: 'num', text: MSG.numEmpty });
@@ -205,18 +207,12 @@
             '<div class="field" id="as-section-field"><label class="label" for="as-section">Section <span class="req">*</span></label>' +
             '<select class="select" id="as-section" data-section-select aria-describedby="as-section-msg"></select>' +
             '<p class="field-msg" id="as-section-msg"></p></div>' +
-            '<div class="field"><label class="label" for="as-group">Condition for everyone <span class="req">*</span></label>' +
-            '<select class="select" id="as-group" aria-describedby="as-group-msg"><option value="">Choose\u2026</option>' +
-            GROUPS.map(function (g) {
-                return '<option value="' + g[0] + '">' + esc(g[1]) + '</option>';
-            }).join('') +
-            '</select><p class="field-hint muted">Applies to every student in this dialog.</p><p class="field-msg" id="as-group-msg"></p></div>' +
             '</div>' +
             '<div id="as-grid" role="group" aria-label="Students"></div>' +
             '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px">' +
             '<button type="button" class="btn btn-secondary btn-sm" id="as-add">' +
             '<svg class="icon"><use href="#i-plus"></use></svg> Add row</button>' +
-            '<span class="field-hint muted">Have a list? Paste four spreadsheet columns into the first box.</span>' +
+            '<span class="field-hint muted">Have a list? Paste spreadsheet columns (last, first, middle, number, condition) into the first box.</span>' +
             '</div>' +
             '</form></div>' +
             '<footer class="modal-foot modal-foot-split">' +
@@ -232,7 +228,7 @@
         wire();
     }
 
-    var GRID_COLS = 'minmax(0,1.5fr) minmax(0,1.5fr) minmax(0,1.1fr) minmax(0,1.3fr) 36px';
+    var GRID_COLS = 'minmax(0,1.4fr) minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.3fr) minmax(0,1.6fr) 36px';
 
     function headRow() {
         return (
@@ -240,7 +236,7 @@
             GRID_COLS +
             ';gap:8px;margin-bottom:4px" class="muted" aria-hidden="true">' +
             '<span class="label">Last name <span class="req">*</span></span><span class="label">First name <span class="req">*</span></span>' +
-            '<span class="label">Middle name</span><span class="label">Student number <span class="req">*</span></span><span></span></div>'
+            '<span class="label">Middle name</span><span class="label">Student number <span class="req">*</span></span><span class="label">Condition <span class="req">*</span></span><span></span></div>'
         );
     }
 
@@ -260,6 +256,27 @@
                         mid: 'Middle name',
                         num: 'Student number'
                     }[f];
+                    if (f === 'grp') {
+                        return (
+                            '<select class="select" data-f="grp" aria-label="Condition, row ' +
+                            (i + 1) +
+                            '" aria-describedby="as-msg-' +
+                            r.id +
+                            '"><option value="">Choose\u2026</option>' +
+                            GROUPS.map(function (g) {
+                                return (
+                                    '<option value="' +
+                                    g[0] +
+                                    '"' +
+                                    (r.grp === g[0] ? ' selected' : '') +
+                                    '>' +
+                                    esc(g[1]) +
+                                    '</option>'
+                                );
+                            }).join('') +
+                            '</select>'
+                        );
+                    }
                     return (
                         '<input class="input" type="text" data-f="' +
                         f +
@@ -267,7 +284,7 @@
                         esc(r[f]) +
                         '" autocomplete="off" ' +
                         (f === 'num'
-                            ? 'inputmode="numeric" maxlength="13" placeholder="11 digits" '
+                            ? 'inputmode="numeric" maxlength="11" placeholder="11 digits" '
                             : 'spellcheck="false" ') +
                         'aria-label="' +
                         label +
@@ -432,12 +449,12 @@
             if (i < 0) {
                 return;
             }
-            if (f !== 'num') {
+            if (f !== 'num' && f !== 'grp') {
                 var tidy = tidyName(event.target.value);
                 event.target.value = tidy;
                 rows[i][f] = tidy;
             }
-            if (!isBlank(rows[i]) || rows[i].touched[f]) {
+            if (f === 'grp' || !isBlank(rows[i]) || rows[i].touched[f]) {
                 rows[i].touched[f] = true;
             }
             paintRow(i);
@@ -459,16 +476,18 @@
             var i = indexOfRow(id);
             var f = event.target.getAttribute('data-f');
             var k = FIELDS.indexOf(f);
-            if (event.key === 'Enter' && k >= 0) {
+            if (event.key === 'Enter' && k >= 0 && f !== 'grp') {
                 event.preventDefault();
-                if (k < FIELDS.length - 1) {
+                if (k < FIELDS.length - 2) {
                     goTo(id, FIELDS[k + 1]);
                 } else if (i === rows.length - 1) {
-                    rows.push(blankRow());
+                    rows.push(blankRow(rows[i].grp));
                     drawGrid({ id: rows[rows.length - 1].id, f: 'last' });
                 } else {
                     goTo(rows[i + 1].id, 'last');
                 }
+            } else if (f === 'grp') {
+                return;
             } else if (event.key === 'ArrowDown' && i < rows.length - 1) {
                 event.preventDefault();
                 goTo(rows[i + 1].id, f);
@@ -503,7 +522,16 @@
                 r.first = tidyName(c[1]);
                 r.mid = tidyName(c[2]);
                 r.num = pretty(c[3]);
-                r.touched = { last: true, first: true, mid: true, num: true };
+                var want = String(c[4] || '').trim().toLowerCase();
+                GROUPS.forEach(function (g) {
+                    if (want === g[0] || want === g[1].toLowerCase()) {
+                        r.grp = g[0];
+                    }
+                });
+                if (!r.grp && start + n > 0) {
+                    r.grp = rows[start + n - 1].grp;
+                }
+                r.touched = { last: true, first: true, mid: true, num: true, grp: true };
             });
             drawGrid();
             checkNumbers().then(function (ok) {
@@ -527,7 +555,7 @@
         });
 
         $('#as-add', root).addEventListener('click', function () {
-            rows.push(blankRow());
+            rows.push(blankRow(rows[rows.length - 1].grp));
             drawGrid({ id: rows[rows.length - 1].id, f: 'last' });
         });
         $('#as-section', root).addEventListener('change', function () {
@@ -539,9 +567,6 @@
             event.currentTarget.hidden = true;
             $('#as-section').focus();
         });
-        $('#as-group', root).addEventListener('change', function () {
-            $('#as-group-msg').textContent = '';
-        });
         $('#as-consent', root).addEventListener('change', function () {
             $('#as-consent-msg').textContent = '';
         });
@@ -549,7 +574,7 @@
     }
 
     function clearMessages() {
-        ['#as-summary', '#as-section-msg', '#as-group-msg', '#as-consent-msg'].forEach(
+        ['#as-summary', '#as-section-msg', '#as-consent-msg'].forEach(
             function (s) {
                 $(s).textContent = '';
             }
@@ -569,14 +594,9 @@
         button.disabled = true;
         try {
             var section = $('#as-section').value;
-            var group = $('#as-group').value;
             var bad = false;
             if (!section) {
                 $('#as-section-msg').textContent = MSG.section;
-                bad = true;
-            }
-            if (!group) {
-                $('#as-group-msg').textContent = MSG.group;
                 bad = true;
             }
             if (!$('#as-consent').checked) {
@@ -634,7 +654,7 @@
                     email: email,
                     fullName: fullName,
                     section: section,
-                    groupType: group
+                    groupType: r.grp
                 });
                 var reason = '';
                 if (result.status === 'created') {
@@ -719,7 +739,6 @@
         checked = {};
         clearMessages();
         $('#as-consent').checked = false;
-        $('#as-group').value = '';
         var section = $('#as-section');
         if (!section.querySelector('option[value=""]')) {
             section.insertBefore(new Option('Choose a section', ''), section.firstChild);
