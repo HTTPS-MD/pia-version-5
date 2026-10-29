@@ -5191,3 +5191,26 @@ h4 {
     flex-direction: column;
     justify-content: center;
 }
+
+@media (min-width: 56rem) {
+    .act.act-select {
+        min-height: 0;
+        padding-block: calc(var(--topbar-h) + 1.25rem) 1.5rem;
+    }
+    .act-select .select-shell,
+    .act-select .select-layout {
+        gap: var(--sp-4);
+    }
+    .act-select .select-title {
+        font-size: clamp(1.9rem, 6.2vh, 3.1rem);
+    }
+    .act-select .select-lede {
+        font-size: clamp(0.95rem, 2.3vh, 1.125rem);
+    }
+    .act-select .select-board {
+        height: clamp(20rem, calc(100svh - var(--topbar-h) - 15.5rem), 31rem);
+    }
+    .act-select .roster-item {
+        padding-block: 0.2rem;
+    }
+}
