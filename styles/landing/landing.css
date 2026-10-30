@@ -5214,3 +5214,33 @@ h4 {
         padding-block: 0.2rem;
     }
 }
+
+.band .band-title,
+.band-video .band-title,
+.band-strip .band-title,
+.band-help .band-title,
+.privacy-simple .band-title {
+    font-size: clamp(2.25rem, 5.5vw, 4.25rem);
+}
+@media (min-width: 56rem) {
+    .act.act-select .select-title {
+        font-size: clamp(2rem, min(5.5vw, 6.6vh), 4.25rem);
+    }
+    .act-select .select-board {
+        height: clamp(20rem, calc(100svh - var(--topbar-h) - 20.5rem), 31rem);
+    }
+}
+
+.join-btn {
+    font-family: var(--font-display);
+}
+
+.band.band-welcome {
+    padding-block: clamp(2rem, 6vh, 3.5rem) clamp(1rem, 3vh, 2rem);
+}
+.welcome-text {
+    font-size: clamp(1.75rem, 4vw, 3rem);
+}
+.welcome-logo {
+    width: min(70%, 16rem);
+}
