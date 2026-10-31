@@ -794,17 +794,10 @@
         color: var(--on-volt);
         font-weight: 700;
     }
-    .landing-look .game-frame:not([data-tab='errors']):not([data-tab='solved']) .right-sidebar {
+    .landing-look .game-frame:not([data-tab='history']) .right-sidebar {
         display: none;
     }
-    .landing-look .game-frame[data-tab='errors'] .video-mentor-sidebar,
-    .landing-look .game-frame[data-tab='errors'] .center-panel,
-    .landing-look .game-frame[data-tab='solved'] .video-mentor-sidebar,
-    .landing-look .game-frame[data-tab='solved'] .center-panel {
-        display: none;
-    }
-    .landing-look .game-frame[data-tab='errors'] .q-history-box,
-    .landing-look .game-frame[data-tab='solved'] .history-section {
+    .landing-look .game-frame[data-tab='history'] .center-panel {
         display: none;
     }
 
