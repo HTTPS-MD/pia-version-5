@@ -730,8 +730,34 @@
         margin: 0;
     }
     .landing-look .video-hint-layer {
-        padding: 0 0.25rem 0.5rem;
+        display: flex;
+        justify-content: flex-end;
+        padding: 0 0.25rem 0.4rem;
         background: none;
+    }
+    .landing-look .hint-btn {
+        width: auto;
+        min-height: 2.25rem;
+        padding: 0.3rem 1rem;
+        font-size: 0.85rem;
+    }
+    /* the tutor stays on screen under the header, so feedback is seen from any step */
+    .landing-look .video-mentor-sidebar {
+        position: sticky;
+        top: 68px;
+        z-index: 5;
+        background: var(--bg);
+    }
+    .landing-look .prompt-box {
+        min-height: 4.5rem;
+        max-height: 7rem;
+    }
+    .landing-look .mentor-overlay-avatar {
+        height: 7rem;
+    }
+    .landing-look .video-copy-layer {
+        grid-template-columns: 5.5rem minmax(0, 1fr);
+        padding: 0.4rem 0.25rem;
     }
 
     /* three tabs along the bottom: lesson, error log, solved questions */
