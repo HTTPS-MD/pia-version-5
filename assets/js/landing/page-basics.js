@@ -104,28 +104,8 @@
         });
     }
 
-    function initToTop() {
-        var button = $('[data-scroll-top]');
-        if (!button) {
-            return;
-        }
-        button.addEventListener('click', function () {
-            var calm =
-                window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            window.scrollTo({ top: 0, behavior: calm ? 'auto' : 'smooth' });
-            var top = document.getElementById('top');
-            if (top) {
-                if (!top.hasAttribute('tabindex')) {
-                    top.setAttribute('tabindex', '-1');
-                }
-                top.focus({ preventScroll: true });
-            }
-        });
-    }
-
     landing.addStartJob(initWire);
     landing.addStartJob(initFallbackImages);
     landing.addStartJob(initTheme);
     landing.addStartJob(initSkipLink);
-    landing.addStartJob(initToTop);
 })();
