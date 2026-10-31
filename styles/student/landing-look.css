@@ -257,18 +257,18 @@
 .landing-look .is-locked .pick-hello {
     display: block;
 }
-/* one square: the classroom picture with the tutor placed on its platform by percentages, so the ratio is the same on every screen */
+/* the classroom picture cropped to its drawn part, with the tutor placed on its platform by percentages, so the ratio is the same on every screen */
 .landing-look .pick-big {
     position: relative;
     grid-column: 1;
     grid-row: 1;
     align-self: end;
     justify-self: center;
-    height: 100%;
-    max-width: 100%;
-    aspect-ratio: 1;
+    width: min(100%, calc((100dvh - 68px - 15rem) * 0.96));
+    aspect-ratio: 1000 / 770;
+    height: auto;
     margin: 0;
-    background: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp') center / 100% 100% no-repeat;
+    background: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp') 50% 51.7% / 100% auto no-repeat;
     filter: none;
     cursor: default;
 }
@@ -278,9 +278,9 @@
 .landing-look .pick-big img {
     position: absolute;
     left: 50%;
-    top: 19%;
+    top: -30%;
     width: auto;
-    height: 62%;
+    height: 120%;
     max-width: none;
     transform: translateX(-50%);
     filter: drop-shadow(0 10px 12px var(--black-a28));
@@ -407,9 +407,8 @@
     }
     .landing-look .pick-big {
         order: 1;
-        height: auto;
         width: min(100%, 22rem);
-        margin: 0 auto;
+        margin: 4rem auto 0;
     }
     .landing-look .pick-bubble {
         order: 2;
