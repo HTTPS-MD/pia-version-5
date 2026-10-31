@@ -74,13 +74,21 @@ function startIdleWatchdog(opts) {
 
         const modal = document.createElement('div');
         modal.id = 'pia-idle-modal';
-        modal.style.cssText =
-            'position:fixed;inset:0;z-index:var(--z-boot);display:flex;align-items:center;justify-content:center;padding:1rem;background:color-mix(in srgb, var(--ink) 62%, transparent);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)';
+        // the same overlay and modal as the other dialogs, so it follows the site theme
+        modal.className = 'overlay is-mounted is-open';
+        modal.style.zIndex = 'var(--z-boot)';
+        modal.setAttribute('role', 'dialog');
+        modal.setAttribute('aria-modal', 'true');
+        modal.setAttribute('aria-labelledby', 'pia-idle-title');
         modal.innerHTML = `
-            <div style="max-width:22rem;width:100%;background:var(--bg-surface);border-radius:var(--r-card);padding:var(--sp-7);text-align:center;color:var(--text);box-shadow:var(--shadow-lg)">
-                <h3 style="margin:0 0 .5rem;font-size:var(--fs-h4);font-weight:800;letter-spacing:-0.01em">Are you still there?</h3>
-                <p style="margin:0 0 1.25rem;font-size:var(--fs-sm);line-height:1.6;color:var(--text-muted)">You will be signed out automatically in <strong id="pia-idle-count" style="color:var(--text)">${left}</strong> seconds to keep your account safe.</p>
-                <button id="pia-idle-stay" type="button" style="cursor:pointer;border:0;border-radius:var(--r-pill);padding:.85rem 1.5rem;font-size:var(--fs-body);font-weight:700;background:var(--accent);color:var(--on-accent);width:100%">I’m still here</button>
+            <div class="modal modal-sm">
+                <header class="modal-head"><div class="modal-head-text">
+                    <h2 class="modal-title" id="pia-idle-title">Are you still there?</h2>
+                    <p class="modal-sub">You will be signed out automatically in <strong id="pia-idle-count">${left}</strong> seconds to keep your account safe.</p>
+                </div></header>
+                <footer class="modal-foot">
+                    <button id="pia-idle-stay" type="button" class="btn btn-primary">I’m still here</button>
+                </footer>
             </div>
         `;
         document.body.appendChild(modal);
