@@ -5271,14 +5271,16 @@ h4 {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    padding: 0.4rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.4rem;
 }
 .join .join-in,
 .foot-join .join .join-in,
 .hero-join .join .join-in {
     flex: 1 1 auto;
     min-width: 0;
-    min-height: 3.25rem;
+    height: 3.25rem;
+    min-height: 0;
+    padding-block: 0;
     padding-inline: 0.25rem;
     font-size: 1.05rem;
 }
@@ -5287,8 +5289,9 @@ h4 {
 .hero-join .join .join-btn {
     flex: none;
     width: auto;
-    min-width: 7rem;
-    min-height: 3.25rem;
+    min-width: 8rem;
+    height: 3.25rem;
+    min-height: 0;
     padding: 0 1.5rem;
     font-size: 1.05rem;
 }
