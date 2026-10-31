@@ -423,6 +423,7 @@
 
 /* the bottom tabs and the one-line answer of a finished step are for phones only */
 .landing-look .game-tabs,
+.landing-look .tutor-recall,
 .landing-look .step-answer {
     display: none;
 }
@@ -738,16 +739,36 @@
         padding: 0.3rem 1rem;
         font-size: 0.85rem;
     }
-    /* the tutor stays on screen under the header, so feedback is seen from any step; it is a bar across the screen, not a box */
+    /* the tutor pops up under the header when there is something to say, and tucks away after a while or when tapped */
     .landing-look .video-mentor-sidebar {
-        position: sticky;
+        position: fixed;
         top: 68px;
-        z-index: 5;
-        margin: 0 calc(var(--sp-4) * -1);
-        padding: 0 var(--sp-4) 0.5rem;
+        left: 0;
+        right: 0;
+        z-index: 30;
+        margin: 0;
+        padding: 0;
         border-radius: 0;
+        background: none;
+        overflow: visible;
+        pointer-events: none;
+    }
+    .landing-look .video-copy-layer {
+        margin: 0.5rem;
+        padding: 0.6rem 0.6rem 0.6rem 0.4rem;
+        border-radius: var(--ll-radius);
         background: var(--bg);
-        border-bottom: 1px solid var(--rule);
+        box-shadow: 0 12px 32px var(--black-a50);
+        opacity: 0;
+        transform: translateY(-120%);
+        transition:
+            opacity 0.25s ease,
+            transform 0.25s ease;
+    }
+    .landing-look .game-frame.tutor-open .video-copy-layer {
+        opacity: 1;
+        transform: none;
+        pointer-events: auto;
     }
     .landing-look .prompt-box {
         min-height: 4rem;
@@ -770,15 +791,37 @@
     .landing-look .video-copy-layer {
         grid-template-columns: 4.75rem minmax(0, 1fr);
         gap: 1rem;
-        padding: 0.4rem 0.25rem 0;
     }
+    /* hint and tutor buttons stay in reach just above the tabs */
     .landing-look .video-hint-layer {
-        padding: 0.35rem 0.25rem 0;
+        position: fixed;
+        right: 0.75rem;
+        bottom: 5rem;
+        z-index: 25;
+        padding: 0;
+        pointer-events: auto;
+    }
+    .landing-look .tutor-recall {
+        display: block;
+        position: fixed;
+        left: 0.75rem;
+        bottom: 5rem;
+        z-index: 25;
+        min-height: 2.25rem;
+        padding: 0.3rem 1rem;
+        border: 0;
+        border-radius: var(--ll-btn-radius);
+        background: var(--volt);
+        color: var(--on-volt);
+        font: inherit;
+        font-size: 0.85rem;
+        font-weight: 700;
+        cursor: pointer;
     }
 
     /* three tabs along the bottom: lesson, error log, solved questions */
     .landing-look .game-screen {
-        padding-bottom: 5.5rem;
+        padding-bottom: 8.5rem;
     }
     .landing-look .game-tabs {
         position: fixed;
