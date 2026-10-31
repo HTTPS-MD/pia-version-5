@@ -17,21 +17,14 @@ let poses = [];
 let lines = [];
 let poseIndex = 0;
 
+// the same moving art as the tutors on the landing page
 function showPose() {
-    const img = document.getElementById('preview-bg-img');
-    if (poses.length) {
-        img.src = poses[poseIndex % poses.length];
+    if (selectedChar) {
+        document.getElementById('preview-bg-img').src = '../../assets/images/welcome/' + selectedChar + '.webp';
     }
     if (lines.length) {
-        document.getElementById('preview-desc').textContent = lines[poseIndex % lines.length];
+        document.getElementById('preview-desc').textContent = lines[0];
     }
-}
-
-function hopBig() {
-    const big = document.getElementById('pick-big');
-    big.classList.remove('is-hop');
-    void big.offsetWidth;
-    big.classList.add('is-hop');
 }
 
 function previewCharacter(element) {
@@ -55,27 +48,14 @@ function previewCharacter(element) {
     document.getElementById('pick-tag').textContent = element.getAttribute('data-tag') || '';
     document.getElementById('pick-more').textContent = element.getAttribute('data-more') || '';
     document.getElementById('pick-hello').textContent = 'Say hi to ' + name + '!';
-    document.getElementById('pick-big').setAttribute('aria-label', 'Tap ' + name + ' to hear more');
-    document.getElementById('pick-big').hidden = false;
     document.getElementById('pick-bubble').hidden = false;
     document.getElementById('preview-card').classList.add('has-pick');
     showPose();
-    hopBig();
 
     const lockBtn = document.getElementById('lock-in-btn');
     lockBtn.hidden = false;
     lockBtn.textContent = 'Choose ' + name;
     lockBtn.disabled = false;
-}
-
-function nextPose() {
-    if (isLockedIn || poses.length < 2) {
-        hopBig();
-        return;
-    }
-    poseIndex = (poseIndex + 1) % poses.length;
-    showPose();
-    hopBig();
 }
 
 let confirmReturnFocus = null;
@@ -172,19 +152,10 @@ async function finalLockIn() {
     statusEl.style.color = '';
     statusEl.classList.add('is-done');
 
-    const happy = poses.findIndex((src) => /happy|approval/.test(src));
-    if (happy !== -1) {
-        poseIndex = happy;
-    }
     const name = document.getElementById('preview-name').textContent;
     document.getElementById('pick-hello').textContent = 'You picked ' + name + '!';
     document.getElementById('preview-desc').textContent = 'Great choice! Let’s do this together.';
-    const img = document.getElementById('preview-bg-img');
-    if (poses.length) {
-        img.src = poses[poseIndex % poses.length];
-    }
     document.getElementById('pick-scene').classList.add('is-locked');
-    hopBig();
 
     document.querySelectorAll('.persona-card').forEach((card) => {
         card.style.pointerEvents = 'none';
@@ -238,11 +209,6 @@ document.addEventListener('click', (event) => {
     const card = event.target.closest('.persona-card');
     if (card) {
         previewCharacter(card);
-        return;
-    }
-
-    if (event.target.closest('#pick-big')) {
-        nextPose();
         return;
     }
 
