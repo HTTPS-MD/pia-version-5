@@ -272,3 +272,7 @@ document.addEventListener('click', (event) => {
         previewImg.style.visibility = '';
     });
 })();
+
+// start with the first tutor shown, so the stage is never empty
+const firstTutor = document.querySelector('.persona-card');
+if (firstTutor) previewCharacter(firstTutor);

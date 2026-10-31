@@ -174,11 +174,11 @@
     color: var(--text-muted);
 }
 .landing-look .pick-scene {
-    grid-template-columns: 17rem minmax(0, 1fr) 17rem;
+    grid-template-columns: 6rem minmax(0, 1fr) 17rem;
     column-gap: 0;
     height: calc(100dvh - 68px - 9rem);
     min-height: 28rem;
-    max-width: 66rem;
+    max-width: 78rem;
 }
 .landing-look .persona-grid {
     justify-self: end;
@@ -264,7 +264,7 @@
     grid-row: 1;
     align-self: end;
     justify-self: center;
-    width: min(100%, calc((100dvh - 68px - 15rem) * 0.96));
+    width: min(100%, calc((100dvh - 68px - 15rem) * 0.85));
     aspect-ratio: 1000 / 770;
     height: auto;
     margin: 0;
