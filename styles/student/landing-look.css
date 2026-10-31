@@ -431,6 +431,16 @@
     box-shadow: none;
     overflow: visible;
 }
+/* the tutor sits in the middle of the space left of the cards, the card stays in the middle of the screen */
+@media (min-width: 901px) {
+    .landing-look .game-frame {
+        grid-template-columns: minmax(280px, 1fr) minmax(0, 43rem) minmax(var(--g-right), 1fr);
+    }
+    .landing-look .right-sidebar {
+        justify-self: end;
+        width: var(--g-right);
+    }
+}
 .landing-look .video-mentor-sidebar {
     border: 0;
     border-radius: var(--ll-radius);
@@ -439,7 +449,7 @@
 }
 /* the tutor and the classroom are one box, so the tutor stands on the platform at every screen size */
 .landing-look .video-copy-layer {
-    --stage-w: min(100cqw, calc(100cqh - var(--bubble-h, 9.25rem) - 40px));
+    --stage-w: min(100cqw, 32rem, calc(100cqh - var(--bubble-h, 9.25rem) - 40px));
 }
 .landing-look .mentor-agent-stage {
     position: relative;
