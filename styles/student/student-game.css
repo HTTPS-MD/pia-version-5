@@ -42,8 +42,7 @@ body.is-playing .learn-main {
     flex-direction: column;
     min-height: 0;
     overflow: hidden;
-    background: var(--palette-ink) url('../../assets/images/backgrounds/hero-classroom-poster.webp')
-        center / cover no-repeat;
+    background: var(--palette-ink);
     border-right: 3px solid var(--g-edge);
 }
 .video-mentor-sidebar::before {

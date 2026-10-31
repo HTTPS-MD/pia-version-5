@@ -13,9 +13,7 @@ async function enforceStageLock() {
 
 enforceStageLock();
 
-let poses = [];
 let lines = [];
-let poseIndex = 0;
 
 // the same moving art as the tutors on the landing page
 function showPose() {
@@ -40,9 +38,7 @@ function previewCharacter(element) {
 
     selectedChar = element.getAttribute('data-character');
     const name = element.getAttribute('data-name');
-    poses = (element.getAttribute('data-poses') || '').split(/\s+/).filter(Boolean);
     lines = (element.getAttribute('data-lines') || '').split('|').filter(Boolean);
-    poseIndex = 0;
 
     document.getElementById('preview-name').textContent = name;
     document.getElementById('pick-tag').textContent = element.getAttribute('data-tag') || '';
@@ -247,16 +243,6 @@ document.addEventListener('click', (event) => {
             useFallbackOrMonogram();
         }
     });
-
-    var bubble = document.getElementById('pick-bubble');
-    var bubbleArt = document.getElementById('pick-bubble-art');
-    function bubbleWithoutArt() {
-        bubble.classList.add('no-art');
-    }
-    bubbleArt.addEventListener('error', bubbleWithoutArt);
-    if (bubbleArt.complete && bubbleArt.naturalWidth === 0 && bubbleArt.getAttribute('src')) {
-        bubbleWithoutArt();
-    }
 
     var previewImg = document.getElementById('preview-bg-img');
     previewImg.addEventListener('error', function () {

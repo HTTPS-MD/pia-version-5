@@ -167,12 +167,6 @@
     line-height: 1.1;
     color: var(--text);
 }
-.landing-look .pick-lede {
-    max-width: 36rem;
-    margin: 0 auto var(--sp-5);
-    text-align: center;
-    color: var(--text-muted);
-}
 .landing-look .pick-scene {
     grid-template-columns: 6rem minmax(0, 1fr) 17rem;
     column-gap: 0;
@@ -247,9 +241,6 @@
 .landing-look .pick-stage:not(.has-pick) .pick-hello {
     display: none;
 }
-.landing-look .pick-spot {
-    display: none;
-}
 /* "Tap me!" sits on the tutor, like on the landing page; "Say hi" is only shown before a pick and after locking */
 .landing-look .pick-stage.has-pick .pick-hello {
     display: none;
@@ -302,11 +293,7 @@
     box-shadow: var(--ll-shadow);
     font-size: 1rem;
 }
-.landing-look .pick-bubble-art {
-    display: none;
-}
-.landing-look .pick-bubble-text,
-.landing-look .pick-bubble.no-art .pick-bubble-text {
+.landing-look .pick-bubble-text {
     height: auto;
     padding: 0;
 }
