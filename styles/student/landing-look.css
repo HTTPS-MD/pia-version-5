@@ -434,20 +434,35 @@
 .landing-look .video-mentor-sidebar {
     border: 0;
     border-radius: var(--ll-radius);
-    background: transparent url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp')
-        center calc(100% - 3.5rem) / 100% auto no-repeat;
+    background: transparent;
     box-shadow: none;
 }
-/* the tutor stands as big on the stage as on the landing page */
+/* the tutor and the classroom are one box, so the tutor stands on the platform at every screen size */
+.landing-look .video-copy-layer {
+    --stage-w: min(100cqw, calc(100cqh - var(--bubble-h, 9.25rem) - 40px));
+}
+.landing-look .mentor-agent-stage {
+    position: relative;
+    flex: none;
+    align-self: center;
+    width: var(--stage-w);
+    margin-top: calc(var(--stage-w) * 0.25);
+    padding: 0;
+    aspect-ratio: 1000 / 770;
+    background: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp') 50% 51.7% / 100% auto no-repeat;
+}
+:root[data-theme='light'] .landing-look .mentor-agent-stage {
+    background-image: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-light.webp');
+}
 .landing-look .mentor-overlay-avatar {
-    height: min(112cqw, calc(100cqh - var(--bubble-h, 9.25rem) - 24px - 16px - 14px));
+    position: absolute;
+    inset: -30% 0 auto 0;
+    left: 0;
+    height: 120%;
+    width: auto;
     max-height: none;
     max-width: none;
-    width: auto;
-    margin-bottom: 0.4rem;
-}
-:root[data-theme='light'] .landing-look .video-mentor-sidebar {
-    background-image: url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-light.webp');
+    margin: 0 auto;
 }
 .landing-look .video-mentor-sidebar::before,
 .landing-look .video-hint-layer {
@@ -685,13 +700,18 @@
     .landing-look .mentor-agent-stage {
         grid-column: 1;
         grid-row: 1;
-        padding: 0;
+        align-self: center;
+        width: auto;
+        margin-top: 0;
+        aspect-ratio: auto;
+        background: none;
     }
     .landing-look .mentor-overlay-avatar {
+        position: static;
+        display: block;
         height: 8.5rem;
-        max-height: none;
+        width: auto;
         margin: 0;
-        left: 0;
     }
     .landing-look .video-hint-layer {
         padding: 0 0.25rem 0.5rem;
