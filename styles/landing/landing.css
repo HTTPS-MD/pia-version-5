@@ -5362,7 +5362,14 @@ h4 {
 }
 .foot-join .join {
     width: 100%;
-    max-width: 30rem;
+    max-width: none;
+}
+@media (min-width: 64.01rem) {
+    .foot-join .join .join-in,
+    .foot-join .join .join-btn {
+        height: 3.75rem;
+        font-size: 1.15rem;
+    }
 }
 .foot-cols {
     display: contents;
@@ -5409,20 +5416,24 @@ h4 {
     }
     .foot-logo {
         width: 12rem;
-        justify-self: start;
+        justify-self: center;
         align-self: start;
     }
-    .foot-card .foot-logos {
-        order: 4;
-    }
     .foot-card .foot-meta {
-        order: 5;
+        order: 4;
         flex-direction: column;
         align-items: flex-start;
     }
 }
+@media (max-width: 64rem) {
+    .foot-card .foot-logos {
+        order: 5;
+        justify-self: center;
+        padding-top: 0.5rem;
+    }
+}
 @media (max-width: 48rem) {
     .foot-logo {
-        width: 7rem;
+        width: 9rem;
     }
 }
