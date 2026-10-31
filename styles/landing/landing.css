@@ -5415,7 +5415,7 @@ h4 {
         grid-row: auto;
     }
     .foot-logo {
-        width: 12rem;
+        width: 14rem;
         justify-self: center;
         align-self: start;
     }
@@ -5428,12 +5428,12 @@ h4 {
 @media (max-width: 64rem) {
     .foot-card .foot-logos {
         order: 5;
-        justify-self: center;
+        justify-self: start;
         padding-top: 0.5rem;
     }
 }
 @media (max-width: 48rem) {
     .foot-logo {
-        width: 9rem;
+        width: 11rem;
     }
 }
