@@ -5244,3 +5244,51 @@ h4 {
 .welcome-logo {
     width: min(70%, 16rem);
 }
+
+.join {
+    border-radius: 999px;
+}
+.join-btn {
+    border-radius: 999px;
+}
+.join .join-ic {
+    margin-inline-start: 0.85rem;
+}
+@media (max-width: 63.99rem) {
+    .nav .nav-burger {
+        border: 2px solid currentColor;
+        background: transparent;
+    }
+    .nav .nav-burger:hover {
+        background: transparent;
+    }
+}
+
+/* the join field and its button are the same size on every screen and in every place (hero and footer) */
+.join,
+.foot-join .join,
+.hero-join .join {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.4rem;
+}
+.join .join-in,
+.foot-join .join .join-in,
+.hero-join .join .join-in {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 3.25rem;
+    padding-inline: 0.25rem;
+    font-size: 1.05rem;
+}
+.join .join-btn,
+.foot-join .join .join-btn,
+.hero-join .join .join-btn {
+    flex: none;
+    width: auto;
+    min-width: 7rem;
+    min-height: 3.25rem;
+    padding: 0 1.5rem;
+    font-size: 1.05rem;
+}
