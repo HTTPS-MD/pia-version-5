@@ -2668,6 +2668,9 @@ h4 {
     letter-spacing: -0.04em;
     color: var(--volt);
 }
+.foot-join .join {
+    width: 100%;
+}
 .foot-card .link-btn {
     color: var(--volt);
 }
@@ -3933,6 +3936,25 @@ h4 {
     .foot-title {
         font-size: 2rem;
     }
+    .foot-join .join {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 0.5rem;
+        padding: 0.5rem;
+    }
+    .foot-join .join .join-ic {
+        margin-inline-start: 0.5rem;
+    }
+    .foot-join .join .join-in {
+        min-height: 3.25rem;
+        padding-inline: 0.25rem;
+    }
+    .foot-join .join .join-btn {
+        grid-column: 1 / -1;
+        justify-content: center;
+        min-height: 3.25rem;
+        width: 100%;
+    }
     .foot-logos {
         justify-content: flex-start;
         gap: var(--sp-4);
@@ -4741,29 +4763,12 @@ h4 {
 .js .privacy-simple.is-in .privacy-line b {
     transition: background-size 700ms cubic-bezier(0.6, 0, 0.2, 1) 500ms;
 }
-.foot-join .foot-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 9rem;
-    height: 3.25rem;
-    padding: 0 2rem;
-    border: 0;
-    border-radius: 999px;
-    background: var(--volt);
-    color: var(--on-volt);
-    font-family: var(--font-display);
-    font-size: 1.05rem;
-    font-weight: 700;
-    cursor: pointer;
+.foot-join .join-btn {
     position: relative;
     overflow: hidden;
 }
 @media (prefers-reduced-motion: no-preference) {
-    .foot-logo {
-        animation: logoFloat 6s ease-in-out infinite;
-    }
-    .foot-join .foot-btn::after {
+    .foot-join .join-btn::after {
         content: '';
         position: absolute;
         inset-block: 0;
@@ -4773,17 +4778,6 @@ h4 {
         transform: translateX(-180%) skewX(-18deg);
         animation: shineSweep 6s ease-in-out 1.5s infinite;
         pointer-events: none;
-    }
-}
-@keyframes logoFloat {
-    0%,
-    100% {
-        translate: 0 0;
-        rotate: -1.5deg;
-    }
-    50% {
-        translate: 0 -0.45rem;
-        rotate: 1.5deg;
     }
 }
 .band.band-video {
@@ -5120,6 +5114,32 @@ h4 {
         font-size: 1rem;
     }
 }
+@media (max-width: 48rem) {
+    .foot-join .join {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.375rem;
+    }
+    .foot-join .join .join-ic {
+        margin-inline: 0.6rem 0.1rem;
+    }
+    .foot-join .join .join-in {
+        flex: 1 1 auto;
+        min-width: 0;
+        min-height: 2.75rem;
+        padding-inline: 0.25rem;
+        font-size: 1rem;
+    }
+    .foot-join .join .join-btn {
+        flex: none;
+        grid-column: auto;
+        width: auto;
+        min-height: 2.75rem;
+        padding: 0.5rem 1.1rem;
+        font-size: 1rem;
+    }
+}
 @media (max-width: 64rem) {
     .band.band-privacy {
         padding-block: calc(var(--band-pad) + 1rem) calc(var(--band-pad) + 3.5rem);
@@ -5233,6 +5253,7 @@ h4 {
 
 /* the join field and its button are the same size on every screen and in every place (hero and footer) */
 .join,
+.foot-join .join,
 .hero-join .join {
     display: flex;
     align-items: center;
@@ -5240,6 +5261,7 @@ h4 {
     padding: 0.5rem 0.5rem 0.5rem 0.4rem;
 }
 .join .join-in,
+.foot-join .join .join-in,
 .hero-join .join .join-in {
     flex: 1 1 auto;
     min-width: 0;
@@ -5250,6 +5272,7 @@ h4 {
     font-size: 1.05rem;
 }
 .join .join-btn,
+.foot-join .join .join-btn,
 .hero-join .join .join-btn {
     flex: none;
     width: auto;
@@ -5258,6 +5281,33 @@ h4 {
     min-height: 0;
     padding: 0 1.5rem;
     font-size: 1.05rem;
+}
+
+/* the footer has the code field on larger screens and one Join button on phones */
+.foot-join .foot-btn {
+    display: none;
+}
+@media (max-width: 48rem) {
+    .foot-join .join {
+        display: none;
+    }
+    .foot-join .foot-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 3.25rem;
+        padding: 0 2rem;
+        border: 0;
+        border-radius: 999px;
+        background: var(--volt);
+        color: var(--on-volt);
+        box-shadow: none;
+        font-family: var(--font-display);
+        font-size: 1.05rem;
+        font-weight: 700;
+        cursor: pointer;
+    }
 }
 @media (max-width: 30rem) {
     .join .join-btn,
@@ -5271,5 +5321,108 @@ h4 {
     .join .join-in,
     .hero-join .join .join-in {
         font-size: 1rem;
+    }
+}
+
+/* footer: the PIA logo takes the whole left side. On the right: the title and the code field, a thin line, then the contact with the school logos, and the staff link with the copyright. */
+.foot-card {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-rows: auto 1px auto auto;
+    align-items: center;
+    column-gap: 2.5rem;
+    row-gap: 1.5rem;
+    padding: clamp(2rem, 5vw, 3.25rem) clamp(1.5rem, 5vw, 3.5rem) 2rem;
+    text-align: left;
+}
+.foot-card > * {
+    min-width: 0;
+}
+.foot-card::after {
+    content: '';
+    grid-column: 2 / -1;
+    grid-row: 2;
+    height: 1px;
+    background: var(--rgb255-248-231-a12, rgba(255, 248, 231, 0.12));
+}
+.foot-logo {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    align-self: center;
+    justify-self: center;
+    width: min(100%, 20rem);
+}
+.foot-join {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    display: block;
+}
+.foot-join .foot-title {
+    margin: 0 0 0.9rem;
+}
+.foot-join .join {
+    width: 100%;
+    max-width: 30rem;
+}
+.foot-cols {
+    display: contents;
+}
+.foot-card .foot-contact {
+    grid-column: 2;
+    grid-row: 3 / 5;
+    align-self: start;
+    justify-self: start;
+    text-align: left;
+}
+.foot-card .foot-meta {
+    grid-column: 3;
+    grid-row: 3;
+    align-self: start;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.4rem;
+    text-align: left;
+}
+.foot-card .foot-logos {
+    grid-column: 3;
+    grid-row: 4;
+    align-self: start;
+    justify-self: start;
+}
+@media (max-width: 64rem) {
+    .foot-card {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: none;
+        row-gap: 1.25rem;
+    }
+    .foot-card::after {
+        display: none;
+    }
+    .foot-logo,
+    .foot-join,
+    .foot-card .foot-logos,
+    .foot-card .foot-contact,
+    .foot-card .foot-meta {
+        grid-column: 1;
+        grid-row: auto;
+    }
+    .foot-logo {
+        width: 12rem;
+        justify-self: start;
+        align-self: start;
+    }
+    .foot-card .foot-logos {
+        order: 4;
+    }
+    .foot-card .foot-meta {
+        order: 5;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+@media (max-width: 48rem) {
+    .foot-logo {
+        width: 7rem;
     }
 }

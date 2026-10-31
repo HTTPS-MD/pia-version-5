@@ -539,6 +539,14 @@
                 <img class="foot-logo" src="assets/images/logo-640.webp" alt="PIA" width="640" height="320" loading="lazy" decoding="async">
                 <div class="foot-join">
                     <h2 class="foot-title" id="cta-title">Ready? Let&rsquo;s go!</h2>
+                    <form class="join" id="foot-join" novalidate>
+                        <label class="sr-only" for="foot-num">Your code</label>
+                        <svg class="join-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+                        <input class="join-in" id="foot-num" type="text" inputmode="numeric"
+                            autocomplete="off" spellcheck="false" maxlength="14"
+                            placeholder="Enter your code">
+                        <button type="submit" class="join-btn">Join</button>
+                    </form>
                     <button type="button" class="tap cta cta-primary foot-btn" data-auth-open="signin">Join</button>
                     <button type="button" class="tap cta cta-primary hero-resume" data-auth-open="signin">
                         <span class="cta-label">Enter your code</span>
