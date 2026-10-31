@@ -72,34 +72,23 @@
         }
         leave.shown = true;
 
-        // the same overlay and modal as the other dialogs, so it follows the site theme
-        var veil = document.createElement('div');
-        veil.id = 'leave-veil';
-        veil.className = 'overlay is-mounted is-open';
-        veil.style.zIndex = 'var(--z-boot)';
-        veil.setAttribute('role', 'dialog');
-        veil.setAttribute('aria-modal', 'true');
-        veil.setAttribute('aria-labelledby', 'leave-title');
-        veil.innerHTML =
-            '<div class="modal modal-sm">' +
-            '<header class="modal-head"><div class="modal-head-text">' +
-            '<h2 class="modal-title" id="leave-title">You left the game</h2>' +
-            '<p class="modal-sub">We noticed you moved away from the game. Do you want to keep going, or quit?</p>' +
-            '</div></header>' +
-            '<footer class="modal-foot">' +
-            '<button type="button" class="btn btn-secondary" id="leave-quit">Quit</button>' +
-            '<button type="button" class="btn btn-primary" id="leave-keep">Continue</button>' +
-            '</footer></div>';
-        document.body.appendChild(veil);
-
-        var keep = document.getElementById('leave-keep');
-        var quit = document.getElementById('leave-quit');
-        keep.addEventListener('click', hideLeaveVeil);
-        quit.addEventListener('click', function () {
-            quit.disabled = true;
-            quitNow();
+        piaDialog({
+            id: 'leave-veil',
+            zIndex: 'var(--z-boot)',
+            title: 'You left the game',
+            text: 'We noticed you moved away from the game. Do you want to keep going, or quit?',
+            actions: [
+                {
+                    id: 'leave-quit',
+                    label: 'Quit',
+                    onClick: function (btn) {
+                        btn.disabled = true;
+                        quitNow();
+                    }
+                },
+                { id: 'leave-keep', label: 'Continue', primary: true, onClick: hideLeaveVeil }
+            ]
         });
-        keep.focus();
     }
 
     function initLeaveGuard() {

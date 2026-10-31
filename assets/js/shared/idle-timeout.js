@@ -72,27 +72,16 @@ function startIdleWatchdog(opts) {
 
         const deadline = Date.now() + left * 1000;
 
-        const modal = document.createElement('div');
-        modal.id = 'pia-idle-modal';
-        // the same overlay and modal as the other dialogs, so it follows the site theme
-        modal.className = 'overlay is-mounted is-open';
-        modal.style.zIndex = 'var(--z-boot)';
-        modal.setAttribute('role', 'dialog');
-        modal.setAttribute('aria-modal', 'true');
-        modal.setAttribute('aria-labelledby', 'pia-idle-title');
-        modal.innerHTML = `
-            <div class="modal modal-sm">
-                <header class="modal-head"><div class="modal-head-text">
-                    <h2 class="modal-title" id="pia-idle-title">Are you still there?</h2>
-                    <p class="modal-sub">You will be signed out automatically in <strong id="pia-idle-count">${left}</strong> seconds to keep your account safe.</p>
-                </div></header>
-                <footer class="modal-foot">
-                    <button id="pia-idle-stay" type="button" class="btn btn-primary">I’m still here</button>
-                </footer>
-            </div>
-        `;
-        document.body.appendChild(modal);
-        document.getElementById('pia-idle-stay').addEventListener('click', resetIdle);
+        piaDialog({
+            id: 'pia-idle-modal',
+            zIndex: 'var(--z-boot)',
+            title: 'Are you still there?',
+            textHtml:
+                'You will be signed out automatically in <strong id="pia-idle-count">' +
+                left +
+                '</strong> seconds to keep your account safe.',
+            actions: [{ id: 'pia-idle-stay', label: 'I’m still here', primary: true, onClick: resetIdle }]
+        });
 
         idleCountdownId = setInterval(() => {
             left = Math.ceil((deadline - Date.now()) / 1000);

@@ -288,67 +288,29 @@ function showSessionEnded(reason) {
 
     document.body.classList.remove('opacity-0');
 
-    const root = document.createElement('div');
-    root.id = 'pia-session-ended';
-    root.className = 'session-ended';
-    root.setAttribute('role', 'alertdialog');
-    root.setAttribute('aria-modal', 'true');
-    root.setAttribute('aria-labelledby', 'pia-session-ended-title');
-    root.setAttribute('aria-describedby', 'pia-session-ended-text');
-
-    const card = document.createElement('div');
-    card.className = 'session-ended-card';
-
-    const glyph = document.createElement('span');
-    glyph.className = 'session-ended-glyph';
-    glyph.setAttribute('aria-hidden', 'true');
-    glyph.innerHTML =
-        '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" ' +
-        'stroke-linecap="round" stroke-linejoin="round" focusable="false">' +
-        '<rect x="2.5" y="4" width="13" height="9.5" rx="1.5"/><path d="M6 17h6"/>' +
-        '<rect x="15.5" y="9" width="6" height="11" rx="1.5"/><path d="M18.5 17.5h.01"/></svg>';
-
-    const title = document.createElement('h2');
-    title.className = 'session-ended-title';
-    title.id = 'pia-session-ended-title';
-    title.textContent = copy.title;
-
-    const text = document.createElement('p');
-    text.className = 'session-ended-text';
-    text.id = 'pia-session-ended-text';
-    text.textContent = copy.text;
-
-    card.append(glyph, title, text);
-
-    if (copy.note) {
-        const note = document.createElement('p');
-        note.className = 'session-ended-note';
-        note.textContent = copy.note;
-        card.append(note);
-    }
-
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'btn btn-primary session-ended-btn';
-    btn.textContent = 'Sign in again';
-    btn.addEventListener('click', () => {
-        btn.disabled = true;
-        btn.textContent = 'Opening sign-in…';
-        clearLocalSession();
-        window.location.replace('/index.html');
+    piaDialog({
+        id: 'pia-session-ended',
+        role: 'alertdialog',
+        zIndex: 'var(--z-lockout)',
+        title: copy.title,
+        text: copy.text,
+        note: copy.note,
+        icon:
+            '<svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.8" ' +
+            'stroke-linecap="round" stroke-linejoin="round" focusable="false">' +
+            '<rect x="2.5" y="4" width="13" height="9.5" rx="1.5"/><path d="M6 17h6"/>' +
+            '<rect x="15.5" y="9" width="6" height="11" rx="1.5"/><path d="M18.5 17.5h.01"/></svg>',
+        actions: [
+            {
+                label: 'Sign in again',
+                primary: true,
+                onClick: (btn) => {
+                    btn.disabled = true;
+                    btn.textContent = 'Opening sign-in…';
+                    clearLocalSession();
+                    window.location.replace('/index.html');
+                }
+            }
+        ]
     });
-    card.append(btn);
-
-    root.append(card);
-    document.body.append(root);
-
-    let opened = false;
-    const open = () => {
-        if (opened) return;
-        opened = true;
-        root.classList.add('is-open');
-        btn.focus({ preventScroll: true });
-    };
-    requestAnimationFrame(open);
-    setTimeout(open, 100);
 }
