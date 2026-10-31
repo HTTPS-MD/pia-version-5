@@ -5328,7 +5328,7 @@ h4 {
 .foot-card {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    grid-template-rows: auto 1px auto auto;
+    grid-template-rows: auto 1px auto auto auto;
     align-items: center;
     column-gap: 2.5rem;
     row-gap: 1.5rem;
@@ -5347,10 +5347,10 @@ h4 {
 }
 .foot-logo {
     grid-column: 1;
-    grid-row: 1 / -1;
+    grid-row: 1 / 5;
     align-self: center;
     justify-self: center;
-    width: min(100%, 20rem);
+    width: min(100%, 24rem);
 }
 .foot-join {
     grid-column: 2 / 4;
@@ -5392,10 +5392,11 @@ h4 {
     text-align: left;
 }
 .foot-card .foot-logos {
-    grid-column: 3;
-    grid-row: 4;
+    grid-column: 1 / -1;
+    grid-row: 5;
     align-self: start;
-    justify-self: start;
+    justify-self: center;
+    padding-top: 0.5rem;
 }
 @media (max-width: 64rem) {
     .foot-card {
@@ -5415,7 +5416,7 @@ h4 {
         grid-row: auto;
     }
     .foot-logo {
-        width: 14rem;
+        width: 16rem;
         justify-self: center;
         align-self: start;
     }
@@ -5428,12 +5429,12 @@ h4 {
 @media (max-width: 64rem) {
     .foot-card .foot-logos {
         order: 5;
-        justify-self: start;
+        justify-self: center;
         padding-top: 0.5rem;
     }
 }
 @media (max-width: 48rem) {
     .foot-logo {
-        width: 11rem;
+        width: 13rem;
     }
 }
