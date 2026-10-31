@@ -190,6 +190,13 @@ html[data-surface='admin'] .drawer {
 html[data-surface='admin'] .panel {
     overflow: clip;
 }
+html[data-surface='admin'][data-theme='dark'] .panel {
+    --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+    background: var(--bg-surface);
+}
+html[data-surface='admin'][data-theme='dark'] .table thead th {
+    background: color-mix(in srgb, var(--hex-ffffff) 7%, var(--bg-surface));
+}
 html[data-surface='admin'] .panel-bar {
     padding: 12px 16px;
 }
