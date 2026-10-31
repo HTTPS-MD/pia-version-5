@@ -64,6 +64,10 @@
             )
         );
         head.appendChild(Dash.el('h3', 'step-title', 'Step ' + (i + 1) + ': ' + label));
+        if (done) {
+            // shown on phones, where a finished step folds down to one line
+            head.appendChild(Dash.el('span', 'step-answer', '(' + ((p.doneSteps[i] || {}).text || '') + ')'));
+        }
         card.appendChild(head);
 
         if (done) {

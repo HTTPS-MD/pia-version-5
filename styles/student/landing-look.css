@@ -421,6 +421,12 @@
     }
 }
 
+/* the bottom tabs and the one-line answer of a finished step are for phones only */
+.landing-look .game-tabs,
+.landing-look .step-answer {
+    display: none;
+}
+
 /* tutoring: the same cards, pills and yellow buttons on the game screen */
 .landing-look .game-frame {
     --g-edge: transparent;
@@ -726,6 +732,75 @@
     .landing-look .video-hint-layer {
         padding: 0 0.25rem 0.5rem;
         background: none;
+    }
+
+    /* three tabs along the bottom: lesson, error log, solved questions */
+    .landing-look .game-screen {
+        padding-bottom: 5.5rem;
+    }
+    .landing-look .game-tabs {
+        position: fixed;
+        inset: auto 0 0 0;
+        z-index: var(--z-overlay);
+        display: flex;
+        gap: 0.25rem;
+        padding: 0.6rem 0.6rem max(0.6rem, env(safe-area-inset-bottom));
+        border-radius: var(--ll-radius) var(--ll-radius) 0 0;
+        background: var(--q-paper);
+        box-shadow: 0 -8px 24px var(--black-a28);
+    }
+    .landing-look .game-tab {
+        flex: 1 1 0;
+        min-height: 2.75rem;
+        padding: 0.4rem 0.3rem;
+        border: 0;
+        border-radius: 999px;
+        background: transparent;
+        color: var(--q-ink);
+        font: inherit;
+        font-size: 0.78rem;
+        font-weight: 600;
+        line-height: 1.15;
+        cursor: pointer;
+    }
+    .landing-look .game-tab.is-active {
+        background: var(--volt);
+        color: var(--on-volt);
+        font-weight: 700;
+    }
+    .landing-look .game-frame:not([data-tab='errors']):not([data-tab='solved']) .right-sidebar {
+        display: none;
+    }
+    .landing-look .game-frame[data-tab='errors'] .video-mentor-sidebar,
+    .landing-look .game-frame[data-tab='errors'] .center-panel,
+    .landing-look .game-frame[data-tab='solved'] .video-mentor-sidebar,
+    .landing-look .game-frame[data-tab='solved'] .center-panel {
+        display: none;
+    }
+    .landing-look .game-frame[data-tab='errors'] .q-history-box,
+    .landing-look .game-frame[data-tab='solved'] .history-section {
+        display: none;
+    }
+
+    /* a finished step folds down to one line: the badge, the title and the answer */
+    .landing-look .step-card.correct .solution-label,
+    .landing-look .step-card.correct .solution-input-row,
+    .landing-look .step-card.correct .conversion-confirmation {
+        display: none;
+    }
+    .landing-look .step-card.correct .step-answer {
+        display: inline;
+        font-size: 1rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+    .landing-look .step-card.correct .step-title {
+        font-size: 1rem;
+    }
+    .landing-look .step-card.correct .step-header {
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 0.4rem;
     }
     .landing-look .center-panel {
         padding: 0;
