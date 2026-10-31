@@ -2385,7 +2385,8 @@ h4 {
 :root[data-session] .hero-resume {
     display: inline-flex;
 }
-:root[data-session] .join {
+:root[data-session] .join,
+:root[data-session] .foot-join .foot-btn {
     display: none;
 }
 .hero-media {
@@ -2666,9 +2667,6 @@ h4 {
     line-height: 1;
     letter-spacing: -0.04em;
     color: var(--volt);
-}
-.foot-join .join {
-    width: 100%;
 }
 .foot-card .link-btn {
     color: var(--volt);
@@ -3935,25 +3933,6 @@ h4 {
     .foot-title {
         font-size: 2rem;
     }
-    .foot-join .join {
-        display: grid;
-        grid-template-columns: auto minmax(0, 1fr);
-        gap: 0.5rem;
-        padding: 0.5rem;
-    }
-    .foot-join .join .join-ic {
-        margin-inline-start: 0.5rem;
-    }
-    .foot-join .join .join-in {
-        min-height: 3.25rem;
-        padding-inline: 0.25rem;
-    }
-    .foot-join .join .join-btn {
-        grid-column: 1 / -1;
-        justify-content: center;
-        min-height: 3.25rem;
-        width: 100%;
-    }
     .foot-logos {
         justify-content: flex-start;
         gap: var(--sp-4);
@@ -4762,7 +4741,21 @@ h4 {
 .js .privacy-simple.is-in .privacy-line b {
     transition: background-size 700ms cubic-bezier(0.6, 0, 0.2, 1) 500ms;
 }
-.foot-join .join-btn {
+.foot-join .foot-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 9rem;
+    height: 3.25rem;
+    padding: 0 2rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--volt);
+    color: var(--on-volt);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    cursor: pointer;
     position: relative;
     overflow: hidden;
 }
@@ -4770,7 +4763,7 @@ h4 {
     .foot-logo {
         animation: logoFloat 6s ease-in-out infinite;
     }
-    .foot-join .join-btn::after {
+    .foot-join .foot-btn::after {
         content: '';
         position: absolute;
         inset-block: 0;
@@ -5127,32 +5120,6 @@ h4 {
         font-size: 1rem;
     }
 }
-@media (max-width: 48rem) {
-    .foot-join .join {
-        display: flex;
-        align-items: center;
-        gap: 0.25rem;
-        padding: 0.375rem;
-    }
-    .foot-join .join .join-ic {
-        margin-inline: 0.6rem 0.1rem;
-    }
-    .foot-join .join .join-in {
-        flex: 1 1 auto;
-        min-width: 0;
-        min-height: 2.75rem;
-        padding-inline: 0.25rem;
-        font-size: 1rem;
-    }
-    .foot-join .join .join-btn {
-        flex: none;
-        grid-column: auto;
-        width: auto;
-        min-height: 2.75rem;
-        padding: 0.5rem 1.1rem;
-        font-size: 1rem;
-    }
-}
 @media (max-width: 64rem) {
     .band.band-privacy {
         padding-block: calc(var(--band-pad) + 1rem) calc(var(--band-pad) + 3.5rem);
@@ -5266,7 +5233,6 @@ h4 {
 
 /* the join field and its button are the same size on every screen and in every place (hero and footer) */
 .join,
-.foot-join .join,
 .hero-join .join {
     display: flex;
     align-items: center;
@@ -5274,7 +5240,6 @@ h4 {
     padding: 0.5rem 0.5rem 0.5rem 0.4rem;
 }
 .join .join-in,
-.foot-join .join .join-in,
 .hero-join .join .join-in {
     flex: 1 1 auto;
     min-width: 0;
@@ -5285,7 +5250,6 @@ h4 {
     font-size: 1.05rem;
 }
 .join .join-btn,
-.foot-join .join .join-btn,
 .hero-join .join .join-btn {
     flex: none;
     width: auto;
@@ -5294,4 +5258,18 @@ h4 {
     min-height: 0;
     padding: 0 1.5rem;
     font-size: 1.05rem;
+}
+@media (max-width: 30rem) {
+    .join .join-btn,
+    .hero-join .join .join-btn {
+        min-width: 5.5rem;
+        padding: 0 1rem;
+    }
+    .join .join-ic {
+        margin-inline: 0.5rem 0;
+    }
+    .join .join-in,
+    .hero-join .join .join-in {
+        font-size: 1rem;
+    }
 }
