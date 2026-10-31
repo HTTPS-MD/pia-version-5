@@ -434,9 +434,9 @@
 .landing-look .video-mentor-sidebar {
     border: 0;
     border-radius: var(--ll-radius);
-    background: var(--hex-0d1230) url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp')
+    background: transparent url('../../assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp')
         center calc(100% - 3.5rem) / 100% auto no-repeat;
-    box-shadow: var(--ll-shadow);
+    box-shadow: none;
 }
 /* the tutor stands as big on the stage as on the landing page */
 .landing-look .mentor-overlay-avatar {
@@ -653,9 +653,49 @@
         display: flex;
         flex-direction: column;
     }
+    /* small screens: the tutor is a short strip (tutor + speech) so the problem is on screen straight away */
     .landing-look .video-mentor-sidebar {
         flex: none;
-        height: 30rem;
+        height: auto;
+        background-image: none;
+        box-shadow: none;
+        overflow: visible;
+    }
+    .landing-look .video-copy-layer {
+        container-type: normal;
+        display: grid;
+        grid-template-columns: 6.5rem minmax(0, 1fr);
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.5rem 0.25rem;
+    }
+    .landing-look .prompt-box {
+        grid-column: 2;
+        grid-row: 1;
+        height: auto;
+        min-height: 5.5rem;
+        margin: 0;
+    }
+    .landing-look .prompt-box::after {
+        display: none;
+    }
+    .landing-look .video-copy-layer.has-example .prompt-box {
+        height: 16rem;
+    }
+    .landing-look .mentor-agent-stage {
+        grid-column: 1;
+        grid-row: 1;
+        padding: 0;
+    }
+    .landing-look .mentor-overlay-avatar {
+        height: 8.5rem;
+        max-height: none;
+        margin: 0;
+        left: 0;
+    }
+    .landing-look .video-hint-layer {
+        padding: 0 0.25rem 0.5rem;
+        background: none;
     }
     .landing-look .center-panel {
         padding: 0;
