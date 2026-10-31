@@ -257,9 +257,7 @@
     transform: none;
 }
 .landing-look .pick-stage:not(.has-pick) .pick-hello {
-    position: absolute;
-    top: 0.5rem;
-    margin: 0;
+    display: none;
 }
 .landing-look .pick-spot {
     display: none;
@@ -295,8 +293,8 @@
     grid-row: 1;
     align-self: end;
     justify-self: center;
-    height: 88%;
-    margin: 0 0 2.5rem;
+    height: 90%;
+    margin: 0 0 -1.4rem;
 }
 .landing-look .pick-bubble {
     position: static;
