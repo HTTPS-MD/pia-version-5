@@ -43,21 +43,29 @@
     --bg-field: var(--hex-ffffff);
     --accent-text: var(--hex-0e3a9a);
 }
+/* the same background as the landing page: the navy (or the light violet) with two soft glows */
 html[data-surface='admin'] body {
-    background-color: var(--admin-sky-b);
-    background-image: url('../../assets/images/backgrounds/admin-wallpaper-light.webp'),
-        linear-gradient(180deg, var(--admin-sky-a), var(--admin-sky-b));
-    background-size: cover, auto;
-    background-position:
-        center bottom,
-        center;
-    background-repeat: no-repeat;
+    background-color: var(--hex-0d1230);
+    background-image: var(--grain),
+        radial-gradient(ellipse 45% 55% at 28% 55%, var(--rgb86-144-255-a34), transparent),
+        radial-gradient(ellipse 35% 50% at 75% 50%, var(--rgb255-176-96-a16), transparent),
+        linear-gradient(160deg, var(--hex-0d1230) 0%, var(--hex-17225c) 100%);
+    background-size: 11.25rem 11.25rem, cover, cover, cover;
+    background-position: 0 0, center, center, center;
+    background-repeat: repeat, no-repeat, no-repeat, no-repeat;
     background-attachment: fixed;
     font-family: var(--font-body);
 }
-html[data-surface='admin'][data-theme='dark'] body {
-    background-image: url('../../assets/images/backgrounds/admin-wallpaper-dark.webp'),
-        linear-gradient(180deg, var(--admin-sky-a), var(--admin-sky-b));
+html[data-surface='admin'][data-theme='light'] body {
+    background-color: var(--hex-fff8e7);
+    background-image: var(--grain),
+        radial-gradient(ellipse 45% 55% at 28% 55%, var(--white-a75), transparent),
+        radial-gradient(ellipse 35% 50% at 75% 50%, var(--rgb120-160-255-a28), transparent),
+        linear-gradient(
+            160deg,
+            color-mix(in srgb, var(--palette-violet) 14%, var(--hex-fff8e7)) 0%,
+            color-mix(in srgb, var(--palette-violet) 38%, var(--hex-fff8e7)) 100%
+        );
 }
 html[data-surface='admin'] .app {
     background: transparent;
