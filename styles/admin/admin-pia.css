@@ -70,11 +70,14 @@ html[data-surface='admin'][data-theme='light'] body {
 html[data-surface='admin'] .app {
     background: transparent;
 }
-html[data-surface='admin'] .topbar {
-    background: color-mix(in srgb, var(--bg-body) 82%, transparent);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    border-bottom: 0;
+/* the navbar is the landing page's: solid ink in dark, solid paper in light, with a hairline */
+html[data-surface='admin'][data-theme='dark'] .topbar {
+    background: var(--palette-ink);
+    border-bottom: 1px solid var(--palette-paper);
+}
+html[data-surface='admin'][data-theme='light'] .topbar {
+    background: var(--palette-paper);
+    border-bottom: 1px solid var(--palette-ink);
 }
 html[data-surface='admin'] .sidebar-brand {
     gap: 12px;
