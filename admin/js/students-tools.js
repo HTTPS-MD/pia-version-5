@@ -972,9 +972,9 @@
                     : call('admin_stop_checkin', { p_section: section });
             });
         });
-        var was = false;
+        var was = true;
         try {
-            was = sessionStorage.getItem('pia_hide_details') === '1';
+            was = sessionStorage.getItem('pia_hide_details') !== '0';
         } catch (e) {}
         setHidden(was);
     }
