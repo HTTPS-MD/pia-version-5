@@ -447,18 +447,17 @@ html[data-surface='admin'] .modal-head {
     position: relative;
     display: flex;
     align-items: center;
-    width: 16rem;
-    flex: 0 1 16rem;
+    width: 20rem;
+    flex: 0 1 20rem;
     min-width: 0;
-}
-.workspace:has(#view-students.is-hidden) .head-search {
-    display: none;
 }
 @media (max-width: 40rem) {
     .head-search {
-        display: none;
+        flex-basis: 100%;
+        width: 100%;
     }
 }
+
 .head-search .icon {
     position: absolute;
     left: 12px;
@@ -836,4 +835,19 @@ html[data-surface='admin'] .mk-pair .btn {
 }
 #view-students .class-strip .prof-card-host {
     margin: 0;
+}
+
+.privacy-row {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0 0 10px;
+}
+.privacy-row:empty {
+    display: none;
+}
+#view-students .panel-bar > .bar-group {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }

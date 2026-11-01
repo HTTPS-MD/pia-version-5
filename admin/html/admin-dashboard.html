@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261030c">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261101h">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261101i">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -156,11 +156,6 @@
                     </nav>
                 </div>
                 <div class="topbar-right">
-                    <div class="head-search" role="search">
-                        <label class="sr-only" for="student-search">Search all students</label>
-                        <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
-                        <input type="search" class="input" id="student-search" placeholder="Search all students">
-                    </div>
                     <button type="button" class="quickfind" id="palette-open" hidden aria-haspopup="dialog"
                         aria-controls="palette" aria-expanded="false"
                         aria-label="Search students, sections, or commands" aria-keyshortcuts="Control+K Meta+K">
@@ -192,6 +187,8 @@
                     </div>
 
                     <section class="stat-row" id="class-stats" aria-label="Class overview"></section>
+
+                    <div class="privacy-row" id="privacy-row"></div>
 
                     <div id="section-chips" style="margin-bottom:12px"></div>
                     <div id="attendance-bar" style="margin-bottom:16px"></div>
@@ -225,6 +222,11 @@
                                 </select>
                             </div>
                             <div class="filter-field bar-group">
+                                <div class="head-search" role="search">
+                                    <label class="sr-only" for="student-search">Search all students</label>
+                                    <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+                                    <input type="search" class="input" id="student-search" placeholder="Search all students">
+                                </div>
                                 <label class="filter-label sr-only" id="group-filter-label">Research group</label>
                                 <select class="input input-sm" id="group-filter">
                                     <option value="all">All groups</option>
@@ -1414,7 +1416,7 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261101g"></script>
+    <script src="../js/students-tools.js?v=20261101h"></script>
     <script src="../js/add-students.js?v=20261029a"></script>
     <script src="../js/admin-core.js?v=20261101a"></script>
     <script src="../js/admin-dialogs.js?v=20261031a"></script>

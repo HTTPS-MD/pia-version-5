@@ -957,7 +957,10 @@
 
         var scopeRow = $('#view-students .scope-row');
         var filterRow = bar.parentNode.querySelector('.filter-row');
-        if (scopeRow) {
+        var privacyRow = $('#privacy-row');
+        if (privacyRow) {
+            privacyRow.appendChild(label);
+        } else if (scopeRow) {
             scopeRow.appendChild(label);
         } else if (filterRow) {
             filterRow.appendChild(label);
