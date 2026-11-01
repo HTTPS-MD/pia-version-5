@@ -1000,3 +1000,14 @@ td .custom-select-trigger {
     border-radius: 999px;
     box-sizing: border-box;
 }
+
+/* participant drawer: the name and number sit centred beside the avatar; hidden mode shows one line of hash */
+#drawer-student .drawer-identity {
+    align-items: center;
+}
+.pia-hide-details #drawer-number {
+    display: none;
+}
+.pia-hide-details #drawer-student-name {
+    margin: 0;
+}
