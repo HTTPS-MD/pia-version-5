@@ -5713,10 +5713,9 @@ begin
     select md5(lower(p.email)),
            coalesce(nullif(trim(p.full_name), ''), 'Unnamed student'),
            coalesce(sp.last_seen > now() - interval '2 minutes', false),
-           case p.current_stage
-             when 'OCEAN'               then 'setting_up'
-             when 'Character Selection' then 'setting_up'
-             else 'ready'
+           case when p.current_stage in ('OCEAN', 'Character Selection') then 'working'
+                when coalesce(p.is_ocean_done, false)                    then 'done'
+                else 'not_started'
            end,
            case when v_checkin is null then null
                 else coalesce((select case when m.present then 'present' else 'absent' end

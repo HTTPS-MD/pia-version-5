@@ -9,8 +9,8 @@
     var esc = escapeHTML;
 
     var POLL_MS = 10000;
-    // Two neutral stages. Anything past setting up is "Ready", so the list never hints at a student's group.
-    var STAGE_LABEL = { setting_up: 'Setting up', ready: 'Ready' };
+    // Three neutral stages. Everything after OCEAN and the tutor choice is "Done", so the list never hints at a student's group.
+    var STAGE_LABEL = { not_started: 'Not started', working: 'Working', done: 'Done' };
 
     var state = {
         email: '',
@@ -236,7 +236,7 @@
                     key: String(r.student_key || ''),
                     name: String(r.full_name || 'Unnamed student'),
                     online: r.online === true,
-                    stage: r.stage === 'setting_up' ? 'setting_up' : 'ready',
+                    stage: STAGE_LABEL[r.stage] ? r.stage : 'not_started',
                     attendance: r.attendance || null
                 };
             });
@@ -269,7 +269,7 @@
         if (state.filter === 'online' && !row.online) {
             return false;
         }
-        if ((state.filter === 'setting_up' || state.filter === 'ready') && row.stage !== state.filter) {
+        if (STAGE_LABEL[state.filter] && row.stage !== state.filter) {
             return false;
         }
         var term = state.term.trim().toLowerCase();
@@ -293,7 +293,7 @@
     }
 
     function render() {
-        var counts = { all: state.rows.length, online: 0, setting_up: 0, ready: 0 };
+        var counts = { all: state.rows.length, online: 0, not_started: 0, working: 0, done: 0 };
         state.rows.forEach(function (r) {
             if (r.online) {
                 counts.online++;
