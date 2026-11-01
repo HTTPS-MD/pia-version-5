@@ -551,8 +551,19 @@
     }
     Admin.refreshCustomSelect = refreshCustomSelect;
 
-    function initCustomSelect(id) {
-        var select = $('#' + id);
+    var customSelectCount = 0;
+
+    function initCustomSelect(target) {
+        var select = typeof target === 'string' ? $('#' + target) : target;
+        if (!select || select._customSelect) {
+            return;
+        }
+        select._customSelect = true;
+        if (!select.id) {
+            customSelectCount += 1;
+            select.id = 'cs-' + customSelectCount;
+        }
+        var id = select.id;
         var field = select.parentElement;
         var box = document.createElement('div');
         var trigger = document.createElement('button');
@@ -566,11 +577,17 @@
         trigger.setAttribute('aria-haspopup', 'listbox');
         trigger.setAttribute('aria-expanded', 'false');
         trigger.setAttribute('aria-controls', id + '-list');
-        trigger.setAttribute('aria-labelledby', id + '-label ' + id + '-value');
+        var labelEl = document.querySelector('label[for="' + id + '"]');
+        var name = select.getAttribute('aria-label') || (labelEl ? labelEl.textContent.trim() : '');
+        if (name) {
+            trigger.setAttribute('aria-label', name);
+        }
         list.className = 'custom-select-list';
         list.id = id + '-list';
         list.setAttribute('role', 'listbox');
-        list.setAttribute('aria-labelledby', id + '-label');
+        if (name) {
+            list.setAttribute('aria-label', name);
+        }
         list.hidden = true;
         box.appendChild(trigger);
         field.appendChild(box);
@@ -742,6 +759,20 @@
         }
         document.addEventListener('pointerdown', onPointerDown);
         select.addEventListener('change', refresh);
+        // Keep the trigger in step when code fills the options or sets the value.
+        new MutationObserver(refresh).observe(select, { childList: true });
+        ['value', 'selectedIndex'].forEach(function (prop) {
+            var native = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, prop);
+            Object.defineProperty(select, prop, {
+                get: function () {
+                    return native.get.call(this);
+                },
+                set: function (v) {
+                    native.set.call(this, v);
+                    refresh();
+                }
+            });
+        });
         customSelects[id] = {
             refresh: refresh,
             close: close,
@@ -757,9 +788,33 @@
     }
     Admin.initCustomSelect = initCustomSelect;
 
+    // Every dropdown in the console is the custom one: enhance what is on the page and what is added later.
     function initCustomSelects() {
-        initCustomSelect('section-filter');
-        initCustomSelect('group-filter');
+        $$('select').forEach(initCustomSelect);
+        new MutationObserver(function (records) {
+            records.forEach(function (record) {
+                record.addedNodes.forEach(function (node) {
+                    if (node.nodeType !== 1) {
+                        return;
+                    }
+                    if (node.matches('select')) {
+                        initCustomSelect(node);
+                    }
+                    $$('select', node).forEach(initCustomSelect);
+                });
+                record.removedNodes.forEach(function (node) {
+                    if (node.nodeType !== 1) {
+                        return;
+                    }
+                    var gone = node.matches('select') ? [node] : Array.prototype.slice.call(node.querySelectorAll('select'));
+                    gone.forEach(function (sel) {
+                        if (sel._customSelect && !document.body.contains(sel) && customSelects[sel.id]) {
+                            customSelects[sel.id].destroy();
+                        }
+                    });
+                });
+            });
+        }).observe(document.body, { childList: true, subtree: true });
     }
     Admin.initCustomSelects = initCustomSelects;
 

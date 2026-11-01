@@ -998,3 +998,19 @@ html[data-surface='admin'] .tab.is-active + .stage-switch:not([hidden]):not(.is-
     color: var(--text-muted);
     box-shadow: inset 2px 0 0 var(--accent);
 }
+
+/* custom dropdowns inside forms and tables match the inputs next to them */
+.field .custom-select,
+td .custom-select {
+    width: 100%;
+}
+td .custom-select {
+    min-width: 9rem;
+}
+.field .custom-select-trigger,
+td .custom-select-trigger {
+    min-height: var(--h-control, 40px);
+    padding: 0 16px;
+    border-radius: 999px;
+    box-sizing: border-box;
+}
