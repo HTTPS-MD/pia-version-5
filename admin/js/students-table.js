@@ -252,7 +252,7 @@
         }
         var search = $('#student-search');
         if (search) {
-            search.placeholder = 'Search all students by name, email or number';
+            search.placeholder = 'Search all students';
         }
 
         if (!Admin.state.cohortLoaded) {
