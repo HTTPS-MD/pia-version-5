@@ -800,6 +800,26 @@
         overview.sections = (data && data.sections) || [];
         overview.open = (data && data.open) || [];
         try {
+            // A section with no students yet still belongs in the list.
+            var all = await sb.from('sections').select('name');
+            if (!all.error && all.data) {
+                var known = {};
+                overview.sections.forEach(function (x) {
+                    known[String(x.section).toLowerCase()] = true;
+                });
+                all.data.forEach(function (r) {
+                    var name = String(r.name || '').trim();
+                    if (name && !known[name.toLowerCase()]) {
+                        known[name.toLowerCase()] = true;
+                        overview.sections.push({ section: name, students: 0, without_number: 0, ocean_done: 0 });
+                    }
+                });
+                overview.sections.sort(function (a, b) {
+                    return String(a.section).localeCompare(String(b.section), undefined, { numeric: true });
+                });
+            }
+        } catch (e) {}
+        try {
             var pr = await sb.from('professors').select('name, email, assigned_section');
             profs = pr.error ? profs : pr.data || [];
             var map = {};

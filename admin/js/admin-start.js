@@ -137,6 +137,7 @@
             Admin.closeModal('modal-new-section');
             $('#new-section-form').reset();
             Admin.toastOk('Section created', name + ' is ready for enrolment.');
+            document.dispatchEvent(new Event('pia:students-added'));
             refreshAll();
         });
 
