@@ -115,7 +115,6 @@
         Admin.loadStageTimes()
             .then(function () {
                 renderSections();
-                paintStageTimes();
             })
             .catch(function () {});
     }
@@ -431,56 +430,8 @@
         );
     }
 
-    function stageMinutes(s, field, applies) {
-        var row = Admin.state.stageTimes
-            ? Admin.state.stageTimes[String(s.email || '').toLowerCase()]
-            : null;
-        var seconds = row ? Number(row[field]) : NaN;
-        if (!applies || !isFinite(seconds) || seconds <= 0) {
-            return '—';
-        }
-        return seconds < 60 ? '<1 min' : Math.round(seconds / 60) + ' min';
-    }
-
-    function stageTimeCells(s) {
-        var group = s.group_type;
-        var cell = function (key, field, applies) {
-            return (
-                '<td class="mono" data-stage-time="' +
-                key +
-                '">' +
-                Admin.esc(stageMinutes(s, field, applies)) +
-                '</td>'
-            );
-        };
-        return (
-            cell('ocean', 'ocean_time', true) +
-            cell('character', 'character_select_time', group === 'non-assigned') +
-            cell('tutoring', 'tutoring_time', group !== 'control')
-        );
-    }
-
-    function paintStageTimes() {
-        var byEmail = {};
-        Admin.state.rosterPage.forEach(function (s) {
-            byEmail[String(s.email || '').toLowerCase()] = s;
-        });
-        $$('#student-tbody tr[data-student]').forEach(function (tr) {
-            var s = byEmail[String(tr.getAttribute('data-student') || '').toLowerCase()];
-            if (!s) {
-                return;
-            }
-            var group = s.group_type;
-            var set = function (key, field, applies) {
-                var td = tr.querySelector('[data-stage-time="' + key + '"]');
-                if (td) {
-                    td.textContent = stageMinutes(s, field, applies);
-                }
-            };
-            set('ocean', 'ocean_time', true);
-            set('character', 'character_select_time', group === 'non-assigned');
-            set('tutoring', 'tutoring_time', group !== 'control');
-        });
+    function characterCell(s) {
+        return '<td>' + Admin.esc(Admin.tutorLabel(s)) + '</td>';
     }
 
     function renderRoster() {
@@ -505,7 +456,7 @@
                         '<td>' +
                         stageBadge(stageOf(s)) +
                         '</td>' +
-                        stageTimeCells(s)
+                        characterCell(s)
                 );
             })
             .join('');
