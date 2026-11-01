@@ -856,3 +856,22 @@ html[data-surface='admin'] .mk-pair .btn {
     flex: 0 1 20rem;
     height: auto;
 }
+
+/* Filter row and table head: black, with the head a shade apart */
+html[data-surface='admin'] #view-students .panel-bar > .bar-group {
+    background: var(--bg-surface);
+}
+html[data-surface='admin'] #view-students .table thead th {
+    background: color-mix(in srgb, var(--text) 5%, var(--bg-surface));
+}
+
+/* The selected stage is one pill: label, count and its switch together */
+html[data-surface='admin'] .tab.is-active:has(+ .stage-switch:not([hidden])) {
+    padding-right: 52px;
+}
+html[data-surface='admin'] .tab.is-active + .stage-switch:not([hidden]) {
+    margin: 0 14px 0 -50px;
+}
+html[data-surface='admin'] .tab.is-active + .stage-switch:not([hidden]):not(.is-on) {
+    background: color-mix(in srgb, var(--admin-pill-ink) 28%, transparent);
+}
