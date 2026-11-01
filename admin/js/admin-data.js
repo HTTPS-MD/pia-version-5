@@ -132,7 +132,7 @@
             return query;
         }
         if (stage === 'Active Game') {
-            return query.eq('is_in_game', true);
+            return query.eq('is_in_game', true).or('group_type.is.null,group_type.neq.control');
         }
         return query.eq('current_stage', stage).eq('is_in_game', false);
     }

@@ -18,6 +18,10 @@
     }
 
     function stageOf(profile) {
+        // Control students never play the game: once OCEAN is done they sit on the thank-you page.
+        if (profile.group_type === 'control' && profile.is_ocean_done === true) {
+            return 'Thank You';
+        }
         if (profile.is_in_game) {
             return 'Active Game';
         }
