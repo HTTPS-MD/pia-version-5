@@ -844,7 +844,6 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
     grid-template-columns: minmax(0, 1fr) 6rem;
     grid-template-areas:
         'q q'
-        'meta meta'
         'answer points';
     column-gap: var(--sp-3);
     row-gap: var(--sp-3);
@@ -886,23 +885,6 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
     overflow-wrap: anywhere;
 }
 
-.qb-meta {
-    grid-area: meta;
-    align-self: center;
-    display: flex;
-    align-items: center;
-    gap: var(--sp-2);
-    height: var(--qb-meta-h);
-    font-size: var(--fs-xs);
-    line-height: var(--qb-meta-h);
-    color: var(--text-muted);
-    white-space: nowrap;
-}
-
-.qb-meta .icon {
-    width: 14px;
-    height: 14px;
-}
 
 .qb-cell-label {
     display: block;
@@ -932,12 +914,6 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
     display: block;
     height: var(--control-h);
     border-radius: var(--r-card);
-}
-.qb-skel-meta {
-    display: block;
-    width: 72px;
-    height: 12px;
-    border-radius: var(--r-pill);
 }
 @media (min-width: 48rem) {
     .qb-table {
@@ -985,9 +961,6 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
     .qb-q {
         height: calc(var(--qb-lh) * 2);
         -webkit-line-clamp: 2;
-    }
-    .qb-meta {
-        margin-top: var(--sp-1);
     }
     .qb-cell-label {
         position: absolute;

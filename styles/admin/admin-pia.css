@@ -1165,3 +1165,24 @@ html[data-surface='admin'][data-theme='dark'] #view-mathtask .table thead th {
 #modal-qb-edit .modal-foot-actions {
     margin-left: auto;
 }
+
+/* math task rows are as tall as the students table rows, one line of question each */
+.qb-table {
+    --qb-row-h: 48px;
+}
+.qb-table tbody td.qb-cell-q .qb-q,
+.qb-q {
+    height: auto;
+    -webkit-line-clamp: 1;
+    line-height: var(--qb-lh);
+}
+@media (min-width: 48rem) {
+    .qb-table tbody td,
+    .qb-table tbody td.qb-cell-q {
+        height: 48px;
+    }
+    .qb-q {
+        height: auto;
+        -webkit-line-clamp: 1;
+    }
+}

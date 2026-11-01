@@ -20,10 +20,7 @@
         q.id = 'qb-q-' + item.id;
         q.textContent = item.q || 'Untitled question';
         q.title = item.q || '';
-        var meta = document.createElement('p');
-        meta.className = 'qb-meta';
-        meta.textContent = Admin.qbStepSummary(item);
-        tdQ.append(q, meta);
+        tdQ.append(q);
 
         tr.append(
             tdQ,
@@ -54,7 +51,6 @@
             '<td class="qb-cell-q">' +
             '<div class="qb-q qb-skel-q"><span class="skeleton skeleton-line" style="width:92%"></span>' +
             '<span class="skeleton skeleton-line" style="width:64%"></span></div>' +
-            '<div class="qb-meta"><span class="skeleton qb-skel-meta"></span></div>' +
             '</td>' +
             '<td class="qb-cell-answer"><span class="qb-cell-label">&nbsp;</span><span class="skeleton qb-skel-field"></span></td>' +
             '<td class="qb-cell-points"><span class="qb-cell-label">&nbsp;</span><span class="skeleton qb-skel-field"></span></td>';
