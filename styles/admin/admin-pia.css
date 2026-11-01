@@ -181,9 +181,34 @@ html[data-surface='admin'] .nav-item.is-active {
     box-shadow: 0 6px 16px var(--black-a16);
 }
 @media (max-width: 56.25rem) {
+    /* the tabs share the top row with the logo and the account buttons */
+    html[data-surface='admin'] .app {
+        grid-template-rows: var(--topbar-h) minmax(0, 1fr);
+        grid-template-areas: 'top' 'main';
+    }
     html[data-surface='admin'] .sidebar-nav {
-        padding: 4px 12px 8px;
-        overflow-x: auto;
+        grid-area: top;
+        justify-self: center;
+        align-self: start;
+        height: var(--topbar-h);
+        display: flex;
+        align-items: center;
+        top: 0;
+        padding: 0;
+        z-index: calc(var(--z-sticky) + 2);
+    }
+    html[data-surface='admin'] .nav-item {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: var(--fs-sm);
+    }
+}
+@media (max-width: 30rem) {
+    html[data-surface='admin'] .nav-list {
+        gap: 2px;
+    }
+    html[data-surface='admin'] .nav-item {
+        padding: 0 10px;
     }
 }
 html[data-surface='admin'] .page-title {
