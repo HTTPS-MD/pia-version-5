@@ -220,6 +220,7 @@
 
         Admin.state.activeFaculty = f;
         $('#faculty-title').textContent = f.name || 'Faculty profile';
+        $('#faculty-initials').textContent = Admin.initialsOf(f.name, f.email);
         $('#faculty-subject').textContent = f.email;
         $('#faculty-dept').textContent = f.department || '—';
         $('#faculty-section').textContent = f.assigned_section || 'Unassigned';

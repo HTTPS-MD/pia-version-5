@@ -514,8 +514,8 @@
     }
 
     function renderProfLine() {
-        var scope = $('#view-students .scope-row');
-        if (!scope) {
+        var bar = $('#view-students .panel-bar');
+        if (!bar) {
             return;
         }
         var el = $('#prof-line');
@@ -523,13 +523,20 @@
             el = document.createElement('div');
             el.id = 'prof-line';
             el.className = 'prof-card-host';
-            scope.parentNode.insertBefore(el, scope.nextSibling);
+            bar.parentNode.insertBefore(el, bar);
+            el.addEventListener('keydown', function (event) {
+                var card = event.target.closest('.prof-card[data-prof]');
+                if (card && event.target === card && (event.key === 'Enter' || event.key === ' ')) {
+                    event.preventDefault();
+                    card.click();
+                }
+            });
             el.addEventListener('click', function (event) {
                 var open = event.target.closest('[data-prof]');
                 var change = event.target.closest('[data-prof-change]');
                 var add = event.target.closest('[data-prof-add]');
                 var assign = event.target.closest('[data-assign]');
-                if (open) {
+                if (open && !change && !add) {
                     var email = open.getAttribute('data-prof');
                     var rowEl = Array.prototype.slice
                         .call(document.querySelectorAll('#faculty-tbody [data-faculty]'))
@@ -626,18 +633,18 @@
         var f = list[0];
         var name = displayName(f);
         el.innerHTML =
-            '<div class="prof-card"><div class="prof-card-head">' +
+            '<div class="prof-card is-clickable" data-prof="' +
+            esc(f.email) +
+            '" tabindex="0"><div class="prof-card-head">' +
             '<span class="prof-card-avatar" aria-hidden="true">' +
             esc(initials(name)) +
             '</span>' +
             '<div class="prof-card-who"><span class="prof-card-role">Professor · ' +
             esc(section) +
             '</span>' +
-            '<button type="button" class="cell-link prof-card-name" data-prof="' +
-            esc(f.email) +
-            '"><span data-mask>' +
+            '<span class="prof-card-name"><span data-mask>' +
             esc(name) +
-            '</span></button>' +
+            '</span></span>' +
             '</div>' +
             '<button type="button" class="btn btn-secondary btn-sm" data-prof-change>Change</button></div>' +
             '<div class="prof-card-ocean">' +
