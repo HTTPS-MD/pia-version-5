@@ -532,8 +532,9 @@ html[data-surface='admin'] .modal-head {
 #view-students .page-title #section-host [data-section-menu] {
     font-family: var(--font-body);
     letter-spacing: 0;
-    border-radius: 16px;
-    overflow: hidden;
+    border-radius: 8px;
+    overflow: auto;
+    max-height: min(70vh, 30rem);
     box-shadow: 0 14px 34px var(--black-a22);
 }
 #view-students .scope-row {
@@ -1054,4 +1055,10 @@ html[data-surface='admin'] .modal .btn-danger {
 .section-opt-danger:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+#view-students .page-title #section-host .section-opt.is-selected {
+    background: var(--bg-chip);
+    color: var(--text-muted);
+    box-shadow: inset 2px 0 0 var(--accent);
 }
