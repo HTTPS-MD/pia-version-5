@@ -847,7 +847,12 @@ html[data-surface='admin'] .mk-pair .btn {
 }
 #view-students .panel-bar > .bar-group {
     display: flex;
+    flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
+}
+#view-students .panel-bar > .bar-group .head-search {
+    flex: 0 1 20rem;
+    height: auto;
 }
