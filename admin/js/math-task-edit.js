@@ -10,7 +10,8 @@
     function qbRow(item, index) {
         var n = index + 1;
         var tr = document.createElement('tr');
-        tr.className = 'qb-row';
+        tr.className = 'qb-row is-clickable';
+        tr.tabIndex = 0;
         tr.setAttribute('data-id', String(item.id));
 
         var tdQ = Admin.qbCell('qb-cell-q');
@@ -51,19 +52,15 @@
         var wrap = document.createElement('div');
         wrap.className = 'row-actions';
 
-        [
-            ['edit', 'pencil', 'Edit question ' + n, 'Edit question, steps and hints'],
-            ['delete', 'trash', 'Delete question ' + n, 'Delete question']
-        ].forEach(function (spec) {
-            var btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'btn-icon';
-            btn.setAttribute('data-qb-act', spec[0]);
-            btn.setAttribute('aria-label', spec[2]);
-            btn.title = spec[3];
-            btn.innerHTML = Admin.icon(spec[1]);
-            wrap.appendChild(btn);
-        });
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-icon';
+        btn.setAttribute('data-qb-menu', '');
+        btn.setAttribute('aria-haspopup', 'menu');
+        btn.setAttribute('aria-label', 'Actions for question ' + n);
+        btn.title = 'Edit or delete';
+        btn.innerHTML = Admin.icon('dots');
+        wrap.appendChild(btn);
 
         td.appendChild(wrap);
         return td;
@@ -167,7 +164,7 @@
         setTimeout(function () {
             var rows = $$('#qb-tbody .qb-row');
             var row = rows[Math.min(index, rows.length - 1)];
-            var target = row ? $('[data-qb-act="edit"]', row) : $('#qb-add-btn');
+            var target = row || $('#qb-add-btn');
             if (target) {
                 target.focus({ preventScroll: true });
             }
@@ -610,7 +607,7 @@
         if (editing != null) {
             setTimeout(function () {
                 var row = qbRowEl(editing);
-                var btn = row && $('[data-qb-act="edit"]', row);
+                var btn = row;
                 if (btn) {
                     btn.focus({ preventScroll: true });
                 }

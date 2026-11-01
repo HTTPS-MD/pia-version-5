@@ -122,20 +122,82 @@
         });
 
         var tbody = $('#qb-tbody');
-        tbody.addEventListener('click', function (event) {
-            var btn = event.target.closest('[data-qb-act]');
-            if (!btn) {
-                return;
+        var rowMenu = null;
+        function closeRowMenu() {
+            if (rowMenu) {
+                rowMenu.remove();
+                rowMenu = null;
             }
-            var row = btn.closest('.qb-row');
-            var id = Admin.toInt(row && row.getAttribute('data-id'), null);
+        }
+        function openRowMenu(button, id) {
+            closeRowMenu();
+            var menu = document.createElement('div');
+            menu.className = 'custom-select-list qb-row-menu';
+            menu.setAttribute('role', 'menu');
+            menu.innerHTML =
+                '<button type="button" class="custom-select-option section-opt" role="menuitem" data-act="edit">Edit question</button>' +
+                '<button type="button" class="custom-select-option section-opt section-opt-danger" role="menuitem" data-act="delete">Delete question</button>';
+            document.body.appendChild(menu);
+            var r = button.getBoundingClientRect();
+            menu.style.minWidth = '11rem';
+            menu.style.top = Math.min(r.bottom + 4, window.innerHeight - menu.offsetHeight - 8) + 'px';
+            menu.style.left = Math.max(8, r.right - menu.offsetWidth) + 'px';
+            menu.addEventListener('click', function (event) {
+                var item = event.target.closest('[data-act]');
+                if (!item) {
+                    return;
+                }
+                closeRowMenu();
+                if (item.getAttribute('data-act') === 'edit') {
+                    Admin.qbOpenEditor(id, button);
+                } else {
+                    Admin.qbDeleteOne(id, button);
+                }
+            });
+            rowMenu = menu;
+        }
+        document.addEventListener('click', function (event) {
+            if (rowMenu && !rowMenu.contains(event.target) && !event.target.closest('[data-qb-menu]')) {
+                closeRowMenu();
+            }
+        });
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeRowMenu();
+            }
+        });
+        window.addEventListener('scroll', closeRowMenu, true);
+
+        function rowId(row) {
+            return Admin.toInt(row && row.getAttribute('data-id'), null);
+        }
+        tbody.addEventListener('click', function (event) {
+            var row = event.target.closest('.qb-row');
+            var id = rowId(row);
             if (id === null) {
                 return;
             }
-            if (btn.getAttribute('data-qb-act') === 'edit') {
-                Admin.qbOpenEditor(id, btn);
-            } else {
-                Admin.qbDeleteOne(id, btn);
+            var menuBtn = event.target.closest('[data-qb-menu]');
+            if (menuBtn) {
+                if (rowMenu) {
+                    closeRowMenu();
+                } else {
+                    openRowMenu(menuBtn, id);
+                }
+                return;
+            }
+            if (!event.target.closest('button, a, input')) {
+                Admin.qbOpenEditor(id, row);
+            }
+        });
+        tbody.addEventListener('keydown', function (event) {
+            var row = event.target.closest('.qb-row');
+            if (row && event.target === row && (event.key === 'Enter' || event.key === ' ')) {
+                event.preventDefault();
+                var id = rowId(row);
+                if (id !== null) {
+                    Admin.qbOpenEditor(id, row);
+                }
             }
         });
         tbody.addEventListener('focusout', function () {

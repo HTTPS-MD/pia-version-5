@@ -1149,3 +1149,18 @@ html[data-surface='admin'][data-theme='dark'] #view-mathtask .table thead th {
 #modal-qb-edit .qb-hints {
     padding-top: 4px;
 }
+
+/* math task rows open the editor on click; one dots button holds Edit and Delete */
+.qb-row.is-clickable {
+    cursor: pointer;
+}
+.qb-row.is-clickable:hover {
+    background: color-mix(in srgb, var(--admin-pill) 9%, transparent);
+}
+.qb-row.is-clickable:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+.qb-row-menu {
+    padding: 4px;
+}
