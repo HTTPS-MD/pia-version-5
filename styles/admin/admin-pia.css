@@ -428,16 +428,27 @@ html[data-surface='admin'] .user-menu {
     font-weight: 400;
 }
 .pia-hide-details .prof-card-avatar {
-    position: relative;
-    color: transparent;
+    display: none;
 }
-.pia-hide-details .prof-card-avatar::after {
-    content: '*';
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    color: var(--admin-pill-ink);
+.prof-presence {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 10px;
+    color: var(--text-muted);
+    font-size: var(--fs-xs);
+    letter-spacing: 0;
+    text-transform: none;
+}
+.prof-presence::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-faint);
+}
+.prof-presence.is-online::before {
+    background: var(--hex-7fd6a0);
 }
 .head-search {
     position: relative;

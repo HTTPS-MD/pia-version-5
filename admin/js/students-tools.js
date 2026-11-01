@@ -8,6 +8,7 @@
 
     var overview = { sections: [], open: [] };
     var profs = [];
+    var profOnline = {};
     var holder = {};
     var marks = {};
     var built = false;
@@ -578,7 +579,9 @@
             '|' +
             (list.length ? list[0].email + '|' + list[0].name : '') +
             '|' +
-            (slot ? [slot.known, slot.done, slot.row && slot.row.submitted_at].join(',') : '');
+            (slot ? [slot.known, slot.done, slot.row && slot.row.submitted_at].join(',') : '') +
+            '|' +
+            !!profOnline[who];
         if (el._sig === sig) {
             return;
         }
@@ -601,7 +604,11 @@
             '<span class="prof-card-avatar" aria-hidden="true">' +
             esc(initials(name)) +
             '</span>' +
-            '<div class="prof-card-who"><span class="prof-card-role">Class professor</span>' +
+            '<div class="prof-card-who"><span class="prof-card-role">Class professor<span class="prof-presence' +
+            (profOnline[String(f.email).toLowerCase()] ? ' is-online' : '') +
+            '">' +
+            (profOnline[String(f.email).toLowerCase()] ? 'Online' : 'Offline') +
+            '</span></span>' +
             '<span class="prof-card-name"><span data-mask>' +
             esc(name) +
             '</span></span>' +
@@ -815,6 +822,21 @@
         try {
             var pr = await sb.from('professors').select('name, email, assigned_section');
             profs = pr.error ? profs : pr.data || [];
+            var seen = await sb
+                .from('profiles')
+                .select('email, active_devices')
+                .in(
+                    'email',
+                    profs.map(function (f) {
+                        return f.email;
+                    })
+                );
+            if (!seen.error) {
+                profOnline = {};
+                (seen.data || []).forEach(function (r) {
+                    profOnline[String(r.email).toLowerCase()] = (r.active_devices || []).length > 0;
+                });
+            }
             var map = {};
             var pairs = await sb.rpc('admin_professor_sections');
             if (!pairs.error && pairs.data) {
@@ -970,6 +992,18 @@
     function build() {
         if (built) {
             return;
+        }
+        // keep the professor's online status in step with the live presence updates
+        var applyPresence = window.PIAAdmin && window.PIAAdmin.applyPresence;
+        if (applyPresence) {
+            window.PIAAdmin.applyPresence = function (email, online) {
+                applyPresence(email, online);
+                var key = String(email || '').toLowerCase();
+                if (key in profOnline && profOnline[key] !== !!online) {
+                    profOnline[key] = !!online;
+                    renderProfLine();
+                }
+            };
         }
         buildHideToggle();
         var h1 = titleHost();
