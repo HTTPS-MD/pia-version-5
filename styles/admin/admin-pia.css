@@ -906,3 +906,16 @@ html[data-surface='admin'] .tab.is-active + .stage-switch:not([hidden]):not(.is-
     margin-left: 0;
     height: var(--h-control, 40px);
 }
+
+/* The "5 students · OCEAN completed…" line is gone from view; the directory title already counts students */
+#view-students .scope-line {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+#view-students .scope-row:not(:has(> :not(.scope-line))) {
+    display: none;
+}
