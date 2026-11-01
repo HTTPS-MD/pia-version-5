@@ -155,24 +155,35 @@ html[data-surface='admin'] .sidebar-user .avatar {
         border-bottom: 0;
         padding: 0 8px;
     }
-    html[data-surface='admin'] .nav-list {
-        gap: 6px;
-    }
-    html[data-surface='admin'] .nav-item {
-        min-height: 40px;
-        padding: 0 18px;
-        border-radius: 999px;
-        font-weight: 600;
-        color: var(--text-muted);
-    }
-    html[data-surface='admin'] .nav-item:hover {
-        background: var(--bg-chip);
-        color: var(--text);
-    }
-    html[data-surface='admin'] .nav-item.is-active {
-        background: var(--admin-pill);
-        color: var(--admin-pill-ink);
-        box-shadow: 0 6px 16px var(--black-a16);
+}
+/* the pill tabs on every screen size */
+html[data-surface='admin'] .sidebar-nav {
+    background: transparent;
+    border-bottom: 0;
+}
+html[data-surface='admin'] .nav-list {
+    gap: 6px;
+}
+html[data-surface='admin'] .nav-item {
+    min-height: 40px;
+    padding: 0 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+html[data-surface='admin'] .nav-item:hover {
+    background: var(--bg-chip);
+    color: var(--text);
+}
+html[data-surface='admin'] .nav-item.is-active {
+    background: var(--admin-pill);
+    color: var(--admin-pill-ink);
+    box-shadow: 0 6px 16px var(--black-a16);
+}
+@media (max-width: 56.25rem) {
+    html[data-surface='admin'] .sidebar-nav {
+        padding: 4px 12px 8px;
+        overflow-x: auto;
     }
 }
 html[data-surface='admin'] .page-title {
