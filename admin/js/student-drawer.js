@@ -40,7 +40,6 @@
             drawerDot.title = drawerOnline ? 'Signed in' : 'Signed out';
         }
         $('#drawer-student-name').textContent = s.full_name || '(no name)';
-        $('#drawer-email').textContent = s.email;
         $('#drawer-condition').textContent = condition.short;
         $('#drawer-condition').className = 'badge ' + (condition.badge || '');
         $('#drawer-section').textContent = s.section || '—';

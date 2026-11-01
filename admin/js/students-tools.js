@@ -893,7 +893,7 @@
             H +
             '#student-tbody td[data-ci-cell], ' +
             H +
-            '#drawer-student :is(#drawer-student-name,#drawer-email)';
+            '#drawer-student #drawer-student-name';
 
         var sel = function (suffix) {
             return masked
