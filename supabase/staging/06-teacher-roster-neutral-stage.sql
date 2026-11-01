@@ -1,8 +1,11 @@
--- The teacher roster no longer says which students reached the tutoring dashboard.
--- A teacher sees three stages only: not_started (waiting room), working (OCEAN, character choice, tutoring)
--- and done (a control student who finished, or the thank-you page). Safe to run more than once. Run in the Supabase SQL editor.
+-- The teacher roster no longer carries a stage at all: name, online and attendance only,
+-- so nothing in it can hint at a student's group or progress.
+-- The return type changes, so the old function is dropped first. Safe to run more than once.
+-- Run in the Supabase SQL editor.
 
-CREATE OR REPLACE FUNCTION public.teacher_section_roster() RETURNS TABLE(student_key text, full_name text, online boolean, stage text, attendance text)
+DROP FUNCTION IF EXISTS public.teacher_section_roster();
+
+CREATE FUNCTION public.teacher_section_roster() RETURNS TABLE(student_key text, full_name text, online boolean, attendance text)
     LANGUAGE plpgsql STABLE SECURITY DEFINER
     SET search_path TO 'public'
     AS $$
@@ -42,11 +45,6 @@ begin
     select md5(lower(p.email)),
            coalesce(nullif(trim(p.full_name), ''), 'Unnamed student'),
            coalesce(sp.last_seen > now() - interval '2 minutes', false),
-           case when p.group_type = 'control' and coalesce(p.is_ocean_done, false) then 'done'
-                when p.current_stage in ('OCEAN', 'Character Selection', 'Tutoring Dashboard') then 'working'
-                when p.current_stage = 'Thank You' then 'done'
-                else 'not_started'
-           end,
            case when v_checkin is null then null
                 else coalesce((select case when m.present then 'present' else 'absent' end
                                  from public.attendance_marks m
@@ -60,3 +58,7 @@ begin
      order by p.full_name;
 end;
 $$;
+
+REVOKE ALL ON FUNCTION public.teacher_section_roster() FROM PUBLIC;
+GRANT ALL ON FUNCTION public.teacher_section_roster() TO authenticated;
+GRANT ALL ON FUNCTION public.teacher_section_roster() TO service_role;

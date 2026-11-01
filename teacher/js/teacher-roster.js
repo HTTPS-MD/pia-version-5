@@ -1,7 +1,7 @@
 /*
  * Teacher page.
- * Checks the teacher, then shows the read-only list of the section: who is online,
- * which stage, and attendance. Refreshes by itself.
+ * Checks the teacher, then shows the read-only list of the section: who is online
+ * and the attendance. Refreshes by itself.
  */
 (function () {
     'use strict';
@@ -9,8 +9,6 @@
     var esc = escapeHTML;
 
     var POLL_MS = 10000;
-    // Three neutral stages. Everything after OCEAN and the tutor choice is "Done", so the list never hints at a student's group.
-    var STAGE_LABEL = { not_started: 'Not started', working: 'Working', done: 'Done' };
 
     var state = {
         email: '',
@@ -236,7 +234,6 @@
                     key: String(r.student_key || ''),
                     name: String(r.full_name || 'Unnamed student'),
                     online: r.online === true,
-                    stage: STAGE_LABEL[r.stage] ? r.stage : 'not_started',
                     attendance: r.attendance || null
                 };
             });
@@ -269,9 +266,6 @@
         if (state.filter === 'online' && !row.online) {
             return false;
         }
-        if (STAGE_LABEL[state.filter] && row.stage !== state.filter) {
-            return false;
-        }
         var term = state.term.trim().toLowerCase();
         return !term || row.name.toLowerCase().indexOf(term) !== -1;
     }
@@ -293,12 +287,11 @@
     }
 
     function render() {
-        var counts = { all: state.rows.length, online: 0, not_started: 0, working: 0, done: 0 };
+        var counts = { all: state.rows.length, online: 0 };
         state.rows.forEach(function (r) {
             if (r.online) {
                 counts.online++;
             }
-            counts[r.stage]++;
         });
         $$('[data-count]').forEach(function (n) {
             setText(n, counts[n.getAttribute('data-count')]);
@@ -345,17 +338,10 @@
             user.append(wrap, text);
             who.appendChild(user);
 
-            var stage = document.createElement('td');
-            var badge = document.createElement('span');
-            badge.className = 'badge';
-            badge.textContent = STAGE_LABEL[r.stage];
-            stage.appendChild(badge);
-
             var att = document.createElement('td');
             attendanceCell(att, r.attendance);
 
             tr.appendChild(who);
-            tr.appendChild(stage);
             tr.appendChild(att);
             body.appendChild(tr);
         });

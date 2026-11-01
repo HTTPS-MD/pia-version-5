@@ -5673,7 +5673,7 @@ $_$;
 -- Name: teacher_section_roster(); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE FUNCTION public.teacher_section_roster() RETURNS TABLE(student_key text, full_name text, online boolean, stage text, attendance text)
+CREATE FUNCTION public.teacher_section_roster() RETURNS TABLE(student_key text, full_name text, online boolean, attendance text)
     LANGUAGE plpgsql STABLE SECURITY DEFINER
     SET search_path TO 'public'
     AS $$
@@ -5713,11 +5713,6 @@ begin
     select md5(lower(p.email)),
            coalesce(nullif(trim(p.full_name), ''), 'Unnamed student'),
            coalesce(sp.last_seen > now() - interval '2 minutes', false),
-           case when p.group_type = 'control' and coalesce(p.is_ocean_done, false) then 'done'
-                when p.current_stage in ('OCEAN', 'Character Selection', 'Tutoring Dashboard') then 'working'
-                when p.current_stage = 'Thank You' then 'done'
-                else 'not_started'
-           end,
            case when v_checkin is null then null
                 else coalesce((select case when m.present then 'present' else 'absent' end
                                  from public.attendance_marks m
