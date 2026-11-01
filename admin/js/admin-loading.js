@@ -98,8 +98,7 @@
             roster: [['#student-tbody', 'rows', 5]],
             faculty: [['#faculty-tbody', 'rows', 6]],
             settings: [],
-            admins: [['#admin-tbody', 'rows', 2]],
-            admindevices: [['#admin-device-list', 'block']]
+            admins: [['#admin-tbody', 'rows', 2]]
         };
 
         function fail(key, err) {
@@ -220,17 +219,6 @@
         return '<span class="skeleton skeleton-pill" style="width:' + width + 'px"></span>';
     }
 
-    function skeletonDevice() {
-        return (
-            '<div class="device-row" aria-hidden="true"><span class="skeleton" style="width:16px;height:16px"></span>' +
-            '<div class="device-text"><p class="device-name">' +
-            sk('macOS computer') +
-            '</p></div>' +
-            skeletonPill(84) +
-            '</div>'
-        );
-    }
-
     function skeletonTraits() {
         var one =
             '<div class="trait" aria-hidden="true"><div class="trait-top">' +
@@ -256,7 +244,6 @@
         fill('#student-tbody', skeletonRows(5, 6));
         fill('#faculty-tbody', skeletonRows(6, 4));
         fill('#admin-tbody', skeletonRows(2, 2));
-        fill('#admin-device-list', skeletonDevice());
     }
     Admin.paintSkeletons = paintSkeletons;
 

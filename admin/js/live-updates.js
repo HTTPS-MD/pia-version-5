@@ -81,20 +81,6 @@
                                 (payload.new.active_devices || []).length > 0
                             );
                         }
-
-                        if (
-                            Admin.state.adminEmail &&
-                            payload.new &&
-                            payload.new.email === Admin.state.adminEmail
-                        ) {
-                            if (Array.isArray(payload.new.active_devices)) {
-                                Admin.renderAdminDevices(payload.new.active_devices);
-                            } else {
-                                console.warn(
-                                    '[PIA device] realtime update had no active_devices; list left as is'
-                                );
-                            }
-                        }
                     }
                 )
                 .subscribe();

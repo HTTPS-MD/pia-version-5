@@ -27,8 +27,6 @@
 
     Admin.loadSettings = tracked('settings', Admin.loadSettings);
 
-    Admin.loadAdminDevices = tracked('admindevices', Admin.loadAdminDevices);
-
     Admin.RETRY = {
         cohort: Admin.loadCohort,
         sections: Admin.loadSections,
@@ -36,8 +34,7 @@
         stages: Admin.loadStageCounters,
         faculty: Admin.loadFaculty,
         admins: Admin.loadAdmins,
-        settings: Admin.loadSettings,
-        admindevices: Admin.loadAdminDevices
+        settings: Admin.loadSettings
     };
 
     async function refreshAll(opts) {
@@ -154,7 +151,6 @@
                 Admin.repaintScores(test);
             });
         });
-        $('#device-limit-signout').addEventListener('click', Admin.signOut);
     }
 
     async function boot() {
@@ -271,7 +267,6 @@
         if (typeof startIdleWatchdog === 'function') {
             startIdleWatchdog({ limitMs: 30 * 60 * 1000, onTimeout: Admin.signOut });
         }
-        await Admin.loadAdminDevices();
     }
 
     if (document.readyState === 'loading') {

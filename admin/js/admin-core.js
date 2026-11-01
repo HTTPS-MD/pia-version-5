@@ -260,7 +260,6 @@
         allSections: false,
         activeStudent: null,
         activeSection: null,
-        deviceDiag: [],
         overrides: undefined,
         overridesMissing: false,
         schedules: undefined,

@@ -626,9 +626,6 @@ html[data-surface='admin'] .user-menu {
         max-width: none;
     }
 }
-.sessions-panel .panel-title {
-    margin-bottom: 8px;
-}
 .prof-card-name,
 .prof-card-name span {
     white-space: normal;
