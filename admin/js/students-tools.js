@@ -344,8 +344,6 @@
         closeProfMenu();
         var section = chosen();
         var current = holder[section] || '';
-        var item =
-            'display:block;width:100%;padding:8px 12px;border:0;background:transparent;color:var(--text);font:inherit;text-align:left;cursor:pointer';
         var rows = profs
             .slice()
             .sort(function (a, b) {
@@ -355,40 +353,30 @@
                 var email = String(f.email).toLowerCase();
                 var theirs = sectionsOf(email);
                 return (
-                    '<button type="button" data-assign="' +
+                    '<button type="button" class="custom-select-option section-opt' +
+                    (email === current ? ' is-selected' : '') +
+                    '" data-assign="' +
                     esc(email) +
-                    '" style="' +
-                    item +
-                    (email === current ? ';font-weight:600;background:var(--line-soft)' : '') +
-                    '">' +
+                    '"><span>' +
                     esc(displayName(f)) +
-                    (theirs.length
-                        ? ' <span style="opacity:.65;font-weight:400">· ' +
-                          esc(theirs.join(', ')) +
-                          '</span>'
-                        : ' <span style="opacity:.65;font-weight:400">· no section</span>') +
-                    (email === current ? ' ✓' : '') +
-                    '</button>'
+                    '</span><span class="section-opt-count">' +
+                    (theirs.length ? esc(theirs.join(', ')) : 'no section') +
+                    '</span></button>'
                 );
             })
             .join('');
         var menu = document.createElement('div');
         menu.id = 'prof-menu';
         menu.setAttribute('role', 'menu');
-        menu.style.cssText =
-            'position:absolute;z-index:30;margin-top:6px;min-width:280px;max-height:50vh;overflow:auto;background:var(--bg-surface);color:var(--text);border:1px solid var(--line);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.18);font-size:14px';
+        menu.className = 'custom-select-list section-menu';
         menu.innerHTML =
             rows +
+            '<button type="button" data-prof-add class="custom-select-option section-opt section-opt-sep">+ Add new professor</button>' +
             (current
-                ? '<button type="button" data-assign="" style="' +
-                  item +
-                  ';border-top:1px solid var(--line);color:var(--danger)">Remove professor from ' +
+                ? '<button type="button" data-assign="" class="custom-select-option section-opt section-opt-danger">Remove professor from ' +
                   esc(section) +
                   '</button>'
-                : '') +
-            '<button type="button" data-prof-add style="' +
-            item +
-            ';border-top:1px solid var(--line)">+ Add new professor</button>';
+                : '');
         anchor.parentNode.style.position = 'relative';
         anchor.parentNode.appendChild(menu);
     }

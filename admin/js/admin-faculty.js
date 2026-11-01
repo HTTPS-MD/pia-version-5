@@ -141,7 +141,9 @@
 
         $('#faculty-change').addEventListener('click', function () {
             if (window.PIACheckin && window.PIACheckin.changeProfessor) {
-                window.PIACheckin.changeProfessor();
+                var open = window.PIACheckin.changeProfessor;
+                // wait a tick so the click that opened the menu is not read as a click outside it
+                setTimeout(open, 0);
             }
         });
 
@@ -237,29 +239,9 @@
         $('#faculty-dept').textContent = f.department || '—';
         $('#faculty-section').textContent = f.assigned_section || 'Unassigned';
         $('#faculty-status').textContent = (f.status || '') === 'active' ? 'Active' : 'Inactive';
-        $('#faculty-devices').textContent = '…';
         setFacultyStatus('', '');
 
         Admin.openModal('modal-faculty', trigger);
-        loadFacultyDevices(f.email);
-    }
-
-    async function loadFacultyDevices(email) {
-        var res = await sb
-            .from('profiles')
-            .select('active_devices, max_devices')
-            .eq('email', email)
-            .maybeSingle();
-        if (!Admin.state.activeFaculty || Admin.state.activeFaculty.email !== email) {
-            return;
-        }
-        $('#faculty-devices').textContent =
-            res.error || !res.data
-                ? '—'
-                : (res.data.active_devices || []).length +
-                  ' of ' +
-                  Admin.toInt(res.data.max_devices, 1) +
-                  ' in use';
     }
 
     async function signOutFacultyEverywhere(email, sourceBtn) {
@@ -288,9 +270,6 @@
         }
 
         Admin.toastOk('Signed out everywhere', email + ' was signed out of every device.');
-        if (Admin.state.activeFaculty && Admin.state.activeFaculty.email === email) {
-            loadFacultyDevices(email);
-        }
     }
 
     async function handleRegisterProfessor(event) {
