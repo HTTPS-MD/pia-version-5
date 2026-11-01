@@ -1116,3 +1116,36 @@ html[data-surface='admin'][data-theme='dark'] #view-mathtask .table thead th {
     padding: 12px var(--sp-5);
     border-top: 1px solid var(--line-soft);
 }
+
+/* add / edit question: a tighter form, the points hint in a tooltip, calmer step cards */
+#modal-qb-edit .form-section + .form-section {
+    margin-top: 28px;
+}
+#modal-qb-edit .form-section-title {
+    margin-bottom: 12px;
+}
+#modal-qb-edit .qb-answer-grid {
+    grid-template-columns: minmax(0, 1fr) 9rem;
+    gap: 12px;
+    margin-top: 12px;
+}
+#modal-qb-edit .qb-steps-head {
+    margin-bottom: 8px;
+}
+#modal-qb-edit .qb-steps-head + .field-msg:empty {
+    display: none;
+}
+#modal-qb-edit .qb-steps {
+    margin-top: 12px;
+}
+#modal-qb-edit .qb-step {
+    padding: 16px;
+    border: 1px solid var(--line-soft);
+    background: transparent;
+}
+#modal-qb-edit .qb-step .input {
+    background: var(--bg-field);
+}
+#modal-qb-edit .qb-hints {
+    padding-top: 4px;
+}

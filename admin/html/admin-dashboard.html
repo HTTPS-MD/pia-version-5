@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261101a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261101a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102d">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102e">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -1193,7 +1193,7 @@
                                 <p class="field-msg" data-msg-for="qb-question"></p>
                             </div>
                         </div>
-                        <div class="form-grid qb-answer-grid" style="margin-top:16px">
+                        <div class="form-grid qb-answer-grid">
                             <div class="field">
                                 <label class="label" for="qb-final">Final answer</label>
                                 <input class="input" type="text" id="qb-final" maxlength="200" autocomplete="off"
@@ -1201,10 +1201,12 @@
                                 <p class="field-msg" data-msg-for="qb-final"></p>
                             </div>
                             <div class="field">
-                                <label class="label" for="qb-points">Maximum (base) points <span class="req">*</span></label>
+                                <span class="with-tip">
+                                    <label class="label" for="qb-points">Max points <span class="req">*</span></label>
+                                    <button type="button" class="info-tip" data-tip="The most this question can earn with no wrong answers and no hints. The scoring rules adjust it." aria-label="About maximum points"><svg class="icon"><use href="#i-info"></use></svg></button>
+                                </span>
                                 <input class="input tnum" type="number" id="qb-points" min="1" max="500" step="1"
                                     inputmode="numeric" value="10">
-                                <p class="qb-help">The most this question can earn with no wrong answers and no hints. The scoring rules below adjust it.</p>
                                 <p class="field-msg" data-msg-for="qb-points"></p>
                             </div>
                         </div>
@@ -1223,6 +1225,7 @@
             </div>
 
             <footer class="modal-foot">
+                <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
                 <button class="btn btn-primary" type="submit" form="qb-edit-form" id="qb-edit-save">Save question</button>
             </footer>
         </div>
