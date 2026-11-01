@@ -564,7 +564,6 @@
             select.id = 'cs-' + customSelectCount;
         }
         var id = select.id;
-        var field = select.parentElement;
         var box = document.createElement('div');
         var trigger = document.createElement('button');
         var list = document.createElement('div');
@@ -590,7 +589,7 @@
         }
         list.hidden = true;
         box.appendChild(trigger);
-        field.appendChild(box);
+        select.insertAdjacentElement('afterend', box);
 
         select.hidden = true;
         select.tabIndex = -1;
