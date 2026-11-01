@@ -9,7 +9,8 @@
     var esc = escapeHTML;
 
     var POLL_MS = 10000;
-    var STAGE_LABEL = { setting_up: 'Setting up', waiting: 'Waiting', tutoring: 'Game' };
+    // Two neutral stages. Anything past setting up is "Ready", so the list never hints at a student's group.
+    var STAGE_LABEL = { setting_up: 'Setting up', ready: 'Ready' };
 
     var state = {
         email: '',
@@ -235,7 +236,7 @@
                     key: String(r.student_key || ''),
                     name: String(r.full_name || 'Unnamed student'),
                     online: r.online === true,
-                    stage: STAGE_LABEL[r.stage] ? r.stage : 'waiting',
+                    stage: r.stage === 'setting_up' ? 'setting_up' : 'ready',
                     attendance: r.attendance || null
                 };
             });
@@ -268,12 +269,7 @@
         if (state.filter === 'online' && !row.online) {
             return false;
         }
-        if (
-            (state.filter === 'setting_up' ||
-                state.filter === 'waiting' ||
-                state.filter === 'tutoring') &&
-            row.stage !== state.filter
-        ) {
+        if ((state.filter === 'setting_up' || state.filter === 'ready') && row.stage !== state.filter) {
             return false;
         }
         var term = state.term.trim().toLowerCase();
@@ -297,7 +293,7 @@
     }
 
     function render() {
-        var counts = { all: state.rows.length, online: 0, setting_up: 0, waiting: 0, tutoring: 0 };
+        var counts = { all: state.rows.length, online: 0, setting_up: 0, ready: 0 };
         state.rows.forEach(function (r) {
             if (r.online) {
                 counts.online++;
@@ -309,15 +305,14 @@
         });
 
         setText(
-            $('#scope-line'),
-            state.rows.length
-                ? state.rows.length +
-                      (state.rows.length === 1 ? ' student' : ' students') +
-                      ' · ' +
-                      counts.online +
-                      ' online'
-                : 'No students in this section yet'
+            $('#dir-count'),
+            state.rows.length + (state.rows.length === 1 ? ' student' : ' students')
         );
+        var classOpen = state.rows.some(function (r) {
+            return r.attendance !== null;
+        });
+        $('#class-live-dot').classList.toggle('is-on', classOpen);
+        setText($('#class-live-status'), classOpen ? 'Class is open' : 'Class is closed');
 
         var visible = state.rows.filter(matches);
         var body = $('#roster');
@@ -326,17 +321,29 @@
             var tr = document.createElement('tr');
 
             var who = document.createElement('td');
+            var user = document.createElement('div');
+            user.className = 'cell-user';
+            var wrap = document.createElement('span');
+            wrap.className = 'avatar-wrap';
+            var avatar = document.createElement('span');
+            avatar.className = 'avatar';
+            avatar.setAttribute('aria-hidden', 'true');
+            var words = r.name.trim().split(/\s+/).filter(Boolean);
+            avatar.textContent = (
+                (words[0] || '?')[0] + (words.length > 1 ? words[words.length - 1][0] : '')
+            ).toUpperCase();
+            var dot = document.createElement('span');
+            dot.className = 'avatar-dot' + (r.online ? ' is-online' : '');
+            dot.title = r.online ? 'Online' : 'Offline';
+            wrap.append(avatar, dot);
+            var text = document.createElement('span');
+            text.className = 'cell-user-text';
             var name = document.createElement('span');
             name.className = 't-name';
             name.textContent = r.name;
-            who.appendChild(name);
-
-            var status = document.createElement('td');
-            var dot = document.createElement('span');
-            dot.className = 't-dot' + (r.online ? ' is-on' : '');
-            dot.setAttribute('aria-hidden', 'true');
-            status.appendChild(dot);
-            status.appendChild(document.createTextNode(r.online ? 'Online' : 'Offline'));
+            text.appendChild(name);
+            user.append(wrap, text);
+            who.appendChild(user);
 
             var stage = document.createElement('td');
             var badge = document.createElement('span');
@@ -348,7 +355,6 @@
             attendanceCell(att, r.attendance);
 
             tr.appendChild(who);
-            tr.appendChild(status);
             tr.appendChild(stage);
             tr.appendChild(att);
             body.appendChild(tr);
@@ -382,6 +388,15 @@
             render();
         });
 
+        var eye = document.createElement('label');
+        eye.className = 'show-details';
+        eye.title = 'Show or hide names';
+        eye.innerHTML =
+            '<input type="checkbox" id="show-names" class="sr-only">' +
+            '<svg class="eye eye-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>' +
+            '<svg class="eye eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.5 6.6C3.6 8.4 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>' +
+            '<span class="sr-only">Show names</span>';
+        $('#t-actions').appendChild(eye);
         var names = $('#show-names');
         var apply = function () {
             document.documentElement.classList.toggle('t-hide-names', !names.checked);
@@ -390,7 +405,7 @@
             } catch (e) {}
         };
         try {
-            names.checked = sessionStorage.getItem('pia_teacher_names') !== '0';
+            names.checked = sessionStorage.getItem('pia_teacher_names') === '1';
         } catch (e) {}
         names.addEventListener('change', apply);
         apply();
@@ -447,7 +462,7 @@
 
     function route() {
         var settings = window.location.hash === '#settings';
-        $('#view-sections').hidden = settings;
+        $('#view-students').hidden = settings;
         $('#view-settings').hidden = !settings;
         $('#tab-sections').classList.toggle('is-active', !settings);
         if (settings) {

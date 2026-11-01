@@ -14,9 +14,9 @@
     <script src="../../assets/js/shared/admin-fonts.js"></script>
 
     <link rel="stylesheet" href="../../styles/global.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261030c">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261029d">
-    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261029c">
+    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102b">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102i">
+    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261102a">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -26,6 +26,7 @@
 
     <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
         <defs>
+            <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></symbol>
             <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></symbol>
             <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z"/></symbol>
             <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9.5 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4.5"/><path d="m16 16.5 4.5-4.5L16 7.5"/><path d="M20.5 12H9"/></symbol>
@@ -75,37 +76,44 @@
 
         <main class="t-main" id="main">
 
-            <section id="view-sections">
+            <section id="view-students">
                 <div class="page-head">
                     <div class="t-title">
                         <h1 class="page-title" id="section-title">Your section</h1>
                         <select class="input input-sm" id="section-switch" aria-label="Switch section" hidden></select>
                     </div>
-                    <div class="head-search" role="search">
-                        <label class="sr-only" for="find">Search students</label>
-                        <input type="search" class="input" id="find" placeholder="Search by name">
-                    </div>
+                    <div class="page-actions" id="t-actions"></div>
                 </div>
 
-                <div class="scope-row">
-                    <p class="scope-line" id="scope-line" aria-live="polite">Loading…</p>
-                    <label class="show-details">
-                        <input type="checkbox" id="show-names" checked> Show names
-                    </label>
-                </div>
+                <p class="scope-line" id="scope-line" aria-live="polite"></p>
 
                 <p class="t-empty-section" id="no-section" hidden>
                     You are not assigned to a section yet. Ask the administrator to assign you one.
                 </p>
 
                 <div class="panel" id="roster-panel">
+                    <div class="table-title">
+                        <h2>Student directory</h2>
+                        <span class="count-chip" id="dir-count">0 students</span>
+                        <span class="class-live" id="class-live">
+                            <span class="live-dot" id="class-live-dot" aria-hidden="true"></span>
+                            <span id="class-live-status">Class is closed</span>
+                        </span>
+                    </div>
+
                     <div class="panel-bar">
                         <div class="tabs" role="group" aria-label="Filter the roster" id="filters">
                             <button type="button" class="tab is-active" data-filter="all" aria-pressed="true">All <span class="mono" data-count="all">—</span></button>
                             <button type="button" class="tab" data-filter="online" aria-pressed="false">Online <span class="mono" data-count="online">—</span></button>
                             <button type="button" class="tab" data-filter="setting_up" aria-pressed="false">Setting up <span class="mono" data-count="setting_up">—</span></button>
-                            <button type="button" class="tab" data-filter="waiting" aria-pressed="false">Waiting <span class="mono" data-count="waiting">—</span></button>
-                            <button type="button" class="tab" data-filter="tutoring" aria-pressed="false">Game <span class="mono" data-count="tutoring">—</span></button>
+                            <button type="button" class="tab" data-filter="ready" aria-pressed="false">Ready <span class="mono" data-count="ready">—</span></button>
+                        </div>
+                        <div class="bar-group">
+                            <div class="head-search" role="search">
+                                <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+                                <label class="sr-only" for="find">Search students</label>
+                                <input type="search" class="input" id="find" placeholder="Search students">
+                            </div>
                         </div>
                     </div>
 
@@ -115,7 +123,6 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Student</th>
-                                    <th scope="col">Status</th>
                                     <th scope="col">Stage</th>
                                     <th scope="col">Attendance</th>
                                 </tr>
@@ -215,7 +222,7 @@
     <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
     <script src="../../assets/js/shared/device-revoke.js?v=20261031a"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
-    <script src="../js/teacher-roster.js?v=20261031a"></script>
+    <script src="../js/teacher-roster.js?v=20261102a"></script>
     <script src="../js/teacher-settings.js?v=20261031a"></script>
 </body>
 

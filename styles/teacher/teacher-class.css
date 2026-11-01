@@ -33,9 +33,14 @@
     gap: 12px;
     height: 64px;
     padding-inline: var(--bar-edge);
-    background: color-mix(in srgb, var(--bg-body) 82%, transparent);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
+}
+html[data-surface='admin'][data-theme='dark'] .t-bar {
+    background: var(--palette-ink);
+    border-bottom: 1px solid var(--palette-paper);
+}
+html[data-surface='admin'][data-theme='light'] .t-bar {
+    background: var(--palette-paper);
+    border-bottom: 1px solid var(--palette-ink);
 }
 .t-brand {
     display: inline-flex;
@@ -108,18 +113,6 @@
     font-weight: 400;
 }
 
-.t-dot {
-    display: inline-block;
-    width: 9px;
-    height: 9px;
-    margin-right: 8px;
-    border-radius: 50%;
-    background: var(--track);
-}
-.t-dot.is-on {
-    background: var(--ok);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--ok) 25%, transparent);
-}
 .t-att-present {
     color: var(--ok);
     font-weight: 600;
@@ -140,26 +133,8 @@
 .t-main [hidden] {
     display: none !important;
 }
-.t-main .scope-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 16px;
-}
-.t-main .scope-line {
-    margin: 0;
-}
-.t-main .head-search .input {
-    padding-right: 16px;
-}
 .t-main .page-head {
     margin-bottom: 12px;
-}
-.t-main .head-search {
-    order: 0;
-    margin-left: auto;
 }
 .t-multi .page-title {
     position: absolute;
@@ -308,4 +283,48 @@ html[data-surface='admin'] .t-title.t-multi select {
 }
 .t-toast[hidden] {
     display: none;
+}
+
+/* the roster panel is the admin directory: black in dark mode, one title row, one filter row */
+html[data-surface='admin'][data-theme='dark'] .t-main .panel {
+    --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+    background: var(--bg-surface);
+}
+html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
+    background: color-mix(in srgb, var(--hex-ffffff) 7%, var(--bg-surface));
+}
+.t-main .page-head {
+    align-items: center;
+}
+.t-main .panel-bar > .tabs {
+    flex: 1 1 100%;
+    padding: 6px 16px 12px;
+}
+.t-main .panel-bar > .bar-group {
+    display: flex;
+    flex: 1 1 100%;
+    align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid var(--line);
+    background: var(--bg-surface);
+}
+.t-main .panel-bar > .bar-group .head-search {
+    flex: 0 1 20rem;
+}
+.t-main .panel-bar {
+    padding: 0;
+    gap: 0;
+}
+.t-main .table-title .class-live {
+    margin-left: auto;
+    padding: 0;
+    border: 0;
+    min-height: 0;
+}
+.t-main .scope-line {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
 }
