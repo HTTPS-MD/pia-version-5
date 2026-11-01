@@ -71,7 +71,7 @@ html[data-surface='admin'][data-theme='light'] .t-bar {
 }
 
 .t-main {
-    padding: 8px var(--bar-edge) 48px;
+    padding: 28px var(--bar-edge) 48px;
 }
 .t-title {
     display: flex;
