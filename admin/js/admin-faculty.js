@@ -139,6 +139,12 @@
             openFacultyProfile(row.getAttribute('data-faculty'), row);
         });
 
+        $('#faculty-change').addEventListener('click', function () {
+            if (window.PIACheckin && window.PIACheckin.changeProfessor) {
+                window.PIACheckin.changeProfessor();
+            }
+        });
+
         $('#faculty-reset').addEventListener('click', function () {
             if (Admin.state.activeFaculty) {
                 resetFacultyPassword(Admin.state.activeFaculty.email, this);
@@ -220,6 +226,11 @@
 
         Admin.state.activeFaculty = f;
         $('#faculty-title').textContent = f.name || 'Faculty profile';
+        var change = $('#faculty-change');
+        if (change) {
+            change.style.display =
+                window.PIASectionNow && f.assigned_section === window.PIASectionNow ? '' : 'none';
+        }
         $('#faculty-initials').textContent = Admin.initialsOf(f.name, f.email);
         $('#faculty-subject').textContent = f.email;
         $('#faculty-dept').textContent = f.department || '—';

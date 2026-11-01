@@ -514,16 +514,12 @@
     }
 
     function renderProfLine() {
-        var bar = $('#view-students .panel-bar');
-        if (!bar) {
-            return;
-        }
         var el = $('#prof-line');
         if (!el) {
-            el = document.createElement('div');
-            el.id = 'prof-line';
-            el.className = 'prof-card-host';
-            bar.parentNode.insertBefore(el, bar);
+            return;
+        }
+        if (!el._wired) {
+            el._wired = true;
             el.addEventListener('keydown', function (event) {
                 var card = event.target.closest('.prof-card[data-prof]');
                 if (card && event.target === card && (event.key === 'Enter' || event.key === ' ')) {
@@ -639,14 +635,11 @@
             '<span class="prof-card-avatar" aria-hidden="true">' +
             esc(initials(name)) +
             '</span>' +
-            '<div class="prof-card-who"><span class="prof-card-role">Professor · ' +
-            esc(section) +
-            '</span>' +
+            '<div class="prof-card-who"><span class="prof-card-role">Class professor</span>' +
             '<span class="prof-card-name"><span data-mask>' +
             esc(name) +
             '</span></span>' +
-            '</div>' +
-            '<button type="button" class="btn btn-secondary btn-sm" data-prof-change>Change</button></div>' +
+            '</div></div>' +
             '<div class="prof-card-ocean">' +
             oceanHtml(slot) +
             '</div></div>';
@@ -714,6 +707,15 @@
             btn.setAttribute('data-ci', open ? 'stop' : 'start');
             btn.className = 'btn btn-sm ' + (open ? 'btn-secondary' : 'btn-primary');
         }
+        var liveState = $('#class-live-status');
+        if (liveState) {
+            var isOpen2 = !!section && !!openFor(section);
+            liveState.textContent = !section ? 'Choose a section' : isOpen2 ? 'Class is open' : 'Class is closed';
+            var dot = $('#class-live-dot');
+            if (dot) {
+                dot.classList.toggle('is-on', isOpen2);
+            }
+        }
         paintMarks();
     }
 
@@ -739,6 +741,7 @@
     }
 
     function paintMarks() {
+        renderStats();
         var section = scoped();
         var on = !!section;
         var live = on && !!openFor(section);
@@ -970,8 +973,8 @@
         toggle.hidden = true;
         toggle.className = 'btn btn-sm btn-primary';
         toggle.textContent = 'Open class';
-        toggle.style.marginLeft = 'auto';
-        bar.appendChild(toggle);
+        var live = $('#class-live');
+        (live || bar).appendChild(toggle);
         toggle.addEventListener('click', function () {
             var section = chosen();
             if (!section) {
@@ -1207,7 +1210,71 @@
         }
     }
 
+    function statCard(label, value, note, bar) {
+        return (
+            '<div class="stat-card"><div class="stat-label">' +
+            esc(label) +
+            '</div><div class="stat-value">' +
+            value +
+            '</div><div class="stat-note">' +
+            esc(note) +
+            '</div>' +
+            (bar != null
+                ? '<div class="stat-bar"><i style="width:' + Math.max(0, Math.min(100, bar)) + '%"></i></div>'
+                : '') +
+            '</div>'
+        );
+    }
+
+    function renderStats() {
+        var host = $('#class-stats');
+        var sum = window.PIAAdmin && window.PIAAdmin.state && window.PIAAdmin.state.summary;
+        if (!host || !sum) {
+            return;
+        }
+        var total = sum.total;
+        var pct = total ? Math.round((sum.done / total) * 100) : 0;
+        var activeNode = $('[data-stage-count="Active Game"]');
+        var active = activeNode ? activeNode.textContent.trim() : '—';
+        var cards = [
+            statCard('Total students', String(total), sum.section ? 'Enrolled in ' + sum.section : 'In every section'),
+            statCard('OCEAN completion', pct + '<small>%</small>', sum.done + ' of ' + total + ' assessments completed', pct),
+            statCard('Active sessions', esc(active), active === '0' ? 'No sessions running right now' : 'Playing right now')
+        ];
+        if (sum.section) {
+            var present = 0;
+            Object.keys(marks).forEach(function (email) {
+                if (marks[email] && marks[email].present) {
+                    present += 1;
+                }
+            });
+            cards.push(
+                statCard('Present today', present + ' <small>/ ' + total + '</small>', Math.max(0, total - present) + ' students awaiting attendance')
+            );
+        }
+        var html = cards.join('');
+        if (host._html !== html) {
+            host._html = html;
+            host.innerHTML = html;
+        }
+    }
+
+    document.addEventListener('pia:scope', renderStats);
+
+    // Called from the professor profile: close it and show the same picker the row used to offer.
+    function changeProfessor() {
+        var anchor = $('#prof-line .prof-card');
+        if (!anchor) {
+            return;
+        }
+        if (window.PIAAdmin) {
+            window.PIAAdmin.closeModal('modal-faculty');
+        }
+        openProfMenu(anchor);
+    }
+
     window.PIACheckin = {
+        changeProfessor: changeProfessor,
         loadNumber: loadNumber,
         decorateRoster: decorateRoster,
         saveNumberFor: function (email, number) {

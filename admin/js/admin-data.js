@@ -238,6 +238,7 @@
                     node.textContent = res.error ? '—' : res.count || 0;
                 }
             });
+            document.dispatchEvent(new Event('pia:scope'));
             if (failed) {
                 throw failed;
             }
