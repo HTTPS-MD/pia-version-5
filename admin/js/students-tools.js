@@ -58,7 +58,7 @@
     }
     function prettyNumber(s) {
         var d = digitsOf(s).slice(0, 11);
-        return d.length > 4 ? d.slice(0, 4) + '-' + d.slice(4) : d;
+        return d;
     }
 
     function say(message, isError) {
@@ -1187,11 +1187,7 @@
         try {
             var data = await call('admin_numbers_for', { p_emails: [email] });
             var row = (data || [])[0];
-            bindCell(cell, email, row ? row.number : '', {
-                onSaved: function () {
-                    decorateRoster().catch(function () {});
-                }
-            });
+            bindCell(cell, email, row ? row.number : '', { readOnly: true });
         } catch (error) {
             cell.innerHTML = '<span class="scope-line">' + esc(failure(error)) + '</span>';
         }

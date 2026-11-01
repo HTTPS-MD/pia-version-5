@@ -20,10 +20,6 @@
     }
     Admin.findStudent = findStudent;
 
-    function consentLabel(value) {
-        return value === true ? 'Received' : value === false ? 'Not received' : 'Not recorded';
-    }
-
     function openStudentDrawer(email, trigger) {
         var s = findStudent(email);
         if (!s) {
@@ -74,9 +70,6 @@
         if (reselect) {
             reselect.classList.toggle('is-hidden', s.group_type !== 'non-assigned');
         }
-        $('#drawer-status').textContent =
-            (s.status || '') === 'active' ? 'Has signed in' : 'Has not signed in yet';
-        $('#drawer-assent').textContent = consentLabel(s.student_assent);
         ['pre', 'post'].forEach(function (test) {
             var parts = Admin.scoreParts(s, test);
             $('#drawer-' + test).textContent = parts.value;
@@ -476,12 +469,12 @@
     }
 
     var TUTORS = [
-        { key: 'pia-open', name: 'PIA Open' },
-        { key: 'pia-conscientious', name: 'PIA Structure' },
-        { key: 'pia-extravert', name: 'PIA Dynamic' },
-        { key: 'pia-agreeable', name: 'PIA Empath' },
-        { key: 'pia-calm', name: 'PIA Careful' },
-        { key: 'pia-neutral', name: 'PIA Neutral' }
+        { key: 'pia-open', name: 'Openness (Ava)' },
+        { key: 'pia-conscientious', name: 'Conscientiousness (Cara)' },
+        { key: 'pia-extravert', name: 'Extraversion (Theo)' },
+        { key: 'pia-agreeable', name: 'Agreeableness (Amy)' },
+        { key: 'pia-calm', name: 'Neuroticism (Kai)' },
+        { key: 'pia-neutral', name: 'Neutral (Noel)' }
     ];
     Admin.TUTORS = TUTORS;
 })();
