@@ -1161,6 +1161,7 @@ html[data-surface='admin'][data-theme='dark'] #view-mathtask .table thead th {
     outline: 2px solid var(--accent);
     outline-offset: -2px;
 }
-.qb-row-menu {
-    padding: 4px;
+
+#modal-qb-edit .modal-foot-actions {
+    margin-left: auto;
 }

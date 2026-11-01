@@ -18,9 +18,9 @@
     <script src="../../assets/js/shared/admin-fonts.js"></script>
 
     <link rel="stylesheet" href="../../styles/global.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261101a">
+    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102f">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102g">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -72,7 +72,6 @@
             <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20.5 12a8.5 8.5 0 1 1-2.6-6.1"/><path d="M20.5 4.5V10H15"/></symbol>
 
             <symbol id="i-math" viewBox="0 0 24 24"><path d="M7 4v6M4 7h6"/><path d="M14 7h6"/><path d="m4.9 14.9 4.2 4.2M9.1 14.9l-4.2 4.2"/><path d="M14 17h6"/><circle cx="17" cy="14" r=".9" fill="currentColor" stroke="none"/><circle cx="17" cy="20" r=".9" fill="currentColor" stroke="none"/></symbol>
-            <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></symbol>
             <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3.5c.6 4.4 2.1 5.9 6.5 6.5-4.4.6-5.9 2.1-6.5 6.5-.6-4.4-2.1-5.9-6.5-6.5 4.4-.6 5.9-2.1 6.5-6.5Z"/><path d="M18.5 15.5c.3 1.9.9 2.5 2.8 2.8-1.9.3-2.5.9-2.8 2.8-.3-1.9-.9-2.5-2.8-2.8 1.9-.3 2.5-.9 2.8-2.8Z"/></symbol>
             <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></symbol>
             <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.2A8.2 8.2 0 0 1 9.8 4a8.5 8.5 0 1 0 10.2 10.2Z"/></symbol>
@@ -423,7 +422,6 @@
                                                 <th scope="col">Problem</th>
                                                 <th scope="col" class="qb-col-answer">Final answer</th>
                                                 <th scope="col" class="qb-col-points">Max points</th>
-                                                <th scope="col" class="col-right qb-col-actions">Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody id="qb-tbody"></tbody>
@@ -1225,9 +1223,12 @@
                 </form>
             </div>
 
-            <footer class="modal-foot">
-                <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
-                <button class="btn btn-primary" type="submit" form="qb-edit-form" id="qb-edit-save">Save question</button>
+            <footer class="modal-foot modal-foot-split">
+                <button class="btn btn-danger-soft" type="button" id="qb-edit-delete" hidden>Delete question</button>
+                <div class="modal-foot-actions">
+                    <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
+                    <button class="btn btn-primary" type="submit" form="qb-edit-form" id="qb-edit-save">Save question</button>
+                </div>
             </footer>
         </div>
     </div>
@@ -1406,8 +1407,8 @@
     <script src="../js/score-entry.js?v=20261031a"></script>
     <script src="../js/live-updates.js?v=20261101a"></script>
     <script src="../js/math-task-core.js?v=20261031a"></script>
-    <script src="../js/math-task-edit.js?v=20261102a"></script>
-    <script src="../js/math-task-rules.js?v=20261102a"></script>
+    <script src="../js/math-task-edit.js?v=20261102b"></script>
+    <script src="../js/math-task-rules.js?v=20261102b"></script>
     <script src="../js/admin-start.js?v=20261101c"></script>
 </body>
 

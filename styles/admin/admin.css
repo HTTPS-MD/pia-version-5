@@ -844,7 +844,7 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
     grid-template-columns: minmax(0, 1fr) 6rem;
     grid-template-areas:
         'q q'
-        'meta actions'
+        'meta meta'
         'answer points';
     column-gap: var(--sp-3);
     row-gap: var(--sp-3);
@@ -870,12 +870,6 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
 .qb-cell-points {
     grid-area: points;
     min-width: 0;
-}
-.qb-cell-actions {
-    grid-area: actions;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
 }
 
 .qb-q {
@@ -945,12 +939,6 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
     height: 12px;
     border-radius: var(--r-pill);
 }
-.qb-skel-btn {
-    display: block;
-    width: var(--icon-btn);
-    height: var(--icon-btn);
-    border-radius: var(--r-pill);
-}
 @media (min-width: 48rem) {
     .qb-table {
         display: table;
@@ -986,18 +974,12 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
     .qb-table tbody td.qb-cell-points {
         padding: 0 var(--sp-2);
     }
-    .qb-cell-actions {
-        display: table-cell;
-    }
 
     .qb-col-answer {
         width: 10rem;
     }
     .qb-col-points {
         width: 6.5rem;
-    }
-    .qb-col-actions {
-        width: 8.5rem;
     }
 
     .qb-q {

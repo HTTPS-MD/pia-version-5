@@ -122,52 +122,6 @@
         });
 
         var tbody = $('#qb-tbody');
-        var rowMenu = null;
-        function closeRowMenu() {
-            if (rowMenu) {
-                rowMenu.remove();
-                rowMenu = null;
-            }
-        }
-        function openRowMenu(button, id) {
-            closeRowMenu();
-            var menu = document.createElement('div');
-            menu.className = 'custom-select-list qb-row-menu';
-            menu.setAttribute('role', 'menu');
-            menu.innerHTML =
-                '<button type="button" class="custom-select-option section-opt" role="menuitem" data-act="edit">Edit question</button>' +
-                '<button type="button" class="custom-select-option section-opt section-opt-danger" role="menuitem" data-act="delete">Delete question</button>';
-            document.body.appendChild(menu);
-            var r = button.getBoundingClientRect();
-            menu.style.minWidth = '11rem';
-            menu.style.top = Math.min(r.bottom + 4, window.innerHeight - menu.offsetHeight - 8) + 'px';
-            menu.style.left = Math.max(8, r.right - menu.offsetWidth) + 'px';
-            menu.addEventListener('click', function (event) {
-                var item = event.target.closest('[data-act]');
-                if (!item) {
-                    return;
-                }
-                closeRowMenu();
-                if (item.getAttribute('data-act') === 'edit') {
-                    Admin.qbOpenEditor(id, button);
-                } else {
-                    Admin.qbDeleteOne(id, button);
-                }
-            });
-            rowMenu = menu;
-        }
-        document.addEventListener('click', function (event) {
-            if (rowMenu && !rowMenu.contains(event.target) && !event.target.closest('[data-qb-menu]')) {
-                closeRowMenu();
-            }
-        });
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') {
-                closeRowMenu();
-            }
-        });
-        window.addEventListener('scroll', closeRowMenu, true);
-
         function rowId(row) {
             return Admin.toInt(row && row.getAttribute('data-id'), null);
         }
@@ -175,15 +129,6 @@
             var row = event.target.closest('.qb-row');
             var id = rowId(row);
             if (id === null) {
-                return;
-            }
-            var menuBtn = event.target.closest('[data-qb-menu]');
-            if (menuBtn) {
-                if (rowMenu) {
-                    closeRowMenu();
-                } else {
-                    openRowMenu(menuBtn, id);
-                }
                 return;
             }
             if (!event.target.closest('button, a, input')) {
@@ -208,6 +153,14 @@
             }, 0);
         });
 
+        $('#qb-edit-delete').addEventListener('click', function () {
+            var id = Admin.qb.editingId;
+            if (id == null) {
+                return;
+            }
+            Admin.closeModal('modal-qb-edit');
+            Admin.qbDeleteOne(id, this);
+        });
         $('#qb-add-btn').addEventListener('click', function () {
             Admin.qbOpenEditor(null, this);
         });

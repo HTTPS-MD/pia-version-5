@@ -28,8 +28,7 @@
         tr.append(
             tdQ,
             qbValueCell(item.final || '—', 'Final answer', 'qb-cell-answer'),
-            qbValueCell(String(item.points), 'Points', 'qb-cell-points tnum'),
-            qbActions(item, n)
+            qbValueCell(String(item.points), 'Points', 'qb-cell-points tnum')
         );
         return tr;
     }
@@ -47,25 +46,6 @@
         return td;
     }
 
-    function qbActions(item, n) {
-        var td = Admin.qbCell('qb-cell-actions');
-        var wrap = document.createElement('div');
-        wrap.className = 'row-actions';
-
-        var btn = document.createElement('button');
-        btn.type = 'button';
-        btn.className = 'btn-icon';
-        btn.setAttribute('data-qb-menu', '');
-        btn.setAttribute('aria-haspopup', 'menu');
-        btn.setAttribute('aria-label', 'Actions for question ' + n);
-        btn.title = 'Edit or delete';
-        btn.innerHTML = Admin.icon('dots');
-        wrap.appendChild(btn);
-
-        td.appendChild(wrap);
-        return td;
-    }
-
     function qbSkeletonRow() {
         var tr = document.createElement('tr');
         tr.className = 'qb-row';
@@ -77,9 +57,7 @@
             '<div class="qb-meta"><span class="skeleton qb-skel-meta"></span></div>' +
             '</td>' +
             '<td class="qb-cell-answer"><span class="qb-cell-label">&nbsp;</span><span class="skeleton qb-skel-field"></span></td>' +
-            '<td class="qb-cell-points"><span class="qb-cell-label">&nbsp;</span><span class="skeleton qb-skel-field"></span></td>' +
-            '<td class="qb-cell-actions"><div class="row-actions"><span class="skeleton qb-skel-btn"></span>' +
-            '<span class="skeleton qb-skel-btn"></span></div></td>';
+            '<td class="qb-cell-points"><span class="qb-cell-label">&nbsp;</span><span class="skeleton qb-skel-field"></span></td>';
         return tr;
     }
     Admin.qbSkeletonRow = qbSkeletonRow;
@@ -441,6 +419,7 @@
         $('#qb-edit-title').textContent = item ? 'Edit question ' + index : 'Add question';
         $('#qb-edit-sub').textContent = Admin.qbTopicLabel(Admin.qb.topic);
         $('#qb-edit-save').textContent = item ? 'Save changes' : 'Add question';
+        $('#qb-edit-delete').hidden = !item;
         $('#qb-step-count').textContent =
             Admin.QB_STEP_LABELS[Admin.qb.topic].length + ' required steps';
         $('#qb-step-error').textContent =
