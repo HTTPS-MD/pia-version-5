@@ -953,7 +953,12 @@
         }
         var label = document.createElement('label');
         label.className = 'show-details';
-        label.innerHTML = '<input type="checkbox" id="hide-details" checked> Show details';
+        label.title = 'Show or hide personal details';
+        label.innerHTML =
+            '<input type="checkbox" id="hide-details" class="sr-only" checked>' +
+            '<svg class="eye eye-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>' +
+            '<svg class="eye eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.5 6.6C3.6 8.4 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>' +
+            '<span class="sr-only">Show details</span>';
 
         var scopeRow = $('#view-students .scope-row');
         var filterRow = bar.parentNode.querySelector('.filter-row');
