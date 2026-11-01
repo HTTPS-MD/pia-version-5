@@ -1050,3 +1050,15 @@ td .custom-select-trigger {
 .pia-hide-details #drawer-student-name {
     margin: 0;
 }
+
+/* the professor strip is the same black as the table panel; the online dot touches the avatar edge */
+html[data-surface='admin'][data-theme='dark'] .class-strip {
+    --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+    background: var(--bg-surface);
+}
+.prof-card-avatar .avatar-dot {
+    right: 1px;
+    bottom: 1px;
+    width: 12px;
+    height: 12px;
+}
