@@ -1013,3 +1013,44 @@ html[data-surface='admin'] .modal .btn-danger {
     background: var(--danger);
     color: var(--hex-ffffff);
 }
+
+/* the section dropdown uses the custom-select look: left line on the chosen one */
+.section-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    margin-top: 6px;
+    min-width: 240px;
+    max-width: none;
+    font-size: var(--fs-sm);
+    font-weight: 400;
+}
+.section-opt {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: left;
+}
+.section-opt:hover {
+    background: var(--bg-chip);
+}
+.section-opt-count {
+    opacity: 0.7;
+}
+.section-opt-sep {
+    margin-top: 4px;
+    border-top: 1px solid var(--line);
+    border-radius: 0 0 3px 3px;
+}
+.section-opt-danger {
+    color: var(--danger);
+}
+.section-opt-danger:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}

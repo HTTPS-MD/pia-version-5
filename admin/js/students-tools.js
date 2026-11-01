@@ -9,7 +9,6 @@
     var overview = { sections: [], open: [] };
     var profs = [];
     var holder = {};
-    var confirmDelete = false;
     var marks = {};
     var built = false;
     var polling = false;
@@ -272,23 +271,18 @@
         }
         var now = chosen();
         var label = window.PIAAllSections ? 'All sections' : now ? now : 'Choose a section';
-        var item =
-            'display:block;width:100%;padding:8px 12px;border:0;background:transparent;color:var(--text);font:inherit;text-align:left;cursor:pointer';
         var row = function (value, name, count, open) {
             return (
-                '<button type="button" role="menuitemradio" aria-checked="' +
+                '<button type="button" role="menuitemradio" class="custom-select-option section-opt' +
+                (now === value ? ' is-selected' : '') +
+                '" aria-checked="' +
                 (now === value) +
                 '" data-chip="' +
                 esc(value) +
-                '" style="display:flex;width:100%;justify-content:space-between;gap:16px;align-items:center;padding:8px 12px;border:0;background:' +
-                (now === value ? 'var(--line-soft)' : 'transparent') +
-                ';color:var(--text);font:inherit;font-weight:' +
-                (now === value ? '600' : '400') +
-                ';text-align:left;cursor:pointer">' +
-                '<span>' +
+                '"><span>' +
                 esc(name) +
                 (open ? ' <span class="badge badge-accent">Open</span>' : '') +
-                '</span><span class="mono" style="opacity:.7">' +
+                '</span><span class="mono section-opt-count">' +
                 count +
                 '</span></button>'
             );
@@ -304,38 +298,22 @@
               : profsOf(now).length
                 ? 'Has a professor'
                 : '';
-        var remove = '';
-        if (now && confirmDelete && !why) {
-            remove =
-                '<div style="padding:8px 12px;border-top:1px solid var(--line)"><div style="margin-bottom:8px">Delete ' +
-                esc(now) +
-                '? This cannot be undone.</div>' +
-                '<button type="button" class="btn btn-danger btn-sm" data-section-confirm>Yes, delete</button> <button type="button" class="btn btn-secondary btn-sm" data-section-keep>Keep</button></div>';
-        } else if (now) {
-            remove =
-                '<button type="button" data-section-delete ' +
-                (why
-                    ? 'disabled title="' + why + ': only an empty section can be deleted." '
-                    : '') +
-                'style="' +
-                item +
-                ';border-top:1px solid var(--line);' +
-                (why ? 'opacity:.5;cursor:not-allowed' : 'color:var(--danger)') +
-                '">Delete ' +
-                esc(now) +
-                '</button>';
-        }
+        var remove = now
+            ? '<button type="button" data-section-delete class="custom-select-option section-opt section-opt-danger" ' +
+              (why ? 'disabled title="' + why + ': only an empty section can be deleted." ' : '') +
+              '>Delete ' +
+              esc(now) +
+              '</button>'
+            : '';
 
         var menu =
-            '<div data-section-menu role="menu" hidden style="position:absolute;z-index:30;top:100%;left:0;margin-top:6px;min-width:240px;max-height:60vh;overflow:auto;background:var(--bg-surface);color:var(--text);border:1px solid var(--line);border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.18);font-size:14px;font-weight:400">' +
+            '<div data-section-menu role="menu" hidden class="custom-select-list section-menu">' +
             overview.sections
                 .map(function (x) {
                     return row(x.section, x.section, x.students, isOpen(x.section));
                 })
                 .join('') +
-            '<button type="button" data-section-new style="' +
-            item +
-            ';border-top:1px solid var(--line)">+ New section</button>' +
+            '<button type="button" data-section-new class="custom-select-option section-opt section-opt-sep">+ New section</button>' +
             remove +
             '</div>';
         var wasOpen =
@@ -667,7 +645,6 @@
     }
 
     function pickSection(name) {
-        confirmDelete = false;
 
         var box = $('#student-search');
         if (window.PIAAllSections && box) {
@@ -1081,19 +1058,18 @@
                 if (event.target.closest('[data-section-delete]').disabled) {
                     return;
                 }
-                confirmDelete = true;
-                renderChips();
-                return;
-            }
-            if (event.target.closest('[data-section-keep]')) {
-                confirmDelete = false;
-                renderChips();
-                return;
-            }
-            if (event.target.closest('[data-section-confirm]')) {
                 var doomed = chosen();
-                confirmDelete = false;
+                closeMenu();
                 (async function () {
+                    var ok = await window.PIAAdmin.confirmAction({
+                        title: 'Delete section',
+                        heading: 'Delete ' + doomed + '?',
+                        message: 'This cannot be undone.',
+                        confirmLabel: 'Delete'
+                    });
+                    if (!ok) {
+                        return;
+                    }
                     try {
                         await call('admin_delete_section', { p_name: doomed });
                         var filter = $('#section-filter');
@@ -1101,7 +1077,6 @@
                             filter.value = '';
                         }
                         say(doomed + ' was deleted.');
-                        closeMenu();
                         if (window.PIAAdmin && window.PIAAdmin.refreshAll) {
                             window.PIAAdmin.refreshAll();
                         }
