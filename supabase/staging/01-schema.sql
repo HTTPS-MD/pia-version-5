@@ -1548,11 +1548,6 @@ begin
     raise exception 'PIA: no profile found for this session.' using errcode = '42501';
   end if;
 
-  -- Staff are never limited to one session.
-  if v_role in ('admin', 'teacher') then
-    return jsonb_build_object('ok', true, 'enforced', false);
-  end if;
-
   -- Cannot be tracked without the claim; let the sign-in through.
   if v_sid is null then
     return jsonb_build_object('ok', true, 'enforced', false);

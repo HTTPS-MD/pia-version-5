@@ -114,7 +114,7 @@
             return fail(mismatch);
         }
 
-        if (role === 'student' && typeof claimStudentSession === 'function') {
+        if (typeof claimStudentSession === 'function') {
             var claim = await claimStudentSession();
             if (!claim.allowed && !claim.missing) {
                 return fail(claim.reason);

@@ -184,11 +184,8 @@
     }
 
     async function claimSeat(email, profile, role) {
-        if (role === 'admin') {
-            return { allowed: true };
-        }
-
-        if (role === 'student' && typeof claimStudentSession === 'function') {
+        // Every role is one session at a time: the newest sign-in wins and the older one ends.
+        if (typeof claimStudentSession === 'function') {
             var claim = await claimStudentSession();
             if (!claim.missing) {
                 return claim;
