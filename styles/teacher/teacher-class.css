@@ -200,7 +200,7 @@ html[data-surface='admin'][data-theme='light'] .t-bar {
     color: var(--danger);
 }
 .t-settings {
-    max-width: 40rem;
+    width: 100%;
 }
 .t-settings .settings-group {
     margin: 0 0 10px;
@@ -301,4 +301,10 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
     font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
+}
+
+/* settings sit in the middle of the page */
+#view-settings {
+    max-width: 40rem;
+    margin-inline: auto;
 }
