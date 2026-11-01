@@ -165,32 +165,88 @@
         }
     }
 
+    // Teachers with more than one section pick one from the same dropdown the admin console uses.
     async function offerSectionSwitch() {
         try {
             var res = await sb.rpc('teacher_my_sections');
             if (res.error || !res.data || res.data.length < 2) {
                 return;
             }
-            var select = $('#section-switch');
-            select.innerHTML = '';
+            var title = $('#section-title');
+            var host = document.createElement('span');
+            host.id = 'section-host';
+            var toggle = document.createElement('button');
+            toggle.type = 'button';
+            toggle.setAttribute('data-section-toggle', '');
+            toggle.setAttribute('aria-haspopup', 'menu');
+            toggle.setAttribute('aria-expanded', 'false');
+            var menu = document.createElement('div');
+            menu.setAttribute('data-section-menu', '');
+            menu.setAttribute('role', 'menu');
+            menu.className = 'custom-select-list section-menu';
+            menu.hidden = true;
+
+            var chosen = '';
             res.data.forEach(function (row) {
-                var option = document.createElement('option');
-                option.value = row.section;
-                option.textContent = row.section;
-                option.selected = !!row.in_use;
-                select.appendChild(option);
+                var item = document.createElement('button');
+                item.type = 'button';
+                item.setAttribute('role', 'menuitemradio');
+                item.className = 'custom-select-option section-opt' + (row.in_use ? ' is-selected' : '');
+                item.textContent = row.section;
+                item.setAttribute('data-section', row.section);
+                menu.appendChild(item);
+                if (row.in_use) {
+                    chosen = row.section;
+                }
             });
-            select.hidden = false;
-            select.parentNode.classList.add('t-multi');
-            select.addEventListener('change', async function () {
-                select.disabled = true;
-                var done = await sb.rpc('teacher_set_section', { p_section: select.value });
+            toggle.textContent = (chosen || state.section) + ' ';
+            var caret = document.createElement('span');
+            caret.setAttribute('aria-hidden', 'true');
+            caret.style.cssText = 'font-size:.7em;opacity:.8';
+            caret.textContent = '▾';
+            toggle.appendChild(caret);
+
+            var close = function () {
+                menu.hidden = true;
+                toggle.setAttribute('aria-expanded', 'false');
+            };
+            toggle.addEventListener('click', function () {
+                menu.hidden = !menu.hidden;
+                toggle.setAttribute('aria-expanded', String(!menu.hidden));
+            });
+            menu.addEventListener('click', async function (event) {
+                var item = event.target.closest('[data-section]');
+                if (!item) {
+                    return;
+                }
+                close();
+                if (item.getAttribute('data-section') === chosen) {
+                    return;
+                }
+                toggle.disabled = true;
+                var done = await sb.rpc('teacher_set_section', {
+                    p_section: item.getAttribute('data-section')
+                });
                 if (done.error) {
-                    select.disabled = false;
+                    toggle.disabled = false;
                     return;
                 }
                 window.location.reload();
             });
+            document.addEventListener('click', function (event) {
+                if (!host.contains(event.target)) {
+                    close();
+                }
+            });
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    close();
+                }
+            });
+
+            host.append(toggle, menu);
+            title.textContent = '';
+            title.appendChild(host);
         } catch (e) {}
     }
 
@@ -373,28 +429,6 @@
             state.term = event.target.value;
             render();
         });
-
-        var eye = document.createElement('label');
-        eye.className = 'show-details';
-        eye.title = 'Show or hide names';
-        eye.innerHTML =
-            '<input type="checkbox" id="show-names" class="sr-only">' +
-            '<svg class="eye eye-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>' +
-            '<svg class="eye eye-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17 17 0 0 1-3.2 4M6.5 6.6C3.6 8.4 2 12 2 12s3.6 7 10 7c1.7 0 3.2-.4 4.5-1"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>' +
-            '<span class="sr-only">Show names</span>';
-        $('#t-actions').appendChild(eye);
-        var names = $('#show-names');
-        var apply = function () {
-            document.documentElement.classList.toggle('t-hide-names', !names.checked);
-            try {
-                sessionStorage.setItem('pia_teacher_names', names.checked ? '1' : '0');
-            } catch (e) {}
-        };
-        try {
-            names.checked = sessionStorage.getItem('pia_teacher_names') === '1';
-        } catch (e) {}
-        names.addEventListener('change', apply);
-        apply();
 
         var toggle = $('#theme-toggle');
         var sync = function () {

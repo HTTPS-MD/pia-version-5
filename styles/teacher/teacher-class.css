@@ -80,10 +80,6 @@ html[data-surface='admin'][data-theme='light'] .t-bar {
     flex-wrap: wrap;
     min-width: 0;
 }
-.t-title select {
-    width: auto;
-    max-width: 14rem;
-}
 
 .t-empty-section {
     margin: 0 0 16px;
@@ -94,23 +90,6 @@ html[data-surface='admin'][data-theme='light'] .t-bar {
 }
 .t-name {
     font-weight: 600;
-}
-.t-hide-names .t-name {
-    position: relative;
-    display: inline-block;
-    min-width: 9ch;
-    color: transparent !important;
-    user-select: none;
-}
-.t-hide-names .t-name::after {
-    content: '********';
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    color: var(--text);
-    letter-spacing: 2px;
-    font-weight: 400;
 }
 
 .t-att-present {
@@ -135,28 +114,6 @@ html[data-surface='admin'][data-theme='light'] .t-bar {
 }
 .t-main .page-head {
     margin-bottom: 12px;
-}
-.t-multi .page-title {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-}
-html[data-surface='admin'] .t-title.t-multi select {
-    height: auto;
-    min-height: 0;
-    padding: 2px 34px 2px 4px;
-    border-radius: 12px;
-    border: 0;
-    box-shadow: none;
-    background-color: transparent;
-    font: 700 1.75rem var(--font-display);
-    letter-spacing: -0.03em;
-    color: var(--text);
-    cursor: pointer;
 }
 .t-main .table td {
     white-space: nowrap;
@@ -322,4 +279,26 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
     height: 1px;
     overflow: hidden;
     clip: rect(0 0 0 0);
+}
+
+/* the section picker is the admin's: the title is the button */
+#section-host {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+#section-host [data-section-toggle] {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 14px;
+    border: 1px solid var(--accent-line);
+    background: var(--accent-soft);
+    color: var(--accent-text);
+    border-radius: 6px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
 }
