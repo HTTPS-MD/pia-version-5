@@ -58,11 +58,10 @@
     border-radius: 50%;
 }
 
-/* cards and modals */
+/* cards */
 .landing-look .paper-card,
 .landing-look.quiz .gate-wrap.gate-open,
-.landing-look.quiz .question-card,
-.landing-look .modal {
+.landing-look.quiz .question-card {
     border: 0;
     border-radius: var(--ll-radius);
     background: var(--q-paper);
@@ -74,26 +73,6 @@
 .landing-look.quiz .gate-title mark {
     border-radius: 0.2em;
 }
-.landing-look .modal-sub,
-.landing-look .modal-text,
-.landing-look .quit-progress-row {
-    color: var(--q-soft);
-}
-.landing-look .quit-progress-row b {
-    color: var(--q-ink);
-}
-.landing-look .modal .bar {
-    background: var(--q-field);
-}
-.landing-look .modal-foot {
-    background: transparent;
-    box-shadow: none;
-}
-.landing-look .overlay {
-    background: color-mix(in srgb, var(--hex-0d1230) 55%, transparent);
-    backdrop-filter: blur(4px);
-}
-
 /* chips and the privacy note */
 .landing-look .paper-chips li,
 .landing-look .gate-chips li {
@@ -110,8 +89,7 @@
 .landing-look .paper-card .btn,
 .landing-look .start-wrap .btn,
 .landing-look.quiz .gate-wrap .btn,
-.landing-look.quiz .question-card .btn,
-.landing-look .modal .btn {
+.landing-look.quiz .question-card .btn {
     border: 2px solid var(--q-ink);
     border-radius: var(--ll-btn-radius);
     background: transparent;
@@ -120,8 +98,7 @@
 .landing-look .paper-card .btn-primary,
 .landing-look .start-wrap .btn-primary,
 .landing-look.quiz .gate-wrap .btn-primary,
-.landing-look.quiz .question-card .btn-primary,
-.landing-look .modal .btn-primary {
+.landing-look.quiz .question-card .btn-primary {
     border-color: transparent;
     background: var(--volt);
     color: var(--on-volt);
@@ -129,16 +106,8 @@
 .landing-look .paper-card .btn-primary:hover:not(:disabled),
 .landing-look .start-wrap .btn-primary:hover:not(:disabled),
 .landing-look.quiz .gate-wrap .btn-primary:hover:not(:disabled),
-.landing-look.quiz .question-card .btn-primary:hover:not(:disabled),
-.landing-look .modal .btn-primary:hover:not(:disabled) {
+.landing-look.quiz .question-card .btn-primary:hover:not(:disabled) {
     background: var(--hex-ffe66d);
-}
-
-/* a destructive choice in a modal stays clearly different */
-.landing-look .modal .btn-danger {
-    border-color: transparent;
-    background: var(--danger);
-    color: var(--hex-ffffff);
 }
 
 /* questionnaire answers */
