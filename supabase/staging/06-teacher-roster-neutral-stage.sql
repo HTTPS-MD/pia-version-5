@@ -1,6 +1,6 @@
 -- The teacher roster no longer says which students reached the tutoring dashboard.
--- A teacher sees three stages only: not_started, working (OCEAN, character choice) and done (everything after),
--- so the list cannot reveal a student's group. Safe to run more than once. Run in the Supabase SQL editor.
+-- A teacher sees three stages only: not_started (waiting room), working (OCEAN, character choice, tutoring)
+-- and done (a control student who finished, or the thank-you page). Safe to run more than once. Run in the Supabase SQL editor.
 
 CREATE OR REPLACE FUNCTION public.teacher_section_roster() RETURNS TABLE(student_key text, full_name text, online boolean, stage text, attendance text)
     LANGUAGE plpgsql STABLE SECURITY DEFINER
@@ -42,8 +42,9 @@ begin
     select md5(lower(p.email)),
            coalesce(nullif(trim(p.full_name), ''), 'Unnamed student'),
            coalesce(sp.last_seen > now() - interval '2 minutes', false),
-           case when p.current_stage in ('OCEAN', 'Character Selection') then 'working'
-                when coalesce(p.is_ocean_done, false)                    then 'done'
+           case when p.group_type = 'control' and coalesce(p.is_ocean_done, false) then 'done'
+                when p.current_stage in ('OCEAN', 'Character Selection', 'Tutoring Dashboard') then 'working'
+                when p.current_stage = 'Thank You' then 'done'
                 else 'not_started'
            end,
            case when v_checkin is null then null

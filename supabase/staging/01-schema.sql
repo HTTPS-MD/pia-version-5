@@ -5713,8 +5713,9 @@ begin
     select md5(lower(p.email)),
            coalesce(nullif(trim(p.full_name), ''), 'Unnamed student'),
            coalesce(sp.last_seen > now() - interval '2 minutes', false),
-           case when p.current_stage in ('OCEAN', 'Character Selection') then 'working'
-                when coalesce(p.is_ocean_done, false)                    then 'done'
+           case when p.group_type = 'control' and coalesce(p.is_ocean_done, false) then 'done'
+                when p.current_stage in ('OCEAN', 'Character Selection', 'Tutoring Dashboard') then 'working'
+                when p.current_stage = 'Thank You' then 'done'
                 else 'not_started'
            end,
            case when v_checkin is null then null
