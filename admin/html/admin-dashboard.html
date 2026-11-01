@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261101a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261101a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102c">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102d">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -372,6 +372,12 @@
 
                     <div class="stack-lg">
 
+                        <div class="qb-toolbar">
+                        <div class="qb-subtabs" role="tablist" aria-label="Math task sections">
+                            <button class="qb-subtab is-active" type="button" role="tab" id="qb-tab-questions" aria-selected="true" data-qb-view="questions">Questions</button>
+                            <button class="qb-subtab" type="button" role="tab" id="qb-tab-rules" aria-selected="false" data-qb-view="rules">Rules</button>
+                        </div>
+
                         <div class="segment qb-topics" role="group" aria-label="Topic">
                             <button class="segment-btn is-active" type="button" data-qb-topic="EASY" aria-pressed="true">
                                 <span class="qb-topic-num tnum" aria-hidden="true">1</span>Finding %
@@ -383,10 +389,6 @@
                                 <span class="qb-topic-num tnum" aria-hidden="true">3</span>% Decrease
                             </button>
                         </div>
-
-                        <div class="qb-subtabs" role="tablist" aria-label="Math task sections">
-                            <button class="qb-subtab is-active" type="button" role="tab" id="qb-tab-questions" aria-selected="true" data-qb-view="questions">Questions</button>
-                            <button class="qb-subtab" type="button" role="tab" id="qb-tab-rules" aria-selected="false" data-qb-view="rules">Rules</button>
                         </div>
 
                         <div class="grid grid-main qb-view-questions" id="qb-views">
@@ -399,10 +401,6 @@
                                     </div>
                                     <div class="card-tools">
                                         <button class="btn btn-secondary" type="button" id="qb-refresh">Refresh</button>
-                                        <button class="btn btn-danger-soft" type="button" id="qb-delete-all" disabled>
-                                            <svg class="icon"><use href="#i-trash"></use></svg>
-                                            Delete all
-                                        </button>
                                     </div>
                                 </div>
 
@@ -434,6 +432,12 @@
                                         <p class="state-title" id="qb-empty-title">No questions in this topic yet</p>
                                         <p class="state-desc" id="qb-empty-desc"></p>
                                     </div>
+                                </div>
+                                <div class="qb-danger">
+                                    <button class="btn btn-danger-soft btn-sm" type="button" id="qb-delete-all" disabled>
+                                        <svg class="icon"><use href="#i-trash"></use></svg>
+                                        Delete all questions in this topic
+                                    </button>
                                 </div>
                             </div>
 

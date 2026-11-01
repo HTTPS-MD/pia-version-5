@@ -1062,3 +1062,57 @@ html[data-surface='admin'][data-theme='dark'] .class-strip {
     width: 12px;
     height: 12px;
 }
+
+/* math task bank: one row of controls, the same black panel as the students table, a quieter delete */
+.qb-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.qb-toolbar .qb-subtabs {
+    width: auto;
+    gap: 6px;
+    border-bottom: 0;
+}
+.qb-toolbar .qb-subtab {
+    min-height: 40px;
+    margin: 0;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 999px;
+    font-weight: 600;
+}
+.qb-toolbar .qb-subtab:hover {
+    background: var(--bg-chip);
+    color: var(--text);
+}
+.qb-toolbar .qb-subtab.is-active {
+    background: var(--admin-pill);
+    color: var(--admin-pill-ink);
+    box-shadow: 0 6px 16px var(--black-a16);
+}
+.qb-toolbar .qb-topics {
+    width: auto;
+    max-width: none;
+    border-radius: 999px;
+}
+.qb-toolbar .qb-topics .segment-btn {
+    flex: 0 0 auto;
+    border-radius: 999px;
+    padding: 0 var(--sp-3);
+}
+html[data-surface='admin'][data-theme='dark'] #view-mathtask .card {
+    --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+    background: var(--bg-surface);
+}
+html[data-surface='admin'][data-theme='dark'] #view-mathtask .table thead th {
+    background: color-mix(in srgb, var(--hex-ffffff) 7%, var(--bg-surface));
+}
+.qb-danger {
+    display: flex;
+    justify-content: flex-start;
+    padding: 12px var(--sp-5);
+    border-top: 1px solid var(--line-soft);
+}
