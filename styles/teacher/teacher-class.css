@@ -260,11 +260,6 @@ html[data-surface='admin'] .t-title.t-multi select {
     font-size: var(--fs-sm);
     cursor: pointer;
 }
-.t-device-note {
-    margin: 0 0 8px;
-    font-size: var(--fs-sm);
-    color: var(--text-muted);
-}
 
 .t-toast {
     position: fixed;

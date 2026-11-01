@@ -1,15 +1,13 @@
 /*
  * Teacher settings.
- * Personal details, change password, and the devices the teacher is signed in on.
+ * Personal details and change password.
  */
 (function () {
     'use strict';
 
-    var esc = escapeHTML;
 
     var current = { email: '', name: '' };
     var toastTimer = null;
-    var armed = null;
 
     function toast(message) {
         var el = $('#toast');
@@ -19,131 +17,6 @@
         toastTimer = setTimeout(function () {
             el.hidden = true;
         }, 6000);
-    }
-
-    function describeDevice(deviceId) {
-        var id = String(deviceId || '');
-        if (id.indexOf('Android') !== -1) {
-            return { label: 'Android smartphone', glyph: 'phone' };
-        }
-        if (id.indexOf('iPad') !== -1) {
-            return { label: 'iPad tablet', glyph: 'tablet' };
-        }
-        if (id.indexOf('iOS') !== -1) {
-            return { label: 'iOS device', glyph: 'phone' };
-        }
-        if (id.indexOf('macOS') !== -1) {
-            return { label: 'macOS computer', glyph: 'laptop' };
-        }
-        if (id.indexOf('Windows') !== -1) {
-            return { label: 'Windows PC', glyph: 'monitor' };
-        }
-        return { label: 'Unknown device', glyph: 'monitor' };
-    }
-
-    function glyph(name) {
-        return (
-            '<svg class="icon icon-sm" aria-hidden="true"><use href="#i-' + name + '"></use></svg>'
-        );
-    }
-
-    function renderDevices(devices) {
-        var box = $('#device-list');
-        var here = null;
-        try {
-            here = localStorage.getItem('pia_device_id');
-        } catch (e) {}
-
-        if (!devices.length) {
-            box.innerHTML =
-                '<p class="t-device-note">No other browsers are signed in to this account.</p>';
-            return;
-        }
-        box.innerHTML = devices
-            .map(function (id) {
-                var info = describeDevice(id);
-                return (
-                    '<div class="device-row" data-device="' +
-                    esc(id) +
-                    '">' +
-                    '<span class="device-glyph">' +
-                    glyph(info.glyph) +
-                    '</span>' +
-                    '<div class="device-text"><p class="device-name">' +
-                    esc(info.label) +
-                    '</p></div>' +
-                    (id === here
-                        ? '<span class="badge badge-accent">This device</span>'
-                        : '<button type="button" class="btn btn-danger-soft btn-sm" data-revoke="' +
-                          esc(id) +
-                          '" aria-label="Revoke ' +
-                          esc(info.label) +
-                          '">Revoke</button>') +
-                    '</div>'
-                );
-            })
-            .join('');
-    }
-
-    async function loadDevices() {
-        var box = $('#device-list');
-        box.innerHTML = '<p class="t-device-note">Loading…</p>';
-        try {
-            var res = await sb
-                .from('profiles')
-                .select('active_devices')
-                .eq('email', current.email)
-                .maybeSingle();
-            if (res.error || !res.data) {
-                box.innerHTML =
-                    '<p class="t-device-note">Could not load your sessions. Reload the page.</p>';
-                return;
-            }
-            renderDevices(res.data.active_devices || []);
-        } catch (e) {
-            box.innerHTML =
-                '<p class="t-device-note">Could not load your sessions. Check the connection.</p>';
-        }
-    }
-
-    async function revoke(button) {
-        var id = button.getAttribute('data-revoke');
-        if (armed !== button) {
-            if (armed) {
-                armed.textContent = 'Revoke';
-            }
-            armed = button;
-            button.textContent = 'Sure?';
-            setTimeout(function () {
-                if (armed === button) {
-                    armed = null;
-                    button.textContent = 'Revoke';
-                }
-            }, 4000);
-            return;
-        }
-        armed = null;
-        button.disabled = true;
-        try {
-            var res = await sb.rpc('teacher_revoke_device', { p_device_id: id });
-            if (res.error) {
-                var raw = String(res.error.message || '');
-                toast(
-                    /PGRST202|42883|could not find the function/i.test(raw)
-                        ? 'This is not available yet. The latest database update is not applied.'
-                        : raw.replace(/^PIA:\s*/, '') || 'Could not end that session.'
-                );
-                button.disabled = false;
-                button.textContent = 'Revoke';
-                return;
-            }
-            toast('That session was ended.');
-            loadDevices();
-        } catch (e) {
-            toast('Could not reach the server. Try again.');
-            button.disabled = false;
-            button.textContent = 'Revoke';
-        }
     }
 
     function open(id) {
@@ -290,10 +163,9 @@
             close('modal-password');
             toast(
                 others && others.error
-                    ? 'Password updated. Your other devices could not be signed out; revoke them under Active sessions.'
+                    ? 'Password updated. Your other devices could not be signed out.'
                     : 'Password updated. Your other devices were signed out. This one stays signed in.'
             );
-            loadDevices();
         } finally {
             submit.disabled = false;
             submit.textContent = 'Update';
@@ -305,7 +177,6 @@
         current.name = info.name;
         $('#st-name').textContent = info.name || '—';
         $('#st-email').textContent = info.email || '—';
-        loadDevices();
     }
 
     function init() {
@@ -338,12 +209,6 @@
             document.getElementById(id).addEventListener('input', function () {
                 fieldError(id, '');
             });
-        });
-        $('#device-list').addEventListener('click', function (event) {
-            var btn = event.target.closest('[data-revoke]');
-            if (btn) {
-                revoke(btn);
-            }
         });
     }
 

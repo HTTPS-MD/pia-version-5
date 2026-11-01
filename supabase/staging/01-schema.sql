@@ -5716,8 +5716,7 @@ begin
            case p.current_stage
              when 'OCEAN'               then 'setting_up'
              when 'Character Selection' then 'setting_up'
-             when 'Tutoring Dashboard'  then 'tutoring'
-             else 'waiting'
+             else 'ready'
            end,
            case when v_checkin is null then null
                 else coalesce((select case when m.present then 'present' else 'absent' end
