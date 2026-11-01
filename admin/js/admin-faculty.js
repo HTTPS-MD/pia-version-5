@@ -226,10 +226,11 @@
 
         Admin.state.activeFaculty = f;
         $('#faculty-title').textContent = f.name || 'Faculty profile';
-        var change = $('#faculty-change');
-        if (change) {
-            change.style.display =
-                window.PIASectionNow && f.assigned_section === window.PIASectionNow ? '' : 'none';
+        var sectionActions = $('#faculty-section-actions');
+        if (sectionActions) {
+            var current = window.PIASectionNow && f.assigned_section === window.PIASectionNow;
+            sectionActions.style.display = current ? '' : 'none';
+            $('#faculty-section-label').textContent = 'Section ' + (f.assigned_section || '');
         }
         $('#faculty-initials').textContent = Admin.initialsOf(f.name, f.email);
         $('#faculty-subject').textContent = f.email;
