@@ -252,7 +252,7 @@
         }
         var search = $('#student-search');
         if (search) {
-            search.placeholder = section ? 'Search ' + section : 'Search all sections';
+            search.placeholder = 'Search all students by name, email or number';
         }
 
         if (!Admin.state.cohortLoaded) {
@@ -285,6 +285,9 @@
         refreshCustomSelect('section-filter');
         refreshCustomSelect('group-filter');
         $('#student-search').value = '';
+        Admin.state.allSections = false;
+        window.PIAAllSections = false;
+        document.documentElement.classList.remove('pia-all-sections');
         setStageTab('');
         renderScope();
         Admin.switchView('students');
@@ -760,27 +763,22 @@
             Admin.debounce(function (event) {
                 Admin.state.filters.search = event.target.value;
                 Admin.state.page = 1;
-                Admin.loadRoster();
-            }, 300)
-        );
-
-        var allBox = $('#all-sections');
-        if (allBox) {
-            allBox.addEventListener('click', function () {
-                var on = allBox.getAttribute('aria-pressed') !== 'true';
-                allBox.setAttribute('aria-pressed', on ? 'true' : 'false');
+                // Typing searches every student, whatever section is open; clearing returns to the section.
+                var on = event.target.value.trim() !== '';
+                var changed = on !== !!Admin.state.allSections;
                 Admin.state.allSections = on;
                 window.PIAAllSections = on;
                 document.documentElement.classList.toggle('pia-all-sections', on);
-                Admin.state.page = 1;
                 renderScope();
                 Admin.loadRoster();
-                Admin.loadStageCounters();
-                if (window.PIACheckin && window.PIACheckin.refresh) {
-                    window.PIACheckin.refresh();
+                if (changed) {
+                    Admin.loadStageCounters();
+                    if (window.PIACheckin && window.PIACheckin.refresh) {
+                        window.PIACheckin.refresh();
+                    }
                 }
-            });
-        }
+            }, 300)
+        );
 
         $('#group-filter').addEventListener('change', function (event) {
             Admin.state.filters.group = event.target.value;
@@ -814,6 +812,9 @@
         $('#reset-filters').addEventListener('click', function () {
             Admin.state.filters = { section: '', group: 'all', stage: null, search: '' };
             $('#student-search').value = '';
+            Admin.state.allSections = false;
+            window.PIAAllSections = false;
+            document.documentElement.classList.remove('pia-all-sections');
             $('#group-filter').value = 'all';
             $('#section-filter').value = '';
             refreshCustomSelect('group-filter');

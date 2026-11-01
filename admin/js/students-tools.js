@@ -86,6 +86,11 @@
     }
 
     function cellHtml(st) {
+        if (st.readOnly) {
+            return st.number
+                ? '<span class="mono">' + esc(prettyNumber(st.number)) + '</span>'
+                : '<span class="scope-line">—</span>';
+        }
         if (st.editing) {
             return (
                 '<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">' +
@@ -133,6 +138,9 @@
             st.editing = false;
             st.msg = '';
             st.draft = null;
+            if (st.onSaved) {
+                st.onSaved();
+            }
             paintCell(cell);
             refreshOverview().catch(function () {});
         } else {
@@ -142,8 +150,17 @@
         }
     }
 
-    function bindCell(cell, email, number) {
-        cell._st = { email: email, number: number || '', editing: false, msg: '', draft: null };
+    function bindCell(cell, email, number, options) {
+        options = options || {};
+        cell._st = {
+            email: email,
+            number: number || '',
+            editing: false,
+            msg: '',
+            draft: null,
+            readOnly: !!options.readOnly,
+            onSaved: options.onSaved || null
+        };
         if (!cell._bound) {
             cell._bound = true;
             ['click', 'keydown', 'keyup', 'dblclick'].forEach(function (type) {
@@ -652,9 +669,10 @@
     function pickSection(name) {
         confirmDelete = false;
 
-        var pill = $('#all-sections');
-        if (window.PIAAllSections && pill) {
-            pill.click();
+        var box = $('#student-search');
+        if (window.PIAAllSections && box) {
+            box.value = '';
+            box.dispatchEvent(new Event('input', { bubbles: true }));
         }
         var select = $('#section-filter');
         if (!name) {
@@ -1153,7 +1171,7 @@
             });
             cells.forEach(function (c) {
                 if (c.tr.isConnected) {
-                    bindCell(c.cell, c.email, byEmail[String(c.email).toLowerCase()]);
+                    bindCell(c.cell, c.email, byEmail[String(c.email).toLowerCase()], { readOnly: true });
                 }
             });
         } catch (error) {
@@ -1166,7 +1184,24 @@
         }
     }
 
+    // The student number is edited from the participant profile, not from the table.
+    async function loadNumber(cell, email) {
+        cell.innerHTML = '<span class="scope-line">…</span>';
+        try {
+            var data = await call('admin_numbers_for', { p_emails: [email] });
+            var row = (data || [])[0];
+            bindCell(cell, email, row ? row.number : '', {
+                onSaved: function () {
+                    decorateRoster().catch(function () {});
+                }
+            });
+        } catch (error) {
+            cell.innerHTML = '<span class="scope-line">' + esc(failure(error)) + '</span>';
+        }
+    }
+
     window.PIACheckin = {
+        loadNumber: loadNumber,
         decorateRoster: decorateRoster,
         saveNumberFor: function (email, number) {
             return saveNumber(email, number);

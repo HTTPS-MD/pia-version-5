@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261030c">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261101b">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261101c">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -173,14 +173,14 @@
             <main class="main" id="main">
 
                 <section class="page is-hidden" id="view-students" data-view-panel="students">
+                    <div class="head-search" role="search">
+                        <label class="sr-only" for="student-search">Search all students</label>
+                        <svg class="icon" aria-hidden="true"><use href="#i-search"></use></svg>
+                        <input type="search" class="input" id="student-search" placeholder="Search all students by name, email or number">
+                    </div>
                     <div class="page-head">
                         <h1 class="page-title">Students</h1>
                         <div class="page-actions">
-                            <div class="head-search" role="search">
-                                <label class="sr-only" for="student-search">Search students</label>
-                                <input type="search" class="input" id="student-search" placeholder="Name or email, in all sections">
-                                <button type="button" class="pill-toggle" id="all-sections" aria-pressed="false" title="Search every section, not only the chosen one">All sections</button>
-                            </div>
                             <button type="button" class="btn btn-secondary is-hidden" data-modal-open="modal-manage-sections">Manage sections</button>
                             <button type="button" class="btn btn-secondary" data-modal-open="modal-add-students">Add Students</button>
                         </div>
@@ -1060,6 +1060,10 @@
                         <p class="kv-value" id="drawer-section">—</p>
                     </div>
                     <div class="kv">
+                        <p class="kv-label">Student number</p>
+                        <div class="kv-value" id="drawer-number">—</div>
+                    </div>
+                    <div class="kv">
                         <p class="kv-label">Current stage</p>
                         <p class="kv-value" id="drawer-stage">—</p>
                     </div>
@@ -1389,14 +1393,14 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261101a"></script>
+    <script src="../js/students-tools.js?v=20261101c"></script>
     <script src="../js/add-students.js?v=20261029a"></script>
     <script src="../js/admin-core.js?v=20261101a"></script>
     <script src="../js/admin-dialogs.js?v=20261031a"></script>
     <script src="../js/admin-loading.js?v=20261031a"></script>
     <script src="../js/admin-data.js?v=20261101b"></script>
-    <script src="../js/students-table.js?v=20261101b"></script>
-    <script src="../js/student-drawer.js?v=20261031a"></script>
+    <script src="../js/students-table.js?v=20261101c"></script>
+    <script src="../js/student-drawer.js?v=20261101a"></script>
     <script src="../js/student-forms.js?v=20261031b"></script>
     <script src="../js/admin-faculty.js?v=20261031a"></script>
     <script src="../js/stage-controls.js?v=20261031a"></script>

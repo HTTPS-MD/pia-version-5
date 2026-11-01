@@ -48,6 +48,10 @@
         $('#drawer-condition').textContent = condition.short;
         $('#drawer-condition').className = 'badge ' + (condition.badge || '');
         $('#drawer-section').textContent = s.section || '—';
+        var numberCell = $('#drawer-number');
+        if (numberCell && window.PIACheckin && window.PIACheckin.loadNumber) {
+            window.PIACheckin.loadNumber(numberCell, s.email);
+        }
         $('#drawer-stage').textContent = Admin.stageLabel(Admin.stageOf(s));
         $('#drawer-tutor').textContent = Admin.tutorLabel(s);
 
