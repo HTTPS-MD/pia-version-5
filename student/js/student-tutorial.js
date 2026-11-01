@@ -4,32 +4,45 @@
 
     var SEEN_KEY = 'pia_tutorial_seen_at';
 
+    // To show a picture on a step, put the file in assets/images/tutorial/ and set image to its name,
+    // for example image: 'step-1.webp', and alt to a short description of it.
+    var IMAGE_DIR = '../../assets/images/tutorial/';
+
     var STEPS = [
         {
             title: 'Welcome to your tutoring session',
+            image: '',
+            alt: '',
             text: 'You will solve percentage word problems with your tutor, one step at a time. The session has a time limit, shown as Time left, so keep an eye on it.'
         },
         {
             title: 'Work one step at a time',
+            image: '',
+            alt: '',
             text: 'Each problem has a few steps. Type the answer for the step you are on, then press Submit step. The next step appears when you get it right.'
         },
         {
             title: 'Show your working, then the value',
+            image: '',
+            alt: '',
             text: 'You can type a calculation like 0.3 x 60. If it is right, you will be asked to type the final value by itself to finish the step.'
         },
         {
             title: 'Hints are there to help',
+            image: '',
+            alt: '',
             text: 'After two wrong answers on a step, the hint button appears. Each press gives a bit more help, so you can stop as soon as you know what to do.'
         }
     ];
 
     var sb = null;
-    var overlay, titleEl, textEl, stepEl, backBtn, nextBtn, helpBtn, appRoot;
+    var overlay, titleEl, textEl, stepEl, imgEl, closeBtn, backBtn, nextBtn, helpBtn, appRoot;
     var index = 0;
     var isOpen = false;
     var returnFocus = null;
     var seenKnown = false;
     var seenThisPage = false;
+    var mustFinish = false;
     var saving = null;
 
     function reducedMotion() {
@@ -83,6 +96,15 @@
         stepEl.textContent = 'Step ' + (index + 1) + ' of ' + STEPS.length;
         titleEl.textContent = step.title;
         textEl.textContent = step.text;
+        if (step.image) {
+            imgEl.src = IMAGE_DIR + step.image;
+            imgEl.alt = step.alt || '';
+            imgEl.hidden = false;
+        } else {
+            imgEl.hidden = true;
+            imgEl.removeAttribute('src');
+        }
+        closeBtn.hidden = mustFinish;
         backBtn.disabled = index === 0;
         nextBtn.textContent = index === STEPS.length - 1 ? 'Finish' : 'Next';
     }
@@ -93,6 +115,10 @@
 
     function onKey(e) {
         if (!isOpen) {
+            return;
+        }
+        if (e.key === 'Escape' && !mustFinish) {
+            close();
             return;
         }
         if (e.key !== 'Tab') {
@@ -113,11 +139,13 @@
         }
     }
 
-    function open() {
+    // the first time, the tutorial has to be finished; after that the student can close it at any step
+    function open(first) {
         if (isOpen) {
             return;
         }
         isOpen = true;
+        mustFinish = first === true && !seenKnown && !seenThisPage;
         index = 0;
         returnFocus = document.activeElement;
         render();
@@ -164,10 +192,18 @@
         titleEl = $('#tutorial-title');
         textEl = $('#tutorial-text');
         stepEl = $('#tutorial-step');
+        imgEl = $('#tutorial-img');
+        closeBtn = $('#tutorial-close');
         backBtn = $('#tutorial-back');
         nextBtn = $('#tutorial-next');
 
-        helpBtn.addEventListener('click', open);
+        helpBtn.addEventListener('click', function () {
+            open(false);
+        });
+        closeBtn.addEventListener('click', close);
+        imgEl.addEventListener('error', function () {
+            imgEl.hidden = true;
+        });
         backBtn.addEventListener('click', function () {
             if (index > 0) {
                 index -= 1;
@@ -190,10 +226,15 @@
             }
             seenKnown = seen;
             if (!seen && !seenThisPage) {
-                open();
+                open(true);
             }
         });
     }
 
-    window.PIATutorial = { init: init, open: open };
+    window.PIATutorial = {
+        init: init,
+        open: function () {
+            open(false);
+        }
+    };
 })();

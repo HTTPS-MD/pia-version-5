@@ -253,6 +253,25 @@ body:not([data-boot='pending']) .learn-veil[hidden] {
     max-width: 46ch;
 }
 
+.tutorial-close {
+    flex: none;
+    order: 2;
+    margin-inline-start: auto;
+}
+.tutorial-close[hidden] {
+    display: none;
+}
+.tutorial-img {
+    display: block;
+    width: 100%;
+    max-height: 18rem;
+    margin: 0 0 var(--sp-4);
+    border-radius: var(--r-card, 1rem);
+    object-fit: contain;
+}
+.tutorial-img[hidden] {
+    display: none;
+}
 .tutorial-foot {
     flex-wrap: wrap;
 }
