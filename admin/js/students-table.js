@@ -22,7 +22,11 @@
         if (profile.group_type === 'control' && profile.is_ocean_done === true) {
             return 'Thank You';
         }
-        if (profile.is_in_game) {
+        // The in-game flag can linger after a student leaves the game; only trust it on the game stage.
+        if (
+            profile.is_in_game &&
+            (!profile.current_stage || profile.current_stage === 'Tutoring Dashboard')
+        ) {
             return 'Active Game';
         }
         return profile.current_stage || null;

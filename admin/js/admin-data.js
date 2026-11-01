@@ -132,9 +132,13 @@
             return query;
         }
         if (stage === 'Active Game') {
-            return query.eq('is_in_game', true).or('group_type.is.null,group_type.neq.control');
+            return query
+                .eq('is_in_game', true)
+                .or('current_stage.is.null,current_stage.eq.Tutoring Dashboard')
+                .or('group_type.is.null,group_type.neq.control');
         }
-        return query.eq('current_stage', stage).eq('is_in_game', false);
+        query = query.eq('current_stage', stage);
+        return stage === 'Tutoring Dashboard' ? query.eq('is_in_game', false) : query;
     }
 
     var rosterTicket = 0;
