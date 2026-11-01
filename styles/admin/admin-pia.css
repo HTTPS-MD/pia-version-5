@@ -900,3 +900,9 @@ html[data-surface='admin'] .tab.is-active + .stage-switch:not([hidden]):not(.is-
 #view-students .panel-bar > .tabs {
     padding-bottom: 12px;
 }
+
+/* Show details sits in the same row as the page buttons */
+#view-students .page-actions .show-details {
+    margin-left: 0;
+    height: var(--h-control, 40px);
+}

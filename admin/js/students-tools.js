@@ -1008,6 +1008,10 @@
         if (scores && actions && scores.parentNode !== actions) {
             actions.insertBefore(scores, actions.firstChild);
         }
+        var details = $('#view-students .show-details');
+        if (details && actions && details.parentNode !== actions) {
+            actions.insertBefore(details, actions.firstChild);
+        }
         var filter = $('#section-filter');
         if (filter) {
             filter.addEventListener('change', function () {
