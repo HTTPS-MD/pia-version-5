@@ -1237,12 +1237,8 @@
         }
         var total = sum.total;
         var pct = total ? Math.round((sum.done / total) * 100) : 0;
-        var activeNode = $('[data-stage-count="Active Game"]');
-        var active = activeNode ? activeNode.textContent.trim() : '—';
         var cards = [
-            statCard('Total students', String(total), sum.section ? 'Enrolled in ' + sum.section : 'In every section'),
-            statCard('OCEAN completion', pct + '<small>%</small>', sum.done + ' of ' + total + ' assessments completed', pct),
-            statCard('Active sessions', esc(active), active === '0' ? 'No sessions running right now' : 'Playing right now')
+            statCard('OCEAN completion', pct + '<small>%</small>', sum.done + ' of ' + total + ' assessments completed', pct)
         ];
         if (sum.section) {
             var present = 0;
