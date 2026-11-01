@@ -603,12 +603,14 @@
             '" tabindex="0"><div class="prof-card-head">' +
             '<span class="prof-card-avatar" aria-hidden="true">' +
             esc(initials(name)) +
-            '</span>' +
-            '<div class="prof-card-who"><span class="prof-card-role">Class professor<span class="prof-presence' +
+            '<span class="avatar-dot' +
             (profOnline[String(f.email).toLowerCase()] ? ' is-online' : '') +
-            '">' +
-            (profOnline[String(f.email).toLowerCase()] ? 'Online' : 'Offline') +
-            '</span></span>' +
+            '" data-presence="' +
+            esc(f.email) +
+            '" title="' +
+            (profOnline[String(f.email).toLowerCase()] ? 'Signed in' : 'Signed out') +
+            '"></span></span>' +
+            '<div class="prof-card-who"><span class="prof-card-role">Class professor</span>' +
             '<span class="prof-card-name"><span data-mask>' +
             esc(name) +
             '</span></span>' +
@@ -899,7 +901,7 @@
         var H = '.pia-hide-details ';
         var masked =
             H +
-            '#student-tbody td:first-child, ' +
+            '#student-tbody td:first-child .cell-user-text, ' +
             H +
             '#student-tbody td[data-ci-cell], ' +
             H +
@@ -928,10 +930,6 @@
             '{visibility:hidden!important}' +
             sel('::after') +
             '{content:"********";position:absolute;inset:0;display:flex;align-items:center;padding:inherit;box-sizing:border-box;color:var(--text);letter-spacing:2px;font-size:14px}' +
-            H +
-            '#drawer-initials{position:relative;color:transparent!important}' +
-            H +
-            '#drawer-initials::after{content:"**";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text)}' +
             '.pia-section-picked #roster-thead th:nth-child(3),.pia-section-picked #student-tbody td:nth-child(3){display:none}';
         document.head.appendChild(st);
         var bar = $('#stage-tabs') && $('#stage-tabs').parentNode;
