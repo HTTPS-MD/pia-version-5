@@ -138,7 +138,8 @@
             $('#new-section-form').reset();
             Admin.toastOk('Section created', name + ' is ready for enrolment.');
             document.dispatchEvent(new Event('pia:students-added'));
-            refreshAll();
+            await refreshAll();
+            Admin.showSection(name);
         });
 
         $('#scores-save').addEventListener('click', Admin.saveBatchScores);

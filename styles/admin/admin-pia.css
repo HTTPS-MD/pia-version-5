@@ -953,3 +953,63 @@ html[data-surface='admin'] .tab.is-active + .stage-switch:not([hidden]):not(.is-
     outline: 2px solid var(--accent);
     outline-offset: 2px;
 }
+
+/* modals look like the student ones: cream paper card, outlined buttons, yellow primary, blurred scrim */
+html[data-surface='admin'] .modal {
+    --bg-surface: var(--hex-fff8e7);
+    --bg-surface-hi: var(--hex-fff8e7);
+    --bg-field: color-mix(in srgb, var(--hex-0d1230) 7%, var(--hex-fff8e7));
+    --bg-chip: color-mix(in srgb, var(--hex-0d1230) 9%, var(--hex-fff8e7));
+    --text: var(--hex-0d1230);
+    --text-muted: color-mix(in srgb, var(--hex-0d1230) 74%, var(--hex-fff8e7));
+    --text-faint: color-mix(in srgb, var(--hex-0d1230) 66%, var(--hex-fff8e7));
+    --line: color-mix(in srgb, var(--hex-0d1230) 45%, var(--hex-fff8e7));
+    --line-soft: color-mix(in srgb, var(--hex-0d1230) 13%, var(--hex-fff8e7));
+    --line-input: color-mix(in srgb, var(--hex-0d1230) 45%, var(--hex-fff8e7));
+    border: 0;
+    border-radius: 1.1rem;
+    background: var(--hex-fff8e7);
+    color: var(--hex-0d1230);
+    box-shadow: 0 0.75rem 2rem var(--black-a28);
+}
+html[data-surface='admin'] .modal-head {
+    padding: var(--sp-5) var(--sp-5) var(--sp-4) var(--sp-6);
+}
+html[data-surface='admin'] .modal-title {
+    font-family: inherit;
+    font-size: var(--fs-h4);
+    letter-spacing: -0.03em;
+}
+html[data-surface='admin'] .modal-body {
+    padding: var(--sp-5) var(--sp-6) var(--sp-4);
+}
+html[data-surface='admin'] .modal-body-flush {
+    padding: 0;
+}
+html[data-surface='admin'] .modal-foot {
+    padding: var(--sp-3) var(--sp-6);
+    border-top: 0;
+}
+html[data-surface='admin'] .overlay:has(> .modal) {
+    background: color-mix(in srgb, var(--hex-0d1230) 55%, transparent);
+    backdrop-filter: blur(4px);
+}
+html[data-surface='admin'] .modal .btn {
+    border: 2px solid var(--hex-0d1230);
+    border-radius: 0.8rem;
+    background: transparent;
+    color: var(--hex-0d1230);
+}
+html[data-surface='admin'] .modal .btn-primary {
+    border-color: transparent;
+    background: var(--volt);
+    color: var(--on-volt);
+}
+html[data-surface='admin'] .modal .btn-primary:hover:not(:disabled) {
+    background: var(--hex-ffe66d);
+}
+html[data-surface='admin'] .modal .btn-danger {
+    border-color: transparent;
+    background: var(--danger);
+    color: var(--hex-ffffff);
+}
