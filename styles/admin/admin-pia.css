@@ -1725,3 +1725,14 @@ html[data-surface='admin'] .stage-switch.is-on::after {
 #view-students .page-title-row .stage-let[hidden] {
     display: none;
 }
+
+#view-students .page-head {
+    display: block;
+}
+#view-students .page-head .page-title-row {
+    display: flex;
+    width: 100%;
+}
+#view-students .page-title-row .stage-let {
+    margin-left: auto !important;
+}
