@@ -1501,3 +1501,33 @@ html[data-surface='admin'] #modal-scores .score-input {
     background: transparent;
     border-bottom-color: var(--accent);
 }
+
+/* math task bank: the topic dropdown lives in the page title, like the section on the Sections page */
+#view-mathtask .page-title #qb-topic-host {
+    position: relative;
+    display: inline-flex;
+}
+#view-mathtask .page-title #qb-topic-host [data-topic-toggle] {
+    padding: 0 10px 0 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-weight: 700;
+    letter-spacing: inherit;
+    border-radius: 12px;
+}
+#view-mathtask .page-title #qb-topic-host [data-topic-toggle]:hover {
+    background: var(--bg-chip);
+}
+#view-mathtask .page-title #qb-topic-host [data-topic-menu] {
+    font-family: var(--font-body);
+    letter-spacing: 0;
+    border-radius: 8px;
+    box-shadow: 0 14px 34px var(--black-a22);
+}
+#view-mathtask .page-title #qb-topic-host .section-opt.is-selected {
+    background: var(--bg-chip);
+    color: var(--text-muted);
+    box-shadow: inset 2px 0 0 var(--accent);
+}

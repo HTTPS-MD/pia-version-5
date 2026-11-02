@@ -339,6 +339,42 @@
     }
     Admin.renderQbAll = renderQbAll;
 
+    // the topic is chosen from the page title, like the section on the Sections page
+    function qbPaintTopicMenu() {
+        var host = $('#qb-topic-host');
+        if (!host) {
+            return;
+        }
+        var menu = host.querySelector('[data-topic-menu]');
+        var wasOpen = !!menu && !menu.hidden;
+        var now = qb.topic;
+        host.innerHTML =
+            '<button type="button" data-topic-toggle aria-haspopup="menu" aria-expanded="' +
+            wasOpen +
+            '">' +
+            Admin.esc(Admin.QB_TOPICS[now].title) +
+            ' <span aria-hidden="true" style="font-size:.7em;opacity:.8">▾</span></button>' +
+            '<div data-topic-menu role="menu"' +
+            (wasOpen ? '' : ' hidden') +
+            ' class="custom-select-list section-menu">' +
+            Admin.QB_ORDER.map(function (t) {
+                return (
+                    '<button type="button" role="menuitemradio" class="custom-select-option section-opt' +
+                    (t === now ? ' is-selected' : '') +
+                    '" aria-checked="' +
+                    (t === now) +
+                    '" data-topic-pick="' +
+                    t +
+                    '"><span>' +
+                    Admin.QB_TOPICS[t].num +
+                    ' · ' +
+                    Admin.esc(Admin.QB_TOPICS[t].title) +
+                    '</span></button>'
+                );
+            }).join('') +
+            '</div>';
+    }
+
     function renderQbChrome() {
         var topic = qb.topic;
         var ready = qb.status === 'ready';
@@ -350,6 +386,7 @@
         });
 
         $('#qb-title').textContent = qbTopicLabel(topic);
+        qbPaintTopicMenu();
         $('#qb-caption').textContent = 'Questions in ' + qbTopicLabel(topic);
         $('#qb-config-sub').textContent =
             'Topic ' + Admin.QB_TOPICS[topic].num + ' · ' + Admin.QB_TOPICS[topic].short;

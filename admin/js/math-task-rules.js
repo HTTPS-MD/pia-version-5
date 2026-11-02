@@ -127,6 +127,43 @@
     }
 
     function initMathTask() {
+        var topicHost = $('#qb-topic-host');
+        function closeTopicMenu() {
+            var m = topicHost.querySelector('[data-topic-menu]');
+            var t = topicHost.querySelector('[data-topic-toggle]');
+            if (m) {
+                m.hidden = true;
+            }
+            if (t) {
+                t.setAttribute('aria-expanded', 'false');
+            }
+        }
+        topicHost.addEventListener('click', function (event) {
+            var pick = event.target.closest('[data-topic-pick]');
+            if (pick) {
+                closeTopicMenu();
+                Admin.qbSwitchTopic(pick.getAttribute('data-topic-pick'));
+                return;
+            }
+            if (event.target.closest('[data-topic-toggle]')) {
+                var m = topicHost.querySelector('[data-topic-menu]');
+                m.hidden = !m.hidden;
+                topicHost
+                    .querySelector('[data-topic-toggle]')
+                    .setAttribute('aria-expanded', String(!m.hidden));
+            }
+        });
+        document.addEventListener('click', function (event) {
+            if (!topicHost.contains(event.target)) {
+                closeTopicMenu();
+            }
+        });
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                closeTopicMenu();
+            }
+        });
+
         // unsaved rules are lost on reload, so the browser asks first
         window.addEventListener('beforeunload', function (event) {
             if (Admin.qb.dirty) {
