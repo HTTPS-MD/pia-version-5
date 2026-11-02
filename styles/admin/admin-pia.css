@@ -45,11 +45,11 @@
 }
 /* the same background as the landing page: the navy (or the light violet) with two soft glows */
 html[data-surface='admin'] body {
-    background-color: var(--hex-0d1230);
+    background-color: #0b0f2b;
     background-image: var(--grain),
-        radial-gradient(ellipse 45% 55% at 28% 55%, var(--rgb86-144-255-a34), transparent),
-        radial-gradient(ellipse 35% 50% at 75% 50%, var(--rgb255-176-96-a16), transparent),
-        linear-gradient(160deg, var(--hex-0d1230) 0%, var(--hex-17225c) 100%);
+        radial-gradient(ellipse 45% 55% at 28% 55%, rgba(86, 144, 255, 0.12), transparent),
+        radial-gradient(ellipse 35% 50% at 75% 50%, rgba(255, 176, 96, 0.04), transparent),
+        linear-gradient(160deg, #0b0f2b 0%, #10173f 100%);
     background-size: 11.25rem 11.25rem, cover, cover, cover;
     background-position: 0 0, center, center, center;
     background-repeat: repeat, no-repeat, no-repeat, no-repeat;
