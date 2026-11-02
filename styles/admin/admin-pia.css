@@ -1746,3 +1746,12 @@ html[data-surface='admin'] .drawer .bar {
 #modal-edit-student .form-section + .form-section {
     margin-top: 16px;
 }
+
+/* game report in the participant panel: dark cards with no outline */
+html[data-surface='admin'] .game-report-stat {
+    border: 0;
+    background: color-mix(in srgb, var(--hex-ffffff) 5%, var(--bg-surface));
+}
+html[data-surface='admin'] .game-history-row {
+    border-color: var(--line-soft);
+}
