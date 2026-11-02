@@ -5335,3 +5335,31 @@ h4 {
     outline-offset: 0;
     border-color: transparent;
 }
+
+/* a signed-in student sees one box like the code field: the label, and the button on its right */
+.hero-join .hero-resume {
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: space-between;
+    width: min(38rem, 100%);
+    min-height: 0;
+    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
+    border: 0;
+    border-radius: 1.1rem;
+    background: var(--hex-fff8e7);
+    color: var(--hex-0d1230);
+    box-shadow: 0 0.75rem 2rem var(--black-a28);
+    font-size: 1.05rem;
+}
+.hero-join .hero-resume .cta-label {
+    padding-inline: 0;
+}
+.hero-join .hero-resume .cta-orb {
+    flex: none;
+    width: 3.25rem;
+    height: 3.25rem;
+    border: 0;
+    border-radius: 0.8rem;
+    background: var(--volt);
+    color: var(--on-volt);
+}
