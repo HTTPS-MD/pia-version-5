@@ -1626,12 +1626,12 @@ html[data-surface='admin'] .game-history-row {
     text-overflow: ellipsis;
 }
 /* a section is picked: Student, Number, Condition, Stage, Character, Attendance */
-html.pia-section-picked #roster-thead th:nth-child(1) { width: 27%; }
-html.pia-section-picked #roster-thead th:nth-child(2) { width: 15%; }
-html.pia-section-picked #roster-thead th:nth-child(4) { width: 17%; }
+html.pia-section-picked #roster-thead th:nth-child(1) { width: 25%; }
+html.pia-section-picked #roster-thead th:nth-child(2) { width: 16%; }
+html.pia-section-picked #roster-thead th:nth-child(3) { width: 13%; }
 html.pia-section-picked #roster-thead th:nth-child(5) { width: 14%; }
-html.pia-section-picked #roster-thead th:nth-child(6) { width: 17%; }
-html.pia-section-picked #roster-thead th:nth-child(7) { width: 10%; }
+html.pia-section-picked #roster-thead th:nth-child(6) { width: 14%; }
+html.pia-section-picked #roster-thead th:nth-child(7) { width: 18%; }
 /* all sections: the Section column is back */
 html:not(.pia-section-picked) #roster-thead th:nth-child(1) { width: 24%; }
 html:not(.pia-section-picked) #roster-thead th:nth-child(2) { width: 14%; }

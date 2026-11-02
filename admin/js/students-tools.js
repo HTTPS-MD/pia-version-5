@@ -723,7 +723,7 @@
             th.scope = 'col';
             th.setAttribute('data-mk-th', '');
             th.textContent = 'Attendance';
-            headRow.appendChild(th);
+            headRow.insertBefore(th, headRow.children[1] || null);
         } else if (!on && th) {
             th.remove();
         }
@@ -748,7 +748,7 @@
                     cell.addEventListener('click', function (event) {
                         onMark(event, tr.getAttribute('data-student'));
                     });
-                    tr.appendChild(cell);
+                    tr.insertBefore(cell, tr.children[1] || null);
                 }
                 var html = live
                     ? markCell(String(tr.getAttribute('data-student')).toLowerCase())
@@ -926,7 +926,7 @@
             '{visibility:hidden!important}' +
             sel('::after') +
             '{content:"********";position:absolute;inset:0;display:flex;align-items:center;padding:inherit;box-sizing:border-box;color:var(--text);letter-spacing:2px;font-size:14px}' +
-            '.pia-section-picked #roster-thead th:nth-child(3),.pia-section-picked #student-tbody td:nth-child(3){display:none}';
+            '.pia-section-picked #roster-thead th:nth-child(4),.pia-section-picked #student-tbody td:nth-child(4){display:none}';
         document.head.appendChild(st);
         var bar = $('#stage-tabs') && $('#stage-tabs').parentNode;
         if (!bar) {
