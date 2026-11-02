@@ -334,7 +334,7 @@
                 role === 'admin'
                     ? 'This account is already an administrator.'
                     : role === 'teacher'
-                      ? 'This email belongs to a professor account. Use a different email for administrator access.'
+                      ? 'This email belongs to a teacher account. Use a different email for administrator access.'
                       : 'This email belongs to a study participant. Participants cannot be administrators.'
             );
             return;

@@ -115,7 +115,7 @@
                             <li><button type="button" class="nav-item" data-view="students">
                                 <span>Sections</span><span class="nav-count mono" id="nav-count-students">—</span></button></li>
                             <li hidden><button type="button" class="nav-item" data-view="faculty" tabindex="-1">
-                                <span>Professors</span><span class="nav-count mono" id="nav-count-faculty">—</span></button></li>
+                                <span>Teachers</span><span class="nav-count mono" id="nav-count-faculty">—</span></button></li>
                         </ul>
                     </li>
                     <li><button type="button" class="nav-item" data-view="mathtask">
@@ -262,14 +262,14 @@
 
                 <section class="page is-hidden" id="view-faculty" data-view-panel="faculty">
                     <div class="page-head">
-                        <h1 class="page-title">Professors</h1>
+                        <h1 class="page-title">Teachers</h1>
                         <div class="page-actions">
-                            <button type="button" class="btn btn-primary" data-modal-open="modal-add-professor">Add professor</button>
+                            <button type="button" class="btn btn-primary" data-modal-open="modal-add-professor">Add teacher</button>
                         </div>
                     </div>
 
                     <div class="scope-row">
-                        <p class="scope-line">Each professor sees only their section, and answers the OCEAN questionnaire once at their first sign-in. Only you can see the results (raw scores, 0 to 40).</p>
+                        <p class="scope-line">Each teacher sees only their section, and answers the OCEAN questionnaire once at their first sign-in. Only you can see the results (raw scores, 0 to 40).</p>
                     </div>
 
                     <div class="panel" data-region="faculty">
@@ -280,12 +280,12 @@
                                     placeholder="Name or email">
                             </div>
                         </div>
-                        <div class="table-wrap" tabindex="0" role="region" aria-label="Professors table">
+                        <div class="table-wrap" tabindex="0" role="region" aria-label="Teachers table">
                             <table class="table">
-                                <caption class="sr-only">Professors</caption>
+                                <caption class="sr-only">Teachers</caption>
                                 <thead>
                                     <tr>
-                                        <th scope="col">Professor</th>
+                                        <th scope="col">Teacher</th>
                                         <th scope="col">Section</th>
                                         <th scope="col" class="col-right">Students</th>
                                         <th scope="col">OCEAN (E · A · C · N · O)</th>
@@ -295,7 +295,7 @@
                                 <tbody id="faculty-tbody"></tbody>
                             </table>
                             <div id="faculty-empty" class="state-block is-hidden">
-                                <p class="state-title">No professors yet</p>
+                                <p class="state-title">No teachers yet</p>
                             </div>
                         </div>
                     </div>
@@ -591,7 +591,7 @@
         <div class="modal modal-md">
             <header class="modal-head">
                 <div class="modal-head-text">
-                    <h2 class="modal-title" id="add-prof-title">Add professor</h2>
+                    <h2 class="modal-title" id="add-prof-title">Add teacher</h2>
                 </div>
             </header>
 
@@ -626,7 +626,7 @@
 
             <footer class="modal-foot">
                 <button class="btn btn-secondary" data-modal-close>Cancel</button>
-                <button class="btn btn-primary" type="submit" form="add-professor-form" id="ap-submit">Add professor</button>
+                <button class="btn btn-primary" type="submit" form="add-professor-form" id="ap-submit">Add teacher</button>
             </footer>
         </div>
     </div>
@@ -650,7 +650,7 @@
                         <div class="field">
                             <div class="with-tip">
                                 <label class="label" for="aa-email">Email address <span class="req">*</span></label>
-                                <button type="button" class="info-tip" data-tip="They get a one-time link to choose their own password. Emails already used by a professor or participant are refused." aria-label="About new administrator accounts"><svg class="icon"><use href="#i-info"></use></svg></button>
+                                <button type="button" class="info-tip" data-tip="They get a one-time link to choose their own password. Emails already used by a teacher or participant are refused." aria-label="About new administrator accounts"><svg class="icon"><use href="#i-info"></use></svg></button>
                             </div>
                             <input class="input" type="email" id="aa-email" placeholder="a.reyes@ue.edu.ph" autocomplete="off">
                             <p class="field-msg" data-msg-for="aa-email"></p>
@@ -756,7 +756,7 @@
                 <button class="btn-icon" data-modal-close aria-label="Back to students">
                     <svg class="icon" aria-hidden="true"><use href="#i-arrow-left"></use></svg>
                 </button>
-                <h2 class="drawer-title">Professor profile</h2>
+                <h2 class="drawer-title">Teacher profile</h2>
             </header>
 
             <div class="drawer-body stack-lg">
@@ -765,7 +765,7 @@
                         <span class="drawer-avatar" id="faculty-initials">··</span>
                     </span>
                     <div style="min-width:0">
-                        <h3 class="page-title" style="font-size:18px" id="faculty-title">Faculty profile</h3>
+                        <h3 class="page-title" style="font-size:18px" id="faculty-title">Teacher profile</h3>
                         <p class="cell-mail" id="faculty-subject">—</p>
                     </div>
                 </div>
@@ -792,7 +792,7 @@
                 <div id="faculty-section-actions">
                     <p class="eyebrow" style="margin-bottom:12px" id="faculty-section-label">Section</p>
                     <div class="action-list">
-                        <button class="action-list-item" id="faculty-change">Change professor</button>
+                        <button class="action-list-item" id="faculty-change">Change teacher</button>
                     </div>
                 </div>
 
@@ -803,7 +803,7 @@
                         <button class="action-list-item" id="faculty-signout">Sign out everywhere</button>
                     </div>
                     <div class="action-list" style="margin-top:12px">
-                        <button class="action-list-item is-danger" id="faculty-delete">Remove faculty account</button>
+                        <button class="action-list-item is-danger" id="faculty-delete">Remove teacher account</button>
                     </div>
                     <p class="form-status" id="faculty-status-msg" role="status" aria-live="polite"></p>
                 </div>
@@ -1270,28 +1270,28 @@
     <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
     <script src="../../assets/js/shared/device-revoke.js?v=20261031a"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
-    <script src="../js/admin-shell.js?v=20261027a"></script>
+    <script src="../js/admin-shell.js?v=20261105a"></script>
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261104d"></script>
+    <script src="../js/students-tools.js?v=20261105a"></script>
     <script src="../js/add-students.js?v=20261104b"></script>
     <script src="../js/admin-core.js?v=20261101b"></script>
     <script src="../js/admin-dialogs.js?v=20261104a"></script>
     <script src="../js/admin-loading.js?v=20261101a"></script>
-    <script src="../js/admin-data.js?v=20261101c"></script>
-    <script src="../js/students-table.js?v=20261104b"></script>
+    <script src="../js/admin-data.js?v=20261105a"></script>
+    <script src="../js/students-table.js?v=20261105a"></script>
     <script src="../js/student-drawer.js?v=20261103z"></script>
     <script src="../js/student-forms.js?v=20261104c"></script>
-    <script src="../js/admin-faculty.js?v=20261103z"></script>
+    <script src="../js/admin-faculty.js?v=20261105a"></script>
     <script src="../js/stage-controls.js?v=20261103z"></script>
-    <script src="../js/admin-account.js?v=20261103z"></script>
+    <script src="../js/admin-account.js?v=20261105a"></script>
     <script src="../js/score-entry.js?v=20261103z"></script>
     <script src="../js/live-updates.js?v=20261101a"></script>
     <script src="../js/math-task-core.js?v=20261103a"></script>
     <script src="../js/math-task-edit.js?v=20261104b"></script>
     <script src="../js/math-task-rules.js?v=20261103z"></script>
-    <script src="../js/student-move.js?v=20261104c"></script>
+    <script src="../js/student-move.js?v=20261104d"></script>
     <script src="../js/admin-start.js?v=20261101c"></script>
 </body>
 

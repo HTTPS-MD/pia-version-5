@@ -55,8 +55,8 @@
                     ' in this section.'
             );
         }
-        if (options.professor) {
-            bits.push(options.professor + ' will be unassigned.');
+        if (options.teacher) {
+            bits.push(options.teacher + ' will be unassigned.');
         }
         bits.push('This cannot be undone.');
         $('#ds-title').textContent = 'Delete ' + options.name + '?';

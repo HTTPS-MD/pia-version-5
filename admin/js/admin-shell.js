@@ -10,7 +10,7 @@
         overview: { trail: ['Overview'] },
         live: { trail: ['Live Sessions'] },
         students: { trail: ['People', 'Sections'] },
-        faculty: { trail: ['People', 'Professors'] },
+        faculty: { trail: ['People', 'Teachers'] },
         controls: { trail: ['Stage Controls'] },
         mathtask: { trail: ['Math Task'] },
         profile: { trail: ['Profile'] },
@@ -296,7 +296,7 @@
                 }
             },
             {
-                label: 'Add professor',
+                label: 'Add teacher',
                 run: function () {
                     host.openModal('modal-add-professor');
                 }

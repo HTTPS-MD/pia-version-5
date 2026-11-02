@@ -1,6 +1,6 @@
 /*
  * Loading data.
- * Reads the students, stage times, sections, professors and settings from the database.
+ * Reads the students, stage times, sections, teachers and settings from the database.
  */
 (function () {
     'use strict';

@@ -201,7 +201,7 @@
                         '">Delete</button> ' +
                         '<button type="button" class="btn btn-secondary btn-sm" data-section-cancel>Keep</button>';
                 } else {
-                    var why = members.length ? 'Has students' : prof ? 'Has a professor' : '';
+                    var why = members.length ? 'Has students' : prof ? 'Has a teacher' : '';
                     cell = name;
                     actions =
                         '<button type="button" class="btn btn-secondary btn-sm" data-section-rename="' +

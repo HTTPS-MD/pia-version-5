@@ -244,7 +244,7 @@
         if (!n || n.indexOf('@') !== -1) {
             n = String(n || (f && f.email) || '').split('@')[0];
         }
-        return n || 'Professor';
+        return n || 'Teacher';
     }
 
     function profsOf(section) {
@@ -364,9 +364,9 @@
         menu.className = 'custom-select-list section-menu';
         menu.innerHTML =
             rows +
-            '<button type="button" data-prof-add class="custom-select-option section-opt section-opt-sep">+ Add new professor</button>' +
+            '<button type="button" data-prof-add class="custom-select-option section-opt section-opt-sep">+ Add new teacher</button>' +
             (current
-                ? '<button type="button" data-assign="" class="custom-select-option section-opt section-opt-danger">Remove professor from ' +
+                ? '<button type="button" data-assign="" class="custom-select-option section-opt section-opt-danger">Remove teacher from ' +
                   esc(section) +
                   '</button>'
                 : '');
@@ -501,7 +501,7 @@
                     if (rowEl) {
                         rowEl.click();
                     } else {
-                        say('Could not open that professor. Reload the page.', true);
+                        say('Could not open that teacher. Reload the page.', true);
                     }
                 } else if (change) {
                     if ($('#prof-menu')) {
@@ -539,7 +539,7 @@
                         p_email: wanted || null
                     })
                         .then(function () {
-                            say(wanted ? 'Professor assigned.' : 'Professor removed.');
+                            say(wanted ? 'Teacher assigned.' : 'Teacher removed.');
                             return refreshOverview();
                         })
                         .catch(function (error) {
@@ -581,10 +581,10 @@
         closeProfMenu();
         if (!list.length) {
             el.innerHTML =
-                '<div class="prof-card is-empty"><p class="prof-card-none">No professor yet for ' +
+                '<div class="prof-card is-empty"><p class="prof-card-none">No teacher yet for ' +
                 esc(section) +
                 '.</p>' +
-                '<button type="button" class="btn btn-secondary btn-sm" data-prof-change>Assign professor</button></div>';
+                '<button type="button" class="btn btn-secondary btn-sm" data-prof-change>Assign teacher</button></div>';
             return;
         }
         var f = list[0];
@@ -602,7 +602,7 @@
             '" title="' +
             (profOnline[String(f.email).toLowerCase()] ? 'Signed in' : 'Signed out') +
             '"></span></span>' +
-            '<div class="prof-card-who"><span class="prof-card-role">Class professor</span>' +
+            '<div class="prof-card-who"><span class="prof-card-role">Class teacher</span>' +
             '<span class="prof-card-name"><span data-mask>' +
             esc(name) +
             '</span></span>' +
@@ -987,7 +987,7 @@
         if (built) {
             return;
         }
-        // keep the professor's online status in step with the live presence updates
+        // keep the teacher's online status in step with the live presence updates
         var applyPresence = window.PIAAdmin && window.PIAAdmin.applyPresence;
         if (applyPresence) {
             window.PIAAdmin.applyPresence = function (email, online) {
@@ -1083,7 +1083,7 @@
                 window.PIAAdmin.openDeleteSection({
                     name: doomed,
                     students: kids,
-                    professor: prof ? prof.name || prof.email : '',
+                    teacher: prof ? prof.name || prof.email : '',
                     run: function (moveTo) {
                         return call('admin_delete_section', { p_name: doomed, p_move_to: moveTo || null });
                     },
@@ -1257,7 +1257,7 @@
 
     document.addEventListener('pia:scope', renderStats);
 
-    // Called from the professor profile: close it and show the same picker the row used to offer.
+    // Called from the teacher profile: close it and show the same picker the row used to offer.
     function changeProfessor() {
         var anchor = $('#prof-line .prof-card');
         if (!anchor) {

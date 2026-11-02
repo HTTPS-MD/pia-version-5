@@ -1,6 +1,6 @@
 /*
- * Professors.
- * The professor list, profile, devices, and adding or removing a professor.
+ * Teachers.
+ * The teacher list, profile, devices, and adding or removing a teacher.
  */
 (function () {
     'use strict';
@@ -224,7 +224,7 @@
         }
 
         Admin.state.activeFaculty = f;
-        $('#faculty-title').textContent = f.name || 'Faculty profile';
+        $('#faculty-title').textContent = f.name || 'Teacher profile';
         var sectionActions = $('#faculty-section-actions');
         if (sectionActions) {
             var current = window.PIASectionNow && f.assigned_section === window.PIASectionNow;
@@ -329,7 +329,7 @@
                     Admin.friendlyDbError(regRes.error, 'Could not save the teacher.') +
                         '\n\nAn auth user was already created for ' +
                         email +
-                        '. It must be deleted before registering this professor again.',
+                        '. It must be deleted before registering this teacher again.',
                     'danger'
                 );
                 return;
@@ -339,7 +339,7 @@
             $('#add-professor-form').reset();
             Admin.clearFormErrors('add-professor-form');
 
-            Admin.toastOk('Professor added', name + ' now has observer access.');
+            Admin.toastOk('Teacher added', name + ' now has observer access.');
             await Admin.loadFaculty();
             Admin.renderSections();
         } finally {
@@ -351,8 +351,8 @@
     async function deleteFaculty(email) {
         var ok = await Admin.confirmAction({
             heading: 'Delete ' + email + '?',
-            message: 'Their account, faculty record and linked profile are removed. Student data stays.',
-            confirmLabel: 'Remove faculty'
+            message: 'Their account, teacher record and linked profile are removed. Student data stays.',
+            confirmLabel: 'Remove teacher'
         });
         if (!ok) {
             return;
@@ -368,7 +368,7 @@
             return;
         }
 
-        Admin.toastOk('Faculty removed', email + ' no longer has access.');
+        Admin.toastOk('Teacher removed', email + ' no longer has access.');
         await Admin.loadFaculty();
         Admin.renderSections();
     }
