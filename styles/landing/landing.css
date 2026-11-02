@@ -1912,19 +1912,6 @@ h4 {
     color: var(--bg);
 }
 
-.overlay .modal-close {
-    border: 1px solid var(--rule);
-    background: var(--bg);
-    color: var(--text);
-    transition:
-        background-color var(--t-snap) linear,
-        color var(--t-snap) linear;
-}
-
-.overlay .modal-close:hover {
-    background: var(--fg);
-    color: var(--bg);
-}
 
 .overlay .auth-intro {
     border: 1px solid var(--rule);
@@ -2205,11 +2192,6 @@ h4 {
 .overlay .modal-foot {
     justify-content: flex-end;
     flex-wrap: wrap;
-}
-.overlay .modal-close {
-    min-width: 44px;
-    min-height: 44px;
-    flex-shrink: 0;
 }
 .overlay .modal-title {
     overflow-wrap: anywhere;
@@ -3750,29 +3732,6 @@ h4 {
     color: inherit;
 }
 
-.overlay .modal-close {
-    width: auto;
-    flex: 0 0 auto;
-    padding-inline: 1rem;
-    min-height: 2.5rem;
-    border: 0;
-    border-radius: 999px;
-    background: color-mix(in srgb, currentColor 12%, transparent);
-    color: inherit;
-}
-.overlay .modal-close svg {
-    display: none;
-}
-.overlay .modal-close::before {
-    content: 'Close';
-    font-family: var(--font-body);
-    font-size: 0.875rem;
-    font-weight: 600;
-}
-.overlay .modal-close:hover {
-    background: color-mix(in srgb, currentColor 22%, transparent);
-    color: inherit;
-}
 .overlay .modal-head {
     grid-template-columns: minmax(0, 1fr) auto;
 }
