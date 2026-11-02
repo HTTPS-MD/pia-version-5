@@ -2133,3 +2133,36 @@ html[data-surface='admin'] .sidebar-user .avatar {
         box-shadow: 1px 0 0 var(--line);
     }
 }
+
+@media (max-width: 40rem) {
+    html[data-surface='admin'] #view-students .table thead th:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 3;
+        background: color-mix(in srgb, var(--text) 5%, var(--bg-surface));
+        box-shadow: 1px 0 0 var(--line);
+    }
+    html[data-surface='admin'] #view-students .table tbody td:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        width: 9rem !important;
+        min-width: 9rem;
+        max-width: 9rem !important;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        background: var(--bg-surface);
+    }
+    html[data-surface='admin'] #view-students .table thead th:first-child {
+        width: 9rem !important;
+        min-width: 9rem;
+    }
+    #view-students #stage-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+    }
+    #view-students #stage-tabs::-webkit-scrollbar {
+        display: none;
+    }
+}
