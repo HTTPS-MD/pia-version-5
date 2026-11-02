@@ -1790,3 +1790,12 @@ html[data-surface='admin'] .sidebar-user .avatar {
     overflow: clip;
     border-radius: var(--r-card, 18px);
 }
+
+#view-mathtask .qb-strip .qb-dirty:not(.is-on) {
+    display: none;
+}
+#view-mathtask .qb-config .card-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}

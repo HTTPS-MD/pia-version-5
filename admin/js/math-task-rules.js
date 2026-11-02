@@ -311,13 +311,28 @@
         function showQbView(view) {
             $('#qb-views').className = 'grid grid-main qb-view-' + view;
             $('#qb-strip').hidden = view === 'rules';
+            $('#qb-strip-rules').hidden = view !== 'rules';
+        }
+        async function leaveRules() {
+            if (Admin.qb.dirty) {
+                var ok = await Admin.confirmAction({
+                    heading: 'Discard changes?',
+                    message: 'Your edits to the rules are not saved.',
+                    confirmLabel: 'Discard'
+                });
+                if (!ok) {
+                    return;
+                }
+                Admin.qb.dirty = false;
+                await Admin.loadMathTask();
+            }
+            showQbView('questions');
         }
         $('#qb-rules-btn').addEventListener('click', function () {
             showQbView('rules');
         });
-        $('#qb-rules-back').addEventListener('click', function () {
-            showQbView('questions');
-        });
+        $('#qb-rules-back').addEventListener('click', leaveRules);
+        $('#qb-config-cancel').addEventListener('click', leaveRules);
         $('#qb-config-form').addEventListener('submit', qbSaveRules);
 
         $('#qb-edit-form').addEventListener('submit', Admin.qbSaveEditor);

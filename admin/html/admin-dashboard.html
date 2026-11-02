@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261110a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261105a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261110d">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261111a">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -336,6 +336,13 @@
                                 <button type="button" class="info-tip" data-tip="Questions from this bank are used for new game problems. Review steps and answers before students play." aria-label="About the math task bank"><svg class="icon"><use href="#i-info"></use></svg></button>
                             </div>
                         </div>
+                        <div class="panel qb-strip" id="qb-strip-rules" hidden>
+                            <span class="badge badge-warn qb-dirty" id="qb-dirty">Unsaved</span>
+                            <button class="btn btn-secondary btn-sm" type="button" id="qb-rules-back">
+                                <svg class="icon"><use href="#i-arrow-left"></use></svg>
+                                Back to questions
+                            </button>
+                        </div>
                         <div class="panel qb-strip" id="qb-strip">
                             <button class="btn btn-secondary btn-sm" type="button" id="qb-rules-btn">
                                 <svg class="icon"><use href="#i-gear"></use></svg>
@@ -392,13 +399,6 @@
                                     <div class="card-head-text">
                                         <h2 class="card-title">Adaptive rules</h2>
                                         <p class="card-sub" id="qb-config-sub">Topic 1 · Finding %</p>
-                                    </div>
-                                    <div class="card-tools">
-                                        <span class="badge badge-warn qb-dirty" id="qb-dirty">Unsaved</span>
-                                        <button class="btn btn-secondary" type="button" id="qb-rules-back">
-                                            <svg class="icon"><use href="#i-arrow-left"></use></svg>
-                                            Back to questions
-                                        </button>
                                     </div>
                                 </div>
                                 <div class="card-body stack">
@@ -479,7 +479,8 @@
                                     </fieldset>
                                 </div>
                                 <div class="card-foot">
-                                    <button class="btn btn-primary btn-block" type="submit" id="qb-config-save" disabled>
+                                    <button class="btn btn-secondary" type="button" id="qb-config-cancel">Cancel</button>
+                                    <button class="btn btn-primary" type="submit" id="qb-config-save" disabled>
                                         <svg class="icon"><use href="#i-check"></use></svg>
                                         Save rules
                                     </button>
@@ -1276,7 +1277,7 @@
     <script src="../js/live-updates.js?v=20261101a"></script>
     <script src="../js/math-task-core.js?v=20261109a"></script>
     <script src="../js/math-task-edit.js?v=20261109a"></script>
-    <script src="../js/math-task-rules.js?v=20261110a"></script>
+    <script src="../js/math-task-rules.js?v=20261111a"></script>
     <script src="../js/student-move.js?v=20261105a"></script>
     <script src="../js/admin-start.js?v=20261105b"></script>
 </body>
