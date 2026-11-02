@@ -131,7 +131,11 @@
         if (stage === null || stage === undefined || stage === '') {
             return query;
         }
-        return query.eq('current_stage', stage);
+        if (stage === 'Offline') {
+            return query.or('active_devices.is.null,active_devices.eq.{}');
+        }
+        // a stage tab lists only the students who are signed in; the rest sit under Offline
+        return query.eq('current_stage', stage).neq('active_devices', '{}');
     }
 
     var rosterTicket = 0;
@@ -199,7 +203,7 @@
 
     var counterTicket = 0;
 
-    var COUNTER_KEYS = ['all', 'OCEAN', 'Character Selection', 'Tutoring Dashboard'];
+    var COUNTER_KEYS = ['all', 'OCEAN', 'Character Selection', 'Tutoring Dashboard', 'Offline'];
 
     Admin.loadStageCounters = async function loadStageCounters() {
         var ticket = ++counterTicket;
