@@ -1726,60 +1726,10 @@ html[data-surface='admin'] .drawer .bar {
     display: none;
 }
 
-/* picking students to move */
-.row-pick {
-    display: inline-flex;
-    align-items: center;
-    margin-right: 10px;
-    cursor: pointer;
-}
-.row-pick input {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--accent);
-    cursor: pointer;
-}
-#roster-thead .row-pick {
-    vertical-align: middle;
-}
-.pick-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-wrap: wrap;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--accent) 10%, transparent);
-    font-size: var(--fs-sm);
-}
-.pick-bar[hidden] {
-    display: none;
-}
-.pick-bar #pick-count {
-    font-weight: 600;
-    margin-right: 6px;
-}
-.pick-bar .custom-select {
-    width: 12rem;
-}
 #modal-delete-section .modal-body {
     gap: 14px;
 }
 
-/* the tick box sits at the left of the student cell, beside the avatar */
-#roster-thead th:first-child,
-#student-tbody td:first-child {
-    position: relative;
-    padding-left: 46px;
-}
-#student-tbody td:first-child .row-pick,
-#roster-thead th:first-child .row-pick {
-    position: absolute;
-    left: 16px;
-    top: 50%;
-    margin: 0;
-    transform: translateY(-50%);
-}
 
 /* the table starts straight with the stage tabs, so the first tab needs no extra left gap */
 #view-students .table-title .tabs {

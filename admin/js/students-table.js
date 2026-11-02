@@ -398,11 +398,7 @@
             ' aria-label="Open profile: ' +
             Admin.esc(s.full_name || s.email) +
             '">' +
-            '<td><label class="row-pick"><input type="checkbox" data-pick="' +
-            Admin.esc(s.email) +
-            '" aria-label="Select ' +
-            Admin.esc(s.full_name || s.email) +
-            '"></label>' +
+            '<td>' +
             userCell(s) +
             '</td>' +
             cells +
@@ -473,9 +469,6 @@
         $('#page-prev').disabled = Admin.state.page <= 1;
         $('#page-next').disabled = Admin.state.page >= pages;
 
-        if (Admin.paintPicks) {
-            Admin.paintPicks();
-        }
         if (window.PIACheckin) {
             window.PIACheckin.decorateRoster();
         }
@@ -852,9 +845,6 @@
         });
 
         $('#student-tbody').addEventListener('click', function (event) {
-            if (event.target.closest('.row-pick')) {
-                return;
-            }
             var row = event.target.closest('[data-student]');
             if (row) {
                 Admin.openStudentDrawer(row.getAttribute('data-student'), row);
