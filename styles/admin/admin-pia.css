@@ -855,7 +855,8 @@ html[data-surface='admin'] #view-students .table thead th {
 }
 
 /* Class status lives on the directory title row */
-.table-title .class-live {
+.table-title .class-live,
+.stage-let .class-live {
     margin-left: auto;
     padding: 0;
     border: 0;
@@ -868,7 +869,8 @@ html[data-surface='admin'] #view-students .table thead th {
     .table-title {
         flex-wrap: wrap;
     }
-    .table-title .class-live {
+    .table-title .class-live,
+    .stage-let .class-live {
         width: auto;
         border: 0;
         padding: 0;

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261106a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261105a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261107b">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261107c">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -171,6 +171,10 @@
                     <div class="panel" data-region="roster stages">
                         <div class="stage-let" id="stage-let" hidden>
                             <span class="stage-let-lab">Stages</span>
+                            <div class="class-live" id="class-live">
+                                <span class="live-dot" id="class-live-dot"></span>
+                                <span id="class-live-status">Class is closed</span>
+                            </div>
                         </div>
                         <div class="table-title">
                             <h2 class="sr-only">Students</h2>
@@ -180,10 +184,6 @@
                                 <button type="button" class="tab" data-stage-filter="Character Selection" aria-pressed="false">Choose tutor <span class="mono" data-stage-count="Character Selection">—</span></button>
                                 <button type="button" class="tab" data-stage-filter="Tutoring Dashboard" aria-pressed="false">Game <span class="mono" data-stage-count="Tutoring Dashboard">—</span></button>
                                 <button type="button" class="tab" data-stage-filter="Active Game" aria-pressed="false" title="Marked as in a tutoring session by the student’s own page. It can be out of date if the page closed unexpectedly.">Active session <span class="mono" data-stage-count="Active Game">—</span></button>
-                            </div>
-                            <div class="class-live" id="class-live">
-                                <span class="live-dot" id="class-live-dot"></span>
-                                <span id="class-live-status">Class is closed</span>
                             </div>
                         </div>
                         <div class="panel-bar">
