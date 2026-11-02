@@ -119,6 +119,7 @@
             return;
         }
         Admin.qb.topic = topic;
+        Admin.qb.page = 1;
         Admin.clearFormErrors('qb-config-form');
         Admin.renderQbAll();
     }
@@ -789,6 +790,7 @@
             }
         } else {
             list.push(saved);
+            Admin.qb.page = Infinity;
         }
 
         if (editing == null) {
@@ -991,6 +993,7 @@
         res.data.forEach(function (row) {
             Admin.qb.bank[topic].push(Admin.qbFromRow(row));
         });
+        Admin.qb.page = Infinity;
         Admin.qb.drafts = [];
         Admin.qb.stash = null;
         Admin.closeModal('modal-qb-edit');

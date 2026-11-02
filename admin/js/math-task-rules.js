@@ -182,6 +182,17 @@
             });
         });
 
+        function qbGoPage(step) {
+            Admin.qb.page = (Admin.qb.page || 1) + step;
+            Admin.renderQbTable();
+        }
+        $('#qb-page-prev').addEventListener('click', function () {
+            qbGoPage(-1);
+        });
+        $('#qb-page-next').addEventListener('click', function () {
+            qbGoPage(1);
+        });
+
         var tbody = $('#qb-tbody');
         function rowId(row) {
             return Admin.toInt(row && row.getAttribute('data-id'), null);

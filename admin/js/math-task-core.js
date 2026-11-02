@@ -431,6 +431,8 @@
 
         tbody.textContent = '';
         empty.classList.add('is-hidden');
+        var pager = $('#qb-pager');
+        pager.classList.add('is-hidden');
 
         if (loading) {
             for (var i = 0; i < 3; i++) {
@@ -454,11 +456,20 @@
             $('#qb-empty-desc').textContent = '';
             $('#qb-sub').textContent = 'No questions';
         } else {
+            var perPage = 10;
+            var pages = Math.ceil(list.length / perPage);
+            qb.page = Math.min(Math.max(qb.page || 1, 1), pages);
+            var from = (qb.page - 1) * perPage;
             var frag = document.createDocumentFragment();
-            list.forEach(function (item, index) {
-                frag.appendChild(Admin.qbRow(item, index));
+            list.slice(from, from + perPage).forEach(function (item, offset) {
+                frag.appendChild(Admin.qbRow(item, from + offset));
             });
             tbody.appendChild(frag);
+            $('#qb-pager-info').textContent =
+                'Showing ' + (from + 1) + '–' + Math.min(from + perPage, list.length) + ' of ' + list.length;
+            $('#qb-page-prev').disabled = qb.page <= 1;
+            $('#qb-page-next').disabled = qb.page >= pages;
+            pager.classList.remove('is-hidden');
             $('#qb-sub').textContent = list.length + (list.length === 1 ? ' question' : ' questions');
         }
 
