@@ -529,6 +529,7 @@
 
         $('#qb-question').focus({ preventScroll: true });
         $('#modal-qb-edit .modal-body').scrollTop = 0;
+        qbGrowAll();
     }
     Admin.qbOpenEditor = qbOpenEditor;
 
@@ -843,10 +844,29 @@
             $('#qb-edit-title').textContent = Admin.qb.editingId == null ? 'Add question' : $('#qb-edit-title').textContent;
             wizPaint();
             $('#qb-question').focus({ preventScroll: true });
+            qbGrowAll();
         }
     }
     Admin.qbSetMode = qbSetMode;
 
+
+    // a problem textarea grows with its text, so the whole problem is always visible
+    function qbGrow(box) {
+        if (!box || !box.offsetParent) {
+            return;
+        }
+        box.style.height = 'auto';
+        box.style.height = box.scrollHeight + 2 + 'px';
+    }
+    function qbGrowAll() {
+        $$('#modal-qb-edit textarea.qb-preview-q, #qb-question').forEach(qbGrow);
+    }
+    document.addEventListener('input', function (event) {
+        if (event.target.matches('#modal-qb-edit textarea.qb-preview-q, #qb-question')) {
+            qbGrow(event.target);
+        }
+    });
+    window.addEventListener('resize', qbGrowAll);
 
     function renderQbDrafts() {
         var list = $('#qb-previews');
@@ -877,6 +897,7 @@
                 ' included — edit them after saving.';
             list.appendChild(node);
         });
+        qbGrowAll();
 
         var n = Admin.qb.drafts.length;
         $('#qb-gen-empty').classList.toggle('is-hidden', n > 0);
