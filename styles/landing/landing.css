@@ -1739,31 +1739,6 @@ h4 {
     }
 }
 
-/* ═══════════════════════════════════════════ 12. WHY PIA · SDT ════════ */
-.caps {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--sp-6);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-@media (min-width: 46rem) and (max-width: 63.99rem) {
-    .caps {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: clamp(1.5rem, 3vw, 2rem);
-    }
-}
-
-@media (min-width: 64rem) {
-    .caps {
-        grid-template-columns: repeat(12, minmax(0, 1fr));
-        gap: 2rem;
-        align-items: start;
-    }
-}
-
 .finale-sub {
     margin: clamp(var(--sp-6), 4vh, var(--sp-8)) 0 0;
     max-width: 46ch;
@@ -2158,15 +2133,6 @@ h4 {
 .js .nav:not(.has-auth) .nav-auth {
     transition: none;
 }
-.account-guidance {
-    margin-top: var(--sp-4);
-    max-width: 48ch;
-    color: var(--text-muted);
-    line-height: 1.65;
-}
-:root[data-session] .signed-out-copy {
-    display: none;
-}
 .email-accepted {
     line-height: 1.65;
 }
@@ -2223,11 +2189,6 @@ h4 {
 .finale-sub {
     padding: 0;
     border: 0;
-}
-.caps {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
-    gap: var(--sp-6);
 }
 
 .reel-flow {

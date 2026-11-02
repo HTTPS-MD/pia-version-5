@@ -838,7 +838,6 @@
         }).observe(root, { attributes: true, attributeFilter: ['class'] });
     }
 
-    window.PIAAddStudents = { reset: reset, build: build };
     if (document.body) {
         init();
     } else {

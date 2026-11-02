@@ -186,27 +186,6 @@
     }
     Admin.generateSecurePassword = generateSecurePassword;
 
-    function describeDevice(deviceId) {
-        var id = String(deviceId || '');
-        if (id.indexOf('Android') !== -1) {
-            return { label: 'Android smartphone', glyph: 'phone' };
-        }
-        if (id.indexOf('iPad') !== -1) {
-            return { label: 'iPad tablet', glyph: 'tablet' };
-        }
-        if (id.indexOf('iOS') !== -1) {
-            return { label: 'iOS device', glyph: 'phone' };
-        }
-        if (id.indexOf('macOS') !== -1) {
-            return { label: 'macOS computer', glyph: 'laptop' };
-        }
-        if (id.indexOf('Windows') !== -1) {
-            return { label: 'Windows PC', glyph: 'monitor' };
-        }
-        return { label: 'Unknown device', glyph: 'monitor' };
-    }
-    Admin.describeDevice = describeDevice;
-
     function activationRedirect() {
         return emailLinkTo('assets/html/sign-up.html');
     }

@@ -115,12 +115,6 @@ const SESSION_ENDED_COPY = {
 
 const STAFF_SIGNIN_PATH = '/index.html';
 
-function deviceChannelKey(deviceId) {
-    return String(deviceId || '')
-        .replace(/[^A-Za-z0-9]/g, '')
-        .slice(0, 64);
-}
-
 async function isSessionCurrentOnServer() {
     if (!window.supabaseClient) return null;
     try {
@@ -196,49 +190,7 @@ function startStaffSessionWatch() {
         setTimeout(() => endStaffSession('ended'), 0);
     });
 
-    let deviceId = null;
-    try {
-        deviceId = localStorage.getItem('pia_device_id');
-    } catch (e) {}
-    const key = deviceChannelKey(deviceId);
-    if (key && typeof registerChannel === 'function') {
-        registerChannel('pia-device-' + key, (ch) =>
-            ch
-                .on('broadcast', { event: 'recheck' }, () => {
-                    check();
-                })
-                .subscribe()
-        );
-    }
-
     check();
-}
-
-function nudgeDevice(deviceId) {
-    const key = deviceChannelKey(deviceId);
-    if (!key || !window.supabaseClient) return;
-
-    const ch = supabaseClient.channel('pia-device-' + key);
-    let done = false;
-    const finish = () => {
-        if (done) return;
-        done = true;
-        try {
-            supabaseClient.removeChannel(ch);
-        } catch (e) {}
-    };
-
-    ch.subscribe((status) => {
-        if (status === 'SUBSCRIBED') {
-            Promise.resolve(ch.send({ type: 'broadcast', event: 'recheck', payload: {} })).then(
-                finish,
-                finish
-            );
-        } else if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT' || status === 'CLOSED') {
-            finish();
-        }
-    });
-    setTimeout(finish, 5000);
 }
 
 function clearLocalSession() {

@@ -86,13 +86,7 @@
     }
 
     function initForms() {
-        Admin.initTutorFields();
         $('#edit-student-form').addEventListener('submit', Admin.handleUpdateStudent);
-        $$('#edit-student-form [data-score-test]').forEach(function (input) {
-            input.addEventListener('input', function () {
-                Admin.paintScorePreview(input.getAttribute('data-score-test'));
-            });
-        });
         $('#add-professor-form').addEventListener('submit', Admin.handleRegisterProfessor);
         $('#add-admin-form').addEventListener('submit', Admin.handleAddAdmin);
         Admin.initChangePassword();

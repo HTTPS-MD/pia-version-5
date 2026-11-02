@@ -32,9 +32,6 @@
     }
     Admin.tutorLabel = tutorLabel;
 
-    // the old tutor fields are gone; start-up still calls this
-    Admin.initTutorFields = function () {};
-
     var snapshot = '';
 
     function look() {

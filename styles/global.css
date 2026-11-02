@@ -1053,26 +1053,6 @@ body {
     flex-direction: column;
     gap: var(--sp-6);
 }
-
-.stat-glyph {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-    border-radius: var(--r-sm);
-    display: grid;
-    place-items: center;
-    background: var(--bg-chip);
-    color: var(--text-muted);
-}
-
-.stat-glyph .icon {
-    width: 15px;
-    height: 15px;
-}
-.stat-glyph.g-accent {
-    background: var(--accent-soft);
-    color: var(--accent);
-}
 .bar {
     height: 6px;
     border-radius: var(--r-pill);
@@ -1376,11 +1356,6 @@ body {
     color: var(--text-faint);
     margin-bottom: var(--sp-4);
 }
-.choice-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--sp-3);
-}
 
 .choice {
     position: relative;
@@ -1401,15 +1376,8 @@ body {
     width: 0;
     height: 0;
 }
-.choice-title {
-    font-size: var(--fs-sm);
-    font-weight: 600;
-}
 .choice:has(input:checked) {
     background: var(--accent-soft);
-}
-.choice:has(input:checked) .choice-title {
-    color: var(--accent);
 }
 .choice:has(input:focus-visible) {
     box-shadow: 0 0 0 3px var(--accent-soft);
@@ -1689,7 +1657,6 @@ body.is-locked {
 .label,
 .field-msg,
 .check-text,
-.choice-title,
 .toast-title,
 .toast-desc {
     overflow-wrap: anywhere;

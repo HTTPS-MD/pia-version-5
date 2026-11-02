@@ -499,30 +499,6 @@ html[data-surface='admin'] .head-search .input {
     padding-left: 36px;
     padding-right: 12px;
 }
-.pill-toggle {
-    position: absolute;
-    right: 5px;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 30px;
-    padding: 0 12px;
-    border: 1px solid var(--line-input);
-    border-radius: 999px;
-    background: transparent;
-    color: var(--text-muted);
-    font: 600 var(--fs-xs) var(--font-body);
-    white-space: nowrap;
-    cursor: pointer;
-}
-.pill-toggle:hover {
-    background: var(--bg-chip);
-    color: var(--text);
-}
-.pill-toggle[aria-pressed='true'] {
-    background: var(--admin-pill);
-    color: var(--admin-pill-ink);
-    border-color: transparent;
-}
 @media (min-width: 40.0625rem) {
     #view-students .page-actions {
         flex-wrap: nowrap;
@@ -687,16 +663,6 @@ html[data-surface='admin'] .mk-pair .btn {
     #view-students #student-tbody td:first-child {
         min-width: 12rem;
     }
-}
-
-.stat-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-    gap: 14px;
-    margin: 0 0 16px;
-}
-.stat-row:empty {
-    display: none;
 }
 .stat-card {
     border: 1px solid var(--line);
@@ -1063,59 +1029,12 @@ html[data-surface='admin'][data-theme='dark'] .class-strip {
     width: 12px;
     height: 12px;
 }
-
-/* math task bank: one row of controls, the same black panel as the students table, a quieter delete */
-.qb-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 12px;
-}
-.qb-toolbar .qb-subtabs {
-    width: auto;
-    gap: 6px;
-    border-bottom: 0;
-}
-.qb-toolbar .qb-subtab {
-    min-height: 40px;
-    margin: 0;
-    padding: 0 18px;
-    border: 0;
-    border-radius: 999px;
-    font-weight: 600;
-}
-.qb-toolbar .qb-subtab:hover {
-    background: var(--bg-chip);
-    color: var(--text);
-}
-.qb-toolbar .qb-subtab.is-active {
-    background: var(--admin-pill);
-    color: var(--admin-pill-ink);
-    box-shadow: 0 6px 16px var(--black-a16);
-}
-.qb-toolbar .qb-topics {
-    width: auto;
-    max-width: none;
-    border-radius: 999px;
-}
-.qb-toolbar .qb-topics .segment-btn {
-    flex: 0 0 auto;
-    border-radius: 999px;
-    padding: 0 var(--sp-3);
-}
 html[data-surface='admin'][data-theme='dark'] #view-mathtask .card {
     --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
     background: var(--bg-surface);
 }
 html[data-surface='admin'][data-theme='dark'] #view-mathtask .table thead th {
     background: color-mix(in srgb, var(--hex-ffffff) 7%, var(--bg-surface));
-}
-.qb-danger {
-    display: flex;
-    justify-content: flex-start;
-    padding: 12px var(--sp-5);
-    border-top: 1px solid var(--line-soft);
 }
 
 /* add / edit question: a tighter form, the points hint in a tooltip, calmer step cards */
@@ -1469,39 +1388,6 @@ html[data-surface='admin'] #modal-scores .score-input {
     }
 }
 
-/* math task bank: topics are plain tabs with an underline; Rules is a button in the page head */
-.qb-toolbar {
-    justify-content: flex-start;
-    border-bottom: 1px solid var(--line);
-}
-.qb-toolbar .qb-topics {
-    background: transparent;
-    border: 0;
-    box-shadow: none;
-    padding: 0;
-    gap: 22px;
-    border-radius: 0;
-}
-.qb-toolbar .qb-topics .segment-btn {
-    min-height: 40px;
-    padding: 0;
-    border-radius: 0;
-    background: transparent;
-    box-shadow: none;
-    color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-}
-.qb-toolbar .qb-topics .segment-btn:hover {
-    color: var(--text);
-}
-.qb-toolbar .qb-topics .segment-btn.is-active {
-    color: var(--text);
-    font-weight: 600;
-    background: transparent;
-    border-bottom-color: var(--accent);
-}
-
 /* math task bank: the topic dropdown lives in the page title, like the section on the Sections page */
 #view-mathtask .page-title #qb-topic-host {
     position: relative;
@@ -1551,22 +1437,6 @@ html[data-surface='admin'] #modal-scores .score-input {
 }
 #modal-qb-edit .qb-wiz li[data-wiz-go]:hover {
     color: var(--text);
-}
-
-/* students table header: Input Scores and Add Students sit at the right, after the class status */
-.table-title .table-actions {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex: 0 0 auto;
-}
-.table-title .table-actions .is-hidden {
-    display: none;
-}
-@media (max-width: 40rem) {
-    .table-title .table-actions {
-        width: 100%;
-    }
 }
 
 /* the three class buttons sit at the right of the search row */
@@ -1716,14 +1586,6 @@ html[data-surface='admin'] .drawer .bar {
 #modal-qb-draft .modal-foot,
 #modal-as-draft .modal-foot {
     padding-top: 16px;
-}
-
-/* the typed confirmation in the confirm dialog */
-#modal-confirm .confirm-type {
-    margin-top: 14px;
-}
-#modal-confirm .confirm-type[hidden] {
-    display: none;
 }
 
 #modal-delete-section .modal-body {

@@ -485,7 +485,6 @@
     }
 
     var customSelects = {};
-    Admin.customSelects = customSelects;
 
     function refreshCustomSelect(id) {
         if (customSelects[id]) {
@@ -728,7 +727,6 @@
         };
         refresh();
     }
-    Admin.initCustomSelect = initCustomSelect;
 
     // Every dropdown in the console is the custom one: enhance what is on the page and what is added later.
     function initCustomSelects() {

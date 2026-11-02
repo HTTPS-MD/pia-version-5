@@ -215,10 +215,6 @@
         return '<span class="skeleton skeleton-text">' + Admin.esc(text) + '</span>';
     }
 
-    function skeletonPill(width) {
-        return '<span class="skeleton skeleton-pill" style="width:' + width + 'px"></span>';
-    }
-
     function skeletonTraits() {
         var one =
             '<div class="trait" aria-hidden="true"><div class="trait-top">' +
