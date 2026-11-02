@@ -1735,3 +1735,14 @@ html[data-surface='admin'] .drawer .bar {
 #view-students .table-title .tabs {
     margin-left: 0;
 }
+
+/* edit participant: two compact rows, the name on one and the number with the section on the other */
+#modal-edit-student .form-grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+#modal-edit-student .form-grid-2 {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+#modal-edit-student .form-section + .form-section {
+    margin-top: 16px;
+}

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261103a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261104g">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261104h">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -508,7 +508,7 @@
     </div>
 
     <div class="overlay" id="modal-edit-student" role="dialog" aria-modal="true" aria-labelledby="edit-student-title">
-        <div class="modal modal-lg">
+        <div class="modal modal-md">
             <header class="modal-head">
                 <div class="modal-head-text">
                     <h2 class="modal-title" id="edit-student-title">Edit participant</h2>
@@ -519,7 +519,6 @@
                 <form id="edit-student-form" novalidate>
                     <input type="hidden" id="es-original-email">
                     <div class="form-section">
-                        <p class="form-section-title">Name</p>
                         <div class="form-grid form-grid-3">
                             <div class="field">
                                 <label class="label" for="es-first">First name <span class="req">*</span></label>
@@ -540,8 +539,7 @@
                     </div>
 
                     <div class="form-section">
-                        <p class="form-section-title">Placement</p>
-                        <div class="form-grid">
+                        <div class="form-grid form-grid-2">
                             <div class="field">
                                 <label class="label" for="es-number">Student number</label>
                                 <input class="input" type="text" id="es-number" inputmode="numeric" maxlength="11" autocomplete="off" placeholder="11 digits">
