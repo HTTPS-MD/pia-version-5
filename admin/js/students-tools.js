@@ -1165,7 +1165,8 @@
             th.scope = 'col';
             th.setAttribute('data-ci-th', '');
             th.textContent = 'Student number';
-            headRow.insertBefore(th, headRow.children[1] || null);
+            var mkTh = headRow.querySelector('[data-mk-th]');
+            headRow.insertBefore(th, mkTh ? mkTh.nextSibling : headRow.children[1] || null);
         }
 
         var rows = Array.prototype.slice.call(
@@ -1177,7 +1178,8 @@
                 cell = document.createElement('td');
                 cell.setAttribute('data-ci-cell', '');
                 cell.innerHTML = '<span class="scope-line">…</span>';
-                tr.insertBefore(cell, tr.children[1] || null);
+                var mkCell = tr.querySelector('[data-mk-cell]');
+                tr.insertBefore(cell, mkCell ? mkCell.nextSibling : tr.children[1] || null);
             }
             return { tr: tr, cell: cell, email: tr.getAttribute('data-student') };
         });

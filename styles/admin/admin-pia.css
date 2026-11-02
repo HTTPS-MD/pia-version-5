@@ -1982,7 +1982,22 @@ html[data-surface='admin'] .sidebar-user .avatar {
         overscroll-behavior-x: contain;
     }
     #view-students .table {
-        min-width: 46rem;
+        table-layout: auto !important;
+        width: max-content;
+        min-width: 100%;
+    }
+    #view-students .table th,
+    #view-students .table td {
+        width: auto !important;
+        max-width: none !important;
+        padding: 12px 16px;
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+    }
+    #view-students .table th:first-child,
+    #view-students .table td:first-child {
+        min-width: 12rem;
     }
     #view-students .table th:first-child,
     #view-students .table td:first-child {
