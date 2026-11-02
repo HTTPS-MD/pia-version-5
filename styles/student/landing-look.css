@@ -1061,3 +1061,25 @@
         background: color-mix(in srgb, var(--text) 8%, var(--bg-body, transparent));
     }
 }
+
+/* the tutor's text box looks like the join box on the landing page: cream, dark text, soft shadow */
+@media (min-width: 46rem) {
+    .landing-look .start-card {
+        border: 0;
+        border-radius: 1.1rem;
+        background: var(--hex-fff8e7);
+        color: var(--hex-0d1230);
+        box-shadow: 0 0.75rem 2rem var(--black-a28);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+    .landing-look .start-card::before {
+        border: 0;
+        background: var(--hex-fff8e7);
+    }
+    .landing-look .start-card .start-hello,
+    .landing-look .start-card .start-intro,
+    .landing-look .start-card .start-lede {
+        color: var(--hex-0d1230);
+    }
+}

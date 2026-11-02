@@ -326,6 +326,10 @@
         if (intro) {
             intro.textContent = 'I’m ' + first + ', your tutor.';
         }
+        var lede = $('#start-lede');
+        if (lede && WELCOME_LEDE[key]) {
+            lede.textContent = WELCOME_LEDE[key];
+        }
         ['#agent-img', '#agent-img-start'].forEach(function (sel) {
             var img = $(sel);
             if (!img) {
@@ -356,4 +360,19 @@
         return true;
     }
     Dash.applyCharacter = applyCharacter;
+
+    // what each tutor says on the welcome screen, in their own voice
+    var WELCOME_LEDE = {
+        'pia-open':
+            'Ready to explore percentages together? Every problem is a little puzzle, and we will uncover it one clue at a time.',
+        'pia-conscientious':
+            'Let’s work through percentages step by step. Take your time, and I’ll check each step with you.',
+        'pia-extravert':
+            'Let’s tackle percentages together! It’s more fun with a partner, so shout whenever you want a hint!',
+        'pia-agreeable':
+            'I’m so glad you’re here. We’ll go through percentages together, with no pressure. Ask me for a hint anytime.',
+        'pia-calm':
+            'Take a breath. There’s no rush with percentages, and I’m right here whenever you need a hint.',
+        'pia-neutral': 'Let’s practise percentages. You can ask for a hint whenever you need one.'
+    };
 })();
