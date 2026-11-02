@@ -1292,3 +1292,38 @@ html[data-surface='admin'] .as-row .input[aria-invalid='true'],
 .as-row [aria-invalid='true'] + .custom-select .custom-select-trigger {
     border-color: var(--hex-e5484d);
 }
+
+/* add students and input scores: the same framed table as the section directory */
+html[data-surface='admin'] #modal-scores .table-wrap {
+    margin: 0 var(--sp-6, 24px) var(--sp-4, 16px);
+    border: 1px solid var(--line) !important;
+    border-radius: 0.9rem;
+    overflow: hidden;
+}
+html[data-surface='admin'] #modal-scores .scores-toolbar {
+    padding-inline: var(--sp-6, 24px);
+}
+html[data-surface='admin'][data-theme='dark'] .as-table,
+html[data-surface='admin'][data-theme='dark'] #modal-scores .table-wrap {
+    --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+    background: var(--bg-surface);
+}
+html[data-surface='admin'][data-theme='dark'] .as-head,
+html[data-surface='admin'][data-theme='dark'] #modal-scores .table thead th {
+    background: color-mix(in srgb, var(--hex-ffffff) 7%, var(--bg-surface));
+}
+html[data-surface='admin'] .as-head {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+html[data-surface='admin'] .as-row {
+    border-bottom-color: var(--line-soft);
+}
+html[data-surface='admin'] #modal-scores .score-input {
+    background: transparent;
+    border-color: var(--line);
+    border-radius: 0.5rem;
+}
