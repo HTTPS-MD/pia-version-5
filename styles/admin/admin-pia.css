@@ -1713,3 +1713,18 @@ html[data-surface='admin'] .stage-switch.is-on::after {
 #view-students .stage-let .class-live {
     margin-left: 8px;
 }
+
+#view-students .page-title-row {
+    flex-wrap: wrap;
+}
+#view-students .page-title-row .stage-let {
+    width: auto;
+    margin: 0 0 0 20px;
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+}
+#view-students .page-title-row .stage-let[hidden] {
+    display: none;
+}

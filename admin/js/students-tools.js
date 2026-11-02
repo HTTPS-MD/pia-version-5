@@ -1016,6 +1016,11 @@
             row.appendChild(title);
             row.appendChild(details);
         }
+        var stages = $('#stage-let');
+        var titleRow = $('#view-students .page-title-row');
+        if (stages && titleRow && stages.parentNode !== titleRow) {
+            titleRow.appendChild(stages);
+        }
         var filter = $('#section-filter');
         if (filter) {
             filter.addEventListener('change', function () {
