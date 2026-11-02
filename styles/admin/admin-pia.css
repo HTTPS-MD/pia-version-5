@@ -1660,3 +1660,18 @@ html[data-surface='admin'][data-theme='dark'] .drawer {
     --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
     background: var(--bg-surface);
 }
+
+/* side panels: square edges and quiet, neutral lines */
+html[data-surface='admin'] .drawer {
+    border-radius: 0;
+    border: 0;
+    border-left: 1px solid color-mix(in srgb, var(--hex-ffffff) 10%, transparent);
+    box-shadow: -14px 0 34px var(--black-a16);
+}
+html[data-surface='admin'][data-theme='dark'] .drawer {
+    --line: color-mix(in srgb, var(--hex-ffffff) 10%, transparent);
+    --line-soft: color-mix(in srgb, var(--hex-ffffff) 7%, transparent);
+}
+html[data-surface='admin'] .drawer .bar {
+    background: color-mix(in srgb, var(--hex-ffffff) 12%, transparent);
+}
