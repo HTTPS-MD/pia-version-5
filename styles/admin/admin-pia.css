@@ -1271,23 +1271,24 @@ html[data-surface='admin'] .theme-toggle:hover {
 }
 
 /* add students: the table already frames the cells, so the fields inside are flat */
-.as-row .input,
-.as-row .custom-select-trigger {
+html[data-surface='admin'] .as-row .input,
+html[data-surface='admin'] .as-row .custom-select-trigger {
     background: transparent;
     border-color: transparent;
     border-radius: 0.5rem;
+    background-image: none;
     box-shadow: none;
 }
-.as-row .input:hover,
-.as-row .custom-select-trigger:hover {
+html[data-surface='admin'] .as-row .input:hover,
+html[data-surface='admin'] .as-row .custom-select-trigger:hover {
     border-color: var(--line);
 }
-.as-row .input:focus,
-.as-row .custom-select-trigger:focus-visible {
+html[data-surface='admin'] .as-row .input:focus,
+html[data-surface='admin'] .as-row .custom-select-trigger:focus-visible {
     border-color: var(--accent);
     background: transparent;
 }
-.as-row .input[aria-invalid='true'],
+html[data-surface='admin'] .as-row .input[aria-invalid='true'],
 .as-row [aria-invalid='true'] + .custom-select .custom-select-trigger {
     border-color: var(--hex-e5484d);
 }
