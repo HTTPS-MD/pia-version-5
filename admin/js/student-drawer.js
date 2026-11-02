@@ -41,7 +41,6 @@
         }
         $('#drawer-student-name').textContent = s.full_name || '(no name)';
         $('#drawer-condition').textContent = condition.short;
-        $('#drawer-condition').className = 'badge ' + (condition.badge || '');
         $('#drawer-section').textContent = s.section || '—';
         var numberCell = $('#drawer-number');
         if (numberCell && window.PIACheckin && window.PIACheckin.loadNumber) {
@@ -228,6 +227,7 @@
 
     async function renderTraits(s) {
         var box = $('#drawer-traits');
+        $('#drawer-ocean-meta').textContent = '';
         box.innerHTML = Admin.skeletonTraits();
         box.setAttribute('aria-busy', 'true');
 
@@ -290,37 +290,8 @@
             (rows.length > 1 ? ' · latest of ' + rows.length + ' attempts' : '');
         var matchingNote = '';
 
-        var answers;
-        if (Array.isArray(r.responses) && r.responses.length === 50) {
-            answers =
-                '<details class="bfpt-answers"><summary>All 50 answers</summary><ol class="bfpt-answer-list">' +
-                r.responses
-                    .map(function (v, i) {
-                        var text = BFPT ? BFPT.items[i] : 'Item ' + (i + 1);
-                        var label = BFPT ? BFPT.labelFor(v) : null;
-                        return (
-                            '<li>' +
-                            '<span class="bfpt-n tnum">' +
-                            (i + 1) +
-                            '</span>' +
-                            '<span class="bfpt-q">' +
-                            Admin.esc(text) +
-                            '</span>' +
-                            '<span class="bfpt-a">' +
-                            (label ? Admin.esc(label) + ' · ' : '') +
-                            '<b class="tnum">' +
-                            Admin.esc(v) +
-                            '</b></span>' +
-                            '</li>'
-                        );
-                    })
-                    .join('') +
-                '</ol></details>';
-        } else {
-            answers = '';
-        }
-
-        box.innerHTML = scores + matchingNote + '<p class="bfpt-meta">' + meta + '</p>' + answers;
+        $('#drawer-ocean-meta').textContent = meta;
+        box.innerHTML = scores;
     }
 
     function initDrawerActions() {

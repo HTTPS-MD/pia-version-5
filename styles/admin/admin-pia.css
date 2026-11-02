@@ -1675,3 +1675,20 @@ html[data-surface='admin'][data-theme='dark'] .drawer {
 html[data-surface='admin'] .drawer .bar {
     background: color-mix(in srgb, var(--hex-ffffff) 12%, transparent);
 }
+
+/* participant profile: the OCEAN heading with the submitted date beside it */
+.eyebrow-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+.eyebrow-row .eyebrow {
+    margin: 0;
+}
+.eyebrow-meta {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    text-align: right;
+}

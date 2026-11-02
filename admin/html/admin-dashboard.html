@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261103a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261103h">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261103i">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -1030,7 +1030,7 @@
                     </div>
                     <div class="kv">
                         <p class="kv-label">Condition</p>
-                        <p class="kv-value"><span class="badge" id="drawer-condition">—</span></p>
+                        <p class="kv-value"><span id="drawer-condition">—</span></p>
                     </div>
                     <div class="kv">
                         <p class="kv-label">Tutor persona</p>
@@ -1040,9 +1040,22 @@
 
                 <div>
 
-                    <p class="eyebrow" style="margin-bottom:16px">OCEAN Test Result</p>
+                    <div class="eyebrow-row">
+                        <p class="eyebrow">OCEAN Test Result</p>
+                        <span class="eyebrow-meta" id="drawer-ocean-meta"></span>
+                    </div>
                     <div id="drawer-traits"></div>
                 </div>
+
+                <section aria-labelledby="drawer-tutorial-title">
+                    <p class="eyebrow" id="drawer-tutorial-title" style="margin-bottom:12px">Tutorial performance</p>
+                    <div id="drawer-tutorial-performance" role="status" aria-live="polite"></div>
+                </section>
+
+                <section aria-labelledby="drawer-session-title">
+                    <p class="eyebrow" id="drawer-session-title" style="margin-bottom:12px">Session history</p>
+                    <div id="drawer-session-history" role="status" aria-live="polite"></div>
+                </section>
 
                 <div>
                     <p class="eyebrow" style="margin-bottom:12px">Mathematical performance</p>
@@ -1059,16 +1072,6 @@
                         </div>
                     </div>
                 </div>
-
-                <section aria-labelledby="drawer-tutorial-title">
-                    <p class="eyebrow" id="drawer-tutorial-title" style="margin-bottom:12px">Tutorial performance</p>
-                    <div id="drawer-tutorial-performance" role="status" aria-live="polite"></div>
-                </section>
-
-                <section aria-labelledby="drawer-session-title">
-                    <p class="eyebrow" id="drawer-session-title" style="margin-bottom:12px">Session history</p>
-                    <div id="drawer-session-history" role="status" aria-live="polite"></div>
-                </section>
 
                 <div>
                     <p class="eyebrow" style="margin-bottom:12px">Actions</p>
@@ -1347,7 +1350,7 @@
     <script src="../js/admin-loading.js?v=20261101a"></script>
     <script src="../js/admin-data.js?v=20261101c"></script>
     <script src="../js/students-table.js?v=20261103b"></script>
-    <script src="../js/student-drawer.js?v=20261103a"></script>
+    <script src="../js/student-drawer.js?v=20261103b"></script>
     <script src="../js/student-forms.js?v=20261031b"></script>
     <script src="../js/admin-faculty.js?v=20261101d"></script>
     <script src="../js/stage-controls.js?v=20261031a"></script>
