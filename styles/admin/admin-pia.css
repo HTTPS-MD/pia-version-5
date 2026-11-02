@@ -1778,3 +1778,14 @@ html[data-surface='admin'][data-theme='dark'] .show-details {
 #view-mathtask .qb-strip[hidden] {
     display: none;
 }
+
+#view-mathtask .qb-strip {
+    padding: 0 10px;
+    gap: 10px;
+}
+#view-mathtask .qb-strip .btn {
+    margin: 0;
+}
+#view-mathtask .card-head[hidden] {
+    display: none;
+}
