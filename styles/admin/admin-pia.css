@@ -1717,3 +1717,11 @@ html[data-surface='admin'] .drawer .bar {
 #modal-as-draft .modal-foot {
     padding-top: 16px;
 }
+
+/* the typed confirmation in the confirm dialog */
+#modal-confirm .confirm-type {
+    margin-top: 14px;
+}
+#modal-confirm .confirm-type[hidden] {
+    display: none;
+}

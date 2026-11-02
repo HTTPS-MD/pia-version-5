@@ -292,16 +292,8 @@
         var meta = overview.sections.filter(function (x) {
             return x.section === now;
         })[0];
-        var why = !now
-            ? ''
-            : meta && meta.students
-              ? 'Has students'
-              : profsOf(now).length
-                ? 'Has a professor'
-                : '';
         var remove = now
             ? '<button type="button" data-section-delete class="custom-select-option section-opt section-opt-danger" ' +
-              (why ? 'disabled title="' + why + ': only an empty section can be deleted." ' : '') +
               '>Delete ' +
               esc(now) +
               '</button>'
@@ -1081,16 +1073,33 @@
                 return;
             }
             if (event.target.closest('[data-section-delete]')) {
-                if (event.target.closest('[data-section-delete]').disabled) {
-                    return;
-                }
                 var doomed = chosen();
+                var meta = overview.sections.filter(function (x) {
+                    return x.section === doomed;
+                })[0];
+                var kids = meta && meta.students ? meta.students : 0;
+                var prof = profsOf(doomed)[0];
                 closeMenu();
                 (async function () {
+                    var bits = [];
+                    if (kids) {
+                        bits.push(
+                            kids +
+                                (kids === 1 ? ' student stays' : ' students stay') +
+                                ' in the study, with their results, but will have no section.'
+                        );
+                    }
+                    if (prof) {
+                        bits.push(
+                            (prof.full_name || prof.email) + ' will be unassigned.'
+                        );
+                    }
+                    bits.push('This cannot be undone.');
                     var ok = await window.PIAAdmin.confirmAction({
                         heading: 'Delete ' + doomed + '?',
-                        message: 'This cannot be undone.',
-                        confirmLabel: 'Delete'
+                        message: bits.join(' '),
+                        confirmLabel: 'Delete section',
+                        typeToConfirm: kids ? doomed : ''
                     });
                     if (!ok) {
                         return;

@@ -225,6 +225,22 @@
             var fresh = accept.cloneNode(true);
             accept.parentNode.replaceChild(fresh, accept);
 
+            // a risky action can ask for a word to be typed first
+            var typeWrap = $('#confirm-type-wrap');
+            var typeInput = $('#confirm-type');
+            var must = options.typeToConfirm || '';
+            typeWrap.hidden = !must;
+            typeInput.value = '';
+            fresh.disabled = !!must;
+            if (must) {
+                $('#confirm-type-label').textContent = 'Type ' + must + ' to confirm';
+                typeInput.oninput = function () {
+                    fresh.disabled = typeInput.value.trim() !== must;
+                };
+            } else {
+                typeInput.oninput = null;
+            }
+
             function settle(result) {
                 overlay.removeEventListener('click', onBackdrop, true);
                 document.removeEventListener('keydown', onEsc, true);
