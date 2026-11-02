@@ -141,8 +141,9 @@
             var overlay = $('#modal-confirm');
             var accept = $('#confirm-accept');
 
-            $('#confirm-title').textContent = options.title || 'Are you sure?';
-            $('#confirm-subtitle').textContent = options.subtitle || 'Check before you continue.';
+            // the question is the title and one line explains it, like every other dialog
+            $('#confirm-title').textContent = options.heading || options.title || 'Are you sure?';
+            $('#confirm-subtitle').textContent = options.subtitle || '';
             $('#confirm-text').textContent = options.message || '';
             accept.textContent = options.confirmLabel || 'Continue';
 
