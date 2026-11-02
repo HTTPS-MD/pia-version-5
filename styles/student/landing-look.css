@@ -1083,3 +1083,59 @@
         color: var(--hex-0d1230);
     }
 }
+
+/* welcome screen on a phone: the tutor on top, the same cream text box below with its pointer facing up */
+@media (max-width: 45.99rem) {
+    .landing-look .start-wrap {
+        max-width: 26rem;
+        grid-template-columns: minmax(0, 1fr);
+        gap: var(--sp-5);
+        text-align: left;
+    }
+    .landing-look .agent-card {
+        order: 1;
+    }
+    .landing-look .start-card {
+        order: 2;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--sp-3);
+        padding: 1.4rem 1.25rem;
+        border: 0;
+        border-radius: 1.1rem;
+        background: var(--hex-fff8e7);
+        color: var(--hex-0d1230);
+        box-shadow: 0 0.75rem 2rem var(--black-a28);
+    }
+    .landing-look .start-card::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: -8px;
+        width: 16px;
+        height: 16px;
+        transform: translateX(-50%) rotate(45deg);
+        background: var(--hex-fff8e7);
+    }
+    .landing-look .start-card .start-hello,
+    .landing-look .start-card .start-intro,
+    .landing-look .start-card .start-lede {
+        order: 0;
+        margin-inline: 0;
+        color: var(--hex-0d1230);
+    }
+    .landing-look .start-card .paper-chips,
+    .landing-look .start-card .start-actions {
+        order: 0;
+        justify-content: flex-start;
+    }
+    .landing-look .start-card .start-actions,
+    .landing-look .start-card .btn-start {
+        width: 100%;
+    }
+    .landing-look .agent-stage {
+        max-width: min(17rem, 38vh);
+    }
+}
