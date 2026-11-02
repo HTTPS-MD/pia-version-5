@@ -389,7 +389,7 @@
             for (var i = 0; i < 3; i++) {
                 tbody.appendChild(Admin.qbSkeletonRow());
             }
-            $('#qb-sub').textContent = 'Loading questions…';
+            $('#qb-sub').textContent = 'Loading…';
         } else if (!ready) {
             empty.classList.remove('is-hidden');
             $('#qb-empty-title').textContent =
@@ -398,8 +398,8 @@
                     : 'The question bank could not be loaded';
             $('#qb-empty-desc').textContent =
                 qb.status === 'missing'
-                    ? 'The question bank needs to be enabled before it can be used. Ask the system maintainer, then press Refresh.'
-                    : qb.error + ' Press Refresh to try again.';
+                    ? 'The question bank needs to be enabled before it can be used. Ask the system maintainer, then reload the page.'
+                    : qb.error + ' Reload the page to try again.';
             $('#qb-sub').textContent = 'Unavailable';
         } else if (!list.length) {
             empty.classList.remove('is-hidden');
@@ -412,20 +412,7 @@
                 frag.appendChild(Admin.qbRow(item, index));
             });
             tbody.appendChild(frag);
-            var withSteps = list.filter(function (q) {
-                return (
-                    q.steps.length >= Admin.QB_STEP_LABELS[qb.topic].length &&
-                    q.steps.slice(0, Admin.QB_STEP_LABELS[qb.topic].length).every(function (s) {
-                        return s.answer.trim();
-                    })
-                );
-            }).length;
-            $('#qb-sub').textContent =
-                list.length +
-                (list.length === 1 ? ' question' : ' questions') +
-                ' · ' +
-                withSteps +
-                ' ready for game';
+            $('#qb-sub').textContent = list.length + (list.length === 1 ? ' question' : ' questions');
         }
 
         renderQbToolbar();

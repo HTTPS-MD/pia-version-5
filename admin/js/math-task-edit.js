@@ -781,7 +781,7 @@
                 editing != null ? 'Changes not saved' : 'Question not added',
                 Admin.friendlyDbError(
                     res.error,
-                    'This question may have been deleted elsewhere. Press Refresh to check.'
+                    'This question may have been deleted elsewhere. Reload the page to check.'
                 )
             );
             return;

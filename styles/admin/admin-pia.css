@@ -1454,3 +1454,11 @@ html[data-surface='admin'] #modal-scores .score-input {
 #modal-qb-edit .qb-gen-controls .qb-gen-range {
     order: 2;
 }
+
+/* math task bank: the question count sits top right, on the same row as the topic */
+#qb-sub.qb-count {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    white-space: nowrap;
+}
