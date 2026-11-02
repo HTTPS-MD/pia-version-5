@@ -759,29 +759,49 @@
             return;
         }
 
-        var lines = skipped
-            .slice(0, 8)
-            .map(function (item) {
-                return '• ' + item.email + ' — ' + item.reason;
-            })
-            .join('\n');
-        var more = skipped.length > 8 ? '\n…and ' + (skipped.length - 8) + ' more.' : '';
-        var errors = failed
-            .map(function (f) {
-                return '• ' + f.section + ' — ' + f.message;
-            })
-            .join('\n');
+        // group the students who could not enter by why, so the reasons read at a glance
+        var groups = [];
+        skipped.forEach(function (item) {
+            var why = plainReason(item.reason);
+            var group = groups.filter(function (g) {
+                return g.why === why;
+            })[0];
+            if (!group) {
+                group = { why: why, who: [] };
+                groups.push(group);
+            }
+            group.who.push(Admin.whoIs(item.email));
+        });
+        var parts = [
+            granted.length + ' let in · ' + skipped.length + ' not ready'
+        ];
+        groups.forEach(function (g) {
+            var shown = g.who.slice(0, 10).join(', ');
+            var more = g.who.length > 10 ? ' and ' + (g.who.length - 10) + ' more' : '';
+            parts.push(g.why + ' (' + g.who.length + ')\n' + shown + more);
+        });
+        failed.forEach(function (f) {
+            parts.push('Could not open ' + f.section + '\n' + Admin.teacherWords(f.message));
+        });
 
         Admin.showNotice(
-            granted.length ? 'Partially granted' : 'Nothing granted',
-            'Granted: ' +
-                granted.length +
-                '\nSkipped: ' +
-                skipped.length +
-                (skipped.length ? '\n\n' + lines + more : '') +
-                (failed.length ? '\n\nSections that failed:\n' + errors : ''),
+            granted.length
+                ? 'Some students are not ready for ' + gate.title
+                : 'No one could enter ' + gate.title,
+            parts.join('\n\n'),
             granted.length ? 'accent' : 'danger'
         );
+    }
+
+    function plainReason(reason) {
+        var text = String(reason || '').trim();
+        if (/ocean/i.test(text) && /not.*complet/i.test(text)) {
+            return 'Has not finished the OCEAN test';
+        }
+        if (/character/i.test(text) && /select|chosen|choose/i.test(text)) {
+            return 'Has not chosen a character yet';
+        }
+        return text.replace(/\.$/, '') || 'Not eligible';
     }
 
     async function revokeSections(gateKey, sourceBtn) {
