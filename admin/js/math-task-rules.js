@@ -233,6 +233,12 @@
         $('#qb-wiz-back').addEventListener('click', function () {
             Admin.qbWizard.go(Admin.qbWizard.state.stage - 1);
         });
+        $('#qb-wiz').addEventListener('click', function (event) {
+            var go = event.target.closest('[data-wiz-go]');
+            if (go) {
+                Admin.qbWizard.go(Number(go.getAttribute('data-wiz-go')));
+            }
+        });
         $('#qb-review').addEventListener('click', function (event) {
             var go = event.target.closest('[data-wiz-go]');
             if (go) {

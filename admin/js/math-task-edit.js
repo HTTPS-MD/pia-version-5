@@ -319,7 +319,7 @@
         });
     }
 
-    // Add question runs as a wizard: Problem, one page per required step, then Review.
+    // Add and Edit question run as a wizard: Problem, one page per required step, then Review.
     // Edit shows the whole form at once.
     var wiz = { on: false, stage: 0 };
 
@@ -396,6 +396,7 @@
                         '<li class="' +
                         (i === wiz.stage ? 'is-current' : i < wiz.stage ? 'is-done' : '') +
                         '"' +
+                        (Admin.qb.editingId != null ? ' data-wiz-go="' + i + '" tabindex="0" role="button"' : '') +
                         (i === wiz.stage ? ' aria-current="step"' : '') +
                         '><span>' +
                         (i + 1) +
@@ -527,7 +528,7 @@
 
         Admin.qb.editSnap = qbSnap();
         $('#qb-mode').hidden = !!item;
-        wizStart(!item);
+        wizStart(true);
         Admin.qb.drafts = stash ? JSON.parse(JSON.stringify(stash.drafts)) : [];
         qbSetMode(stash && stash.mode === 'gen' ? 'gen' : 'write');
         if (stash) {

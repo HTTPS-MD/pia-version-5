@@ -1544,3 +1544,11 @@ html[data-surface='admin'] #modal-scores .score-input {
 #view-mathtask .card-head > .btn {
     flex: 0 0 auto;
 }
+
+/* editing a question: the progress steps can be clicked to jump around */
+#modal-qb-edit .qb-wiz li[data-wiz-go] {
+    cursor: pointer;
+}
+#modal-qb-edit .qb-wiz li[data-wiz-go]:hover {
+    color: var(--text);
+}
