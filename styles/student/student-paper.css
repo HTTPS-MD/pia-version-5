@@ -477,11 +477,6 @@ ul.paper-chips {
     letter-spacing: -0.03em;
     color: var(--q-ink);
 }
-.paper .agent-role {
-    margin: 0;
-    font-size: 0.95rem;
-    color: var(--q-soft);
-}
 .paper .learn-main:has(#screen-start.is-active) {
     display: flex;
     flex-direction: column;

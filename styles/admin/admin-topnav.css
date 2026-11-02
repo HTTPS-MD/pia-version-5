@@ -208,14 +208,6 @@
 .stage-state .pill.is-plain {
     color: var(--text-muted);
 }
-.stage-state .stage-change {
-    border: 0;
-    background: none;
-    color: var(--accent-text);
-    cursor: pointer;
-    font: inherit;
-    padding: 0;
-}
 .tut-modal {
     position: relative;
 }

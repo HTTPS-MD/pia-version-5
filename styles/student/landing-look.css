@@ -967,9 +967,6 @@
 .landing-look .agent-name {
     color: var(--text);
 }
-.landing-look .agent-role {
-    color: var(--text-muted);
-}
 .landing-look .agent-card {
     display: flex;
     flex-direction: column;

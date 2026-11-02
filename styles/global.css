@@ -1029,12 +1029,6 @@ body {
     padding: var(--sp-3) var(--sp-5);
 }
 
-.card-tools {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-2);
-    flex: 0 0 auto;
-}
 .grid {
     display: grid;
     gap: var(--sp-4);

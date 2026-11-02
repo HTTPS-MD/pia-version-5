@@ -172,11 +172,6 @@
     font-size: 16px;
     font-weight: 700;
 }
-.agent-role {
-    margin-top: 2px;
-    font-size: var(--fs-sm);
-    color: var(--text-muted);
-}
 body[data-boot='pending'] .learn {
     visibility: hidden;
 }

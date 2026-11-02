@@ -1657,10 +1657,6 @@ html:not(.pia-section-picked) #roster-thead th:nth-child(7) { width: 9%; }
 .stage-let[hidden] {
     display: none;
 }
-.stage-let-lab {
-    color: var(--text-muted);
-    font-size: var(--fs-sm);
-}
 .stage-item {
     display: inline-flex;
     align-items: center;
