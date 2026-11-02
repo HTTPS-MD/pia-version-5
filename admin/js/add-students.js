@@ -207,10 +207,12 @@
             '<select class="select" id="as-section" data-section-select aria-describedby="as-section-msg"></select>' +
             '<p class="field-msg" id="as-section-msg"></p></div>' +
             '</div>' +
-            '<div id="as-grid" role="group" aria-label="Students"></div>' +
-            '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px">' +
+            '<div id="as-grid" class="as-table" role="group" aria-label="Students"></div>' +
+            '<div class="as-addbar">' +
             '<button type="button" class="btn btn-secondary btn-sm" id="as-add">' +
-            '<svg class="icon"><use href="#i-plus"></use></svg> Add row</button>' +
+            '<svg class="icon"><use href="#i-plus"></use></svg> Add</button>' +
+            '<input class="input" id="as-count" type="number" inputmode="numeric" min="1" max="50" value="1" aria-label="How many rows to add">' +
+            '<span class="muted">rows</span>' +
             '</div>' +
             '</form></div>' +
             '<footer class="modal-foot">' +
@@ -231,23 +233,19 @@
             '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="as-draft-title">Save as draft?</h2>' +
             '<p class="muted">These students are not added yet. Keep them for later, or throw them away.</p></div></header>' +
             '<footer class="modal-foot">' +
-            '<button type="button" class="btn btn-secondary" data-modal-close>Keep editing</button>' +
-            '<button type="button" class="btn btn-danger" id="as-draft-discard">Discard</button>' +
+            '<button type="button" class="btn btn-secondary" id="as-draft-discard">Discard</button>' +
             '<button type="button" class="btn btn-primary" id="as-draft-save">Save draft</button>' +
             '</footer></div>';
         document.body.appendChild(ask);
         wire();
     }
 
-    var GRID_COLS = 'minmax(0,1.4fr) minmax(0,1.4fr) minmax(0,1fr) minmax(0,1.3fr) minmax(0,1.6fr) 36px';
 
     function headRow() {
         return (
-            '<div style="display:grid;grid-template-columns:' +
-            GRID_COLS +
-            ';gap:8px;margin-bottom:4px" class="muted" aria-hidden="true">' +
-            '<span class="label">Last name <span class="req">*</span></span><span class="label">First name <span class="req">*</span></span>' +
-            '<span class="label">Middle name</span><span class="label">Student number <span class="req">*</span></span><span class="label">Condition <span class="req">*</span></span><span></span></div>'
+            '<div class="as-head as-cells" aria-hidden="true">' +
+            '<span>Last name <span class="req">*</span></span><span>First name <span class="req">*</span></span>' +
+            '<span>Middle name</span><span>Student number <span class="req">*</span></span><span>Condition <span class="req">*</span></span><span></span></div>'
         );
     }
 
@@ -257,9 +255,7 @@
             html +=
                 '<div data-row="' +
                 r.id +
-                '" style="margin-bottom:8px"><div style="display:grid;grid-template-columns:' +
-                GRID_COLS +
-                ';gap:8px;align-items:center">' +
+                '" class="as-row"><div class="as-cells">' +
                 FIELDS.map(function (f) {
                     var label = {
                         last: 'Last name',
@@ -314,7 +310,7 @@
                 '<svg class="icon"><use href="#i-trash"></use></svg></button></div>' +
                 '<p class="field-msg" id="as-msg-' +
                 r.id +
-                '" style="margin:4px 0 0"></p></div>';
+                '"></p></div>';
         });
         $('#as-grid').innerHTML = html;
         rows.forEach(function (r, i) {
@@ -602,8 +598,13 @@
         });
 
         $('#as-add', root).addEventListener('click', function () {
-            rows.push(blankRow(rows[rows.length - 1].grp));
-            drawGrid({ id: rows[rows.length - 1].id, f: 'last' });
+            var n = Math.max(1, Math.min(50, parseInt($('#as-count', root).value, 10) || 1));
+            var first = null;
+            for (var k = 0; k < n && rows.length < 100; k++) {
+                rows.push(blankRow(rows[rows.length - 1].grp));
+                first = first || rows[rows.length - 1];
+            }
+            drawGrid(first && { id: first.id, f: 'last' });
         });
         $('#as-section', root).addEventListener('change', function () {
             $('#as-section-msg').textContent = '';
