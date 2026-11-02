@@ -1780,3 +1780,8 @@ html[data-surface='admin'] .drawer .bar {
     margin: 0;
     transform: translateY(-50%);
 }
+
+/* the table starts straight with the stage tabs, so the first tab needs no extra left gap */
+#view-students .table-title .tabs {
+    margin-left: 0;
+}
