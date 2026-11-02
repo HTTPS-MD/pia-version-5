@@ -787,6 +787,7 @@
         if (gen) {
             $('#qb-edit-title').textContent = 'Auto-generate questions';
             $('#qb-gen-status').textContent = '';
+            $('#qb-gen-run').className = 'btn btn-secondary';
             qbPaintRanges();
             renderQbDrafts();
             $('#qb-gen-count').focus({ preventScroll: true });

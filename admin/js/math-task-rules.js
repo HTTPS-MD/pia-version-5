@@ -164,6 +164,13 @@
         $('#qb-add-btn').addEventListener('click', function () {
             Admin.qbOpenEditor(null, this);
         });
+        // typing a count turns Generate yellow
+        $('#qb-gen-count').addEventListener('input', function () {
+            var run = $('#qb-gen-run');
+            var ok = Number(this.value) >= 1;
+            run.classList.toggle('btn-primary', ok);
+            run.classList.toggle('btn-secondary', !ok);
+        });
         $('#qb-wiz-next').addEventListener('click', Admin.qbWizard.next);
         $('#qb-wiz-back').addEventListener('click', function () {
             Admin.qbWizard.go(Admin.qbWizard.state.stage - 1);
