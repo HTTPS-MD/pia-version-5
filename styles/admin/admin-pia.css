@@ -1877,3 +1877,51 @@ html[data-surface='admin'] .sidebar-user .avatar {
     background: color-mix(in srgb, var(--text) 18%, transparent);
     color: var(--text);
 }
+
+/* tablet and phone: the controls beside the titles wrap under them instead of squeezing */
+@media (max-width: 48rem) {
+    #view-students .page-title-row {
+        gap: 10px 12px;
+    }
+    #view-students .page-title-row .show-details {
+        order: 1;
+        width: 44px;
+        height: 44px;
+        min-height: 44px;
+        margin: 0 0 0 auto;
+        border: 1px solid var(--line);
+        border-radius: 50%;
+    }
+    #view-students .page-title-row .stage-let {
+        order: 2;
+        width: 100%;
+        height: auto;
+        min-height: 48px;
+        margin: 0 !important;
+        padding: 8px 16px;
+        border: 1px solid var(--line);
+        border-radius: 22px;
+    }
+    #view-students .stage-items {
+        gap: 8px 18px;
+    }
+    #view-mathtask .page-head {
+        align-items: stretch;
+    }
+    #view-mathtask .qb-strip {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    html[data-surface='admin'] .topbar {
+        padding-right: 5.75rem;
+    }
+}
+@media (max-width: 30rem) {
+    #view-mathtask .qb-strip .btn {
+        flex: 1 1 0;
+        justify-content: center;
+    }
+    .page-title {
+        overflow-wrap: anywhere;
+    }
+}
