@@ -1091,7 +1091,7 @@
                     }
                     if (prof) {
                         bits.push(
-                            (prof.full_name || prof.email) + ' will be unassigned.'
+                            (prof.name || prof.email) + ' will be unassigned.'
                         );
                     }
                     bits.push('This cannot be undone.');
