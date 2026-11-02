@@ -1021,6 +1021,9 @@
         if (stages && titleRow && stages.parentNode !== titleRow) {
             titleRow.appendChild(stages);
         }
+        if (details && titleRow && titleRow.lastChild !== details) {
+            titleRow.appendChild(details);
+        }
         var filter = $('#section-filter');
         if (filter) {
             filter.addEventListener('change', function () {

@@ -1736,3 +1736,7 @@ html[data-surface='admin'] .stage-switch.is-on::after {
 #view-students .page-title-row .stage-let {
     margin-left: auto !important;
 }
+
+html[data-surface='admin'][data-theme='dark'] .show-details {
+    background: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+}

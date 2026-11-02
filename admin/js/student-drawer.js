@@ -459,12 +459,12 @@
     }
 
     var TUTORS = [
-        { key: 'pia-open', name: 'Openness (Ava)' },
-        { key: 'pia-conscientious', name: 'Conscientiousness (Cara)' },
-        { key: 'pia-extravert', name: 'Extraversion (Theo)' },
-        { key: 'pia-agreeable', name: 'Agreeableness (Amy)' },
-        { key: 'pia-calm', name: 'Neuroticism (Kai)' },
-        { key: 'pia-neutral', name: 'Neutral (Noel)' }
+        { key: 'pia-open', name: 'Ava (Openness)' },
+        { key: 'pia-conscientious', name: 'Cara (Conscientiousness)' },
+        { key: 'pia-extravert', name: 'Theo (Extraversion)' },
+        { key: 'pia-agreeable', name: 'Amy (Agreeableness)' },
+        { key: 'pia-calm', name: 'Kai (Neuroticism)' },
+        { key: 'pia-neutral', name: 'Noel (Neutral)' }
     ];
     Admin.TUTORS = TUTORS;
 })();
