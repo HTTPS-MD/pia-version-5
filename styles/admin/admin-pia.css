@@ -1719,11 +1719,8 @@ html[data-surface='admin'] .stage-switch.is-on::after {
 }
 #view-students .page-title-row .stage-let {
     width: auto;
-    margin: 0 0 0 20px;
-    padding: 0;
-    border: 0;
-    background: none;
-    box-shadow: none;
+    margin: 0 0 0 auto;
+    padding: 10px 18px;
 }
 #view-students .page-title-row .stage-let[hidden] {
     display: none;
