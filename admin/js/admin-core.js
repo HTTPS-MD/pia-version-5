@@ -211,7 +211,6 @@
         OCEAN: { label: 'OCEAN test', badge: 'badge-warn', fill: 'f-warn' },
         'Character Selection': { label: 'Choose tutor', badge: 'badge', fill: 'f-muted' },
         'Tutoring Dashboard': { label: 'Game', badge: '', fill: 'f-muted' },
-        'Active Game': { label: 'Active session', badge: 'badge-accent', fill: '' },
         'Thank You': { label: 'Thank you page', badge: 'badge', fill: 'f-muted' }
     };
     Admin.STAGE_META = STAGE_META;

@@ -131,14 +131,7 @@
         if (stage === null || stage === undefined || stage === '') {
             return query;
         }
-        if (stage === 'Active Game') {
-            return query
-                .eq('is_in_game', true)
-                .or('current_stage.is.null,current_stage.eq.Tutoring Dashboard')
-                .or('group_type.is.null,group_type.neq.control');
-        }
-        query = query.eq('current_stage', stage);
-        return stage === 'Tutoring Dashboard' ? query.eq('is_in_game', false) : query;
+        return query.eq('current_stage', stage);
     }
 
     var rosterTicket = 0;
@@ -206,7 +199,7 @@
 
     var counterTicket = 0;
 
-    var COUNTER_KEYS = ['all', 'OCEAN', 'Character Selection', 'Tutoring Dashboard', 'Active Game'];
+    var COUNTER_KEYS = ['all', 'OCEAN', 'Character Selection', 'Tutoring Dashboard'];
 
     Admin.loadStageCounters = async function loadStageCounters() {
         var ticket = ++counterTicket;
