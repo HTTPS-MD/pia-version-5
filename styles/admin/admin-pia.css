@@ -1495,7 +1495,6 @@ html[data-surface='admin'] #view-students .panel-bar .bar-group .custom-select-t
     border-color: transparent;
     box-shadow: none !important;
     outline: 2px solid var(--focus-yellow, #ffd83d);
-    border-radius: 0 !important;
     outline-offset: 0;
 }
 
@@ -1508,7 +1507,6 @@ html[data-surface='admin'] .custom-select-trigger:focus,
 html[data-surface='admin'] .custom-select-trigger:focus-visible {
     box-shadow: none !important;
     outline: 2px solid var(--focus-yellow, #ffd83d);
-    border-radius: 0 !important;
     outline-offset: 0;
     border-color: transparent;
 }
