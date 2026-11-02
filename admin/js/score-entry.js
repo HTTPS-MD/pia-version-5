@@ -101,6 +101,7 @@
         $('#scores-max-pre').value = '';
         $('#scores-max-post').value = '';
         $('#scores-save').disabled = true;
+        loaded = null;
         Admin.openModal('modal-scores');
 
         var res = await sb
@@ -179,8 +180,73 @@
             .join('');
 
         $$('#scores-tbody .score-pair').forEach(paintScorePair);
+        loaded = look();
     }
     Admin.openScoresModal = openScoresModal;
+
+    // closing with typed-in scores asks first; loaded is what the dialog looked like when it opened
+    var loaded = null;
+
+    function look() {
+        return $$('#modal-scores input')
+            .map(function (input) {
+                return input.value;
+            })
+            .join('|');
+    }
+
+    function guardScores() {
+        var overlay = $('#modal-scores');
+        if (!overlay) {
+            return;
+        }
+        async function guard(event) {
+            if (loaded === null || look() === loaded) {
+                return;
+            }
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            var ok = await Admin.confirmAction({
+                title: 'Discard scores?',
+                heading: 'Discard what you typed?',
+                message: 'These scores are not saved yet.',
+                confirmLabel: 'Discard'
+            });
+            if (ok) {
+                loaded = null;
+                Admin.closeModal('modal-scores');
+            }
+        }
+        overlay.addEventListener(
+            'click',
+            function (event) {
+                if (event.target.closest('[data-modal-close]')) {
+                    guard(event);
+                }
+            },
+            true
+        );
+        overlay.addEventListener(
+            'mousedown',
+            function (event) {
+                if (event.target === overlay) {
+                    guard(event);
+                }
+            },
+            true
+        );
+        document.addEventListener(
+            'keydown',
+            function (event) {
+                var layers = Admin.openLayers;
+                if (event.key === 'Escape' && layers[layers.length - 1] === overlay) {
+                    guard(event);
+                }
+            },
+            true
+        );
+    }
+    guardScores();
 
     function repaintScores(test) {
         Admin.setFieldError('scores-max-' + test, '');
