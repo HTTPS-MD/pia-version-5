@@ -1867,3 +1867,13 @@ html[data-surface='admin'] .sidebar-user {
 html[data-surface='admin'] .theme-toggle {
     width: 44px;
 }
+
+/* the theme button and the account pill share one thin outline, and the avatar stands out from the pill */
+html[data-surface='admin'] .theme-toggle,
+html[data-surface='admin'] .sidebar-user {
+    border: 1px solid var(--line-input);
+}
+html[data-surface='admin'] .sidebar-user .avatar {
+    background: color-mix(in srgb, var(--text) 18%, transparent);
+    color: var(--text);
+}
