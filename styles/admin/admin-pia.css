@@ -2036,3 +2036,45 @@ html[data-surface='admin'] .sidebar-user .avatar {
         flex-wrap: wrap;
     }
 }
+
+/* phone: the scores stay a table you swipe sideways, with the student's name pinned */
+@media (max-width: 40rem) {
+    #modal-scores .table-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    #modal-scores .scores-table {
+        display: table;
+        width: 100%;
+        min-width: 32rem;
+    }
+    #modal-scores .scores-table thead {
+        display: table-header-group;
+    }
+    #modal-scores .scores-table tbody {
+        display: table-row-group;
+    }
+    #modal-scores .scores-table tbody tr {
+        display: table-row;
+        padding: 0;
+        box-shadow: none;
+    }
+    #modal-scores .scores-table thead th,
+    #modal-scores .scores-table tbody td {
+        display: table-cell;
+        padding: 10px 12px;
+        vertical-align: middle;
+    }
+    #modal-scores .scores-table td.col-score::before {
+        display: none;
+    }
+    #modal-scores .scores-table th:first-child,
+    #modal-scores .scores-table td:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 1;
+        min-width: 9rem;
+        background: var(--bg-surface);
+        box-shadow: 1px 0 0 var(--line);
+    }
+}
