@@ -310,6 +310,7 @@
         // Rules opens from the questions card; Back to questions closes it
         function showQbView(view) {
             $('#qb-views').className = 'grid grid-main qb-view-' + view;
+            $('#qb-strip').hidden = view === 'rules';
         }
         $('#qb-rules-btn').addEventListener('click', function () {
             showQbView('rules');
