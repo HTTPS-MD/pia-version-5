@@ -1740,3 +1740,22 @@ html[data-surface='admin'] .stage-switch.is-on::after {
 html[data-surface='admin'][data-theme='dark'] .show-details {
     background: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
 }
+
+/* stages and the eye are one strip, divided by a straight edge; the outer corners share one radius */
+#view-students .page-title-row .stage-let,
+#view-students .page-title-row .show-details {
+    height: 48px;
+    min-height: 48px;
+    box-sizing: border-box;
+    border: 1px solid var(--line);
+    border-radius: 24px 0 0 24px;
+    box-shadow: none;
+}
+#view-students .page-title-row .stage-let {
+    border-right: 0;
+}
+#view-students .page-title-row .show-details {
+    width: 56px;
+    margin-left: -14px;
+    border-radius: 0 24px 24px 0;
+}
