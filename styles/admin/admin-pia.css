@@ -1442,3 +1442,15 @@ html[data-surface='admin'] #modal-scores .score-input {
     margin: 2px 0 0;
     overflow-wrap: anywhere;
 }
+
+/* auto-generate: a narrow How many with Generate beside it, the number range underneath */
+#modal-qb-edit .qb-gen-controls .field {
+    flex: 0 0 7rem;
+    order: 0;
+}
+#modal-qb-edit .qb-gen-controls > .btn {
+    order: 1;
+}
+#modal-qb-edit .qb-gen-controls .qb-gen-range {
+    order: 2;
+}
