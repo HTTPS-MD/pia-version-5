@@ -436,6 +436,10 @@
             qbAddStep(s, false);
         });
 
+        $('#qb-mode').hidden = !!item;
+        Admin.qb.drafts = [];
+        qbSetMode('write');
+        $('#qb-edit-title').textContent = item ? 'Edit question ' + index : 'Add question';
         Admin.openModal('modal-qb-edit', trigger);
 
         $('#qb-question').focus({ preventScroll: true });
@@ -597,14 +601,35 @@
     }
     Admin.qbSaveEditor = qbSaveEditor;
 
+    // the Add question dialog has two modes: write one question, or auto-generate several
+    function qbSetMode(mode) {
+        var gen = mode === 'gen';
+        $('#qb-pane-write').hidden = gen;
+        $('#qb-foot-write').hidden = gen;
+        $('#qb-pane-gen').hidden = !gen;
+        $('#qb-foot-gen').hidden = !gen;
+        $$('#qb-mode [data-qb-mode]').forEach(function (btn) {
+            var on = btn.getAttribute('data-qb-mode') === mode;
+            btn.classList.toggle('is-active', on);
+            btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        if (gen) {
+            $('#qb-edit-title').textContent = 'Auto-generate questions';
+            $('#qb-gen-status').textContent = '';
+            qbPaintRanges();
+            renderQbDrafts();
+            $('#qb-gen-count').focus({ preventScroll: true });
+        } else {
+            $('#qb-edit-title').textContent = Admin.qb.editingId == null ? 'Add question' : $('#qb-edit-title').textContent;
+            $('#qb-question').focus({ preventScroll: true });
+        }
+    }
+    Admin.qbSetMode = qbSetMode;
+
     function qbOpenGenerator(trigger) {
         Admin.qb.drafts = [];
-        $('#qb-gen-sub').textContent = Admin.qbTopicLabel(Admin.qb.topic);
-        $('#qb-gen-status').textContent = '';
-        qbPaintRanges();
-        renderQbDrafts();
-        Admin.openModal('modal-qb-generate', trigger);
-        $('#qb-gen-count').focus({ preventScroll: true });
+        qbOpenEditor(null, trigger);
+        qbSetMode('gen');
     }
     Admin.qbOpenGenerator = qbOpenGenerator;
 
@@ -754,7 +779,7 @@
             Admin.qb.bank[topic].push(Admin.qbFromRow(row));
         });
         Admin.qb.drafts = [];
-        Admin.closeModal('modal-qb-generate');
+        Admin.closeModal('modal-qb-edit');
         Admin.renderQbTable();
         Admin.renderQbChrome();
         Admin.toastOk(

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261101a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102c">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102q">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102r">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -359,10 +359,6 @@
                             </div>
                         </div>
                         <div class="page-actions">
-                            <button class="btn btn-secondary" type="button" id="qb-generate-btn">
-                                <svg class="icon"><use href="#i-sparkle"></use></svg>
-                                Auto-generate
-                            </button>
                             <button class="btn btn-primary" type="button" id="qb-add-btn">
                                 <svg class="icon"><use href="#i-plus"></use></svg>
                                 Add question
@@ -1174,13 +1170,19 @@
                 <div class="modal-head-text">
                     <h2 class="modal-title" id="qb-edit-title">Add question</h2>
                     <p class="modal-sub" id="qb-edit-sub">Topic 1 · Finding a percentage</p>
+                    <div class="segment qb-mode" id="qb-mode" role="group" aria-label="How to add" hidden>
+                        <button class="segment-btn is-active" type="button" data-qb-mode="write" aria-pressed="true">Write one</button>
+                        <button class="segment-btn" type="button" data-qb-mode="gen" aria-pressed="false">
+                            <svg class="icon"><use href="#i-sparkle"></use></svg> Auto-generate
+                        </button>
+                    </div>
                 </div>
                 <button class="modal-close" type="button" data-modal-close aria-label="Close dialog">
                     <svg class="icon"><use href="#i-x"></use></svg>
                 </button>
             </header>
 
-            <div class="modal-body">
+            <div class="modal-body" id="qb-pane-write">
                 <form id="qb-edit-form" novalidate>
                     <div class="form-section">
                         <p class="form-section-title">Problem</p>
@@ -1223,66 +1225,15 @@
                 </form>
             </div>
 
-            <footer class="modal-foot modal-foot-split">
+            <footer class="modal-foot modal-foot-split" id="qb-foot-write">
                 <button class="btn btn-danger-soft" type="button" id="qb-edit-delete" hidden>Delete question</button>
                 <div class="modal-foot-actions">
                     <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
                     <button class="btn btn-primary" type="submit" form="qb-edit-form" id="qb-edit-save">Save question</button>
                 </div>
             </footer>
-        </div>
-    </div>
 
-    <template id="tpl-qb-step">
-        <li class="qb-step">
-            <div class="qb-step-head">
-                <p class="qb-step-title">Step <span class="qb-step-num tnum">1</span></p>
-            </div>
-            <div class="form-grid qb-step-grid">
-                <div class="field">
-                    <label class="label" data-for="prompt">Step prompt</label>
-                    <input class="input" type="text" data-step="prompt" maxlength="300" autocomplete="off"
-                        placeholder="Calculate the discount amount">
-                </div>
-                <div class="field">
-                    <label class="label" data-for="answer">Step answer</label>
-                    <input class="input" type="text" data-step="answer" maxlength="100" autocomplete="off"
-                        placeholder="300">
-                </div>
-            </div>
-            <div class="form-grid qb-hints">
-                <div class="field">
-                    <label class="label" data-for="hint1"><span class="badge">Hint 1</span> Concept</label>
-                    <input class="input" type="text" data-step="hint1" maxlength="300" autocomplete="off"
-                        placeholder="Subtract the sale price from the original price.">
-                </div>
-                <div class="field">
-                    <label class="label" data-for="hint2"><span class="badge">Hint 2</span> Setup</label>
-                    <input class="input" type="text" data-step="hint2" maxlength="300" autocomplete="off"
-                        placeholder="1200 - 900">
-                </div>
-                <div class="field">
-                    <label class="label" data-for="hint3"><span class="badge">Hint 3</span> Next move (no result)</label>
-                    <input class="input" type="text" data-step="hint3" maxlength="300" autocomplete="off"
-                        placeholder="Subtract 900 from 1200 to find the decrease.">
-                </div>
-            </div>
-        </li>
-    </template>
-
-    <div class="overlay" id="modal-qb-generate" role="dialog" aria-modal="true" aria-labelledby="qb-gen-title">
-        <div class="modal modal-lg">
-            <header class="modal-head">
-                <div class="modal-head-text">
-                    <h2 class="modal-title" id="qb-gen-title">Auto-generate questions</h2>
-                    <p class="modal-sub" id="qb-gen-sub">Topic 1 · Finding a percentage</p>
-                </div>
-                <button class="modal-close" type="button" data-modal-close aria-label="Close dialog">
-                    <svg class="icon"><use href="#i-x"></use></svg>
-                </button>
-            </header>
-
-            <div class="modal-body">
+            <div class="modal-body" id="qb-pane-gen" hidden>
                 <form class="qb-gen-controls" id="qb-gen-form" novalidate>
                     <div class="field">
                         <label class="label" for="qb-gen-count">How many</label>
@@ -1326,11 +1277,49 @@
                 </div>
             </div>
 
-            <footer class="modal-foot">
+            <footer class="modal-foot" id="qb-foot-gen" hidden>
+                <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
                 <button class="btn btn-primary" type="button" id="qb-gen-save" disabled>Save to bank</button>
             </footer>
         </div>
     </div>
+
+    <template id="tpl-qb-step">
+        <li class="qb-step">
+            <div class="qb-step-head">
+                <p class="qb-step-title">Step <span class="qb-step-num tnum">1</span></p>
+            </div>
+            <div class="form-grid qb-step-grid">
+                <div class="field">
+                    <label class="label" data-for="prompt">Step prompt</label>
+                    <input class="input" type="text" data-step="prompt" maxlength="300" autocomplete="off"
+                        placeholder="Calculate the discount amount">
+                </div>
+                <div class="field">
+                    <label class="label" data-for="answer">Step answer</label>
+                    <input class="input" type="text" data-step="answer" maxlength="100" autocomplete="off"
+                        placeholder="300">
+                </div>
+            </div>
+            <div class="form-grid qb-hints">
+                <div class="field">
+                    <label class="label" data-for="hint1"><span class="badge">Hint 1</span> Concept</label>
+                    <input class="input" type="text" data-step="hint1" maxlength="300" autocomplete="off"
+                        placeholder="Subtract the sale price from the original price.">
+                </div>
+                <div class="field">
+                    <label class="label" data-for="hint2"><span class="badge">Hint 2</span> Setup</label>
+                    <input class="input" type="text" data-step="hint2" maxlength="300" autocomplete="off"
+                        placeholder="1200 - 900">
+                </div>
+                <div class="field">
+                    <label class="label" data-for="hint3"><span class="badge">Hint 3</span> Next move (no result)</label>
+                    <input class="input" type="text" data-step="hint3" maxlength="300" autocomplete="off"
+                        placeholder="Subtract 900 from 1200 to find the decrease.">
+                </div>
+            </div>
+        </li>
+    </template>
 
     <template id="tpl-qb-preview">
         <li class="qb-preview">
@@ -1406,9 +1395,9 @@
     <script src="../js/admin-account.js?v=20261101a"></script>
     <script src="../js/score-entry.js?v=20261102a"></script>
     <script src="../js/live-updates.js?v=20261101a"></script>
-    <script src="../js/math-task-core.js?v=20261031a"></script>
-    <script src="../js/math-task-edit.js?v=20261102c"></script>
-    <script src="../js/math-task-rules.js?v=20261102b"></script>
+    <script src="../js/math-task-core.js?v=20261102a"></script>
+    <script src="../js/math-task-edit.js?v=20261102d"></script>
+    <script src="../js/math-task-rules.js?v=20261102c"></script>
     <script src="../js/admin-start.js?v=20261101c"></script>
 </body>
 

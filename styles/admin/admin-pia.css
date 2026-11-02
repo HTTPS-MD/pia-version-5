@@ -1367,3 +1367,17 @@ html[data-surface='admin'] #modal-scores .score-input {
 .as-status[hidden] {
     display: none;
 }
+
+/* Add question: one dialog, two modes (write one / auto-generate) */
+#modal-qb-edit [hidden] {
+    display: none !important;
+}
+#modal-qb-edit .qb-mode {
+    margin-top: 12px;
+    width: fit-content;
+}
+#modal-qb-edit .qb-mode .icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 4px;
+}

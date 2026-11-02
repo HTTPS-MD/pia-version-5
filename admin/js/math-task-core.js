@@ -355,7 +355,6 @@
             'Topic ' + Admin.QB_TOPICS[topic].num + ' · ' + Admin.QB_TOPICS[topic].short;
 
         $('#qb-add-btn').disabled = !ready;
-        $('#qb-generate-btn').disabled = !ready;
 
         var count = $('#nav-count-mathtask');
         if (count) {

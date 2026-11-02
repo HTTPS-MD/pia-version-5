@@ -164,8 +164,10 @@
         $('#qb-add-btn').addEventListener('click', function () {
             Admin.qbOpenEditor(null, this);
         });
-        $('#qb-generate-btn').addEventListener('click', function () {
-            Admin.qbOpenGenerator(this);
+        $$('#qb-mode [data-qb-mode]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                Admin.qbSetMode(btn.getAttribute('data-qb-mode'));
+            });
         });
         $('#qb-refresh').addEventListener('click', Admin.loadMathTask);
         $('#qb-delete-all').addEventListener('click', Admin.qbDeleteAll);
