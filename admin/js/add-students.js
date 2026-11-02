@@ -231,8 +231,8 @@
         ask.setAttribute('aria-labelledby', 'as-draft-title');
         ask.innerHTML =
             '<div class="modal modal-sm">' +
-            '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="as-draft-title">Save as draft?</h2></div></header>' +
-            '<div class="modal-body"><p class="draft-text">These students are not added yet. Keep them for later, or throw them away.</p></div>' +
+            '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="as-draft-title">You have unsaved changes</h2></div></header>' +
+            '<div class="modal-body"><p class="draft-text">Save them as a draft to continue later, or discard them.</p></div>' +
             '<footer class="modal-foot">' +
             '<button type="button" class="btn btn-secondary" id="as-draft-discard">Discard</button>' +
             '<button type="button" class="btn btn-primary" id="as-draft-save">Save draft</button>' +

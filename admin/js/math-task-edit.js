@@ -567,8 +567,8 @@
             ask.setAttribute('aria-labelledby', 'qb-draft-title');
             ask.innerHTML =
                 '<div class="modal modal-sm">' +
-                '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="qb-draft-title">Save as draft?</h2></div></header>' +
-                '<div class="modal-body"><p class="draft-text">This question is not saved yet. Keep it for later, or throw it away.</p></div>' +
+                '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="qb-draft-title">You have unsaved changes</h2></div></header>' +
+                '<div class="modal-body"><p class="draft-text">Save them as a draft to continue later, or discard them.</p></div>' +
                 '<footer class="modal-foot">' +
                 '<button type="button" class="btn btn-secondary" id="qb-draft-discard">Discard</button>' +
                 '<button type="button" class="btn btn-primary" id="qb-draft-save">Save draft</button>' +
