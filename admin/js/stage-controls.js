@@ -244,14 +244,14 @@
         }
         if (ph.phase === 'open') {
             if (!ph.closes) {
-                return { cls: 'is-open', text: 'Open' };
+                return null;
             }
             return {
                 cls: 'is-open',
                 text:
                     ph.closes - Date.now() < 6 * 3600 * 1000
-                        ? 'Open · closes in ' + tutLeft(ph.closes)
-                        : 'Open · closes ' + phStamp(ph.closes, true)
+                        ? 'Closes in ' + tutLeft(ph.closes)
+                        : 'Closes ' + phStamp(ph.closes, true)
             };
         }
         return null;
@@ -263,7 +263,9 @@
             ready && Array.isArray(Admin.state.schedules)
                 ? tutStatusText(tutPhase(gate, section))
                 : null;
-        if (!info) {
+        var phase0 = tutPhase(gate, section).phase;
+        var canChange = ready && (phase0 === 'open' || phase0 === 'scheduled');
+        if (!info && !canChange) {
             if (host) {
                 host.remove();
             }
@@ -276,13 +278,11 @@
         }
         var phase = tutPhase(gate, section).phase;
         host.innerHTML =
-            '<span class="pill ' +
-            info.cls +
-            '">' +
-            Admin.esc(info.text) +
-            '</span>' +
+            (info
+                ? '<span class="pill ' + info.cls + '">' + Admin.esc(info.text) + '</span>'
+                : '') +
             (phase === 'open' || phase === 'scheduled'
-                ? '<button type="button" class="stage-change" data-tut-change>Change</button>'
+                ? '<button type="button" class="btn btn-sm btn-secondary" data-tut-change>Change</button>'
                 : '');
     }
 
