@@ -65,11 +65,23 @@
     }
     Admin.normalizeEmail = normalizeEmail;
 
+    // the database still says professor and faculty; the people using the admin read teacher
+    function teacherWords(text) {
+        return String(text || '')
+            .replace(/\bProfessors\b/g, 'Teachers')
+            .replace(/\bprofessors\b/g, 'teachers')
+            .replace(/\bProfessor\b/g, 'Teacher')
+            .replace(/\bprofessor\b/g, 'teacher')
+            .replace(/\bFaculty\b/g, 'Teacher')
+            .replace(/\bfaculty\b/g, 'teacher');
+    }
+    Admin.teacherWords = teacherWords;
+
     function friendlyDbError(error, fallback) {
         if (!error) {
             return fallback;
         }
-        var msg = error.message || '';
+        var msg = teacherWords(error.message || '');
         /* The database's own refusals ("PIA: an administrator cannot ...",
            migration 0031) already say exactly why; pass them through. */
         if (/^PIA:\s*/.test(msg)) {

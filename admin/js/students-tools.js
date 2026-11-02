@@ -22,7 +22,11 @@
         if (/PGRST202|42883|could not find the function/i.test(raw)) {
             return 'The latest database update is not applied yet.';
         }
-        return raw.replace(/^PIA:\s*/, '') || 'Something went wrong. Try again.';
+        var plain = raw.replace(/^PIA:\s*/, '');
+        if (window.PIAAdmin && window.PIAAdmin.teacherWords) {
+            plain = window.PIAAdmin.teacherWords(plain);
+        }
+        return plain || 'Something went wrong. Try again.';
     }
 
     async function call(name, args) {
