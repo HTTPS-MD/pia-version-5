@@ -2347,3 +2347,20 @@ html[data-surface='admin'] .as-addbar .input {
         text-overflow: clip;
     }
 }
+
+/* the math task strips stay small and sit on the right, on a phone too */
+@media (max-width: 48rem) {
+    #view-mathtask .page-head {
+        align-items: center;
+    }
+    #view-mathtask .qb-strip {
+        width: auto;
+        margin-left: auto;
+        justify-content: flex-end;
+    }
+}
+@media (max-width: 30rem) {
+    #view-mathtask .qb-strip .btn {
+        flex: 0 0 auto;
+    }
+}
