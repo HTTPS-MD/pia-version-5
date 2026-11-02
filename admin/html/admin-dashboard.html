@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261102a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261103a">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261103b">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -177,13 +177,11 @@
                         <h1 class="page-title">Students</h1>
                         <div class="page-actions">
                             <button type="button" class="btn btn-secondary is-hidden" data-modal-open="modal-manage-sections">Manage sections</button>
-                            <button type="button" class="btn btn-secondary" data-modal-open="modal-add-students">Add Students</button>
                         </div>
                     </div>
 
                     <div class="scope-row">
                         <p class="scope-line" id="scope-line" aria-live="polite">Loading…</p>
-                        <button type="button" class="btn btn-secondary is-hidden" id="section-scores-open">Input Scores</button>
                     </div>
 
                     <div id="section-chips" style="margin-bottom:12px"></div>
@@ -200,6 +198,10 @@
                             <div class="class-live" id="class-live">
                                 <span class="live-dot" id="class-live-dot"></span>
                                 <span id="class-live-status">Class is closed</span>
+                            </div>
+                            <div class="table-actions">
+                                <button type="button" class="btn btn-secondary btn-sm is-hidden" id="section-scores-open">Input Scores</button>
+                                <button type="button" class="btn btn-secondary btn-sm" data-modal-open="modal-add-students">Add Students</button>
                             </div>
                         </div>
                         <div class="panel-bar">
@@ -1339,7 +1341,7 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261101u"></script>
+    <script src="../js/students-tools.js?v=20261103a"></script>
     <script src="../js/add-students.js?v=20261102d"></script>
     <script src="../js/admin-core.js?v=20261101b"></script>
     <script src="../js/admin-dialogs.js?v=20261031a"></script>

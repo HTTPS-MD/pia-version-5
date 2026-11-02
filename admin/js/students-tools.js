@@ -1005,11 +1005,7 @@
         }
         buildHideToggle();
         var h1 = titleHost();
-        var scores = $('#section-scores-open');
         var actions = $('#view-students .page-actions');
-        if (scores && actions && scores.parentNode !== actions) {
-            actions.insertBefore(scores, actions.firstChild);
-        }
         var details = $('#view-students .show-details');
         if (details && actions && details.parentNode !== actions) {
             actions.insertBefore(details, actions.firstChild);

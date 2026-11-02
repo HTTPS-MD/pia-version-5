@@ -1552,3 +1552,19 @@ html[data-surface='admin'] #modal-scores .score-input {
 #modal-qb-edit .qb-wiz li[data-wiz-go]:hover {
     color: var(--text);
 }
+
+/* students table header: Input Scores and Add Students sit at the right, after the class status */
+.table-title .table-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+.table-title .table-actions .is-hidden {
+    display: none;
+}
+@media (max-width: 40rem) {
+    .table-title .table-actions {
+        width: 100%;
+    }
+}
