@@ -1700,3 +1700,20 @@ html[data-surface='admin'] .drawer .bar {
 #modal-notice .modal-sub:empty {
     display: none;
 }
+
+/* the save-as-draft prompts: a title, a line of text with room around it, then the buttons */
+#modal-qb-draft .modal-body,
+#modal-as-draft .modal-body {
+    padding-top: 4px;
+    padding-bottom: 8px;
+}
+.draft-text {
+    margin: 0;
+    font-size: var(--fs-body);
+    line-height: 1.55;
+    color: var(--text-muted);
+}
+#modal-qb-draft .modal-foot,
+#modal-as-draft .modal-foot {
+    padding-top: 16px;
+}
