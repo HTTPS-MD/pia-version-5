@@ -985,7 +985,8 @@
 
 .landing-look .solution-input:focus {
     box-shadow: none;
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--focus-yellow, #ffd83d);
+    border-radius: 0 !important;
     outline-offset: 0;
     border-color: transparent;
 }

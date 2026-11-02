@@ -1735,7 +1735,12 @@ body.is-locked {
 .select:focus-visible,
 .textarea:focus-visible {
     box-shadow: none;
-    outline: 2px solid var(--accent);
+    outline: 2px solid var(--focus-yellow, #ffd83d);
+    border-radius: 0 !important;
     outline-offset: 0;
     border-color: transparent;
+}
+
+:root {
+    --focus-yellow: #ffd83d;
 }
