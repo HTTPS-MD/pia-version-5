@@ -145,6 +145,11 @@
                 Admin.qbSwitchTopic(pick.getAttribute('data-topic-pick'));
                 return;
             }
+            if (event.target.closest('[data-topic-delete]')) {
+                closeTopicMenu();
+                Admin.qbDeleteAll();
+                return;
+            }
             if (event.target.closest('[data-topic-toggle]')) {
                 var m = topicHost.querySelector('[data-topic-menu]');
                 m.hidden = !m.hidden;
@@ -250,7 +255,6 @@
                 Admin.qbSetMode(btn.getAttribute('data-qb-mode'));
             });
         });
-        $('#qb-delete-all').addEventListener('click', Admin.qbDeleteAll);
 
         $('#qb-mastery').addEventListener('input', function () {
             Admin.qb.rules[Admin.qb.topic].mastery = Admin.toInt(this.value, 80);

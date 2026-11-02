@@ -372,6 +372,17 @@
                     '</span></button>'
                 );
             }).join('') +
+            (function () {
+                var count = qb.bank[now].length;
+                var blocked = qb.status !== 'ready' || !count || qb.busy.bulk;
+                return (
+                    '<button type="button" data-topic-delete class="custom-select-option section-opt section-opt-sep section-opt-danger"' +
+                    (blocked
+                        ? ' disabled title="There are no questions in this topic to delete."'
+                        : '') +
+                    '>Delete all questions in this topic</button>'
+                );
+            })() +
             '</div>';
     }
 
@@ -459,7 +470,7 @@
         var list = qb.bank[qb.topic];
         var usable = qb.status === 'ready' && list.length > 0;
 
-        $('#qb-delete-all').disabled = !usable || qb.busy.bulk;
+        qbPaintTopicMenu();
     }
     Admin.renderQbToolbar = renderQbToolbar;
 

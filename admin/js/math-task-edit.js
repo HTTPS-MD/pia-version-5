@@ -220,7 +220,7 @@
         }
 
         Admin.qb.busy.bulk = true;
-        var release = Admin.setBusy($('#qb-delete-all'), 'Deleting…');
+        var release = function () {};
         var res = await sb.from('question_bank').delete().eq('difficulty', topic);
         release();
         Admin.qb.busy.bulk = false;
