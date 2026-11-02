@@ -1462,3 +1462,9 @@ html[data-surface='admin'] #modal-scores .score-input {
     color: var(--text-muted);
     white-space: nowrap;
 }
+
+@media (max-width: 40rem) {
+    #view-mathtask .card-head {
+        flex-wrap: wrap;
+    }
+}
