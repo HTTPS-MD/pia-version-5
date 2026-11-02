@@ -2364,3 +2364,41 @@ html[data-surface='admin'] .as-addbar .input {
         flex: 0 0 auto;
     }
 }
+
+/* phone: the whole problem shows, the row grows with its length, and nothing needs swiping */
+@media (max-width: 47.99rem) {
+    #view-mathtask .table-wrap {
+        overflow-x: hidden;
+    }
+    .qb-table {
+        min-width: 0;
+        width: 100%;
+        table-layout: fixed;
+    }
+    .qb-col-answer {
+        width: 4.5rem;
+    }
+    .qb-col-points {
+        width: 4rem;
+    }
+    .qb-table thead th {
+        padding-inline: 10px;
+    }
+    .qb-table tbody td,
+    .qb-table tbody td.qb-cell-q {
+        height: auto;
+        padding: 12px 10px;
+    }
+    .qb-table tbody td.qb-cell-answer,
+    .qb-table tbody td.qb-cell-points {
+        padding: 12px 10px;
+    }
+    .qb-q {
+        display: block;
+        height: auto;
+        -webkit-line-clamp: unset;
+        overflow: visible;
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+}
