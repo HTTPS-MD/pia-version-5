@@ -1942,7 +1942,7 @@ html[data-surface='admin'] .sidebar-user .avatar {
     padding-block: 0;
 }
 
-/* phone: the theme switch moves into the account menu and the account button is just the avatar */
+/* phone: the theme switch moves into the account menu */
 .user-menu-theme {
     display: none;
 }
@@ -1952,19 +1952,6 @@ html[data-surface='admin'] .sidebar-user .avatar {
     }
     .user-menu-theme {
         display: flex;
-    }
-    html[data-surface='admin'] .sidebar-user {
-        width: 44px;
-        padding: 0;
-        justify-content: center;
-    }
-    html[data-surface='admin'] .sidebar-user .user-chevron {
-        display: none;
-    }
-    html[data-surface='admin'] .sidebar-user .avatar {
-        width: 36px;
-        height: 36px;
-        min-width: 36px;
     }
 }
 
