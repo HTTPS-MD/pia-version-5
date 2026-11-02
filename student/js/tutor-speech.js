@@ -322,9 +322,9 @@
         if (nameNode) {
             nameNode.textContent = label;
         }
-        var startName = $('#agent-name-start');
-        if (startName) {
-            startName.textContent = first;
+        var intro = $('#start-intro');
+        if (intro) {
+            intro.textContent = 'I’m ' + first + ', your tutor.';
         }
         ['#agent-img', '#agent-img-start'].forEach(function (sel) {
             var img = $(sel);

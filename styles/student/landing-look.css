@@ -1028,3 +1028,36 @@
         max-width: min(34rem, 62vh);
     }
 }
+
+/* welcome screen: the greeting is the tutor speaking, in a text box beside them */
+.landing-look .start-intro {
+    margin: 0;
+    font-weight: 600;
+    color: var(--text);
+}
+.landing-look .start-intro:empty {
+    display: none;
+}
+@media (min-width: 46rem) {
+    .landing-look .start-card {
+        position: relative;
+        padding: clamp(1.4rem, 3vw, 2.2rem);
+        border: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+        border-radius: 1.4rem;
+        background: color-mix(in srgb, var(--text) 8%, transparent);
+        -webkit-backdrop-filter: blur(6px);
+        backdrop-filter: blur(6px);
+    }
+    .landing-look .start-card::before {
+        content: '';
+        position: absolute;
+        left: -9px;
+        top: 50%;
+        width: 16px;
+        height: 16px;
+        transform: translateY(-50%) rotate(45deg);
+        border-left: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+        border-bottom: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+        background: color-mix(in srgb, var(--text) 8%, var(--bg-body, transparent));
+    }
+}
