@@ -1848,12 +1848,22 @@ html[data-surface='admin'] .sidebar-user[aria-expanded='true'] .user-chevron {
     transform: translateY(2px) rotate(225deg);
 }
 
-/* the account pill is wider than the old round button, so the top bar leaves room for it */
-html[data-surface='admin'] .topbar {
-    padding-right: 6.75rem;
+/* the account pill is wider than the old round button: the theme button sits right beside it, at the same height */
+@media (min-width: 56.3125rem) {
+    html[data-surface='admin'] .topbar {
+        padding-right: calc(var(--bar-edge) + 5.5rem);
+    }
 }
-@media (max-width: 56.3rem) {
+@media (max-width: 56.25rem) {
     html[data-surface='admin'] .topbar {
         padding-right: 6.25rem;
     }
+}
+html[data-surface='admin'] .theme-toggle,
+html[data-surface='admin'] .sidebar-user {
+    height: 44px;
+    box-sizing: border-box;
+}
+html[data-surface='admin'] .theme-toggle {
+    width: 44px;
 }
