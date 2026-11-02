@@ -199,11 +199,10 @@
                     chosen = row.section;
                 }
             });
-            toggle.textContent = (chosen || state.section) + ' ';
+            toggle.textContent = chosen || state.section;
             var caret = document.createElement('span');
+            caret.className = 'custom-select-chevron';
             caret.setAttribute('aria-hidden', 'true');
-            caret.style.cssText = 'font-size:.7em;opacity:.8';
-            caret.textContent = '▾';
             toggle.appendChild(caret);
 
             var close = function () {

@@ -353,7 +353,7 @@
             wasOpen +
             '">' +
             Admin.esc(Admin.QB_TOPICS[now].title) +
-            ' <span aria-hidden="true" style="font-size:.7em;opacity:.8">▾</span></button>' +
+            '<span class="custom-select-chevron" aria-hidden="true"></span></button>' +
             '<div data-topic-menu role="menu"' +
             (wasOpen ? '' : ' hidden') +
             ' class="custom-select-list section-menu">' +

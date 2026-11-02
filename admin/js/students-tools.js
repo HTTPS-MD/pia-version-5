@@ -321,7 +321,7 @@
             !!wasOpen +
             '">' +
             esc(label) +
-            ' <span aria-hidden="true" style="font-size:.7em;opacity:.8">▾</span></button>' +
+            '<span class="custom-select-chevron" aria-hidden="true"></span></button>' +
             menu;
         updateHostVisibility();
         if (wasOpen) {

@@ -1744,3 +1744,46 @@ body.is-locked {
 :root {
     --focus-yellow: #ffd83d;
 }
+
+/* one dropdown look everywhere: the same chevron, turning the same way, and the same menu entrance */
+.custom-select-chevron {
+    transition: transform 0.2s ease;
+}
+[data-section-toggle] .custom-select-chevron,
+[data-topic-toggle] .custom-select-chevron {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    flex: 0 0 8px;
+    margin-left: 10px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-3px) rotate(45deg);
+    vertical-align: middle;
+}
+.custom-select-trigger[aria-expanded='true'] .custom-select-chevron,
+[data-section-toggle][aria-expanded='true'] .custom-select-chevron,
+[data-topic-toggle][aria-expanded='true'] .custom-select-chevron {
+    transform: translateY(2px) rotate(225deg);
+}
+@keyframes pia-menu-in {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+.custom-select-list:not([hidden]) {
+    animation: pia-menu-in 0.14s ease-out;
+}
+@media (prefers-reduced-motion: reduce) {
+    .custom-select-chevron {
+        transition: none;
+    }
+    .custom-select-list:not([hidden]) {
+        animation: none;
+    }
+}
