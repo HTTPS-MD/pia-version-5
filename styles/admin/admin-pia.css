@@ -102,12 +102,6 @@ html[data-surface='admin'] .brand-name {
     white-space: nowrap;
     border: 0;
 }
-html[data-surface='admin'] .brand-link {
-    transition: transform var(--t-base);
-}
-html[data-surface='admin'] .brand-link:hover {
-    transform: rotate(-6deg);
-}
 html[data-surface='admin'] .btn-icon {
     width: 40px;
     height: 40px;
@@ -320,12 +314,8 @@ html[data-surface='admin'] .user-menu {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    html[data-surface='admin'] .brand-link,
     html[data-surface='admin'] .btn-primary {
         transition: none;
-    }
-    html[data-surface='admin'] .brand-link:hover {
-        transform: none;
     }
 }
 .prof-card-host:empty {
@@ -1788,4 +1778,15 @@ html[data-surface='admin'][data-theme='dark'] .show-details {
 }
 #view-mathtask .card-head[hidden] {
     display: none;
+}
+
+/* the account button is as big as the theme button beside it (the avatar plus its 2px ring is 44px) */
+html[data-surface='admin'] .sidebar-user .avatar {
+    width: 40px;
+    height: 40px;
+}
+/* the questions table keeps the card's rounded corners */
+#view-mathtask .card[data-region='mathtask']:not(.qb-config) {
+    overflow: clip;
+    border-radius: var(--r-card, 18px);
 }
