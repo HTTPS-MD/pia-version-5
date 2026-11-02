@@ -2402,3 +2402,22 @@ html[data-surface='admin'] .as-addbar .input {
         overflow-wrap: anywhere;
     }
 }
+
+@media (max-width: 47.99rem) {
+    #view-mathtask .qb-table thead th {
+        white-space: normal;
+        overflow: visible;
+        text-overflow: clip;
+        padding: 12px 10px;
+        font-size: 0.65rem;
+        letter-spacing: 0.04em;
+        line-height: 1.3;
+        vertical-align: middle;
+    }
+    .qb-col-answer {
+        width: 5rem;
+    }
+    .qb-col-points {
+        width: 4.5rem;
+    }
+}
