@@ -94,7 +94,29 @@
     }
     Admin.paintScorePair = paintScorePair;
 
+    // on a phone the dialog shows one test at a time: the tabs choose which
+    function setScoresView(view) {
+        var modal = $('#modal-scores .modal');
+        modal.setAttribute('data-scores-view', view);
+        $$('#scores-tabs [data-scores-tab]').forEach(function (tab) {
+            var on = tab.getAttribute('data-scores-tab') === view;
+            tab.classList.toggle('is-active', on);
+            tab.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+    }
+
+    function paintScoreCounts() {
+        ['pre', 'post'].forEach(function (test) {
+            var boxes = $$('#scores-tbody .score-pair[data-test="' + test + '"] input.score-input');
+            var filled = boxes.filter(function (box) {
+                return box.value !== '';
+            }).length;
+            $('#scores-count-' + test).textContent = boxes.length ? filled + '/' + boxes.length : '';
+        });
+    }
+
     async function openScoresModal(sectionName) {
+        setScoresView('pre');
         Admin.state.activeSection = sectionName;
         $('#scores-title').textContent = 'Input scores — ' + sectionName;
         $('#scores-tbody').innerHTML = Admin.skeletonRows(3, 5);
@@ -181,9 +203,18 @@
             .join('');
 
         $$('#scores-tbody .score-pair').forEach(paintScorePair);
+        paintScoreCounts();
         loaded = look();
     }
     Admin.openScoresModal = openScoresModal;
+
+    $('#scores-tabs').addEventListener('click', function (event) {
+        var tab = event.target.closest('[data-scores-tab]');
+        if (tab) {
+            setScoresView(tab.getAttribute('data-scores-tab'));
+        }
+    });
+    $('#scores-tbody').addEventListener('input', paintScoreCounts);
 
     // closing with typed-in scores asks first; loaded is what the dialog looked like when it opened
     var loaded = null;

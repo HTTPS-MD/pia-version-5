@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261117a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261105a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261116a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261117e">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261118f">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -688,7 +688,7 @@
     </div>
 
     <div class="overlay" id="modal-scores" role="dialog" aria-modal="true" aria-labelledby="scores-title">
-        <div class="modal modal-lg">
+        <div class="modal modal-lg" data-scores-view="pre">
             <header class="modal-head">
                 <div class="modal-head-text">
                     <div class="with-tip">
@@ -699,6 +699,11 @@
             </header>
 
             <div class="modal-body modal-body-flush">
+
+                <div class="scores-tabs" id="scores-tabs" role="tablist" aria-label="Test">
+                    <button type="button" class="tab is-active" role="tab" aria-selected="true" data-scores-tab="pre">Pre-test <span class="mono" id="scores-count-pre"></span></button>
+                    <button type="button" class="tab" role="tab" aria-selected="false" data-scores-tab="post">Post-test <span class="mono" id="scores-count-post"></span></button>
+                </div>
 
                 <div class="scores-toolbar" id="scores-toolbar">
                     <div class="field">
@@ -1275,7 +1280,7 @@
     <script src="../js/admin-faculty.js?v=20261105c"></script>
     <script src="../js/stage-controls.js?v=20261107d"></script>
     <script src="../js/admin-account.js?v=20261105a"></script>
-    <script src="../js/score-entry.js?v=20261113a"></script>
+    <script src="../js/score-entry.js?v=20261118a"></script>
     <script src="../js/live-updates.js?v=20261101a"></script>
     <script src="../js/math-task-core.js?v=20261109a"></script>
     <script src="../js/math-task-edit.js?v=20261117a"></script>

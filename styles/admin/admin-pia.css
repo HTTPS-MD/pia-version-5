@@ -2243,3 +2243,120 @@ html[data-surface='admin'] .as-addbar .input {
         max-width: 7.5rem;
     }
 }
+
+/* input scores: the pre-test and post-test tabs are for phones only */
+.scores-tabs {
+    display: none;
+}
+@media (max-width: 40rem) {
+    #modal-scores .scores-tabs {
+        display: flex;
+        gap: 6px;
+        padding: 12px 16px 0;
+    }
+    #modal-scores .scores-toolbar {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    #modal-scores .modal[data-scores-view='pre'] .scores-toolbar .field:nth-child(2),
+    #modal-scores .modal[data-scores-view='pre'] .scores-table th:nth-child(3),
+    #modal-scores .modal[data-scores-view='pre'] .scores-table td[data-label='Post-test'],
+    #modal-scores .modal[data-scores-view='post'] .scores-toolbar .field:nth-child(1),
+    #modal-scores .modal[data-scores-view='post'] .scores-table th:nth-child(2),
+    #modal-scores .modal[data-scores-view='post'] .scores-table td[data-label='Pre-test'] {
+        display: none;
+    }
+    #modal-scores .table-wrap {
+        overflow-x: hidden;
+    }
+    #modal-scores .scores-table {
+        min-width: 0;
+        table-layout: auto;
+    }
+    #modal-scores .scores-table th:first-child,
+    #modal-scores .scores-table td:first-child {
+        position: static;
+        min-width: 0;
+        max-width: none;
+        box-shadow: none;
+    }
+    #modal-scores .scores-table th.col-score {
+        width: auto;
+    }
+}
+
+@media (max-width: 40rem) {
+    #modal-scores .scores-table {
+        table-layout: fixed;
+        width: 100%;
+    }
+    #modal-scores .scores-table th:first-child {
+        width: 42%;
+    }
+    #modal-scores .scores-table th.col-score {
+        width: 58%;
+    }
+    #modal-scores .scores-table td:first-child .cell-name {
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
+    #modal-scores .score-pair {
+        grid-template-columns: minmax(0, 4.5rem) auto minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 40rem) {
+    #modal-scores .scores-table th:first-child {
+        width: 38%;
+    }
+    #modal-scores .scores-table th.col-score {
+        width: 62%;
+    }
+    #modal-scores .scores-table td:first-child {
+        padding-right: 8px;
+    }
+    #modal-scores .score-pair {
+        grid-template-columns: minmax(0, 4rem) auto auto;
+        column-gap: 6px;
+    }
+    #modal-scores .score-out {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 40rem) {
+    #modal-scores .scores-table th:first-child {
+        width: 43%;
+    }
+    #modal-scores .scores-table th.col-score {
+        width: 57%;
+    }
+    #modal-scores .scores-table td.col-score {
+        padding-left: 4px;
+        padding-right: 8px;
+    }
+    #modal-scores .score-pair {
+        grid-template-columns: minmax(0, 3.75rem) auto auto;
+        column-gap: 6px;
+    }
+}
+
+@media (max-width: 40rem) {
+    #modal-scores .scores-table td:first-child .avatar-wrap,
+    #modal-scores .scores-table td:first-child .avatar {
+        display: none;
+    }
+}
+
+@media (max-width: 40rem) {
+    #modal-scores .scores-table td:first-child,
+    #modal-scores .scores-table td:first-child .cell-user,
+    #modal-scores .scores-table td:first-child .cell-user-text,
+    #modal-scores .scores-table td:first-child .cell-name {
+        min-width: 0;
+        max-width: 100%;
+        white-space: normal;
+        overflow: visible;
+        overflow-wrap: anywhere;
+        text-overflow: clip;
+    }
+}
