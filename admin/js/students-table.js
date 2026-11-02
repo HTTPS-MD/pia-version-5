@@ -272,10 +272,6 @@
         }
         line.textContent = parts.join(' · ');
         Admin.state.summary = { section: section, total: members.length, done: done };
-        var dir = $('#directory-count');
-        if (dir) {
-            dir.textContent = members.length + (members.length === 1 ? ' student' : ' students');
-        }
         document.dispatchEvent(new Event('pia:scope'));
     }
 

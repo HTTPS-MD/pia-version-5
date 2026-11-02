@@ -469,7 +469,7 @@
         if (slot.row && !slot.done) {
             return '<p class="prof-card-status">Retake pending · will answer again at the next sign-in</p>';
         }
-        return '<p class="prof-card-status">OCEAN not taken yet · opens by itself at their next sign-in</p>';
+        return '<p class="prof-card-status">OCEAN not taken yet</p>';
     }
 
     function paintBars(host) {
@@ -1010,9 +1010,15 @@
         buildHideToggle();
         var h1 = titleHost();
         var actions = $('#view-students .page-actions');
+        // the eye sits right beside the section title
         var details = $('#view-students .show-details');
-        if (details && actions && details.parentNode !== actions) {
-            actions.insertBefore(details, actions.firstChild);
+        var title = $('#view-students .page-title');
+        if (details && title && !title.parentNode.classList.contains('page-title-row')) {
+            var row = document.createElement('div');
+            row.className = 'page-title-row';
+            title.parentNode.insertBefore(row, title);
+            row.appendChild(title);
+            row.appendChild(details);
         }
         var filter = $('#section-filter');
         if (filter) {

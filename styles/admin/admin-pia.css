@@ -1608,3 +1608,31 @@ html[data-surface='admin'] #modal-scores .score-input {
     padding: 0;
     margin-left: 14px;
 }
+
+/* the eye beside the section title */
+#view-students .page-title-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    min-width: 0;
+}
+#view-students .page-title-row .show-details {
+    margin-left: 0;
+}
+
+/* search and group filter take the table's own colour, with one plain outline on focus */
+html[data-surface='admin'] #view-students .panel-bar .head-search .input,
+html[data-surface='admin'] #view-students .panel-bar .bar-group .custom-select-trigger {
+    background: var(--bg-surface);
+    border: 1px solid var(--line-input);
+    box-shadow: none;
+}
+html[data-surface='admin'] #view-students .panel-bar .head-search .input:focus,
+html[data-surface='admin'] #view-students .panel-bar .head-search .input:focus-visible,
+html[data-surface='admin'] #view-students .panel-bar .bar-group .custom-select-trigger:focus-visible {
+    background: var(--bg-surface);
+    border-color: transparent;
+    box-shadow: none !important;
+    outline: 2px solid var(--accent);
+    outline-offset: 0;
+}
