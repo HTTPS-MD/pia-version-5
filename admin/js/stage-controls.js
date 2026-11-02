@@ -67,7 +67,7 @@
                 name.textContent = gate.label === 'Tutoring Dashboard' ? 'Game' : gate.label === 'Character Selection' ? 'Choose tutor' : 'OCEAN test';
                 item.appendChild(btn);
                 item.appendChild(name);
-                bar.insertBefore(item, bar.querySelector('.class-live'));
+                $('#stage-items').appendChild(item);
             }
             var ready =
                 !!section && Admin.state.overrides !== undefined && Admin.state.cohortLoaded;

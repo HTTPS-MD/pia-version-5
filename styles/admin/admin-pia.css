@@ -1664,7 +1664,7 @@ html:not(.pia-section-picked) #roster-thead th:nth-child(7) { width: 9%; }
     align-items: center;
     gap: 8px 24px;
     padding: 12px 16px;
-    border-bottom: 1px solid var(--line);
+    margin-bottom: 14px;
 }
 .stage-let[hidden] {
     display: none;
@@ -1692,4 +1692,11 @@ html[data-surface='admin'] .stage-switch.is-on {
 }
 html[data-surface='admin'] .stage-switch.is-on::after {
     background: var(--hex-0a0f2e);
+}
+
+.stage-items {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 24px;
 }
