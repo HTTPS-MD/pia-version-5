@@ -1617,3 +1617,19 @@ html[data-surface='admin'] .game-report-stat {
 html[data-surface='admin'] .game-history-row {
     border-color: var(--line-soft);
 }
+
+/* narrow screens: the students table scrolls sideways instead of breaking words, and the delete dialog sits closer to its title */
+#view-students .table-wrap {
+    overflow-x: auto;
+}
+#view-students .table {
+    min-width: 52rem;
+}
+#student-tbody td {
+    overflow-wrap: normal;
+    word-break: normal;
+    white-space: nowrap;
+}
+#modal-delete-section .modal-body {
+    padding-top: 4px;
+}
