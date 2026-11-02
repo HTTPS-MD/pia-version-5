@@ -174,9 +174,7 @@
                       .map(function (d) {
                           var pct = d.questions ? Math.round((d.clean * 100) / d.questions) : 0;
                           return (
-                              '<div class="game-history-row"><div class="game-history-top"><span>Day ' +
-                              Admin.esc(d.day_no) +
-                              ' · ' +
+                              '<div class="game-history-row"><div class="game-history-top"><span>' +
                               Admin.esc(formatDay(d.day)) +
                               '</span><span>' +
                               Admin.esc(gameDuration(d.active_seconds)) +
