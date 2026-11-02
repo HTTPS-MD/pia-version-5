@@ -854,17 +854,6 @@ html[data-surface='admin'] #view-students .table thead th {
     background: color-mix(in srgb, var(--text) 5%, var(--bg-surface));
 }
 
-/* The selected stage is one pill: label, count and its switch together */
-html[data-surface='admin'] .tab.is-active:has(+ .stage-switch:not([hidden])) {
-    padding-right: 52px;
-}
-html[data-surface='admin'] .tab.is-active + .stage-switch:not([hidden]) {
-    margin: 0 14px 0 -50px;
-}
-html[data-surface='admin'] .tab.is-active + .stage-switch:not([hidden]):not(.is-on) {
-    background: color-mix(in srgb, var(--admin-pill-ink) 28%, transparent);
-}
-
 /* Class status lives on the directory title row */
 .table-title .class-live {
     margin-left: auto;
@@ -1664,4 +1653,41 @@ html:not(.pia-section-picked) #roster-thead th:nth-child(7) { width: 9%; }
 #roster-thead th[data-mk-th],
 #student-tbody td[data-mk-cell] {
     min-width: 0;
+}
+
+/* Let students in: the stage switches in one row above the filter tabs */
+.stage-let {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 24px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+}
+.stage-let[hidden] {
+    display: none;
+}
+.stage-let-lab {
+    color: var(--text-muted);
+    font-size: var(--fs-sm);
+}
+.stage-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.stage-item .stage-switch {
+    margin: 0;
+}
+.stage-item .stage-state {
+    margin: 0;
+}
+.pia-all-sections .stage-let {
+    display: none !important;
+}
+html[data-surface='admin'] .stage-switch.is-on {
+    background: var(--focus-yellow);
+}
+html[data-surface='admin'] .stage-switch.is-on::after {
+    background: var(--hex-0a0f2e);
 }

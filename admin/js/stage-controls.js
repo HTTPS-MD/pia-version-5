@@ -46,24 +46,28 @@
     Admin.renderGateAccess = renderGateAccess;
 
     function renderStageSwitches() {
-        var bar = $('#stage-tabs');
+        var bar = $('#stage-let');
         if (!bar) {
             return;
         }
         var section = window.PIASectionNow || '';
+        bar.hidden = !section;
         Admin.GATES.forEach(function (gate) {
-            var tab = bar.querySelector('[data-stage-filter="' + gate.label + '"]');
-            if (!tab) {
-                return;
-            }
             var btn = bar.querySelector('[data-gate-switch="' + gate.key + '"]');
             if (!btn) {
+                var item = document.createElement('span');
+                item.className = 'stage-item';
                 btn = document.createElement('button');
                 btn.type = 'button';
                 btn.className = 'stage-switch';
                 btn.setAttribute('role', 'switch');
                 btn.setAttribute('data-gate-switch', gate.key);
-                tab.insertAdjacentElement('afterend', btn);
+                var name = document.createElement('span');
+                name.className = 'stage-name';
+                name.textContent = gate.label === 'Tutoring Dashboard' ? 'Game' : gate.label === 'Character Selection' ? 'Choose tutor' : 'OCEAN test';
+                item.appendChild(btn);
+                item.appendChild(name);
+                bar.appendChild(item);
             }
             var ready =
                 !!section && Admin.state.overrides !== undefined && Admin.state.cohortLoaded;
@@ -268,7 +272,7 @@
         if (!host) {
             host = document.createElement('span');
             host.className = 'stage-state';
-            btn.insertAdjacentElement('afterend', host);
+            btn.parentNode.appendChild(host);
         }
         var phase = tutPhase(gate, section).phase;
         host.innerHTML =
@@ -650,7 +654,7 @@
             }
         });
 
-        var bar = $('#stage-tabs');
+        var bar = $('#stage-let');
         if (bar) {
             bar.addEventListener(
                 'click',
@@ -678,7 +682,7 @@
 
     function initGates() {
         wireTutoringDialog();
-        var tabsBar = $('#stage-tabs');
+        var tabsBar = $('#stage-let');
         if (tabsBar) {
             tabsBar.addEventListener('click', function (event) {
                 var sw = event.target.closest('[data-gate-switch]');
