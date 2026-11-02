@@ -176,7 +176,7 @@
 
     async function resetFacultyPassword(email, sourceBtn) {
         var ok = await Admin.confirmAction({
-            heading: 'Send a reset link to ' + email + '?',
+            heading: 'Send a reset link to ' + Admin.whoIs(email) + '?',
             message: 'They choose a new password through the emailed link.',
             confirmLabel: 'Send reset email',
             tone: 'accent'
@@ -243,7 +243,7 @@
 
     async function signOutFacultyEverywhere(email, sourceBtn) {
         var ok = await Admin.confirmAction({
-            heading: 'Sign ' + email + ' out everywhere?',
+            heading: 'Sign ' + Admin.whoIs(email) + ' out everywhere?',
             message: 'Every session ends now and their devices are freed. They sign in again with their password.',
             confirmLabel: 'Sign out everywhere'
         });
@@ -263,7 +263,7 @@
             return;
         }
 
-        Admin.toastOk('Signed out everywhere', email + ' was signed out of every device.');
+        Admin.toastOk('Signed out everywhere', Admin.whoIs(email) + ' was signed out of every device.');
     }
 
     async function handleRegisterProfessor(event) {
@@ -350,7 +350,7 @@
 
     async function deleteFaculty(email) {
         var ok = await Admin.confirmAction({
-            heading: 'Delete ' + email + '?',
+            heading: 'Delete ' + Admin.whoIs(email) + '?',
             message: 'Their account, teacher record and linked profile are removed. Student data stays.',
             confirmLabel: 'Remove teacher'
         });
@@ -368,7 +368,7 @@
             return;
         }
 
-        Admin.toastOk('Teacher removed', email + ' no longer has access.');
+        Admin.toastOk('Teacher removed', Admin.whoIs(email) + ' no longer has access.');
         await Admin.loadFaculty();
         Admin.renderSections();
     }

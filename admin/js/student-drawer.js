@@ -321,7 +321,7 @@
 
     async function allowRetakeOcean(email) {
         var ok = await Admin.confirmAction({
-            heading: 'Let ' + email + ' retake OCEAN?',
+            heading: 'Let ' + Admin.whoIs(email) + ' retake OCEAN?',
             message:
                 'They answer all 50 items again. The current result stays in the history, and the new one replaces it when they finish.',
             confirmLabel: 'Allow retake'
@@ -347,14 +347,14 @@
             return;
         }
 
-        Admin.toastOk('OCEAN retake enabled', email + ' can take the inventory again.');
+        Admin.toastOk('OCEAN retake enabled', Admin.whoIs(email) + ' can take the inventory again.');
         Admin.closeModal('drawer-student');
         Admin.refreshAll();
     }
 
     async function allowRetakeCharacter(email) {
         var ok = await Admin.confirmAction({
-            heading: 'Clear the tutor for ' + email + '?',
+            heading: 'Clear the tutor for ' + Admin.whoIs(email) + '?',
             message: 'They go back to choosing a character.',
             confirmLabel: 'Clear selection'
         });
@@ -379,14 +379,14 @@
             return;
         }
 
-        Admin.toastOk('Character re-selection enabled', email + ' can pick a persona again.');
+        Admin.toastOk('Character re-selection enabled', Admin.whoIs(email) + ' can pick a persona again.');
         Admin.closeModal('drawer-student');
         Admin.refreshAll();
     }
 
     async function deleteStudent(email) {
         var ok = await Admin.confirmAction({
-            heading: 'Delete ' + email + '?',
+            heading: 'Delete ' + Admin.whoIs(email) + '?',
             message:
                 'Their profile, account and every response are removed. This cannot be undone and changes your dataset.',
             confirmLabel: 'Delete permanently'
@@ -406,7 +406,7 @@
         }
 
         Admin.closeModal('drawer-student');
-        Admin.toastOk('Participant deleted', email + ' was removed from the study.');
+        Admin.toastOk('Participant deleted', Admin.whoIs(email) + ' was removed from the study.');
         Admin.refreshAll();
     }
 

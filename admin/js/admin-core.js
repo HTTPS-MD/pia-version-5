@@ -65,6 +65,22 @@
     }
     Admin.normalizeEmail = normalizeEmail;
 
+    // a person's name for dialogs and messages; the email only when no name is known
+    function whoIs(email) {
+        var key = String(email || '').toLowerCase();
+        var hit = null;
+        [].concat(Admin.state.rosterPage || [], Admin.state.cohort || [], Admin.state.faculty || []).some(function (p) {
+            if (String(p.email || '').toLowerCase() === key) {
+                hit = p;
+                return true;
+            }
+            return false;
+        });
+        var name = hit && (hit.full_name || hit.name);
+        return (name && String(name).trim()) || email;
+    }
+    Admin.whoIs = whoIs;
+
     // the database still says professor and faculty; the people using the admin read teacher
     function teacherWords(text) {
         return String(text || '')
