@@ -5363,3 +5363,8 @@ h4 {
     background: var(--volt);
     color: var(--on-volt);
 }
+
+/* while the saved session is still being checked (and a redirect may follow), the button keeps its place but stays out of sight */
+:root[data-session='pending'] .hero-resume {
+    visibility: hidden;
+}
