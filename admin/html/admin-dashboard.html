@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261103a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261104e">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261104f">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -518,9 +518,10 @@
             <div class="modal-body">
                 <form id="edit-student-form" novalidate>
                     <input type="hidden" id="es-original-email">
+                    <ol class="qb-wiz" id="es-wiz" aria-label="Progress"></ol>
 
-                    <div class="form-section">
-                        <p class="form-section-title">Identity</p>
+                    <div class="form-section" id="es-step-name">
+                        <p class="form-section-title">Name</p>
                         <div class="form-grid form-grid-3">
                             <div class="field">
                                 <label class="label" for="es-first">First name <span class="req">*</span></label>
@@ -538,21 +539,10 @@
                                 <p class="field-msg" data-msg-for="es-last"></p>
                             </div>
                         </div>
-
-                        <div class="form-grid" style="margin-top:16px">
-                            <div class="field">
-                                <div class="with-tip">
-                                    <label class="label" for="es-email">School email</label>
-                                    <button type="button" class="info-tip" data-tip="Locked so this participant’s research data stays linked. If it was entered wrongly, delete the account and register it again before they activate." aria-label="About the locked email"><svg class="icon"><use href="#i-info"></use></svg></button>
-                                </div>
-                                <input class="input input-locked" type="email" id="es-email" autocomplete="off" readonly>
-                                <p class="field-msg" data-msg-for="es-email"></p>
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="form-section">
-                        <p class="form-section-title">Placement</p>
+                    <div class="form-section" id="es-step-section" hidden>
+                        <p class="form-section-title">Section</p>
                         <div class="form-grid">
                             <div class="field">
                                 <label class="label" for="es-section">Section</label>
@@ -560,103 +550,15 @@
                                 <p class="field-msg" data-msg-for="es-section"></p>
                             </div>
                         </div>
-
-                        <p class="label" style="margin:8px 0 12px">Experimental condition</p>
-                        <div class="choice-grid">
-                            <label class="choice">
-                                <input type="radio" name="es-condition" value="assigned">
-                                <span class="choice-title">EXP · Assigned persona</span>
-                            </label>
-                            <label class="choice">
-                                <input type="radio" name="es-condition" value="non-assigned">
-                                <span class="choice-title">EXP · Free choice</span>
-                            </label>
-                            <label class="choice" id="es-neutral-choice">
-                                <input type="radio" name="es-condition" value="neutral">
-                                <span class="choice-title">EXP · Neutral persona</span>
-                            </label>
-                            <label class="choice">
-                                <input type="radio" name="es-condition" value="control">
-                                <span class="choice-title">CTRL · Traditional</span>
-                            </label>
-                        </div>
-
-                        <div class="field" id="es-tutor-field" hidden>
-                            <label class="label" for="es-tutor">Tutor persona · automatic after OCEAN</label>
-                            <select class="select" id="es-tutor" aria-describedby="es-tutor-hint"></select>
-                            <p class="field-hint muted" id="es-tutor-hint"></p>
-                            <p class="field-msg" data-msg-for="es-tutor"></p>
-                        </div>
-
-                    </div>
-
-                    <div class="form-section">
-                        <div class="with-tip form-section-head">
-                            <p class="form-section-title">Test scores</p>
-                            <button type="button" class="info-tip" data-tip="Transmuted score = (raw ÷ highest possible) × 50 + 50. Leave both fields blank until the student takes the test." aria-label="About transmuted scores"><svg class="icon"><use href="#i-info"></use></svg></button>
-                        </div>
-
-                        <fieldset class="score-entry">
-                            <legend class="score-entry-title">Pre-test</legend>
-                            <div class="score-fields">
-                                <div class="field">
-                                    <label class="label" for="es-pre-raw">Raw score</label>
-                                    <input class="input tnum" type="number" step="any" min="0" id="es-pre-raw"
-                                        inputmode="decimal" placeholder="e.g. 40" data-score-test="pre" data-score-part="raw">
-                                </div>
-                                <div class="field">
-                                    <label class="label" for="es-pre-max">Highest possible</label>
-                                    <input class="input tnum" type="number" step="any" min="0" id="es-pre-max"
-                                        inputmode="decimal" placeholder="e.g. 50" data-score-test="pre" data-score-part="max">
-                                </div>
-                            </div>
-                            <p class="score-result" id="es-pre-result" aria-live="polite"></p>
-                        </fieldset>
-
-                        <fieldset class="score-entry">
-                            <legend class="score-entry-title">Post-test</legend>
-                            <div class="score-fields">
-                                <div class="field">
-                                    <label class="label" for="es-post-raw">Raw score</label>
-                                    <input class="input tnum" type="number" step="any" min="0" id="es-post-raw"
-                                        inputmode="decimal" placeholder="e.g. 45" data-score-test="post" data-score-part="raw">
-                                </div>
-                                <div class="field">
-                                    <label class="label" for="es-post-max">Highest possible</label>
-                                    <input class="input tnum" type="number" step="any" min="0" id="es-post-max"
-                                        inputmode="decimal" placeholder="e.g. 50" data-score-test="post" data-score-part="max">
-                                </div>
-                            </div>
-                            <p class="score-result" id="es-post-result" aria-live="polite"></p>
-                        </fieldset>
-                    </div>
-
-                    <div class="form-section">
-                        <p class="form-section-title">Consent</p>
-                        <label class="check">
-                            <input type="checkbox" id="es-consent">
-                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
-                            <span class="check-text">
-                                Parental consent received
-                                <small id="es-consent-note"></small>
-                            </span>
-                        </label>
-
-                        <label class="check">
-                            <input type="checkbox" id="es-assent">
-                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
-                            <span class="check-text">
-                                Student assent received
-                                <small id="es-assent-note"></small>
-                            </span>
-                        </label>
                     </div>
                 </form>
             </div>
 
             <footer class="modal-foot">
-                <button class="btn btn-secondary" data-modal-close>Cancel</button>
-                <button class="btn btn-primary" type="submit" form="edit-student-form" id="es-submit">Save changes</button>
+                <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
+                <button class="btn btn-secondary" type="button" id="es-back" hidden>Back</button>
+                <button class="btn btn-primary" type="button" id="es-next">Next</button>
+                <button class="btn btn-primary" type="submit" form="edit-student-form" id="es-submit" hidden>Save changes</button>
             </footer>
         </div>
     </div>
@@ -1381,7 +1283,7 @@
     <script src="../js/admin-data.js?v=20261101c"></script>
     <script src="../js/students-table.js?v=20261104b"></script>
     <script src="../js/student-drawer.js?v=20261103z"></script>
-    <script src="../js/student-forms.js?v=20261031b"></script>
+    <script src="../js/student-forms.js?v=20261104a"></script>
     <script src="../js/admin-faculty.js?v=20261103z"></script>
     <script src="../js/stage-controls.js?v=20261103z"></script>
     <script src="../js/admin-account.js?v=20261103z"></script>
