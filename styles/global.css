@@ -1780,3 +1780,8 @@ body.is-locked {
         animation: none;
     }
 }
+
+/* no blue flash on the element when it is tapped on a phone */
+* {
+    -webkit-tap-highlight-color: transparent;
+}
