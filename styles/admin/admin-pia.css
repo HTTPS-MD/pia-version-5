@@ -1946,36 +1946,28 @@ html[data-surface='admin'] .sidebar-user .avatar {
     padding-block: 0;
 }
 
-/* phone: the logo and the account buttons take the first row, the two tabs get a row of their own */
+/* phone: the theme switch moves into the account menu and the account button is just the avatar */
+.user-menu-theme {
+    display: none;
+}
 @media (max-width: 40rem) {
-    html[data-surface='admin'] .app {
-        grid-template-rows: var(--topbar-h) auto minmax(0, 1fr);
-        grid-template-areas: 'top' 'tabs' 'main';
+    html[data-surface='admin'] #theme-toggle {
+        display: none;
     }
-    html[data-surface='admin'] .topbar {
-        border-bottom: 0;
-        padding-left: 7.5rem;
+    .user-menu-theme {
+        display: flex;
     }
-    html[data-surface='admin'] .sidebar-nav {
-        grid-area: tabs;
-        justify-self: stretch;
-        align-self: start;
-        position: sticky;
-        top: var(--topbar-h);
-        height: 52px;
-        padding: 0 8px;
+    html[data-surface='admin'] .sidebar-user {
+        width: 44px;
+        padding: 0;
         justify-content: center;
     }
-    html[data-surface='admin'][data-theme='dark'] .sidebar-nav {
-        background: var(--palette-ink);
-        border-bottom: 1px solid var(--palette-paper);
+    html[data-surface='admin'] .sidebar-user .user-chevron {
+        display: none;
     }
-    html[data-surface='admin'][data-theme='light'] .sidebar-nav {
-        background: var(--palette-paper);
-        border-bottom: 1px solid var(--palette-ink);
-    }
-    html[data-surface='admin'] .nav-item {
-        min-height: 40px;
-        padding: 0 18px;
+    html[data-surface='admin'] .sidebar-user .avatar {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
     }
 }

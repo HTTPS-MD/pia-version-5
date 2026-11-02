@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261110a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261105a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261112d">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261112e">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -111,6 +111,8 @@
                     <span class="custom-select-chevron user-chevron" aria-hidden="true"></span>
                 </button>
                 <div class="user-menu" id="user-menu" role="menu" aria-label="Account" hidden>
+                    <button type="button" class="user-menu-item user-menu-theme" role="menuitem" data-user-action="theme">
+                        <svg class="icon icon-sm" aria-hidden="true"><use id="user-theme-icon" href="#i-sun"></use></svg><span id="user-theme-label">Light mode</span></button>
                     <button type="button" class="user-menu-item" role="menuitem" data-user-action="settings">
                         <svg class="icon icon-sm" aria-hidden="true"><use href="#i-gear"></use></svg>Settings</button>
                     <button type="button" class="user-menu-item is-signout" role="menuitem" id="user-signout" data-user-action="signout">
@@ -1257,7 +1259,7 @@
     <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
     <script src="../../assets/js/shared/device-revoke.js?v=20261031a"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
-    <script src="../js/admin-shell.js?v=20261105a"></script>
+    <script src="../js/admin-shell.js?v=20261112a"></script>
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
