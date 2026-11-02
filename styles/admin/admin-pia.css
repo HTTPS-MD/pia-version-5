@@ -2168,3 +2168,44 @@ html[data-surface='admin'] .sidebar-user .avatar {
     resize: none;
     overflow: hidden;
 }
+
+/* add students: Add and the row count are the same size */
+.as-addbar .btn,
+.as-addbar .input {
+    box-sizing: border-box;
+    width: 5.5rem;
+    height: 44px;
+    min-height: 44px;
+    padding-block: 0;
+    justify-content: center;
+    text-align: center;
+}
+@media (max-width: 46rem) {
+    /* the add-students table swipes sideways on a phone */
+    .as-table {
+        overflow-x: auto !important;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+@media (max-width: 40rem) {
+    /* a long student name wraps instead of being cut off */
+    html[data-surface='admin'] #view-students .table thead th:first-child,
+    html[data-surface='admin'] #view-students .table tbody td:first-child {
+        width: 11rem !important;
+        min-width: 11rem;
+        max-width: 11rem !important;
+    }
+    html[data-surface='admin'] #view-students .table tbody td:first-child {
+        overflow: visible;
+        white-space: normal;
+    }
+    #view-students .table tbody td:first-child .cell-user,
+    #view-students .table tbody td:first-child .cell-user-text {
+        min-width: 0;
+        overflow: visible;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        text-overflow: clip;
+    }
+}
