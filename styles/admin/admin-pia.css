@@ -1700,3 +1700,16 @@ html[data-surface='admin'] .stage-switch.is-on::after {
     align-items: center;
     gap: 8px 24px;
 }
+
+#view-students .stage-let {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 0 18px;
+}
+#view-students .stage-let[hidden] {
+    display: none;
+}
+#view-students .stage-let .class-live {
+    margin-left: 8px;
+}
