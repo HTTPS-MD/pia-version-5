@@ -81,10 +81,9 @@
         });
 
         var sure = await Admin.confirmAction({
-            title: 'Save rules',
-            heading: 'Apply these rules to every student?',
+            heading: 'Save the rules?',
             message:
-                'The new rules count for questions finished from now on, in every section. Scores already earned are not changed.',
+                'They apply to every section, for questions finished from now on. Scores already earned do not change.',
             confirmLabel: 'Save rules',
             tone: 'accent'
         });

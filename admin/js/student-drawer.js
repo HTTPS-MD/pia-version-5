@@ -321,11 +321,9 @@
 
     async function allowRetakeOcean(email) {
         var ok = await Admin.confirmAction({
-            title: 'Allow OCEAN retake',
-            heading: 'Send ' + email + ' back to the questionnaire?',
+            heading: 'Let ' + email + ' retake OCEAN?',
             message:
-                'They can answer all 50 items again. Their current result stays in the ' +
-                'results history, and the new submission becomes the current result once they finish.',
+                'They answer all 50 items again. The current result stays in the history, and the new one replaces it when they finish.',
             confirmLabel: 'Allow retake'
         });
         if (!ok) {
@@ -356,11 +354,8 @@
 
     async function allowRetakeCharacter(email) {
         var ok = await Admin.confirmAction({
-            title: 'Allow character re-selection',
-            heading: 'Clear the chosen persona for ' + email + '?',
-            message:
-                'Their selected agent is cleared and they return to the character ' +
-                'selection stage.',
+            heading: 'Clear the tutor for ' + email + '?',
+            message: 'They go back to choosing a character.',
             confirmLabel: 'Clear selection'
         });
         if (!ok) {
@@ -391,11 +386,9 @@
 
     async function deleteStudent(email) {
         var ok = await Admin.confirmAction({
-            title: 'Delete participant',
-            heading: 'Permanently delete ' + email + '?',
+            heading: 'Delete ' + email + '?',
             message:
-                'The profile, the auth user and every collected response for this ' +
-                'participant are removed. This cannot be undone and will change your dataset.',
+                'Their profile, account and every response are removed. This cannot be undone and changes your dataset.',
             confirmLabel: 'Delete permanently'
         });
         if (!ok) {

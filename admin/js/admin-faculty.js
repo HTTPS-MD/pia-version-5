@@ -176,11 +176,8 @@
 
     async function resetFacultyPassword(email, sourceBtn) {
         var ok = await Admin.confirmAction({
-            title: 'Reset password',
             heading: 'Send a reset link to ' + email + '?',
-            message:
-                'They will choose their own new password through the emailed link. ' +
-                'No password is set or revealed here.',
+            message: 'They choose a new password through the emailed link.',
             confirmLabel: 'Send reset email',
             tone: 'accent'
         });
@@ -246,11 +243,8 @@
 
     async function signOutFacultyEverywhere(email, sourceBtn) {
         var ok = await Admin.confirmAction({
-            title: 'Sign out everywhere',
             heading: 'Sign ' + email + ' out everywhere?',
-            message:
-                'Every session for this account ends immediately and each of their devices is ' +
-                'freed. They sign in again with their password.',
+            message: 'Every session ends now and their devices are freed. They sign in again with their password.',
             confirmLabel: 'Sign out everywhere'
         });
         if (!ok) {
@@ -356,11 +350,8 @@
 
     async function deleteFaculty(email) {
         var ok = await Admin.confirmAction({
-            title: 'Remove faculty',
-            heading: 'Permanently delete ' + email + '?',
-            message:
-                'The auth user, the faculty record and the linked profile are all removed. ' +
-                'Student data is not affected.',
+            heading: 'Delete ' + email + '?',
+            message: 'Their account, faculty record and linked profile are removed. Student data stays.',
             confirmLabel: 'Remove faculty'
         });
         if (!ok) {

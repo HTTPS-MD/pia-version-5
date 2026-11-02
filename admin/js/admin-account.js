@@ -341,13 +341,10 @@
         }
 
         var ok = await Admin.confirmAction({
-            title: 'Add administrator',
-            heading: 'Give ' + email + ' administrator access?',
+            heading: 'Add ' + email + ' as administrator?',
             message:
-                'Administrators see every participant and result, open and close stages, and can ' +
-                'delete participant and professor accounts. Once added, they can only be removed by the ' +
-                'project owner, from the Supabase dashboard. They will get a one-time link to choose ' +
-                'their own password.',
+                'They will see every participant and result, control the stages, and delete accounts. ' +
+                'Only the project owner can remove them later. They get a one-time link to set a password.',
             confirmLabel: 'Create administrator',
             tone: 'accent'
         });

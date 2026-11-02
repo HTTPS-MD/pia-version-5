@@ -206,9 +206,10 @@
             var overlay = $('#modal-confirm');
             var accept = $('#confirm-accept');
 
-            $('#confirm-title').textContent = options.title || 'Confirm action';
+            // one question as the title and one short line under it, nothing said twice
+            $('#confirm-title').textContent = options.heading || options.title || 'Are you sure?';
             $('#confirm-subtitle').textContent = options.subtitle || '';
-            $('#confirm-heading').textContent = options.heading || options.title || 'Are you sure?';
+            $('#confirm-heading').textContent = '';
             $('#confirm-text').textContent = options.message || '';
 
             var danger = options.tone !== 'accent';
@@ -264,8 +265,8 @@
     Admin.confirmAction = confirmAction;
 
     function showNotice(title, body, tone) {
-        $('#notice-title').textContent = 'Result';
-        $('#notice-heading').textContent = title;
+        $('#notice-title').textContent = title;
+        $('#notice-heading').textContent = '';
         $('#notice-body').textContent = body;
 
         var danger = tone === 'danger';

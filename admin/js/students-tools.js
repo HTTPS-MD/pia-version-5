@@ -1088,7 +1088,6 @@
                 closeMenu();
                 (async function () {
                     var ok = await window.PIAAdmin.confirmAction({
-                        title: 'Delete section',
                         heading: 'Delete ' + doomed + '?',
                         message: 'This cannot be undone.',
                         confirmLabel: 'Delete'

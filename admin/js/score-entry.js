@@ -207,9 +207,8 @@
             event.stopImmediatePropagation();
             event.preventDefault();
             var ok = await Admin.confirmAction({
-                title: 'Discard scores?',
-                heading: 'Discard what you typed?',
-                message: 'These scores are not saved yet.',
+                heading: 'Discard scores?',
+                message: 'The scores you typed are not saved.',
                 confirmLabel: 'Discard'
             });
             if (ok) {

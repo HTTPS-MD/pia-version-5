@@ -1692,3 +1692,11 @@ html[data-surface='admin'] .drawer .bar {
     color: var(--text-muted);
     text-align: right;
 }
+
+/* confirm and notice dialogs: the question is the title, one line explains it; empty parts take no room */
+#modal-confirm .modal-hero-title:empty,
+#modal-notice .modal-hero-title:empty,
+#modal-confirm .modal-sub:empty,
+#modal-notice .modal-sub:empty {
+    display: none;
+}

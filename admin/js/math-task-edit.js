@@ -155,13 +155,9 @@
         var item = list[index];
 
         var ok = await Admin.confirmAction({
-            title: 'Delete question',
-            subtitle: Admin.qbTopicLabel(Admin.qb.topic),
             heading: 'Delete question ' + (index + 1) + '?',
             message:
-                '“' +
-                qbShort(item.q) +
-                '” and its steps and hints will be removed. This cannot be undone.',
+                '“' + qbShort(item.q) + '” and its steps and hints will be removed. This cannot be undone.',
             confirmLabel: 'Delete question'
         });
         if (!ok) {
@@ -204,16 +200,9 @@
         }
 
         var ok = await Admin.confirmAction({
-            title: 'Delete all questions',
-            subtitle: Admin.qbTopicLabel(topic),
-            heading: 'Delete every question in topic ' + Admin.QB_TOPICS[topic].num + '?',
-            message:
-                'All ' +
-                count +
-                ' questions in “' +
-                Admin.QB_TOPICS[topic].title +
-                '”, with their steps and hints, will be removed. The other topics are not touched. This cannot be undone.',
-            confirmLabel: 'Delete ' + count
+            heading: 'Delete all ' + count + ' questions in topic ' + Admin.QB_TOPICS[topic].num + '?',
+            message: 'Their steps and hints are removed too. The other topics are not touched. This cannot be undone.',
+            confirmLabel: 'Delete all'
         });
         if (!ok) {
             return;
@@ -622,9 +611,8 @@
             event.preventDefault();
             if (Admin.qb.editingId != null) {
                 Admin.confirmAction({
-                    title: 'Discard changes',
-                    heading: 'Discard your changes?',
-                    message: 'The edits to this question are not saved yet.',
+                    heading: 'Discard changes?',
+                    message: 'Your edits to this question are not saved.',
                     confirmLabel: 'Discard'
                 }).then(function (ok) {
                     if (ok) {

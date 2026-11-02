@@ -113,14 +113,11 @@
                     return s.section === section;
                 }).length;
                 var ok = await Admin.confirmAction({
-                    title: 'Open stage',
                     heading: 'Open ' + gate.title + ' for ' + section + '?',
                     message:
                         members +
                         (members === 1 ? ' student' : ' students') +
-                        ' of ' +
-                        section +
-                        ' can enter it right away. A student who has not finished the stage before it stays out.',
+                        ' can enter right away. Anyone who has not finished the stage before it stays out.',
                     confirmLabel: 'Open stage',
                     tone: 'accent'
                 });
@@ -800,19 +797,17 @@
         }).length;
 
         var ok = await Admin.confirmAction({
-            title: 'Revoke access',
             heading: everyone
                 ? 'Close ' + gate.title + ' for every section?'
-                : 'Revoke ' + gate.title + ' for ' + names.join(', ') + '?',
+                : 'Close ' + gate.title + ' for ' + names.join(', ') + '?',
             message:
                 (inside
                     ? inside +
                       ' student' +
                       (inside === 1 ? ' is' : 's are') +
-                      ' inside now and will return to the ' +
-                      'Waiting Room. Anyone part-way through can still finish and submit what they started. '
+                      ' inside now and will return to the Waiting Room. '
                     : 'Nobody is inside right now. ') +
-                'Nothing already submitted is changed or removed.' +
+                'Nothing already submitted is removed.' +
                 (everyone ? '' : ' Other sections keep their access.'),
             confirmLabel: 'Revoke access'
         });
