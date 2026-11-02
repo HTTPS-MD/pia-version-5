@@ -968,7 +968,7 @@
         toggle.textContent = 'Open class';
         var actionsBar = $('#bar-actions');
         if (actionsBar) {
-            actionsBar.insertBefore(toggle, actionsBar.firstChild);
+            actionsBar.appendChild(toggle);
         } else {
             ($('#class-live') || bar).appendChild(toggle);
         }

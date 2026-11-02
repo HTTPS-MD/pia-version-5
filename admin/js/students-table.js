@@ -103,7 +103,7 @@
         if (!stageKey) {
             return '<span class="muted">—</span>';
         }
-        return '<span class="badge">' + Admin.esc(stageLabel(stageKey)) + '</span>';
+        return Admin.esc(stageLabel(stageKey));
     }
 
     var liveRefreshId = null;
@@ -409,11 +409,7 @@
     function conditionCell(s) {
         var condition = Admin.CONDITIONS[s.group_type] || { short: s.group_type || '—', badge: '' };
         return (
-            '<td><span class="badge ' +
-            condition.badge +
-            '">' +
-            Admin.esc(condition.short) +
-            '</span></td>'
+            '<td>' + Admin.esc(condition.short) + '</td>'
         );
     }
 

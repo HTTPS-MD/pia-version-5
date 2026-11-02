@@ -5359,3 +5359,18 @@ h4 {
         width: 13rem;
     }
 }
+
+/* one focus ring for the landing fields too */
+.overlay .input:focus,
+.overlay .input:focus-visible,
+.overlay .select:focus,
+.overlay .select:focus-visible,
+.overlay .textarea:focus,
+.overlay .textarea:focus-visible,
+:root[data-theme='light'] .overlay .input:focus,
+:root[data-theme='light'] .overlay .input:focus-visible {
+    box-shadow: none;
+    outline: 2px solid var(--accent);
+    outline-offset: 0;
+    border-color: transparent;
+}

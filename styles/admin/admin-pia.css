@@ -1636,3 +1636,21 @@ html[data-surface='admin'] #view-students .panel-bar .bar-group .custom-select-t
     outline: 2px solid var(--accent);
     outline-offset: 0;
 }
+
+/* the same single ring in the admin, where the field rules are more specific */
+html[data-surface='admin'] .input:focus,
+html[data-surface='admin'] .select:focus,
+html[data-surface='admin'] .textarea:focus,
+html[data-surface='admin'] .input:focus-visible,
+html[data-surface='admin'] .custom-select-trigger:focus,
+html[data-surface='admin'] .custom-select-trigger:focus-visible {
+    box-shadow: none !important;
+    outline: 2px solid var(--accent);
+    outline-offset: 0;
+    border-color: transparent;
+}
+/* an empty chip next to the Students title would show as a stray bar */
+#view-students .table-title > :empty,
+#view-students .table-title .count-chip {
+    display: none;
+}

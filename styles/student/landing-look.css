@@ -982,3 +982,10 @@
     }
 }
 
+
+.landing-look .solution-input:focus {
+    box-shadow: none;
+    outline: 2px solid var(--accent);
+    outline-offset: 0;
+    border-color: transparent;
+}

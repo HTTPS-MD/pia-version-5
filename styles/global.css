@@ -1756,3 +1756,19 @@ body.is-locked {
     background: transparent;
     box-shadow: none;
 }
+
+/* one focus ring for every field: a single 2px outline, no extra glow */
+.input:focus,
+.select:focus,
+.textarea:focus,
+.custom-select-trigger:focus,
+.custom-select-trigger:focus-visible,
+.solution-input:focus,
+.input:focus-visible,
+.select:focus-visible,
+.textarea:focus-visible {
+    box-shadow: none;
+    outline: 2px solid var(--accent);
+    outline-offset: 0;
+    border-color: transparent;
+}
