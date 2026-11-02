@@ -1971,3 +1971,68 @@ html[data-surface='admin'] .sidebar-user .avatar {
         min-width: 36px;
     }
 }
+
+/* phone: the student list is a stack of cards, not a wide table */
+@media (max-width: 40rem) {
+    #view-students .table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+    }
+    #view-students .table,
+    #view-students .table tbody {
+        display: block;
+        width: 100%;
+    }
+    #view-students .table tbody tr {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+        gap: 4px 12px;
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--line);
+    }
+    #view-students .table tbody td {
+        display: block;
+        min-width: 0;
+        padding: 0;
+        border: 0;
+        font-size: var(--fs-sm);
+        color: var(--text-muted);
+        white-space: normal;
+        overflow-wrap: anywhere;
+    }
+    #view-students .table tbody td:first-child {
+        grid-column: 1 / -1;
+        color: var(--text);
+        font-size: var(--fs-body);
+    }
+    #view-students .table tbody td:nth-child(2) {
+        display: none;
+    }
+    #view-students .table tbody td:last-child {
+        grid-column: 1 / -1;
+    }
+    #view-students .table tbody td:empty {
+        display: none;
+    }
+    #view-students .panel-bar .bar-group .custom-select {
+        width: 100%;
+    }
+    #view-students #bar-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        width: 100%;
+    }
+    #view-students #bar-actions .btn {
+        flex: 1 1 auto;
+    }
+}
+
+@media (max-width: 30rem) {
+    #view-settings .panel-bar {
+        flex-wrap: wrap;
+    }
+}
