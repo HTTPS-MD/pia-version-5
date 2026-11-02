@@ -990,3 +990,41 @@
     outline-offset: 0;
     border-color: transparent;
 }
+
+/* welcome screen on a wide screen: the tutor on the left, the greeting, text and Start on the right */
+@media (min-width: 46rem) {
+    .landing-look .start-wrap {
+        max-width: 66rem;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+        align-items: center;
+        column-gap: clamp(2rem, 5vw, 4.5rem);
+        text-align: left;
+    }
+    .landing-look .agent-card {
+        order: 1;
+    }
+    .landing-look .start-card {
+        order: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--sp-4);
+    }
+    .landing-look .start-hello,
+    .landing-look .start-lede,
+    .landing-look .paper-chips,
+    .landing-look .start-actions {
+        order: 0;
+    }
+    .landing-look .start-lede {
+        margin-inline: 0;
+        max-width: 30rem;
+    }
+    .landing-look .paper-chips,
+    .landing-look .start-actions {
+        justify-content: flex-start;
+    }
+    .landing-look .agent-stage {
+        max-width: min(34rem, 62vh);
+    }
+}
