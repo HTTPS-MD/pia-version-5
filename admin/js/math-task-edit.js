@@ -788,6 +788,8 @@
             $('#qb-edit-title').textContent = 'Auto-generate questions';
             $('#qb-gen-status').textContent = '';
             $('#qb-gen-run').className = 'btn btn-secondary';
+            $('#qb-gen-run').disabled = true;
+            $('#qb-gen-count').value = '';
             qbPaintRanges();
             renderQbDrafts();
             $('#qb-gen-count').focus({ preventScroll: true });

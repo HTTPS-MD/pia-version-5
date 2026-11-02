@@ -170,6 +170,7 @@
             var ok = Number(this.value) >= 1;
             run.classList.toggle('btn-primary', ok);
             run.classList.toggle('btn-secondary', !ok);
+            run.disabled = !ok;
         });
         $('#qb-wiz-next').addEventListener('click', Admin.qbWizard.next);
         $('#qb-wiz-back').addEventListener('click', function () {
