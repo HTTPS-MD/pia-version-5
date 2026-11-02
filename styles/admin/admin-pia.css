@@ -1568,3 +1568,28 @@ html[data-surface='admin'] #modal-scores .score-input {
         width: 100%;
     }
 }
+
+/* the three class buttons sit at the right of the search row */
+#view-students .panel-bar > .bar-group .bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+}
+#view-students .bar-actions .btn,
+#view-students .bar-actions #att-toggle {
+    height: 38px;
+    min-height: 38px;
+    padding: 0 18px;
+    font-size: var(--fs-sm);
+}
+#view-students .bar-actions .is-hidden {
+    display: none;
+}
+@media (max-width: 40rem) {
+    #view-students .panel-bar > .bar-group .bar-actions {
+        margin-left: 0;
+        width: 100%;
+        flex-wrap: wrap;
+    }
+}

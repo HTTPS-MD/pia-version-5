@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261102a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261103b">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261103c">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -193,15 +193,11 @@
 
                     <div class="panel" data-region="roster stages">
                         <div class="table-title">
-                            <h2>Student directory</h2>
+                            <h2>Students</h2>
                             <span class="count-chip" id="directory-count"></span>
                             <div class="class-live" id="class-live">
                                 <span class="live-dot" id="class-live-dot"></span>
                                 <span id="class-live-status">Class is closed</span>
-                            </div>
-                            <div class="table-actions">
-                                <button type="button" class="btn btn-secondary btn-sm is-hidden" id="section-scores-open">Input Scores</button>
-                                <button type="button" class="btn btn-secondary btn-sm" data-modal-open="modal-add-students">Add Students</button>
                             </div>
                         </div>
                         <div class="panel-bar">
@@ -234,6 +230,10 @@
                                     <option value="neutral">· Neutral</option>
                                     <option value="control">Control</option>
                                 </select>
+                                <div class="bar-actions" id="bar-actions">
+                                    <button type="button" class="btn btn-secondary is-hidden" id="section-scores-open">Input Scores</button>
+                                    <button type="button" class="btn btn-secondary" data-modal-open="modal-add-students">Add Students</button>
+                                </div>
                             </div>
                         </div>
 
@@ -1341,7 +1341,7 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261103a"></script>
+    <script src="../js/students-tools.js?v=20261103b"></script>
     <script src="../js/add-students.js?v=20261102d"></script>
     <script src="../js/admin-core.js?v=20261101b"></script>
     <script src="../js/admin-dialogs.js?v=20261031a"></script>

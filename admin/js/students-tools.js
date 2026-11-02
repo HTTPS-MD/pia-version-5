@@ -966,8 +966,12 @@
         toggle.hidden = true;
         toggle.className = 'btn btn-sm btn-primary';
         toggle.textContent = 'Open class';
-        var live = $('#class-live');
-        (live || bar).appendChild(toggle);
+        var actionsBar = $('#bar-actions');
+        if (actionsBar) {
+            actionsBar.insertBefore(toggle, actionsBar.firstChild);
+        } else {
+            ($('#class-live') || bar).appendChild(toggle);
+        }
         toggle.addEventListener('click', function () {
             var section = chosen();
             if (!section) {
