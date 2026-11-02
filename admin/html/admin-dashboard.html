@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261102a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261103c">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261103d">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -195,13 +195,6 @@
                         <div class="table-title">
                             <h2>Students</h2>
                             <span class="count-chip" id="directory-count"></span>
-                            <div class="class-live" id="class-live">
-                                <span class="live-dot" id="class-live-dot"></span>
-                                <span id="class-live-status">Class is closed</span>
-                            </div>
-                        </div>
-                        <div class="panel-bar">
-
                             <div class="tabs" role="group" aria-label="Current stage" id="stage-tabs">
                                 <button type="button" class="tab is-active" data-stage-filter="" aria-pressed="true">All <span class="mono" data-stage-count="all">—</span></button>
                                 <button type="button" class="tab" data-stage-filter="OCEAN" aria-pressed="false">OCEAN test <span class="mono" data-stage-count="OCEAN">—</span></button>
@@ -209,6 +202,13 @@
                                 <button type="button" class="tab" data-stage-filter="Tutoring Dashboard" aria-pressed="false">Game <span class="mono" data-stage-count="Tutoring Dashboard">—</span></button>
                                 <button type="button" class="tab" data-stage-filter="Active Game" aria-pressed="false" title="Marked as in a tutoring session by the student’s own page. It can be out of date if the page closed unexpectedly.">Active session <span class="mono" data-stage-count="Active Game">—</span></button>
                             </div>
+                            <div class="class-live" id="class-live">
+                                <span class="live-dot" id="class-live-dot"></span>
+                                <span id="class-live-status">Class is closed</span>
+                            </div>
+                        </div>
+                        <div class="panel-bar">
+
                             <div class="filter-field" style="display:none">
                                 <label class="filter-label" id="section-filter-label">Section</label>
                                 <select class="input input-sm" id="section-filter">

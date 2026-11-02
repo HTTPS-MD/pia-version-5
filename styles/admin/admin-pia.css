@@ -1593,3 +1593,18 @@ html[data-surface='admin'] #modal-scores .score-input {
         flex-wrap: wrap;
     }
 }
+
+/* one row: Students, the count, the stage tabs and the class status */
+#view-students .table-title {
+    flex-wrap: wrap;
+    padding-bottom: 14px;
+}
+#view-students .table-title .tabs {
+    flex: 0 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    padding: 0;
+    margin-left: 14px;
+}
