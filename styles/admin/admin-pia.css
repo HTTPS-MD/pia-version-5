@@ -1654,3 +1654,9 @@ html[data-surface='admin'] .custom-select-trigger:focus-visible {
 #view-students .table-title .count-chip {
     display: none;
 }
+
+/* the side panels use the same black as the tables */
+html[data-surface='admin'][data-theme='dark'] .drawer {
+    --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+    background: var(--bg-surface);
+}

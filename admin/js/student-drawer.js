@@ -56,14 +56,8 @@
             (s.is_in_game === true ||
                 s.current_stage === 'Character Selection' ||
                 s.current_stage === 'Tutoring Dashboard');
-        controlNote.classList.toggle('is-hidden', !beyondOcean);
-        controlNote.textContent = beyondOcean
-            ? 'Control students take the OCEAN test only, but this record shows ' +
-              (s.is_in_game === true
-                  ? 'a tutoring session in progress'
-                  : 'the ' + Admin.stageLabel(s.current_stage).toLowerCase() + ' stage') +
-              '.'
-            : '';
+        controlNote.classList.add('is-hidden');
+        controlNote.textContent = '';
 
         var reselect = $('[data-student-action="retake-character"]');
         if (reselect) {
@@ -157,9 +151,7 @@
             gameStat('Sessions', Number(summary.sessions)) +
             gameStat('Total points', Number(summary.score_sum) || 0) +
             gameStat('Total errors', Number(summary.errors) || 0) +
-            '</div><p class="game-report-note">Best level is the highest solved topic. Accuracy is the share of completed ' +
-            'questions solved without a wrong answer. Average speed uses recorded question times. ' +
-            'Points are calculated from each question’s configured base value, adjusted by the active scoring rules, and saved when the question is finished.</p>';
+            '</div>';
 
         history.innerHTML =
             '<div class="game-history-list">' +
@@ -187,11 +179,7 @@
                     );
                 })
                 .join('') +
-            '</div>' +
-            (Number(res.data.history_total) > res.data.history.length
-                ? '<p class="game-report-note">Showing the latest 100 timed sessions.</p>'
-                : '') +
-            '<p class="game-report-note">Each row is one continuous time-limit window. The elapsed time includes time away from the page.</p>';
+            '</div>';
     }
 
     var BFPT = window.PIA_BFPT || null;
@@ -299,15 +287,8 @@
         var meta =
             'Submitted ' +
             Admin.esc(formatStamp(r.submitted_at)) +
-            (rows.length > 1 ? ' · latest of ' + rows.length + ' attempts' : '') +
-            ' · scored with the BFPT sheet';
-        var matchingNote =
-            s.group_type === 'assigned' && r.ocean_n != null
-                ? '<p class="bfpt-meta">For character matching, Neuroticism is ' +
-                  Admin.esc(40 - Number(r.ocean_n)) +
-                  '/40 (higher means more stress). ' +
-                  'The BFPT N score above runs in the opposite direction.</p>'
-                : '';
+            (rows.length > 1 ? ' · latest of ' + rows.length + ' attempts' : '');
+        var matchingNote = '';
 
         var answers;
         if (Array.isArray(r.responses) && r.responses.length === 50) {
@@ -336,9 +317,7 @@
                     .join('') +
                 '</ol></details>';
         } else {
-            answers =
-                '<p class="bfpt-meta">Item answers were not kept for this result — it predates ' +
-                'answer storage and was carried over from the old profile record.</p>';
+            answers = '';
         }
 
         box.innerHTML = scores + matchingNote + '<p class="bfpt-meta">' + meta + '</p>' + answers;
