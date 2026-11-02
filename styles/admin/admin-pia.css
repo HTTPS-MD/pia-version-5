@@ -1327,3 +1327,43 @@ html[data-surface='admin'] #modal-scores .score-input {
     border-color: var(--line);
     border-radius: 0.5rem;
 }
+
+/* add students: the add bar sits above the table, row messages show in the footer, header stays put */
+.as-addbar {
+    margin: 0 0 12px;
+}
+.as-table {
+    max-height: 52vh;
+    overflow: auto;
+}
+.as-head {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.as-row .field-msg {
+    display: none !important;
+}
+.as-foot-msg {
+    margin-right: auto;
+    min-width: 0;
+}
+.as-foot-msg .field-msg {
+    margin: 0;
+}
+.as-status {
+    border: 0;
+    background: none;
+    padding: 0;
+    font: inherit;
+    font-size: var(--fs-sm);
+    color: var(--hex-f08a8a);
+    text-align: left;
+    cursor: pointer;
+}
+.as-status:hover {
+    text-decoration: underline;
+}
+.as-status[hidden] {
+    display: none;
+}

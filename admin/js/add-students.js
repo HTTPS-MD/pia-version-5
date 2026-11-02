@@ -201,21 +201,22 @@
             '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="as-title">Add students</h2>' +
             '<p class="muted">One row per student.</p></div></header>' +
             '<div class="modal-body"><form id="as-form" novalidate>' +
-            '<p class="field-msg" id="as-summary" role="alert" tabindex="-1"></p>' +
             '<div class="form-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px">' +
             '<div class="field" id="as-section-field"><label class="label" for="as-section">Section <span class="req">*</span></label>' +
             '<select class="select" id="as-section" data-section-select aria-describedby="as-section-msg"></select>' +
             '<p class="field-msg" id="as-section-msg"></p></div>' +
             '</div>' +
-            '<div id="as-grid" class="as-table" role="group" aria-label="Students"></div>' +
             '<div class="as-addbar">' +
             '<button type="button" class="btn btn-secondary btn-sm" id="as-add">' +
             '<svg class="icon"><use href="#i-plus"></use></svg> Add</button>' +
             '<input class="input" id="as-count" type="number" inputmode="numeric" min="1" max="50" value="1" aria-label="How many rows to add">' +
             '<span class="muted">rows</span>' +
             '</div>' +
+            '<div id="as-grid" class="as-table" role="group" aria-label="Students"></div>' +
             '</form></div>' +
             '<footer class="modal-foot">' +
+            '<div class="as-foot-msg"><p class="field-msg" id="as-summary" role="alert" tabindex="-1"></p>' +
+            '<button type="button" class="as-status" id="as-status" hidden></button></div>' +
             '<button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>' +
             '<button type="submit" class="btn btn-primary" form="as-form" id="as-submit">Add students</button>' +
             '</footer></div>';
@@ -326,6 +327,29 @@
         return $('[data-row="' + id + '"]', root);
     }
 
+    // the row messages stay hidden in the table; the first one (and how many more) shows in the footer
+    function paintStatus() {
+        var bad = $$('.as-row', root).filter(function (el) {
+            return $('.field-msg', el).textContent;
+        });
+        var btn = $('#as-status', root);
+        if (!bad.length) {
+            btn.hidden = true;
+            btn.textContent = '';
+            return;
+        }
+        var first = bad[0];
+        var n = indexOfRow(Number(first.getAttribute('data-row'))) + 1;
+        btn.textContent =
+            'Row ' +
+            n +
+            ' \u00b7 ' +
+            $('.field-msg', first).textContent +
+            (bad.length > 1 ? ' (+' + (bad.length - 1) + ' more)' : '');
+        btn.setAttribute('data-go', first.getAttribute('data-row'));
+        btn.hidden = false;
+    }
+
     function paintRow(i, quiet) {
         var r = rows[i];
         var el = rowEl(r.id);
@@ -349,6 +373,7 @@
                 input.removeAttribute('aria-invalid');
             }
         });
+        paintStatus();
     }
 
     function paintAll() {
@@ -611,6 +636,13 @@
             paintContext();
         });
         wireDraft();
+        $('#as-status', root).addEventListener('click', function (event) {
+            var row = rowEl(Number(event.currentTarget.getAttribute('data-go')));
+            var field = row && $('[aria-invalid="true"]', row);
+            if (field && field.focus) {
+                field.focus();
+            }
+        });
         $('#as-form', root).addEventListener('submit', submit);
     }
 
