@@ -287,11 +287,15 @@
             });
         });
 
-        // one button flips between the questions and the rules
+        // Rules opens from the questions card; Back to questions closes it
+        function showQbView(view) {
+            $('#qb-views').className = 'grid grid-main qb-view-' + view;
+        }
         $('#qb-rules-btn').addEventListener('click', function () {
-            var toRules = $('#qb-views').classList.contains('qb-view-questions');
-            $('#qb-views').className = 'grid grid-main qb-view-' + (toRules ? 'rules' : 'questions');
-            $('#qb-rules-label').textContent = toRules ? 'Back to questions' : 'Rules';
+            showQbView('rules');
+        });
+        $('#qb-rules-back').addEventListener('click', function () {
+            showQbView('questions');
         });
         $('#qb-config-form').addEventListener('submit', qbSaveRules);
 

@@ -1531,3 +1531,16 @@ html[data-surface='admin'] #modal-scores .score-input {
     color: var(--text-muted);
     box-shadow: inset 2px 0 0 var(--accent);
 }
+
+/* more air between the nav and the page title on Sections and Math task */
+#view-students .page-head,
+#view-mathtask .page-head {
+    margin-top: 28px;
+}
+/* math task: the row of buttons in the questions card header */
+#view-mathtask .card-head {
+    flex-wrap: wrap;
+}
+#view-mathtask .card-head > .btn {
+    flex: 0 0 auto;
+}

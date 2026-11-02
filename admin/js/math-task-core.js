@@ -385,7 +385,6 @@
             btn.setAttribute('aria-pressed', String(on));
         });
 
-        $('#qb-title').textContent = qbTopicLabel(topic);
         qbPaintTopicMenu();
         $('#qb-caption').textContent = 'Questions in ' + qbTopicLabel(topic);
         $('#qb-config-sub').textContent =
