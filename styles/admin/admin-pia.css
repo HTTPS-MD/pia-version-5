@@ -1333,8 +1333,8 @@ html[data-surface='admin'] #modal-scores .score-input {
     margin: 0 0 12px;
 }
 .as-table {
-    max-height: 52vh;
-    overflow: auto;
+    max-height: none;
+    overflow: clip;
 }
 .as-head {
     position: sticky;
