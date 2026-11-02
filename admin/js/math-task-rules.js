@@ -207,12 +207,7 @@
                 Admin.qbSetMode(btn.getAttribute('data-qb-mode'));
             });
         });
-        $('#qb-refresh').addEventListener('click', Admin.loadMathTask);
         $('#qb-delete-all').addEventListener('click', Admin.qbDeleteAll);
-        $('#qb-bulk-form').addEventListener('submit', Admin.qbApplyBulk);
-        $('#qb-bulk-points').addEventListener('input', function () {
-            Admin.setFieldError('qb-bulk-points', '');
-        });
 
         $('#qb-mastery').addEventListener('input', function () {
             Admin.qb.rules[Admin.qb.topic].mastery = Admin.toInt(this.value, 80);

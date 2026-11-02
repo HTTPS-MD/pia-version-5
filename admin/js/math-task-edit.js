@@ -120,7 +120,6 @@
         }
         Admin.qb.topic = topic;
         Admin.clearFormErrors('qb-config-form');
-        Admin.setFieldError('qb-bulk-points', '');
         Admin.renderQbAll();
     }
     Admin.qbSwitchTopic = qbSwitchTopic;
@@ -246,84 +245,6 @@
         }, 220);
     }
     Admin.qbDeleteAll = qbDeleteAll;
-
-    async function qbApplyBulk(event) {
-        event.preventDefault();
-        if (Admin.qb.busy.bulk) {
-            return;
-        }
-
-        var topic = Admin.qb.topic;
-        var list = Admin.qb.bank[topic];
-        if (!list.length) {
-            return;
-        }
-
-        var value = Admin.qbPoints($('#qb-bulk-points').value);
-        if (
-            !Admin.setFieldError(
-                'qb-bulk-points',
-                value === null ? 'Use a whole number from 1 to ' + Admin.QB_POINTS_MAX + '.' : ''
-            )
-        ) {
-            $('#qb-bulk-points').focus();
-            return;
-        }
-
-        var uniform = Admin.qbUniformPoints(list);
-        if (uniform === value) {
-            Admin.toastOk(
-                'Nothing to change',
-                'Every question here is already worth ' + value + '.'
-            );
-            return;
-        }
-
-        var ok = await Admin.confirmAction({
-            title: 'Set points',
-            subtitle: Admin.qbTopicLabel(topic),
-            heading: 'Set all ' + list.length + ' questions to ' + value + ' points?',
-            message:
-                uniform === null
-                    ? 'Some questions in this topic have their own point value. Applying this replaces every one of them with ' +
-                      value +
-                      '.'
-                    : 'Every question in this topic is worth ' + uniform + ' now. They will all become ' + value + '.',
-            confirmLabel: 'Apply to all',
-            tone: 'accent'
-        });
-        if (!ok) {
-            return;
-        }
-
-        var ids = list.map(function (q) {
-            return q.id;
-        });
-        Admin.qb.busy.bulk = true;
-        var release = Admin.setBusy($('#qb-bulk-apply'), 'Applying…');
-        var res = await sb.from('question_bank').update({ points: value }).in('id', ids);
-        release();
-        Admin.qb.busy.bulk = false;
-
-        if (res.error) {
-            Admin.renderQbToolbar();
-            Admin.toastErr(
-                'Points not updated',
-                Admin.friendlyDbError(res.error, 'Update rejected.')
-            );
-            return;
-        }
-
-        list.forEach(function (q) {
-            q.points = value;
-        });
-        Admin.renderQbTable();
-        Admin.toastOk(
-            'Points updated',
-            'Every question in ' + Admin.qbTopicLabel(topic) + ' is now worth ' + value + '.'
-        );
-    }
-    Admin.qbApplyBulk = qbApplyBulk;
 
     function qbStepList() {
         return $('#qb-steps');

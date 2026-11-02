@@ -786,26 +786,6 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
         display: inline-grid;
     }
 }
-.qb-bulk {
-    padding: 0 var(--sp-5) var(--sp-2);
-}
-.qb-bulk .label {
-    display: block;
-    margin-bottom: var(--sp-2);
-}
-.qb-bulk-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--sp-2);
-}
-.qb-bulk-row .input {
-    flex: 0 1 8rem;
-    min-width: 6rem;
-}
-.qb-bulk-row .btn {
-    height: var(--field-h);
-    flex: 0 0 auto;
-}
 .qb-table,
 .qb-table tbody {
     display: block;

@@ -435,16 +435,8 @@
     function renderQbToolbar() {
         var list = qb.bank[qb.topic];
         var usable = qb.status === 'ready' && list.length > 0;
-        var input = $('#qb-bulk-points');
-        var uniform = qbUniformPoints(list);
 
         $('#qb-delete-all').disabled = !usable || qb.busy.bulk;
-        $('#qb-bulk-apply').disabled = !usable || qb.busy.bulk;
-        input.disabled = !usable;
-        if (document.activeElement !== input) {
-            input.value = uniform === null ? '' : String(uniform);
-        }
-        input.placeholder = usable && uniform === null ? 'Mixed' : '';
     }
     Admin.renderQbToolbar = renderQbToolbar;
 
