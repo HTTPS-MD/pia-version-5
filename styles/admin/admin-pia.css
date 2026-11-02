@@ -1816,3 +1816,34 @@ html[data-surface='admin'] .sidebar-user .avatar {
     aspect-ratio: 1;
     border-radius: 50%;
 }
+
+/* the account button is a pill: the avatar and the dropdown chevron together */
+html[data-surface='admin'] .sidebar-user {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    height: 44px;
+    padding: 0 14px 0 4px;
+    box-sizing: border-box;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--bg-surface);
+    color: var(--text);
+}
+html[data-surface='admin'][data-theme='dark'] .sidebar-user {
+    background: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+}
+html[data-surface='admin'] .sidebar-user .avatar {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    box-shadow: none;
+}
+html[data-surface='admin'] .sidebar-user .user-chevron {
+    display: block;
+    margin: 0 0 3px;
+}
+html[data-surface='admin'] .sidebar-user[aria-expanded='true'] .user-chevron {
+    transform: translateY(2px) rotate(225deg);
+}
