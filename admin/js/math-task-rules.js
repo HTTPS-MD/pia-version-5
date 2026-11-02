@@ -80,6 +80,18 @@
             row[key + '_max_errors'] = Admin.toInt(Admin.qb.rules[topic].maxErrors, 3);
         });
 
+        var sure = await Admin.confirmAction({
+            title: 'Save rules',
+            heading: 'Apply these rules to every student?',
+            message:
+                'The new rules count for questions finished from now on, in every section. Scores already earned are not changed.',
+            confirmLabel: 'Save rules',
+            tone: 'accent'
+        });
+        if (!sure) {
+            return;
+        }
+
         Admin.qb.busy.config = true;
         var release = Admin.setBusy($('#qb-config-save'), 'Saving…');
         var res = await sb.from('app_config').upsert(row);
@@ -115,6 +127,14 @@
     }
 
     function initMathTask() {
+        // unsaved rules are lost on reload, so the browser asks first
+        window.addEventListener('beforeunload', function (event) {
+            if (Admin.qb.dirty) {
+                event.preventDefault();
+                event.returnValue = '';
+            }
+        });
+
         $$('[data-qb-topic]').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 Admin.qbSwitchTopic(btn.getAttribute('data-qb-topic'));

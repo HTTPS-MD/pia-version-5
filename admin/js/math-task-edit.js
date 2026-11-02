@@ -279,20 +279,21 @@
             return;
         }
 
-        if (uniform === null) {
-            var ok = await Admin.confirmAction({
-                title: 'Replace custom points',
-                subtitle: Admin.qbTopicLabel(topic),
-                heading: 'Set all ' + list.length + ' questions to ' + value + ' points?',
-                message:
-                    'Some questions in this topic have their own point value. Applying this replaces every one of them with ' +
-                    value +
-                    '.',
-                confirmLabel: 'Replace all'
-            });
-            if (!ok) {
-                return;
-            }
+        var ok = await Admin.confirmAction({
+            title: 'Set points',
+            subtitle: Admin.qbTopicLabel(topic),
+            heading: 'Set all ' + list.length + ' questions to ' + value + ' points?',
+            message:
+                uniform === null
+                    ? 'Some questions in this topic have their own point value. Applying this replaces every one of them with ' +
+                      value +
+                      '.'
+                    : 'Every question in this topic is worth ' + uniform + ' now. They will all become ' + value + '.',
+            confirmLabel: 'Apply to all',
+            tone: 'accent'
+        });
+        if (!ok) {
+            return;
         }
 
         var ids = list.map(function (q) {
@@ -603,6 +604,7 @@
             qbAddStep(s, false);
         });
 
+        Admin.qb.editSnap = qbSnap();
         $('#qb-mode').hidden = !!item;
         wizStart(!item);
         Admin.qb.drafts = stash ? JSON.parse(JSON.stringify(stash.drafts)) : [];
@@ -619,9 +621,18 @@
     Admin.qbOpenEditor = qbOpenEditor;
 
     // closing Add question with something typed or generated asks: save a draft or discard
+    function qbSnap() {
+        return JSON.stringify([
+            $('#qb-question').value,
+            $('#qb-final').value,
+            $('#qb-points').value,
+            qbReadSteps()
+        ]);
+    }
+
     function qbDirty() {
         if (Admin.qb.editingId != null) {
-            return false;
+            return qbSnap() !== Admin.qb.editSnap;
         }
         var typed =
             $('#qb-question').value.trim() ||
@@ -687,6 +698,19 @@
             }
             event.stopImmediatePropagation();
             event.preventDefault();
+            if (Admin.qb.editingId != null) {
+                Admin.confirmAction({
+                    title: 'Discard changes',
+                    heading: 'Discard your changes?',
+                    message: 'The edits to this question are not saved yet.',
+                    confirmLabel: 'Discard'
+                }).then(function (ok) {
+                    if (ok) {
+                        Admin.closeModal('modal-qb-edit');
+                    }
+                });
+                return;
+            }
             qbDraftPrompt();
         }
         overlay.addEventListener(
@@ -911,12 +935,6 @@
     }
     Admin.qbSetMode = qbSetMode;
 
-    function qbOpenGenerator(trigger) {
-        Admin.qb.drafts = [];
-        qbOpenEditor(null, trigger);
-        qbSetMode('gen');
-    }
-    Admin.qbOpenGenerator = qbOpenGenerator;
 
     function renderQbDrafts() {
         var list = $('#qb-previews');
