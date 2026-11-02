@@ -98,6 +98,13 @@
         );
     }
 
+    function formatDay(value) {
+        var d = new Date(String(value) + 'T00:00:00');
+        return isNaN(d.getTime())
+            ? String(value)
+            : d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    }
+
     async function renderTutorialReport(s) {
         var performance = $('#drawer-tutorial-performance');
         var history = $('#drawer-session-history');
@@ -106,7 +113,12 @@
         performance.setAttribute('aria-busy', 'true');
         history.setAttribute('aria-busy', 'true');
 
-        var res = await sb.rpc('pia_admin_tutorial_report', { p_student_email: s.email });
+        var both = await Promise.all([
+            sb.rpc('pia_admin_tutorial_report', { p_student_email: s.email }),
+            sb.rpc('pia_admin_daily_report', { p_student_email: s.email })
+        ]);
+        var res = both[0];
+        var daily = both[1] && !both[1].error && both[1].data ? both[1].data : null;
         if (Admin.state.activeStudent !== s) {
             return;
         }
@@ -147,10 +159,46 @@
                 'Accuracy',
                 summary.accuracy_percent == null ? '—' : Number(summary.accuracy_percent) + '%'
             ) +
-            gameStat('Sessions', Number(summary.sessions)) +
+            gameStat(
+                daily ? 'Active time' : 'Sessions',
+                daily ? gameDuration(daily.active_seconds_total) : Number(summary.sessions)
+            ) +
             gameStat('Total points', Number(summary.score_sum) || 0) +
             gameStat('Total errors', Number(summary.errors) || 0) +
             '</div>';
+
+        if (daily) {
+            history.innerHTML = daily.days.length
+                ? '<div class="game-history-list">' +
+                  daily.days
+                      .map(function (d) {
+                          var pct = d.questions ? Math.round((d.clean * 100) / d.questions) : 0;
+                          return (
+                              '<div class="game-history-row"><div class="game-history-top"><span>Day ' +
+                              Admin.esc(d.day_no) +
+                              ' · ' +
+                              Admin.esc(formatDay(d.day)) +
+                              '</span><span>' +
+                              Admin.esc(gameDuration(d.active_seconds)) +
+                              ' active</span></div>' +
+                              '<div class="game-history-meta"><span>Questions: ' +
+                              Admin.esc(d.questions) +
+                              '</span><span>Accuracy: ' +
+                              Admin.esc(pct) +
+                              '%</span><span>Points: ' +
+                              Admin.esc(d.points) +
+                              '</span><span>Errors: ' +
+                              Admin.esc(d.errors) +
+                              '</span><span>Hints: ' +
+                              Admin.esc(d.hints) +
+                              '</span></div></div>'
+                          );
+                      })
+                      .join('') +
+                  '</div>'
+                : noticeHtml('info', 'No questions answered yet', '');
+            return;
+        }
 
         history.innerHTML =
             '<div class="game-history-list">' +
