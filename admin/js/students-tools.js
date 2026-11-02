@@ -1080,32 +1080,14 @@
                 var kids = meta && meta.students ? meta.students : 0;
                 var prof = profsOf(doomed)[0];
                 closeMenu();
-                (async function () {
-                    var bits = [];
-                    if (kids) {
-                        bits.push(
-                            kids +
-                                (kids === 1 ? ' student stays' : ' students stay') +
-                                ' in the study, with their results, but will have no section.'
-                        );
-                    }
-                    if (prof) {
-                        bits.push(
-                            (prof.name || prof.email) + ' will be unassigned.'
-                        );
-                    }
-                    bits.push('This cannot be undone.');
-                    var ok = await window.PIAAdmin.confirmAction({
-                        heading: 'Delete ' + doomed + '?',
-                        message: bits.join(' '),
-                        confirmLabel: 'Delete section',
-                        typeToConfirm: kids ? doomed : ''
-                    });
-                    if (!ok) {
-                        return;
-                    }
-                    try {
-                        await call('admin_delete_section', { p_name: doomed });
+                window.PIAAdmin.openDeleteSection({
+                    name: doomed,
+                    students: kids,
+                    professor: prof ? prof.name || prof.email : '',
+                    run: function (moveTo) {
+                        return call('admin_delete_section', { p_name: doomed, p_move_to: moveTo || null });
+                    },
+                    done: async function () {
                         var filter = $('#section-filter');
                         if (filter) {
                             filter.value = '';
@@ -1115,11 +1097,12 @@
                             window.PIAAdmin.refreshAll();
                         }
                         await refreshOverview();
-                    } catch (error) {
+                    },
+                    failed: function (error) {
                         say(failure(error), true);
                         renderChips();
                     }
-                })();
+                });
                 return;
             }
             var chip = event.target.closest('[data-chip]');

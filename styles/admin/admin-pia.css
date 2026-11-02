@@ -1725,3 +1725,43 @@ html[data-surface='admin'] .drawer .bar {
 #modal-confirm .confirm-type[hidden] {
     display: none;
 }
+
+/* picking students to move */
+.row-pick {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+    cursor: pointer;
+}
+.row-pick input {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+}
+#roster-thead .row-pick {
+    vertical-align: middle;
+}
+.pick-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--line);
+    background: color-mix(in srgb, var(--accent) 10%, transparent);
+    font-size: var(--fs-sm);
+}
+.pick-bar[hidden] {
+    display: none;
+}
+.pick-bar #pick-count {
+    font-weight: 600;
+    margin-right: 6px;
+}
+.pick-bar .custom-select {
+    width: 12rem;
+}
+#modal-delete-section .modal-body {
+    gap: 14px;
+}
