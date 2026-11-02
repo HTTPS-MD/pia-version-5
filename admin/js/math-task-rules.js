@@ -164,6 +164,16 @@
         $('#qb-add-btn').addEventListener('click', function () {
             Admin.qbOpenEditor(null, this);
         });
+        $('#qb-wiz-next').addEventListener('click', Admin.qbWizard.next);
+        $('#qb-wiz-back').addEventListener('click', function () {
+            Admin.qbWizard.go(Admin.qbWizard.state.stage - 1);
+        });
+        $('#qb-review').addEventListener('click', function (event) {
+            var go = event.target.closest('[data-wiz-go]');
+            if (go) {
+                Admin.qbWizard.go(Number(go.getAttribute('data-wiz-go')));
+            }
+        });
         $$('#qb-mode [data-qb-mode]').forEach(function (btn) {
             btn.addEventListener('click', function () {
                 Admin.qbSetMode(btn.getAttribute('data-qb-mode'));

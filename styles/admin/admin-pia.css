@@ -1381,3 +1381,64 @@ html[data-surface='admin'] #modal-scores .score-input {
     height: 14px;
     margin-right: 4px;
 }
+
+/* Add question wizard: progress and review */
+#modal-qb-edit .qb-wiz {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin: 0 0 18px;
+    padding: 0 0 14px;
+    list-style: none;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: var(--fs-sm);
+    color: var(--text-faint);
+}
+#modal-qb-edit .qb-wiz li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+#modal-qb-edit .qb-wiz li span {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    font-size: 0.75rem;
+}
+#modal-qb-edit .qb-wiz li.is-current {
+    color: var(--text);
+    font-weight: 600;
+}
+#modal-qb-edit .qb-wiz li.is-current span {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--palette-ink, #0b1233);
+}
+#modal-qb-edit .qb-wiz li.is-done span {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+#modal-qb-edit .qb-review-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-soft);
+}
+#modal-qb-edit .qb-review-row:last-child {
+    border-bottom: 0;
+}
+#modal-qb-edit .qb-review-label {
+    font-size: var(--fs-xs);
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+#modal-qb-edit .qb-review-row p {
+    margin: 2px 0 0;
+    overflow-wrap: anywhere;
+}

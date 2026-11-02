@@ -397,6 +397,172 @@
         });
     }
 
+    // Add question runs as a wizard: Problem, one page per required step, then Review.
+    // Edit shows the whole form at once.
+    var wiz = { on: false, stage: 0 };
+
+    function wizLast() {
+        return $$('.qb-step', qbStepList()).length + 1;
+    }
+
+    function wizLabels() {
+        var out = ['Problem'];
+        $$('.qb-step', qbStepList()).forEach(function (_, i) {
+            out.push('Step ' + (i + 1));
+        });
+        out.push('Review');
+        return out;
+    }
+
+    function wizReview() {
+        var steps = qbReadSteps();
+        var box = $('#qb-review');
+        var rows =
+            '<p class="form-section-title">Review</p>' +
+            reviewRow('Problem', $('#qb-question').value.trim(), 0) +
+            reviewRow(
+                'Final answer · points',
+                ($('#qb-final').value.trim() || (steps.length && steps[steps.length - 1].answer) || '—') +
+                    ' · ' +
+                    ($('#qb-points').value || '—') +
+                    ' pts',
+                0
+            );
+        steps.forEach(function (st, i) {
+            var hints = ['hint1', 'hint2', 'hint3'].filter(function (k) {
+                return st[k];
+            }).length;
+            rows += reviewRow(
+                'Step ' + (i + 1) + ' · ' + Admin.QB_STEP_LABELS[Admin.qb.topic][i],
+                (st.prompt || '—') + ' → ' + (st.answer || '—') + ' · ' + hints + ' hint' + (hints === 1 ? '' : 's'),
+                i + 1
+            );
+        });
+        box.innerHTML = rows;
+    }
+
+    function reviewRow(label, value, stage) {
+        return (
+            '<div class="qb-review-row"><div><span class="qb-review-label">' +
+            Admin.esc(label) +
+            '</span><p>' +
+            Admin.esc(value) +
+            '</p></div><button type="button" class="btn btn-ghost btn-sm" data-wiz-go="' +
+            stage +
+            '">Edit</button></div>'
+        );
+    }
+
+    function wizPaint() {
+        var on = wiz.on;
+        var last = wizLast();
+        var review = on && wiz.stage === last;
+        $('#qb-wiz').hidden = !on;
+        $('#qb-problem-section').hidden = on && wiz.stage !== 0;
+        $('#qb-steps-section').hidden = on && (wiz.stage === 0 || review);
+        $('#qb-review').hidden = !review;
+        $$('.qb-step', qbStepList()).forEach(function (li, i) {
+            li.hidden = on && wiz.stage !== i + 1;
+        });
+        $('#qb-wiz-back').hidden = !on || wiz.stage === 0;
+        $('#qb-wiz-next').hidden = !on || review;
+        $('#qb-edit-save').hidden = on && !review;
+        if (on) {
+            $('#qb-wiz').innerHTML = wizLabels()
+                .map(function (label, i) {
+                    return (
+                        '<li class="' +
+                        (i === wiz.stage ? 'is-current' : i < wiz.stage ? 'is-done' : '') +
+                        '"' +
+                        (i === wiz.stage ? ' aria-current="step"' : '') +
+                        '><span>' +
+                        (i + 1) +
+                        '</span> ' +
+                        label +
+                        '</li>'
+                    );
+                })
+                .join('');
+            if (review) {
+                wizReview();
+            }
+        }
+    }
+
+    // checks only the page you are on; returns true when it may move on
+    function wizCheck() {
+        Admin.clearFormErrors('qb-edit-form');
+        $('#qb-step-error').textContent = '';
+        $$('#qb-edit-form [aria-invalid]').forEach(function (el) {
+            el.removeAttribute('aria-invalid');
+        });
+        if (wiz.stage === 0) {
+            var okQ = Admin.setFieldError(
+                'qb-question',
+                $('#qb-question').value.trim() ? '' : 'Write the sentence problem.'
+            );
+            var okP = Admin.setFieldError(
+                'qb-points',
+                Admin.qbPoints($('#qb-points').value) === null
+                    ? 'Use a whole number from 1 to ' + Admin.QB_POINTS_MAX + '.'
+                    : ''
+            );
+            if (!okQ) {
+                $('#qb-question').focus();
+            } else if (!okP) {
+                $('#qb-points').focus();
+            }
+            return okQ && okP;
+        }
+        var steps = qbReadSteps();
+        var i = wiz.stage - 1;
+        var li = $$('.qb-step', qbStepList())[i];
+        var st = steps[i];
+        if (!st.prompt || !st.answer) {
+            $('#qb-step-error').textContent = 'Enter a prompt and answer for this step.';
+            var f = $('[data-step="' + (!st.prompt ? 'prompt' : 'answer') + '"]', li);
+            f.setAttribute('aria-invalid', 'true');
+            f.focus();
+            return false;
+        }
+        var finalForCheck = $('#qb-final').value.trim() || st.answer;
+        for (var hk = 1; hk <= 3; hk++) {
+            if (qbHintGivesAnswer(st['hint' + hk], [st.answer, finalForCheck])) {
+                var h = $('[data-step="hint' + hk + '"]', li);
+                h.setAttribute('aria-invalid', 'true');
+                $('#qb-step-error').textContent =
+                    'Hint ' +
+                    hk +
+                    ' gives the answer away. A hint should guide the student, for example "Subtract 900 from 1200", not show the result.';
+                h.focus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function wizGo(stage) {
+        wiz.stage = Math.max(0, Math.min(wizLast(), stage));
+        wizPaint();
+        var body = $('#qb-pane-write');
+        if (body) {
+            body.scrollTop = 0;
+        }
+    }
+
+    function wizNext() {
+        if (wizCheck()) {
+            wizGo(wiz.stage + 1);
+        }
+    }
+
+    function wizStart(on) {
+        wiz.on = on;
+        wiz.stage = 0;
+        wizPaint();
+    }
+    Admin.qbWizard = { start: wizStart, next: wizNext, go: wizGo, paint: wizPaint, state: wiz };
+
     function qbOpenEditor(id, trigger) {
         var item =
             id == null
@@ -437,6 +603,7 @@
         });
 
         $('#qb-mode').hidden = !!item;
+        wizStart(!item);
         Admin.qb.drafts = [];
         qbSetMode('write');
         $('#qb-edit-title').textContent = item ? 'Edit question ' + index : 'Add question';
@@ -449,6 +616,10 @@
 
     async function qbSaveEditor(event) {
         event.preventDefault();
+        if (wiz.on && wiz.stage < wizLast()) {
+            wizNext();
+            return;
+        }
         if (Admin.qb.busy.edit) {
             return;
         }
@@ -621,6 +792,7 @@
             $('#qb-gen-count').focus({ preventScroll: true });
         } else {
             $('#qb-edit-title').textContent = Admin.qb.editingId == null ? 'Add question' : $('#qb-edit-title').textContent;
+            wizPaint();
             $('#qb-question').focus({ preventScroll: true });
         }
     }
@@ -704,7 +876,7 @@
         }
         $('#qb-gen-range-msg').textContent = '';
         $('#qb-gen-range').classList.remove('is-invalid');
-        var count = Admin.toInt($('#qb-gen-count').value, 5);
+        var count = Math.max(1, Math.min(50, Admin.toInt($('#qb-gen-count').value, 5)));
         var pts = Admin.qbUniformPoints(Admin.qb.bank[Admin.qb.topic]) || 10;
         Admin.qb.drafts = window.PIAMathGen.generateBatch(Admin.qb.topic, pts, count, ranges);
         renderQbDrafts();

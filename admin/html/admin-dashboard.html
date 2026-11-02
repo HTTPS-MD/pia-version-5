@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261101a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102c">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102r">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102s">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -1184,7 +1184,8 @@
 
             <div class="modal-body" id="qb-pane-write">
                 <form id="qb-edit-form" novalidate>
-                    <div class="form-section">
+                    <ol class="qb-wiz" id="qb-wiz" aria-label="Progress" hidden></ol>
+                    <div class="form-section" id="qb-problem-section">
                         <p class="form-section-title">Problem</p>
                         <div class="form-grid">
                             <div class="field">
@@ -1213,7 +1214,7 @@
                         </div>
                     </div>
 
-                    <div class="form-section">
+                    <div class="form-section" id="qb-steps-section">
                         <div class="qb-steps-head">
                             <p class="form-section-title">Step-by-step breakdown &amp; hints</p>
                             <span class="qb-help" id="qb-step-count"></span>
@@ -1222,6 +1223,7 @@
                         <p class="qb-help">Hints only guide the student and never give the answer. Do not write the result, for example “1200 − 900 = 300”. The editor will not save a hint that gives the answer away.</p>
                         <ol class="qb-steps" id="qb-steps"></ol>
                     </div>
+                    <div class="form-section" id="qb-review" hidden></div>
                 </form>
             </div>
 
@@ -1229,6 +1231,8 @@
                 <button class="btn btn-danger-soft" type="button" id="qb-edit-delete" hidden>Delete question</button>
                 <div class="modal-foot-actions">
                     <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
+                    <button class="btn btn-secondary" type="button" id="qb-wiz-back" hidden>Back</button>
+                    <button class="btn btn-primary" type="button" id="qb-wiz-next" hidden>Next</button>
                     <button class="btn btn-primary" type="submit" form="qb-edit-form" id="qb-edit-save">Save question</button>
                 </div>
             </footer>
@@ -1237,12 +1241,7 @@
                 <form class="qb-gen-controls" id="qb-gen-form" novalidate>
                     <div class="field">
                         <label class="label" for="qb-gen-count">How many</label>
-                        <select class="select" id="qb-gen-count">
-                            <option value="1">1 question</option>
-                            <option value="3">3 questions</option>
-                            <option value="5" selected>5 questions</option>
-                            <option value="10">10 questions</option>
-                        </select>
+                        <input class="input tnum" type="number" id="qb-gen-count" min="1" max="50" step="1" value="5" inputmode="numeric">
                     </div>
                     <div class="qb-gen-range" id="qb-gen-range" role="group" aria-labelledby="qb-gen-range-label" aria-describedby="qb-gen-range-msg">
                         <span class="label" id="qb-gen-range-label">Number range</span>
@@ -1396,8 +1395,8 @@
     <script src="../js/score-entry.js?v=20261102a"></script>
     <script src="../js/live-updates.js?v=20261101a"></script>
     <script src="../js/math-task-core.js?v=20261102a"></script>
-    <script src="../js/math-task-edit.js?v=20261102d"></script>
-    <script src="../js/math-task-rules.js?v=20261102c"></script>
+    <script src="../js/math-task-edit.js?v=20261102e"></script>
+    <script src="../js/math-task-rules.js?v=20261102d"></script>
     <script src="../js/admin-start.js?v=20261101c"></script>
 </body>
 
