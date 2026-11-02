@@ -133,7 +133,8 @@
         }
 
         var students = (res.data || []).filter(function (row) {
-            return (row.role || '').toLowerCase() !== 'admin';
+            var role = (row.role || '').toLowerCase();
+            return role !== 'admin' && role !== 'teacher';
         });
 
         if (!students.length) {
