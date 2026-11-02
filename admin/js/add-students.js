@@ -27,7 +27,6 @@
         },
         section: 'Choose a section',
         group: 'Choose a condition for this student',
-        consent: 'Confirm that parental consent and student assent were received',
         nobody: 'Add at least one student',
         problem: 'There is a problem',
         fixRows: function (n) {
@@ -200,7 +199,7 @@
         overlay.innerHTML =
             '<div class="modal modal-xl">' +
             '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="as-title">Add students</h2>' +
-            '<p class="muted">One row per student. <button type="button" class="btn btn-ghost btn-sm" id="as-change" hidden>Change section</button></p></div></header>' +
+            '<p class="muted">One row per student.</p></div></header>' +
             '<div class="modal-body"><form id="as-form" novalidate>' +
             '<p class="field-msg" id="as-summary" role="alert" tabindex="-1"></p>' +
             '<div class="form-grid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px">' +
@@ -212,19 +211,31 @@
             '<div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px">' +
             '<button type="button" class="btn btn-secondary btn-sm" id="as-add">' +
             '<svg class="icon"><use href="#i-plus"></use></svg> Add row</button>' +
-            '<span class="field-hint muted">Have a list? Paste spreadsheet columns (last, first, middle, number, condition) into the first box.</span>' +
             '</div>' +
             '</form></div>' +
-            '<footer class="modal-foot modal-foot-split">' +
-            '<div class="bn-foot-consent" id="as-consent-wrap"><label class="check"><input type="checkbox" id="as-consent" aria-describedby="as-consent-msg">' +
-            '<span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>' +
-            '<span class="check-text">Parental consent and student assent received for every student listed <span class="req">*</span></span></label>' +
-            '<p class="field-msg" id="as-consent-msg"></p></div>' +
-            '<div class="modal-foot-actions"><button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>' +
-            '<button type="submit" class="btn btn-primary" form="as-form" id="as-submit">Add students</button></div>' +
+            '<footer class="modal-foot">' +
+            '<button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>' +
+            '<button type="submit" class="btn btn-primary" form="as-form" id="as-submit">Add students</button>' +
             '</footer></div>';
         document.body.appendChild(overlay);
         root = overlay;
+
+        var ask = document.createElement('div');
+        ask.className = 'overlay';
+        ask.id = 'modal-as-draft';
+        ask.setAttribute('role', 'dialog');
+        ask.setAttribute('aria-modal', 'true');
+        ask.setAttribute('aria-labelledby', 'as-draft-title');
+        ask.innerHTML =
+            '<div class="modal modal-sm">' +
+            '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="as-draft-title">Save as draft?</h2>' +
+            '<p class="muted">These students are not added yet. Keep them for later, or throw them away.</p></div></header>' +
+            '<footer class="modal-foot">' +
+            '<button type="button" class="btn btn-secondary" data-modal-close>Keep editing</button>' +
+            '<button type="button" class="btn btn-danger" id="as-draft-discard">Discard</button>' +
+            '<button type="button" class="btn btn-primary" id="as-draft-save">Save draft</button>' +
+            '</footer></div>';
+        document.body.appendChild(ask);
         wire();
     }
 
@@ -421,6 +432,84 @@
         return -1;
     }
 
+    var draft = null;
+
+    function hasContent() {
+        return rows.some(function (r) {
+            return !isBlank(r);
+        });
+    }
+
+    function restoreDraft() {
+        if (!draft) {
+            return;
+        }
+        rows = draft;
+        draft = null;
+        drawGrid();
+        if (window.PIAAdmin && window.PIAAdmin.toastOk) {
+            window.PIAAdmin.toastOk('Draft restored', 'Your unsaved students are back.');
+        }
+    }
+
+    function closeAdd() {
+        rows = [blankRow()];
+        var close = $('[data-modal-close]', root);
+        if (close) {
+            close.click();
+        }
+    }
+
+    // closing with students typed in asks first: save a draft, discard, or keep editing
+    function wireDraft() {
+        function guard(event) {
+            if (!hasContent()) {
+                return;
+            }
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            window.PIAAdmin.openModal('modal-as-draft');
+        }
+        root.addEventListener(
+            'click',
+            function (event) {
+                if (event.target.closest('[data-modal-close]')) {
+                    guard(event);
+                }
+            },
+            true
+        );
+        root.addEventListener(
+            'mousedown',
+            function (event) {
+                if (event.target === root) {
+                    guard(event);
+                }
+            },
+            true
+        );
+        document.addEventListener(
+            'keydown',
+            function (event) {
+                var layers = window.PIAAdmin.openLayers;
+                if (event.key === 'Escape' && layers[layers.length - 1] === root) {
+                    guard(event);
+                }
+            },
+            true
+        );
+        $('#as-draft-save').addEventListener('click', function () {
+            draft = rows;
+            window.PIAAdmin.closeModal('modal-as-draft');
+            closeAdd();
+        });
+        $('#as-draft-discard').addEventListener('click', function () {
+            draft = null;
+            window.PIAAdmin.closeModal('modal-as-draft');
+            closeAdd();
+        });
+    }
+
     function wire() {
         var grid = $('#as-grid', root);
 
@@ -500,51 +589,6 @@
             }
         });
 
-        grid.addEventListener('paste', function (event) {
-            var text = (event.clipboardData || window.clipboardData).getData('text');
-            if (text.indexOf('\t') < 0 && text.indexOf('\n') < 0) {
-                return;
-            }
-            event.preventDefault();
-            var item = event.target.closest('[data-row]');
-            var start = item ? indexOfRow(Number(item.getAttribute('data-row'))) : 0;
-            var lines = text.split(/\r?\n/).filter(function (l) {
-                return l.trim();
-            });
-
-            if (lines.length > 1 && digits(lines[0].split('\t')[3] || '').length < 4) {
-                lines.shift();
-            }
-            lines.forEach(function (line, n) {
-                var c = line.split('\t');
-                while (rows.length <= start + n) {
-                    rows.push(blankRow());
-                }
-                var r = rows[start + n];
-                r.last = tidyName(c[0]);
-                r.first = tidyName(c[1]);
-                r.mid = tidyName(c[2]);
-                r.num = pretty(c[3]);
-                var want = String(c[4] || '').trim().toLowerCase();
-                GROUPS.forEach(function (g) {
-                    if (want === g[0] || want === g[1].toLowerCase()) {
-                        r.grp = g[0];
-                    }
-                });
-                if (!r.grp && start + n > 0) {
-                    r.grp = rows[start + n - 1].grp;
-                }
-                r.touched = { last: true, first: true, mid: true, num: true, grp: true };
-            });
-            drawGrid();
-            checkNumbers().then(function (ok) {
-                if (!ok) {
-                    $('#as-summary').textContent = MSG.cantCheck;
-                }
-                paintAll();
-            });
-        });
-
         grid.addEventListener('click', function (event) {
             var del = event.target.closest('[data-del]');
             if (!del) {
@@ -565,19 +609,12 @@
             $('#as-section-msg').textContent = '';
             paintContext();
         });
-        $('#as-change', root).addEventListener('click', function (event) {
-            $('#as-section-field').hidden = false;
-            event.currentTarget.hidden = true;
-            $('#as-section').focus();
-        });
-        $('#as-consent', root).addEventListener('change', function () {
-            $('#as-consent-msg').textContent = '';
-        });
+        wireDraft();
         $('#as-form', root).addEventListener('submit', submit);
     }
 
     function clearMessages() {
-        ['#as-summary', '#as-section-msg', '#as-consent-msg'].forEach(
+        ['#as-summary', '#as-section-msg'].forEach(
             function (s) {
                 $(s).textContent = '';
             }
@@ -600,10 +637,6 @@
             var bad = false;
             if (!section) {
                 $('#as-section-msg').textContent = MSG.section;
-                bad = true;
-            }
-            if (!$('#as-consent').checked) {
-                $('#as-consent-msg').textContent = MSG.consent;
                 bad = true;
             }
 
@@ -741,7 +774,6 @@
         submitted = false;
         checked = {};
         clearMessages();
-        $('#as-consent').checked = false;
         var section = $('#as-section');
         if (!section.querySelector('option[value=""]')) {
             section.insertBefore(new Option('Choose a section', ''), section.firstChild);
@@ -755,7 +787,7 @@
         section.value = known ? wanted : '';
 
         $('#as-section-field').hidden = known;
-        $('#as-change').hidden = !known;
+        restoreDraft();
         paintContext();
         drawGrid({ id: rows[0].id, f: 'last' });
     }
