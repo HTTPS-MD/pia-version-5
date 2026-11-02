@@ -590,13 +590,14 @@
                 : '';
 
         var uniform = Admin.qbUniformPoints(Admin.qb.bank[Admin.qb.topic]);
-        $('#qb-question').value = item ? item.q : '';
-        $('#qb-final').value = item ? item.final : '';
-        $('#qb-points').value = String(item ? item.points : uniform || 10);
+        var stash = !item && Admin.qb.stash && Admin.qb.stash.topic === Admin.qb.topic ? Admin.qb.stash : null;
+        $('#qb-question').value = item ? item.q : stash ? stash.question : '';
+        $('#qb-final').value = item ? item.final : stash ? stash.final : '';
+        $('#qb-points').value = String(item ? item.points : stash ? stash.points : uniform || 10);
 
         qbStepList().textContent = '';
         var steps = Admin.QB_STEP_LABELS[Admin.qb.topic].map(function (_, i) {
-            return (item && item.steps[i]) || null;
+            return (item && item.steps[i]) || (stash && stash.steps[i]) || null;
         });
         steps.forEach(function (s) {
             qbAddStep(s, false);
@@ -604,8 +605,11 @@
 
         $('#qb-mode').hidden = !!item;
         wizStart(!item);
-        Admin.qb.drafts = [];
-        qbSetMode('write');
+        Admin.qb.drafts = stash ? JSON.parse(JSON.stringify(stash.drafts)) : [];
+        qbSetMode(stash && stash.mode === 'gen' ? 'gen' : 'write');
+        if (stash) {
+            Admin.toastOk('Draft restored', 'Your unsaved question is back.');
+        }
         $('#qb-edit-title').textContent = item ? 'Edit question ' + index : 'Add question';
         Admin.openModal('modal-qb-edit', trigger);
 
@@ -613,6 +617,109 @@
         $('#modal-qb-edit .modal-body').scrollTop = 0;
     }
     Admin.qbOpenEditor = qbOpenEditor;
+
+    // closing Add question with something typed or generated asks: save a draft or discard
+    function qbDirty() {
+        if (Admin.qb.editingId != null) {
+            return false;
+        }
+        var typed =
+            $('#qb-question').value.trim() ||
+            $('#qb-final').value.trim() ||
+            qbReadSteps().some(function (st) {
+                return Object.keys(st).some(function (k) {
+                    return st[k];
+                });
+            });
+        return !!typed || Admin.qb.drafts.length > 0;
+    }
+
+    function qbDraftPrompt() {
+        var ask = $('#modal-qb-draft');
+        if (!ask) {
+            ask = document.createElement('div');
+            ask.className = 'overlay';
+            ask.id = 'modal-qb-draft';
+            ask.setAttribute('role', 'dialog');
+            ask.setAttribute('aria-modal', 'true');
+            ask.setAttribute('aria-labelledby', 'qb-draft-title');
+            ask.innerHTML =
+                '<div class="modal modal-sm">' +
+                '<header class="modal-head"><div class="modal-head-text"><h2 class="modal-title" id="qb-draft-title">Save as draft?</h2>' +
+                '<p class="muted">This question is not saved yet. Keep it for later, or throw it away.</p></div></header>' +
+                '<footer class="modal-foot">' +
+                '<button type="button" class="btn btn-secondary" id="qb-draft-discard">Discard</button>' +
+                '<button type="button" class="btn btn-primary" id="qb-draft-save">Save draft</button>' +
+                '</footer></div>';
+            document.body.appendChild(ask);
+            ask.addEventListener('mousedown', function (event) {
+                if (event.target === ask) {
+                    Admin.closeModal(ask);
+                }
+            });
+            $('#qb-draft-save', ask).addEventListener('click', function () {
+                Admin.qb.stash = {
+                    topic: Admin.qb.topic,
+                    question: $('#qb-question').value,
+                    final: $('#qb-final').value,
+                    points: $('#qb-points').value,
+                    steps: qbReadSteps(),
+                    drafts: JSON.parse(JSON.stringify(Admin.qb.drafts)),
+                    mode: $('#qb-pane-gen').hidden ? 'write' : 'gen'
+                };
+                Admin.closeModal(ask);
+                Admin.closeModal('modal-qb-edit');
+            });
+            $('#qb-draft-discard', ask).addEventListener('click', function () {
+                Admin.qb.stash = null;
+                Admin.closeModal(ask);
+                Admin.closeModal('modal-qb-edit');
+            });
+        }
+        Admin.openModal('modal-qb-draft');
+    }
+
+    function qbGuardClose() {
+        var overlay = $('#modal-qb-edit');
+        function guard(event) {
+            if (!qbDirty()) {
+                return;
+            }
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            qbDraftPrompt();
+        }
+        overlay.addEventListener(
+            'click',
+            function (event) {
+                if (event.target.closest('[data-modal-close]')) {
+                    guard(event);
+                }
+            },
+            true
+        );
+        overlay.addEventListener(
+            'mousedown',
+            function (event) {
+                if (event.target === overlay) {
+                    guard(event);
+                }
+            },
+            true
+        );
+        document.addEventListener(
+            'keydown',
+            function (event) {
+                var layers = Admin.openLayers;
+                if (event.key === 'Escape' && layers[layers.length - 1] === overlay) {
+                    guard(event);
+                }
+            },
+            true
+        );
+    }
+    qbGuardClose();
+
 
     async function qbSaveEditor(event) {
         event.preventDefault();
@@ -750,6 +857,9 @@
             list.push(saved);
         }
 
+        if (editing == null) {
+            Admin.qb.stash = null;
+        }
         Admin.closeModal('modal-qb-edit');
         Admin.renderQbTable();
         Admin.renderQbChrome();
@@ -954,6 +1064,7 @@
             Admin.qb.bank[topic].push(Admin.qbFromRow(row));
         });
         Admin.qb.drafts = [];
+        Admin.qb.stash = null;
         Admin.closeModal('modal-qb-edit');
         Admin.renderQbTable();
         Admin.renderQbChrome();
