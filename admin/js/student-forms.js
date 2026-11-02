@@ -1,6 +1,6 @@
 /*
  * Student forms.
- * Edit a student's name and section in two steps (adding students is in add-students.js).
+ * Edit a student's name, student number and section (adding students is in add-students.js).
  * The condition is set when the student is created and cannot be changed here.
  */
 (function () {
@@ -35,8 +35,6 @@
     // the old tutor fields are gone; start-up still calls this
     Admin.initTutorFields = function () {};
 
-    var STEPS = ['Name', 'Section'];
-    var stage = 0;
     var snapshot = '';
 
     function look() {
@@ -44,57 +42,9 @@
             $('#es-first').value.trim(),
             $('#es-middle').value.trim(),
             $('#es-last').value.trim(),
+            $('#es-number').value.replace(/\D/g, ''),
             $('#es-section').value
         ]);
-    }
-
-    function paint() {
-        var last = stage === STEPS.length - 1;
-        $('#es-step-name').hidden = stage !== 0;
-        $('#es-step-section').hidden = stage !== 1;
-        $('#es-back').hidden = stage === 0;
-        $('#es-next').hidden = last;
-        $('#es-submit').hidden = !last;
-        $('#es-wiz').innerHTML = STEPS.map(function (label, i) {
-            return (
-                '<li class="' +
-                (i === stage ? 'is-current' : i < stage ? 'is-done' : '') +
-                '" data-es-go="' +
-                i +
-                '" role="button" tabindex="0"' +
-                (i === stage ? ' aria-current="step"' : '') +
-                '><span>' +
-                (i + 1) +
-                '</span> ' +
-                label +
-                '</li>'
-            );
-        }).join('');
-    }
-
-    function check() {
-        Admin.clearFormErrors('edit-student-form');
-        if (stage !== 0) {
-            return true;
-        }
-        var first = $('#es-first').value.trim();
-        var last = $('#es-last').value.trim();
-        var okFirst = Admin.setFieldError('es-first', first ? '' : 'First name is required.');
-        var okLast = Admin.setFieldError('es-last', last ? '' : 'Last name is required.');
-        if (!okFirst) {
-            $('#es-first').focus();
-        } else if (!okLast) {
-            $('#es-last').focus();
-        }
-        return okFirst && okLast;
-    }
-
-    function go(to) {
-        if (to > stage && !check()) {
-            return;
-        }
-        stage = Math.max(0, Math.min(STEPS.length - 1, to));
-        paint();
     }
 
     function openEditStudent(email) {
@@ -136,19 +86,28 @@
             Admin.refreshCustomSelect('es-section');
         }
 
-        stage = 0;
-        paint();
+        $('#es-number').value = '';
+        $('#es-number').disabled = true;
         snapshot = look();
         Admin.openModal('modal-edit-student');
+        window.PIACheckin.numberFor(s.email).then(
+            function (number) {
+                var field = $('#es-number');
+                field.value = number;
+                field.disabled = false;
+                field.setAttribute('data-initial', number);
+                snapshot = look();
+            },
+            function () {
+                $('#es-number').disabled = false;
+                $('#es-number').setAttribute('data-initial', '');
+            }
+        );
     }
     Admin.openEditStudent = openEditStudent;
 
     async function handleUpdateStudent(event) {
         event.preventDefault();
-        if (stage < STEPS.length - 1) {
-            go(stage + 1);
-            return;
-        }
         Admin.clearFormErrors('edit-student-form');
 
         var originalEmail = $('#es-original-email').value;
@@ -156,10 +115,18 @@
         var middle = $('#es-middle').value.trim();
         var last = $('#es-last').value.trim();
         var section = $('#es-section').value;
+        var number = $('#es-number').value.replace(/\D/g, '');
+        var numberBefore = $('#es-number').getAttribute('data-initial') || '';
 
-        if (!first || !last) {
-            go(0);
-            check();
+        var valid = true;
+        valid = Admin.setFieldError('es-first', first ? '' : 'First name is required.') && valid;
+        valid = Admin.setFieldError('es-last', last ? '' : 'Last name is required.') && valid;
+        valid =
+            Admin.setFieldError(
+                'es-number',
+                number && number.length !== 11 ? 'Student number must be 11 digits.' : ''
+            ) && valid;
+        if (!valid) {
             return;
         }
 
@@ -167,6 +134,14 @@
         var release = Admin.setBusy($('#es-submit'), 'Saving…');
 
         try {
+            if (number && number !== numberBefore) {
+                var saved = await window.PIACheckin.saveNumberFor(originalEmail, number);
+                if (!saved.ok) {
+                    Admin.setFieldError('es-number', saved.message || 'Could not save the student number.');
+                    return;
+                }
+            }
+
             var updateRes = await sb
                 .from('profiles')
                 .update({ full_name: fullName, section: section })
@@ -192,19 +167,6 @@
 
     function initEditWizard() {
         var overlay = $('#modal-edit-student');
-        $('#es-next').addEventListener('click', function () {
-            go(stage + 1);
-        });
-        $('#es-back').addEventListener('click', function () {
-            go(stage - 1);
-        });
-        $('#es-wiz').addEventListener('click', function (event) {
-            var li = event.target.closest('[data-es-go]');
-            if (li) {
-                go(Number(li.getAttribute('data-es-go')));
-            }
-        });
-
         // closing with edits asks first
         function guard(event) {
             if (look() === snapshot) {

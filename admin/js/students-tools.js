@@ -1276,6 +1276,11 @@
         saveNumberFor: function (email, number) {
             return saveNumber(email, number);
         },
+        numberFor: async function (email) {
+            var data = await call('admin_numbers_for', { p_emails: [email] });
+            var row = (data || [])[0];
+            return row && row.number ? prettyNumber(row.number) : '';
+        },
         refresh: function () {
             renderChips();
             renderAttendance();

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261103a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261104f">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261104g">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -518,9 +518,7 @@
             <div class="modal-body">
                 <form id="edit-student-form" novalidate>
                     <input type="hidden" id="es-original-email">
-                    <ol class="qb-wiz" id="es-wiz" aria-label="Progress"></ol>
-
-                    <div class="form-section" id="es-step-name">
+                    <div class="form-section">
                         <p class="form-section-title">Name</p>
                         <div class="form-grid form-grid-3">
                             <div class="field">
@@ -541,9 +539,14 @@
                         </div>
                     </div>
 
-                    <div class="form-section" id="es-step-section" hidden>
-                        <p class="form-section-title">Section</p>
+                    <div class="form-section">
+                        <p class="form-section-title">Placement</p>
                         <div class="form-grid">
+                            <div class="field">
+                                <label class="label" for="es-number">Student number</label>
+                                <input class="input" type="text" id="es-number" inputmode="numeric" maxlength="11" autocomplete="off" placeholder="11 digits">
+                                <p class="field-msg" data-msg-for="es-number"></p>
+                            </div>
                             <div class="field">
                                 <label class="label" for="es-section">Section</label>
                                 <select class="select" id="es-section" data-section-select></select>
@@ -556,9 +559,7 @@
 
             <footer class="modal-foot">
                 <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
-                <button class="btn btn-secondary" type="button" id="es-back" hidden>Back</button>
-                <button class="btn btn-primary" type="button" id="es-next">Next</button>
-                <button class="btn btn-primary" type="submit" form="edit-student-form" id="es-submit" hidden>Save changes</button>
+                <button class="btn btn-primary" type="submit" form="edit-student-form" id="es-submit">Save changes</button>
             </footer>
         </div>
     </div>
@@ -1275,7 +1276,7 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261104c"></script>
+    <script src="../js/students-tools.js?v=20261104d"></script>
     <script src="../js/add-students.js?v=20261104b"></script>
     <script src="../js/admin-core.js?v=20261101b"></script>
     <script src="../js/admin-dialogs.js?v=20261104a"></script>
@@ -1283,7 +1284,7 @@
     <script src="../js/admin-data.js?v=20261101c"></script>
     <script src="../js/students-table.js?v=20261104b"></script>
     <script src="../js/student-drawer.js?v=20261103z"></script>
-    <script src="../js/student-forms.js?v=20261104a"></script>
+    <script src="../js/student-forms.js?v=20261104b"></script>
     <script src="../js/admin-faculty.js?v=20261103z"></script>
     <script src="../js/stage-controls.js?v=20261103z"></script>
     <script src="../js/admin-account.js?v=20261103z"></script>
