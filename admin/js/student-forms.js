@@ -124,8 +124,9 @@
         valid =
             Admin.setFieldError(
                 'es-number',
-                number && number.length !== 11 ? 'Student number must be 11 digits.' : ''
+                number.length === 11 ? '' : 'Student number must be 11 digits.'
             ) && valid;
+        valid = Admin.setFieldError('es-section', section ? '' : 'Choose a section.') && valid;
         if (!valid) {
             return;
         }
