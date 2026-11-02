@@ -982,10 +982,3 @@
     }
 }
 
-/* the tutorial sits on a cream card, so its text is dark */
-.landing-look .tutorial-text {
-    color: var(--q-ink);
-}
-.landing-look .tutorial-step {
-    color: var(--q-soft);
-}
