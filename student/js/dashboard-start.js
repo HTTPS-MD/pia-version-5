@@ -82,8 +82,25 @@
         $('#offer-accept').addEventListener('click', function () {
             Dash.answerOffer(true);
         });
-        $('#offer-stay').addEventListener('click', function () {
-            Dash.answerOffer(false);
+        // saying no to the tutor's offer asks first
+        $('#offer-stay').addEventListener('click', async function () {
+            var offer = Dash.state.pendingOffer;
+            if (!offer || Dash.state.offering) {
+                return;
+            }
+            var up = offer.type === 'up';
+            var here = Dash.topicOf(Dash.state.topic).name;
+            var ok = await Dash.confirmAction({
+                heading: up ? 'Stay on this topic?' : 'Skip the review?',
+                message: up
+                    ? 'You will keep practising ' + here + '.'
+                    : 'You will keep practising ' + here + ' instead of going back to review.',
+                confirmLabel: 'Stay here',
+                tone: 'accent'
+            });
+            if (ok) {
+                Dash.answerOffer(false);
+            }
         });
         $('#closed-signout').addEventListener('click', Dash.signOut);
         Dash.paintSolved();

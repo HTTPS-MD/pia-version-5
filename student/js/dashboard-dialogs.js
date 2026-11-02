@@ -146,6 +146,7 @@
             $('#confirm-subtitle').textContent = options.subtitle || '';
             $('#confirm-text').textContent = options.message || '';
             accept.textContent = options.confirmLabel || 'Continue';
+            accept.className = 'btn ' + (options.tone === 'accent' ? 'btn-primary' : 'btn-danger');
 
             var fresh = accept.cloneNode(true);
             accept.parentNode.replaceChild(fresh, accept);
