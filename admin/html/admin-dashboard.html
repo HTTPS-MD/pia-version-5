@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261102a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261101a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102w">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261102x">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -358,25 +358,26 @@
                                 <button type="button" class="info-tip" data-tip="Questions from this bank are used for new game problems. Review steps and answers before students play." aria-label="About the math task bank"><svg class="icon"><use href="#i-info"></use></svg></button>
                             </div>
                         </div>
+                        <div class="page-actions">
+                            <button class="btn btn-secondary" type="button" id="qb-rules-btn" data-qb-view-to="rules">
+                                <svg class="icon"><use href="#i-gear"></use></svg>
+                                <span id="qb-rules-label">Rules</span>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="stack-lg">
 
                         <div class="qb-toolbar">
-                        <div class="qb-subtabs" role="tablist" aria-label="Math task sections">
-                            <button class="qb-subtab is-active" type="button" role="tab" id="qb-tab-questions" aria-selected="true" data-qb-view="questions">Questions</button>
-                            <button class="qb-subtab" type="button" role="tab" id="qb-tab-rules" aria-selected="false" data-qb-view="rules">Rules</button>
-                        </div>
-
                         <div class="segment qb-topics" role="group" aria-label="Topic">
                             <button class="segment-btn is-active" type="button" data-qb-topic="EASY" aria-pressed="true">
-                                <span class="qb-topic-num tnum" aria-hidden="true">1</span>Finding %
+                                Finding %
                             </button>
                             <button class="segment-btn" type="button" data-qb-topic="MEDIUM" aria-pressed="false">
-                                <span class="qb-topic-num tnum" aria-hidden="true">2</span>% Increase
+                                % Increase
                             </button>
                             <button class="segment-btn" type="button" data-qb-topic="HARD" aria-pressed="false">
-                                <span class="qb-topic-num tnum" aria-hidden="true">3</span>% Decrease
+                                % Decrease
                             </button>
                         </div>
                         </div>
@@ -386,7 +387,7 @@
                             <div class="card" data-region="mathtask">
                                 <div class="card-head">
                                     <div class="card-head-text">
-                                        <h2 class="card-title" id="qb-title">Topic 1 · Finding a percentage</h2>
+                                        <h2 class="card-title sr-only" id="qb-title">Topic 1 · Finding a percentage</h2>
                                     </div>
                                     <p class="qb-count" id="qb-sub">Loading…</p>
                                     <button class="btn btn-primary" type="button" id="qb-add-btn">
@@ -1373,7 +1374,7 @@
     <script src="../js/live-updates.js?v=20261101a"></script>
     <script src="../js/math-task-core.js?v=20261102c"></script>
     <script src="../js/math-task-edit.js?v=20261102k"></script>
-    <script src="../js/math-task-rules.js?v=20261102h"></script>
+    <script src="../js/math-task-rules.js?v=20261102i"></script>
     <script src="../js/admin-start.js?v=20261101c"></script>
 </body>
 

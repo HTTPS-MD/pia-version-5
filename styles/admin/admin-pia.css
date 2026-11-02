@@ -1468,3 +1468,36 @@ html[data-surface='admin'] #modal-scores .score-input {
         flex-wrap: wrap;
     }
 }
+
+/* math task bank: topics are plain tabs with an underline; Rules is a button in the page head */
+.qb-toolbar {
+    justify-content: flex-start;
+    border-bottom: 1px solid var(--line);
+}
+.qb-toolbar .qb-topics {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    padding: 0;
+    gap: 22px;
+    border-radius: 0;
+}
+.qb-toolbar .qb-topics .segment-btn {
+    min-height: 40px;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+}
+.qb-toolbar .qb-topics .segment-btn:hover {
+    color: var(--text);
+}
+.qb-toolbar .qb-topics .segment-btn.is-active {
+    color: var(--text);
+    font-weight: 600;
+    background: transparent;
+    border-bottom-color: var(--accent);
+}

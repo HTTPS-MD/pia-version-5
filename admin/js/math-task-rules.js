@@ -250,16 +250,11 @@
             });
         });
 
-        $$('[data-qb-view]').forEach(function (tab) {
-            tab.addEventListener('click', function () {
-                var view = tab.getAttribute('data-qb-view');
-                $('#qb-views').className = 'grid grid-main qb-view-' + view;
-                $$('[data-qb-view]').forEach(function (other) {
-                    var on = other === tab;
-                    other.classList.toggle('is-active', on);
-                    other.setAttribute('aria-selected', on ? 'true' : 'false');
-                });
-            });
+        // one button flips between the questions and the rules
+        $('#qb-rules-btn').addEventListener('click', function () {
+            var toRules = $('#qb-views').classList.contains('qb-view-questions');
+            $('#qb-views').className = 'grid grid-main qb-view-' + (toRules ? 'rules' : 'questions');
+            $('#qb-rules-label').textContent = toRules ? 'Back to questions' : 'Rules';
         });
         $('#qb-config-form').addEventListener('submit', qbSaveRules);
 
