@@ -1799,3 +1799,20 @@ html[data-surface='admin'] .sidebar-user .avatar {
     justify-content: flex-end;
     gap: 10px;
 }
+
+html[data-surface='admin'] .sidebar-user {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    flex: none;
+}
+html[data-surface='admin'] .sidebar-user .avatar {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+}
