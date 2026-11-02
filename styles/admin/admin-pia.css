@@ -1925,3 +1925,23 @@ html[data-surface='admin'] .sidebar-user .avatar {
         overflow-wrap: anywhere;
     }
 }
+
+/* touch screens enlarge every button: the strips set their own button size so the pill stays even all round */
+#view-mathtask .qb-strip {
+    height: auto;
+    min-height: 0;
+    padding: 6px;
+    gap: 6px;
+    border-radius: 999px;
+}
+#view-mathtask .qb-strip .btn {
+    height: 40px;
+    min-height: 40px;
+    padding-block: 0;
+    border-radius: 999px;
+}
+#view-students .stage-let .btn {
+    height: 32px;
+    min-height: 32px;
+    padding-block: 0;
+}
