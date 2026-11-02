@@ -424,7 +424,8 @@
     function wire() {
         var grid = $('#as-grid', root);
 
-        grid.addEventListener('input', function (event) {
+        // the custom dropdown fires 'change' only, so listen to both
+        function onEdit(event) {
             var item = event.target.closest('[data-row]');
             if (!item) {
                 return;
@@ -437,7 +438,9 @@
             rows[i][f] = event.target.value;
             paintRow(i, true);
             paintButton();
-        });
+        }
+        grid.addEventListener('input', onEdit);
+        grid.addEventListener('change', onEdit);
 
         grid.addEventListener('focusout', async function (event) {
             var f = event.target.getAttribute && event.target.getAttribute('data-f');
