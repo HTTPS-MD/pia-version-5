@@ -103,8 +103,14 @@ html[data-surface='admin'] .brand-name {
     border: 0;
 }
 html[data-surface='admin'] .btn-icon {
+    box-sizing: border-box;
     width: 40px;
     height: 40px;
+    min-width: 40px;
+    min-height: 40px;
+    flex: 0 0 40px;
+    aspect-ratio: 1 / 1;
+    padding: 0;
     border-radius: 50%;
     border: 1px solid var(--line);
     background: var(--bg-surface);
