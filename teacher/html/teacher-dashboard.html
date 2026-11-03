@@ -13,7 +13,7 @@
     <script src="/assets/js/vendor/supabase.js"></script>
     <script src="../../assets/js/shared/admin-fonts.js"></script>
 
-    <link rel="stylesheet" href="../../styles/global.css?v=20261121a">
+    <link rel="stylesheet" href="../../styles/global.css?v=20261121b">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102c">
     <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261116a">
     <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261120a">
@@ -139,56 +139,63 @@
             <section id="view-help" hidden>
                 <div class="page-head"><h1 class="page-title">Help</h1></div>
 
-                <div class="help-list">
-                    <details class="help-item" open>
-                        <summary>What this page is for</summary>
-                        <div class="help-body">
-                            <p>This is your section’s student directory. It shows who is in your section, who is online right now, and today’s attendance.</p>
-                            <p>It is read-only. You can look, but you cannot change anything about a student or the study.</p>
-                        </div>
-                    </details>
-
-                    <details class="help-item">
-                        <summary>Reading the student directory</summary>
-                        <div class="help-body">
-                            <ul>
-                                <li><strong>Online:</strong> the student is signed in and active at this moment. The dot beside the name is green when online.</li>
+                <div class="help-layout">
+                    <nav class="help-toc" aria-label="Help topics">
+                        <button type="button" data-help-go="th-purpose">What this page is for</button>
+                        <button type="button" data-help-go="th-read">Reading the directory</button>
+                        <button type="button" data-help-go="th-section">Changing your section</button>
+                        <button type="button" data-help-go="th-hidden">What you cannot see, and why</button>
+                        <button type="button" data-help-go="th-account">Your account</button>
+                    </nav>
+                    <div class="help-steps">
+                        <article class="help-step" id="th-purpose">
+                            <figure class="help-shot" hidden data-shot="../../assets/images/help/help-teacher-directory.webp" data-alt="The student directory of a section"></figure>
+                            <div class="help-copy">
+                                <div class="help-head"><span class="help-num">01</span><h2 class="help-title">What this page is for</h2></div>
+                                <p>This is your section’s student directory. It shows who is in your section, who is online right now, and today’s attendance.</p>
+                                <p>It is read-only. You can look, but you cannot change anything about a student or the study.</p>
+                            </div>
+                        </article>
+                        <article class="help-step" id="th-read">
+                            <div class="help-copy">
+                                <div class="help-head"><span class="help-num">02</span><h2 class="help-title">Reading the directory</h2></div>
+                                <ul>
+                                <li><strong>Online:</strong> the student is signed in and active now. The dot beside the name is green when online.</li>
                                 <li><strong>Attendance:</strong> Present or Absent as marked by the administrator. “Not marked” means the roll has not been called for that student yet.</li>
                                 <li><strong>Class is open / Study is not yet started:</strong> shows whether attendance has been opened for your section.</li>
-                                <li><strong>All / Online tabs:</strong> show every student, or only those online now.</li>
-                                <li><strong>Search:</strong> type part of a name to find a student.</li>
-                            </ul>
-                            <p>The list refreshes by itself every few seconds, so you do not need to reload it.</p>
-                        </div>
-                    </details>
-
-                    <details class="help-item">
-                        <summary>Changing your section</summary>
-                        <div class="help-body">
-                            <p>If the administrator gave you more than one section, the section name at the top of the page becomes a menu. Choose another section to switch to it.</p>
-                            <p>If you see “You are not assigned to a section yet,” ask the administrator to assign you one.</p>
-                        </div>
-                    </details>
-
-                    <details class="help-item">
-                        <summary>What you cannot see, and why</summary>
-                        <div class="help-body">
-                            <p>To protect students, this page does not show personality results, assigned tutor, scores, or any individual performance data. Those are kept for the research team only, as agreed in the study’s ethical review.</p>
-                            <p>If you notice a problem with a student’s record, tell the administrator.</p>
-                        </div>
-                    </details>
-
-                    <details class="help-item">
-                        <summary>Your account</summary>
-                        <div class="help-body">
-                            <ul>
+                                <li><strong>All / Online tabs and Search:</strong> show everyone or only those online, or find a student by name.</li>
+                                </ul>
+                                <p>The list refreshes by itself every few seconds, so you do not need to reload it.</p>
+                            </div>
+                        </article>
+                        <article class="help-step" id="th-section">
+                            <figure class="help-shot" hidden data-shot="../../assets/images/help/help-teacher-section.webp" data-alt="The section menu at the top of the page"></figure>
+                            <div class="help-copy">
+                                <div class="help-head"><span class="help-num">03</span><h2 class="help-title">Changing your section</h2></div>
+                                <p>If the administrator gave you more than one section, the section name at the top of the page becomes a menu. Choose another section to switch to it.</p>
+                                <p>If you see “You are not assigned to a section yet,” ask the administrator to assign you one.</p>
+                            </div>
+                        </article>
+                        <article class="help-step" id="th-hidden">
+                            <div class="help-copy">
+                                <div class="help-head"><span class="help-num">04</span><h2 class="help-title">What you cannot see, and why</h2></div>
+                                <p>To protect students, this page does not show personality results, assigned tutor, scores, or any individual performance data. Those are kept for the research team only, as agreed in the study’s ethical review.</p>
+                                <p>If you notice a problem with a student’s record, tell the administrator.</p>
+                            </div>
+                        </article>
+                        <article class="help-step" id="th-account">
+                            <figure class="help-shot" hidden data-shot="../../assets/images/help/help-teacher-account.webp" data-alt="The account menu with Settings, Help and Sign Out"></figure>
+                            <div class="help-copy">
+                                <div class="help-head"><span class="help-num">05</span><h2 class="help-title">Your account</h2></div>
+                                <ul>
                                 <li><strong>Settings:</strong> open it from the account menu at the top right to see your details and change your password.</li>
                                 <li><strong>Password:</strong> changing it signs your other devices out. This one stays signed in.</li>
                                 <li><strong>Light or dark theme:</strong> use the sun or moon button beside your account.</li>
                                 <li><strong>Sign Out:</strong> also in the account menu. You are signed out automatically after a period of inactivity.</li>
-                            </ul>
-                        </div>
-                    </details>
+                                </ul>
+                            </div>
+                        </article>
+                    </div>
                 </div>
             </section>
 
@@ -271,6 +278,7 @@
     <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
     <script src="../../assets/js/shared/device-revoke.js?v=20261031a"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
+    <script src="../../assets/js/shared/help-page.js?v=20261121a"></script>
     <script src="../js/teacher-roster.js?v=20261121a"></script>
     <script src="../js/teacher-settings.js?v=20261102a"></script>
 </body>
