@@ -13,7 +13,7 @@
     <script src="/assets/js/vendor/supabase.js"></script>
 
     <link rel="stylesheet" href="../../styles/global.css?v=20261121e">
-    <link rel="stylesheet" href="../../styles/auth/auth.css?v=20261121a">
+    <link rel="stylesheet" href="../../styles/auth/auth.css?v=20261121b">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -38,26 +38,14 @@
 
         <main class="auth-card">
 
-            <h1 class="auth-title">Verify your email link</h1>
-            <p class="auth-lede">
-                Pick a password you'll remember. You'll use it with your school email
-                every time you sign in.
-            </p>
-
-            <div class="auth-identity" hidden>
-                <svg class="icon"><use href="#i-mail"></use></svg>
-                <div class="auth-identity-text">
-                    <p class="auth-identity-label">Setting up</p>
-                    <p class="auth-identity-value" id="setup-email">—</p>
-                </div>
-            </div>
+            <h1 class="auth-title">Set your password</h1>
+            <p class="auth-lede">Use at least 8 characters, including a letter and a number.</p>
 
             <form class="auth-form" id="setup-password-form" novalidate hidden>
                 <div class="field">
                     <label class="label" for="setup-password">New password</label>
                     <input class="input" type="password" id="setup-password" minlength="8"
-                        autocomplete="new-password" aria-describedby="setup-policy setup-password-error">
-                    <p id="setup-policy" class="field-hint">Use at least 8 characters, including a letter and a number.</p>
+                        autocomplete="new-password" aria-describedby="setup-password-error">
                     <p id="setup-password-error" class="field-msg"></p>
                 </div>
 
@@ -75,8 +63,7 @@
                 </label>
 
                 <button class="btn btn-primary auth-submit" type="submit" id="setup-submit-btn" disabled>
-                    <svg class="icon"><use href="#i-key"></use></svg>
-                    Activate account
+                    Save password
                 </button>
             </form>
 
@@ -104,7 +91,7 @@
     <script src="../js/shared/page-extras.js?v=20261031a"></script>
     <script src="../js/shared/device-revoke.js?v=20261031b"></script>
     <script src="../js/shared/stage-sync.js?v=20261031a"></script>
-    <script src="../js/sign-up/authentication.js?v=20261121c"></script>
+    <script src="../js/sign-up/authentication.js?v=20261121e"></script>
 </body>
 
 </html>

@@ -4,7 +4,6 @@
     const form = document.getElementById('setup-password-form');
     const submit = document.getElementById('setup-submit-btn');
     const status = document.querySelector('#setup-status-box span');
-    const identity = document.querySelector('.auth-identity');
     const retry = document.getElementById('setup-retry');
     const actions = document.getElementById('setup-link-actions');
     const continuation = document.getElementById('setup-signin');
@@ -23,7 +22,7 @@
     let profileSaved = false;
     let uncertain = false;
     let verifiedExchange = null;
-    let label = 'Save password';
+    let label = 'Confirm and sign in';
     let accountRole = 'student';
 
     function message(text, error = false) {
@@ -50,7 +49,6 @@
         verifiedUser = null;
         submit.disabled = true;
         form.hidden = true;
-        identity.hidden = true;
         actions.hidden = false;
         retry.hidden = !canRetry;
         message(text, true);
@@ -74,7 +72,6 @@
         busy = true;
         retry.disabled = true;
         submit.disabled = true;
-        message('Verifying your email link…');
         try {
             if (!window.supabaseClient) {
                 return refuse(
@@ -126,14 +123,9 @@
                 return refuse(
                     'This link does not identify an activation or password reset. Request the email you need below.'
                 );
-            label = mode === 'reset' ? 'Save new password' : 'Activate account';
-            document.querySelector('.auth-title').textContent =
-                mode === 'reset' ? 'Choose a new password' : 'Set your password';
+            label = 'Confirm and sign in';
+            document.querySelector('.auth-title').textContent = 'Set your password';
             document.title = document.querySelector('.auth-title').textContent + ' — PIA';
-            document.querySelector('.auth-lede').textContent =
-                'Use your school email and this password to sign in after saving.';
-            document.getElementById('setup-email').textContent = verifiedUser.email;
-            identity.hidden = false;
             actions.hidden = true;
             retry.hidden = true;
             form.hidden = false;
@@ -186,7 +178,6 @@
                 return false;
             }
             form.hidden = true;
-            identity.hidden = true;
             window.location.replace(
                 role === 'admin'
                     ? '../../admin/html/admin-dashboard.html'
@@ -293,7 +284,6 @@
                 if (await signInStaff(email, password, accountRole)) return;
             }
             form.hidden = true;
-            identity.hidden = true;
             continuation.href =
                 '../../index.html?signin=' +
                 (['admin', 'teacher'].includes(accountRole) ? 'staff' : 'student');

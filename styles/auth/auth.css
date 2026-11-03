@@ -401,3 +401,39 @@
         padding: var(--sp-7) var(--sp-6) var(--sp-6);
     }
 }
+
+/* even spacing, the same rhythm as the landing windows */
+.auth-card {
+    display: grid;
+    gap: var(--sp-5);
+    padding: var(--sp-7);
+}
+.auth-card .auth-title {
+    margin: 0;
+}
+.auth-card .auth-lede {
+    margin: calc(var(--sp-2) * -1) 0 0;
+}
+.auth-card .auth-form {
+    gap: var(--sp-5);
+}
+.auth-card .field {
+    gap: var(--sp-2);
+}
+.auth-card .auth-show-row {
+    min-height: 0;
+}
+.auth-card .auth-submit {
+    margin-top: var(--sp-2);
+}
+.auth-card .auth-status {
+    margin: 0;
+}
+.auth-card .auth-hint {
+    margin: 0;
+}
+@media (max-width: 480px) {
+    .auth-card {
+        padding: var(--sp-6) var(--sp-5);
+    }
+}
