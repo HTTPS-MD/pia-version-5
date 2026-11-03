@@ -944,6 +944,24 @@ td .custom-select-trigger {
 .pia-hide-details #drawer-student-name {
     margin: 0;
 }
+.pia-hide-details :is(#faculty-title, #faculty-subject) {
+    position: relative;
+    display: block;
+    width: fit-content;
+    min-width: 9ch;
+    color: transparent !important;
+    user-select: none;
+    pointer-events: none;
+}
+.pia-hide-details :is(#faculty-title, #faculty-subject)::after {
+    content: '********';
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    color: var(--text);
+    letter-spacing: 2px;
+}
 
 /* the professor strip is the same black as the table panel; the online dot touches the avatar edge */
 html[data-surface='admin'][data-theme='dark'] .class-strip {
