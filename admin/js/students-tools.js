@@ -1171,18 +1171,6 @@
 
     document.addEventListener('pia:scope', renderStats);
 
-    // Called from the teacher profile: close it and show the same picker the row used to offer.
-    function changeProfessor() {
-        var anchor = $('#prof-line .prof-card');
-        if (!anchor) {
-            return;
-        }
-        if (window.PIAAdmin) {
-            window.PIAAdmin.closeModal('modal-faculty');
-        }
-        openProfMenu(anchor);
-    }
-
     function holdsSection(email) {
         var section = chosen();
         return !!section && holder[section] === String(email || '').toLowerCase();
@@ -1217,7 +1205,6 @@
     }
 
     window.PIACheckin = {
-        changeProfessor: changeProfessor,
         holdsSection: holdsSection,
         removeFromSection: removeFromSection,
         loadNumber: loadNumber,

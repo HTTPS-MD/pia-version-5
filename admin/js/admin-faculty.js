@@ -139,14 +139,6 @@
             openFacultyProfile(row.getAttribute('data-faculty'), row);
         });
 
-        $('#faculty-change').addEventListener('click', function () {
-            if (window.PIACheckin && window.PIACheckin.changeProfessor) {
-                var open = window.PIACheckin.changeProfessor;
-                // wait a tick so the click that opened the menu is not read as a click outside it
-                setTimeout(open, 0);
-            }
-        });
-
         $('#faculty-unassign').addEventListener('click', function () {
             if (window.PIACheckin && window.PIACheckin.removeFromSection) {
                 window.PIACheckin.removeFromSection();
