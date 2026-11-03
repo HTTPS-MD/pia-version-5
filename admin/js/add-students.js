@@ -207,10 +207,10 @@
             '<p class="field-msg" id="as-section-msg"></p></div>' +
             '</div>' +
             '<div class="as-addbar">' +
-            '<button type="button" class="btn btn-secondary btn-sm" id="as-add">' +
-            '<svg class="icon"><use href="#i-plus"></use></svg> Add</button>' +
             '<input class="input" id="as-count" type="number" inputmode="numeric" min="1" max="50" value="1" aria-label="How many rows to add">' +
             '<span class="muted">rows</span>' +
+            '<button type="button" class="btn btn-secondary btn-sm" id="as-add">' +
+            '<svg class="icon"><use href="#i-plus"></use></svg> Add</button>' +
             '</div>' +
             '<div id="as-grid" class="as-table" role="group" aria-label="Students"></div>' +
             '</form></div>' +
@@ -391,6 +391,8 @@
             return !isBlank(r);
         }).length;
         var count = n || filled;
+        // Add students stays off until a student has been typed in.
+        $('#as-submit').disabled = filled === 0;
         var where = sectionName() ? ' to ' + sectionName() : '';
         $('#as-submit').textContent = count
             ? (count === 1 ? 'Add 1 student' : 'Add ' + count + ' students') + where
