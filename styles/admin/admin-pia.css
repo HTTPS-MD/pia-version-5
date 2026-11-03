@@ -115,8 +115,10 @@ html[data-surface='admin'] .btn-icon {
     border: 1px solid var(--line);
     background: var(--bg-surface);
 }
-html[data-surface='admin'] .btn-icon:hover {
-    background: var(--bg-chip);
+@media (hover: hover) and (pointer: fine) {
+    html[data-surface='admin'] .btn-icon:hover {
+        background: var(--bg-chip);
+    }
 }
 @media (min-width: 56.3125rem) {
     html[data-surface='admin'] .app {
@@ -1038,10 +1040,9 @@ html[data-surface='admin'] .theme-toggle {
     color: var(--text);
     box-shadow: none;
 }
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
     html[data-surface='admin'] .theme-toggle:hover {
-        background: var(--text);
-        color: var(--bg-body);
+        background: color-mix(in srgb, var(--text) 10%, transparent);
     }
 }
 

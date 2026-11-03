@@ -1651,9 +1651,11 @@ html[data-surface='admin'] :focus-visible {
         background-color var(--t-fast),
         color var(--t-fast);
 }
-.btn-icon:hover {
-    background: var(--bg-chip);
-    color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+    .btn-icon:hover {
+        background: var(--bg-chip);
+        color: var(--text);
+    }
 }
 .btn-icon .icon {
     width: 16px;

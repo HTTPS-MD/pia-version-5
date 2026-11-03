@@ -789,9 +789,11 @@ body {
         background-color var(--t-base),
         color var(--t-base);
 }
-.btn-icon:hover {
-    background: var(--bg-surface-hover);
-    color: var(--text);
+@media (hover: hover) and (pointer: fine) {
+    .btn-icon:hover {
+        background: var(--bg-surface-hover);
+        color: var(--text);
+    }
 }
 .btn-icon:active {
     background: var(--bg-chip);
