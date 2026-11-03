@@ -92,7 +92,9 @@
         Admin.initChangePassword();
         Admin.initDeleteOwnAccount();
         Admin.initAdminPager();
-        Admin.initAddAdminSync();
+        Admin.gateSubmit('modal-add-admin', 'aa-submit', ['aa-name', 'aa-email']);
+        Admin.gateSubmit('modal-add-professor', 'ap-submit', ['ap-name', 'ap-email', 'ap-dept']);
+        Admin.gateSubmit('modal-new-section', 'ns-submit', ['ns-name']);
 
         $('#new-section-form').addEventListener('submit', async function (event) {
             event.preventDefault();

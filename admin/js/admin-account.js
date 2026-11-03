@@ -182,28 +182,6 @@
     }
     Admin.initAdminPager = initAdminPager;
 
-    // Add administrator stays off until both the name and the email have something typed.
-    function initAddAdminSync() {
-        var form = $('#add-admin-form');
-        var submit = $('#aa-submit');
-        if (!form || !submit) {
-            return;
-        }
-        function sync() {
-            submit.disabled = !($('#aa-name').value.trim() && $('#aa-email').value.trim());
-        }
-        form.addEventListener('input', sync);
-        form.addEventListener('reset', function () {
-            setTimeout(sync, 0);
-        });
-        new MutationObserver(sync).observe($('#modal-add-admin'), {
-            attributes: true,
-            attributeFilter: ['class']
-        });
-        sync();
-    }
-    Admin.initAddAdminSync = initAddAdminSync;
-
     function sameName(typed, expected) {
         return typed.trim().replace(/\s+/g, ' ').toLowerCase() === expected.trim().toLowerCase();
     }

@@ -47,6 +47,32 @@
     }
     Admin.openModal = openModal;
 
+    // One rule for the window forms: the button stays off until every required field has something
+    // typed, and goes off again when the window is emptied or reopened.
+    function gateSubmit(modalId, buttonId, fieldIds) {
+        var modal = $('#' + modalId);
+        var button = $('#' + buttonId);
+        if (!modal || !button) {
+            return;
+        }
+        function sync() {
+            button.disabled = !fieldIds.every(function (id) {
+                return $('#' + id).value.trim() !== '';
+            });
+        }
+        modal.addEventListener('input', sync);
+        modal.addEventListener('change', sync);
+        modal.addEventListener('reset', function () {
+            setTimeout(sync, 0);
+        });
+        new MutationObserver(sync).observe(modal, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+        sync();
+    }
+    Admin.gateSubmit = gateSubmit;
+
     function closeModal(target) {
         var overlay = typeof target === 'string' ? document.getElementById(target) : target;
         overlay = overlay || Admin.openLayers[Admin.openLayers.length - 1];
