@@ -1979,10 +1979,10 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
 }
 
 
-/* fields in every window: a slight corner, not a pill */
-.overlay .input,
-.overlay .select,
-.overlay .textarea,
-.overlay .custom-select-trigger {
+/* fields in every window, landing and admin alike: a slight corner, not a pill */
+html[data-surface] .overlay .input,
+html[data-surface] .overlay .select,
+html[data-surface] .overlay .textarea,
+html[data-surface] .overlay .custom-select-trigger {
     border-radius: 8px;
 }
