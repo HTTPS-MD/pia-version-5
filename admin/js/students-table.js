@@ -45,7 +45,7 @@
                   Admin.esc(profile.email) +
                   '"' +
                   ' title="' +
-                  (online ? 'Signed in' : 'Signed out') +
+                  (online ? 'Online' : 'Offline') +
                   '"></span>';
 
         return (
@@ -79,7 +79,7 @@
     function applyPresence(email, online) {
         $$('[data-presence="' + (email || '').replace(/"/g, '\\"') + '"]').forEach(function (dot) {
             dot.classList.toggle('is-online', !!online);
-            dot.title = online ? 'Signed in' : 'Signed out';
+            dot.title = online ? 'Online' : 'Offline';
         });
     }
     Admin.applyPresence = applyPresence;

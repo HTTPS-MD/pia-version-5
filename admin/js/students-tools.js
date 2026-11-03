@@ -508,7 +508,7 @@
             '" data-presence="' +
             esc(f.email) +
             '" title="' +
-            (profOnline[String(f.email).toLowerCase()] ? 'Signed in' : 'Signed out') +
+            (profOnline[String(f.email).toLowerCase()] ? 'Online' : 'Offline') +
             '"></span></span>' +
             '<div class="prof-card-who"><span class="prof-card-role">Class teacher</span>' +
             '<span class="prof-card-name"><span data-mask>' +

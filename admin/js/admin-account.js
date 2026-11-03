@@ -265,7 +265,7 @@
                     : '<span class="presence"><span class="dot ' +
                       (signedIn ? 'dot-on' : 'dot-off') +
                       '" aria-hidden="true"></span>' +
-                      (signedIn ? 'Signed in' : 'Signed out') +
+                      (signedIn ? 'Online' : 'Offline') +
                       '</span>';
                 return (
                     '<tr>' +

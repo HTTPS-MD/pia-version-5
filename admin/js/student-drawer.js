@@ -37,7 +37,7 @@
             drawerDot.classList.toggle('is-hidden', drawerOnline === null);
             drawerDot.classList.toggle('is-online', drawerOnline === true);
             drawerDot.setAttribute('data-presence', s.email);
-            drawerDot.title = drawerOnline ? 'Signed in' : 'Signed out';
+            drawerDot.title = drawerOnline ? 'Online' : 'Offline';
         }
         $('#drawer-student-name').textContent = s.full_name || '(no name)';
         $('#drawer-condition').textContent = condition.short;
