@@ -1903,6 +1903,11 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
     display: grid;
     gap: var(--sp-3);
 }
+.help-copy a {
+    color: var(--help-gold);
+    font-weight: 700;
+    text-underline-offset: 3px;
+}
 .help-copy strong {
     color: var(--text);
 }
