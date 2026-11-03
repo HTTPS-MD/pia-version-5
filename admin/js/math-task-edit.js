@@ -525,6 +525,7 @@
             Admin.toastOk('Draft restored', 'Your unsaved question is back.');
         }
         $('#qb-edit-title').textContent = item ? 'Edit question ' + index : 'Add question';
+        qbSaveState();
         Admin.openModal('modal-qb-edit', trigger);
 
         $('#qb-question').focus({ preventScroll: true });
@@ -532,6 +533,33 @@
         qbGrowAll();
     }
     Admin.qbOpenEditor = qbOpenEditor;
+
+    // Save stays off while nothing has been changed (an edit) or typed (a new question).
+    function qbSaveState() {
+        var save = $('#qb-edit-save');
+        if (!save) {
+            return;
+        }
+        var changed;
+        if (Admin.qb.editingId != null) {
+            changed = qbSnap() !== Admin.qb.editSnap;
+        } else {
+            changed =
+                $('#qb-question').value.trim() !== '' ||
+                $('#qb-final').value.trim() !== '' ||
+                qbReadSteps().some(function (s) {
+                    return Object.keys(s).some(function (key) {
+                        return s[key] !== '';
+                    });
+                });
+        }
+        save.disabled = !changed;
+    }
+    ['input', 'change', 'click'].forEach(function (type) {
+        $('#modal-qb-edit').addEventListener(type, function () {
+            setTimeout(qbSaveState, 0);
+        });
+    });
 
     // closing Add question with something typed or generated asks: save a draft or discard
     function qbSnap() {
