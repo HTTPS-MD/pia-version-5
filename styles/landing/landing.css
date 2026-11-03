@@ -4968,3 +4968,33 @@ h4 {
     font-size: 1.25rem;
     font-weight: 700;
 }
+
+/* the round buttons (theme and menu) look like the admin's: a 44px circle with one thin outline and no fill */
+:root[data-theme='dark'] {
+    --line-input: color-mix(in srgb, var(--palette-paper) 52%, var(--palette-ink));
+}
+:root[data-theme='light'] {
+    --line-input: color-mix(in srgb, var(--palette-ink) 56%, var(--palette-paper));
+}
+.nav .theme-toggle,
+.nav .nav-burger {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+    border: 1px solid var(--line-input);
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text);
+    box-shadow: none;
+}
+.nav .theme-toggle:hover,
+.nav .nav-burger:hover {
+    background: transparent;
+    color: var(--text);
+}
+@media (hover: hover) and (pointer: fine) {
+    .nav .theme-toggle:hover,
+    .nav .nav-burger:hover {
+        background: color-mix(in srgb, var(--text) 10%, transparent);
+    }
+}
