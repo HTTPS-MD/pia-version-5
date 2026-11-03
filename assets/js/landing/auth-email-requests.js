@@ -152,9 +152,14 @@
         var ua = navigator.userAgent || '';
         var web = link.href;
         if (/Android/i.test(ua) && link.dataset.android) {
+            // The app opens the web inbox address when it handles it; otherwise the browser does.
             event.preventDefault();
+            var site = new URL(web);
             window.location.href =
-                'intent://#Intent;package=' +
+                'intent://' +
+                site.host +
+                site.pathname +
+                '#Intent;scheme=https;package=' +
                 link.dataset.android +
                 ';S.browser_fallback_url=' +
                 encodeURIComponent(web) +
@@ -166,7 +171,7 @@
                 if (!document.hidden) {
                     window.open(web, '_blank', 'noopener');
                 }
-            }, 1200);
+            }, 2500);
         }
     }
 
