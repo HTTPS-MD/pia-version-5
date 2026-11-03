@@ -580,7 +580,7 @@
             <header class="modal-head">
                 <div class="modal-head-text">
                     <h2 class="modal-title" id="signin-title">Enter your code</h2>
-                    <p class="modal-sub" id="signin-sub">Type the number on your school ID.</p>
+                    <p class="modal-sub" id="signin-sub" hidden></p>
                 </div>
                 <button class="modal-close" data-modal-close aria-label="Close dialog">
                     <svg class="icon">
@@ -594,10 +594,14 @@
                 <form id="signin-form" class="portal-form" novalidate>
                     <div class="form-grid" id="join-step-code">
                         <div class="field">
-                            <label class="label" for="join-number">Your code</label>
+                            <div class="label-row">
+                                <label class="label" for="join-number">Your code</label>
+                                <button type="button" class="link-btn" data-auth-open="staff">Teacher / Admin
+                                    sign in</button>
+                            </div>
                             <input class="input" type="text" id="join-number" name="number" autocomplete="off"
                                 spellcheck="false" maxlength="14" inputmode="numeric" enterkeyhint="go"
-                                placeholder="Your code" aria-describedby="join-number-msg" data-autofocus>
+                                placeholder="Enter your code" aria-describedby="join-number-msg" data-autofocus>
                             <p class="field-msg" id="join-number-msg" data-msg-for="join-number"></p>
                         </div>
                     </div>
@@ -620,13 +624,6 @@
                         No, that is not me
                     </button>
 
-                    <div class="portal-links">
-                        <p class="portal-note">
-                            Teacher or admin?
-                            <button type="button" class="link-btn" data-auth-open="staff">Teacher / Admin sign
-                                in</button>
-                        </p>
-                    </div>
                 </form>
             </div>
         </div>
@@ -876,7 +873,7 @@
     <script defer src="assets/js/landing/auth-modals.js?v=20261031b"></script>
     <script defer src="assets/js/landing/auth-form-helpers.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-sign-in.js?v=20261101a"></script>
-    <script defer src="assets/js/landing/auth-student-join.js?v=20261031e"></script>
+    <script defer src="assets/js/landing/auth-student-join.js?v=20261031f"></script>
     <script defer src="assets/js/landing/auth-device-reset.js?v=20261101a"></script>
     <script defer src="assets/js/landing/auth-email-requests.js?v=20261031d"></script>
     <script defer src="assets/js/landing/auth-greeting.js?v=20261031a"></script>

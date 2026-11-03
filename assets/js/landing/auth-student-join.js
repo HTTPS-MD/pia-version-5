@@ -42,7 +42,8 @@
         $('#signin-title').textContent = confirm ? 'Is this you?' : 'Enter your code';
         $('#signin-sub').textContent = confirm
             ? 'Check the name and section before you continue.'
-            : 'Type the number on your school ID.';
+            : '';
+        $('#signin-sub').hidden = !confirm;
     }
 
     function resetJoin() {
