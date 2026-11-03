@@ -2466,3 +2466,16 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on {
 html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     background: var(--hex-ffffff);
 }
+
+/* the stages and Privacy Mode are two separate pills, not one strip */
+@media (min-width: 48.0625rem) {
+    #view-students .page-title-row .stage-let {
+        border: 1px solid var(--line);
+        border-radius: 24px;
+    }
+    #view-students .page-title-row .show-details.privacy-mode {
+        margin-left: 12px;
+        padding: 0 22px;
+        border-radius: 24px;
+    }
+}
