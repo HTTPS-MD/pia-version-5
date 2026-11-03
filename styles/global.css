@@ -1803,15 +1803,24 @@ body.is-locked {
     min-width: 0;
 }
 .help-step {
+    --help-gold: #8a6300;
+    --help-gold-line: #e0b000;
     border: 1px solid var(--line);
     border-radius: 1rem;
     background: var(--bg-surface);
     overflow: hidden;
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+html[data-theme='dark'] .help-step {
+    --help-gold: var(--volt);
+    --help-gold-line: var(--volt);
+}
+html[data-surface='admin'][data-theme='dark'] .help-step {
+    background: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+}
 .help-step:hover,
 .help-step[open] {
-    border-color: var(--volt);
+    border-color: var(--help-gold-line);
 }
 .help-step[open] {
     box-shadow: 0 0.75rem 2rem -1.25rem rgba(0, 0, 0, 0.55);
@@ -1834,8 +1843,7 @@ body.is-locked {
     outline-offset: -4px;
 }
 .help-step[open] > .help-q {
-    background: var(--volt);
-    color: var(--on-volt);
+    color: var(--help-gold);
 }
 .help-chevron {
     width: 18px;
@@ -1855,7 +1863,7 @@ body.is-locked {
 }
 .help-step[open] .help-num {
     color: inherit;
-    opacity: 0.7;
+    opacity: 0.75;
 }
 .help-title {
     margin: 0;
