@@ -2374,19 +2374,9 @@ html[data-surface='admin'] .as-addbar .input {
     margin-bottom: var(--sp-9);
     text-align: center;
 }
-.settings-labels,
 .settings-box {
     max-width: 1120px;
     margin-inline: auto;
-}
-.settings-labels {
-    display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-    padding-inline: var(--sp-2);
-}
-.settings-labels .settings-group {
-    margin: 0 0 var(--sp-4);
-    padding-inline: var(--sp-2);
 }
 .settings-box {
     margin-bottom: var(--sp-10);
@@ -2394,7 +2384,7 @@ html[data-surface='admin'] .as-addbar .input {
 }
 .settings-grid {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
 }
 .settings-left {
     display: flex;
@@ -2419,9 +2409,6 @@ html[data-surface='admin'] .as-addbar .input {
     border-top: 1px solid var(--line-soft);
 }
 @media (max-width: 56.25rem) {
-    .settings-labels {
-        display: none;
-    }
     .settings-grid {
         grid-template-columns: minmax(0, 1fr);
     }
@@ -2440,8 +2427,8 @@ html[data-surface='admin'] .as-addbar .input {
     margin-bottom: var(--sp-5);
 }
 .settings-section .facts > div {
-    grid-template-columns: 9rem minmax(0, 1fr);
-    gap: var(--sp-5);
+    grid-template-columns: 4.5rem minmax(0, 1fr);
+    gap: var(--sp-4);
     padding: var(--sp-4) 0;
 }
 .settings-section .panel-row {
