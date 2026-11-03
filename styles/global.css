@@ -1814,21 +1814,22 @@ body.is-locked {
 .help-q::-webkit-details-marker {
     display: none;
 }
-.help-q::after {
-    content: '';
-    flex: none;
-    align-self: center;
+#view-help .page-head {
+    justify-content: center;
+    text-align: center;
+}
+.help-chevron {
+    width: 18px;
+    height: 18px;
     margin-left: auto;
-    border: 6px solid transparent;
-    border-top: 9px solid currentColor;
-    border-bottom: 0;
+    align-self: center;
     transition: transform 0.2s;
 }
 .help-step[open] > .help-q {
     background: var(--accent);
     color: #fff;
 }
-.help-step[open] > .help-q::after {
+.help-step[open] > .help-q .help-chevron {
     transform: rotate(180deg);
 }
 .help-q:hover,
