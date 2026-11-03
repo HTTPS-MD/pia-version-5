@@ -128,7 +128,7 @@
                 );
             label = mode === 'reset' ? 'Save new password' : 'Activate account';
             document.querySelector('.auth-title').textContent =
-                mode === 'reset' ? 'Choose a new password' : 'Set up your account';
+                mode === 'reset' ? 'Choose a new password' : 'Set your password';
             document.title = document.querySelector('.auth-title').textContent + ' — PIA';
             document.querySelector('.auth-lede').textContent =
                 'Use your school email and this password to sign in after saving.';

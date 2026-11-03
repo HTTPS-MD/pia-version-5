@@ -118,7 +118,7 @@
         }
         if (
             authReturn &&
-            ['modal-forgot', 'modal-activate', 'modal-device-reset'].includes(overlay.id)
+            ['modal-forgot', 'modal-device-reset'].includes(overlay.id)
         ) {
             var context = authReturn;
             authReturn = null;
@@ -144,7 +144,7 @@
         signin: 'modal-signin',
         student: 'modal-signin',
         staff: 'modal-staff',
-        activate: 'modal-activate',
+        activate: 'modal-forgot',
         forgot: 'modal-forgot',
         'device-reset': 'modal-device-reset'
     };
@@ -166,7 +166,7 @@
         if (
             current &&
             ['modal-signin', 'modal-staff'].includes(current.id) &&
-            ['modal-forgot', 'modal-activate', 'modal-device-reset'].includes(id)
+            ['modal-forgot', 'modal-device-reset'].includes(id)
         ) {
             authReturn = { id: current.id, focus: document.activeElement };
         } else if (!current || ['modal-signin', 'modal-staff'].includes(id)) {

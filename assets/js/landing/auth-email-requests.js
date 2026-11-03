@@ -8,19 +8,9 @@
     var Auth = window.PIAAuth;
 
     var emailRequests = {
-        activate: {
-            prefix: 'ac',
-            title: 'Activate your account',
-            pending: false,
-            until: 0,
-            version: 0,
-            accepted: false,
-            limited: false,
-            waitKnown: false
-        },
         forgot: {
             prefix: 'fp',
-            title: 'Reset your password',
+            title: 'Set your password',
             pending: false,
             until: 0,
             version: 0,
@@ -57,11 +47,7 @@
                 : state.title;
             $('#' + kind + '-description').hidden = state.accepted;
             $('#' + p + '-submit').disabled = state.pending || remaining > 0;
-            $('#' + p + '-submit').textContent = state.pending
-                ? 'Sending…'
-                : kind === 'activate'
-                  ? 'Send activation link'
-                  : 'Send reset email';
+            $('#' + p + '-submit').textContent = state.pending ? 'Sending…' : 'Send link';
             $('#' + p + '-resend').disabled = state.pending || remaining > 0;
             $('#' + p + '-change-email').disabled = state.pending;
             $('#' + p + '-resend').textContent = state.pending ? 'Sending…' : 'Resend email';
@@ -212,18 +198,15 @@
         state.pending = true;
         renderEmailRequests();
         try {
-            var res =
-                kind === 'activate'
-                    ? await sb.auth.signInWithOtp({
-                          email: email,
-                          options: {
-                              shouldCreateUser: false,
-                              emailRedirectTo: Auth.activationRedirect()
-                          }
-                      })
-                    : await sb.auth.resetPasswordForEmail(email, {
-                          redirectTo: Auth.activationRedirect()
-                      });
+            // One link for first-time and forgotten passwords: it works for an account that
+            // is not activated yet and for one that is.
+            var res = await sb.auth.signInWithOtp({
+                email: email,
+                options: {
+                    shouldCreateUser: false,
+                    emailRedirectTo: Auth.activationRedirect()
+                }
+            });
             if (res.error) {
                 if (
                     Number(res.error.status) === 429 ||

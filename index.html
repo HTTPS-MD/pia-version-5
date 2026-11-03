@@ -713,58 +713,13 @@
         </div>
     </div>
 
-    <div class="overlay" id="modal-activate" role="dialog" aria-modal="true" aria-labelledby="activate-title"
-        aria-describedby="activate-description">
-        <div class="modal modal-sm">
-            <header class="modal-head">
-                <div class="modal-head-text">
-                    <h2 class="modal-title" id="activate-title">Activate your account</h2>
-                    <p class="modal-sub" id="activate-description">Your account must be created by an admin before you
-                        can activate it. If your account has not been created yet, contact your admin.</p>
-                </div>
-                <button type="button" class="modal-close" data-modal-close aria-label="Close dialog"><svg class="icon"
-                        aria-hidden="true">
-                        <use href="/assets/icons-landing.svg#i-x"></use>
-                    </svg></button>
-            </header>
-            <div class="modal-body">
-                <form id="activate-form" novalidate>
-                    <div class="field">
-                        <label class="label" for="ac-email">School email</label>
-                        <input class="input" type="email" id="ac-email" autocomplete="username" inputmode="email"
-                            autocapitalize="off" spellcheck="false" aria-describedby="ac-email-msg" data-autofocus>
-                        <p class="field-msg" id="ac-email-msg" data-msg-for="ac-email"></p>
-                    </div>
-                </form>
-                <section id="ac-accepted" class="email-accepted" aria-label="Email request accepted" hidden>
-                    <p class="email-lead">If this email can be activated, we sent an activation link to:</p>
-                    <p class="email-destination"><strong id="ac-sent-to"></strong></p>
-                    <a class="btn btn-primary email-open" id="ac-open-mail" href="https://mail.google.com/" target="_blank" rel="noopener">Open inbox</a>
-                    <p class="email-note">Not there? Check Spam or Junk.</p>
-                    <div class="auth-alt">
-                        <button type="button" class="link-btn" id="ac-resend">Resend email</button>
-                        <button type="button" class="link-btn" id="ac-change-email">Use a different email</button>
-                    </div>
-                </section>
-                <p class="email-cooldown" id="ac-cooldown"></p>
-                <p class="auth-status" id="activate-status" role="status"><svg class="icon" aria-hidden="true">
-                        <use href="/assets/icons-landing.svg#i-alert"></use>
-                    </svg><span data-status-text></span></p>
-            </div>
-            <footer class="modal-foot" id="ac-footer">
-                <button class="btn btn-primary" type="submit" form="activate-form" id="ac-submit">Send activation
-                    link</button>
-            </footer>
-        </div>
-    </div>
-
     <div class="overlay" id="modal-forgot" role="dialog" aria-modal="true" aria-labelledby="forgot-title"
         aria-describedby="forgot-description">
         <div class="modal modal-sm">
             <header class="modal-head">
                 <div class="modal-head-text">
-                    <h2 class="modal-title" id="forgot-title">Reset your password</h2>
-                    <p class="modal-sub" id="forgot-description">Enter your school email. We’ll send instructions to
+                    <h2 class="modal-title" id="forgot-title">Set your password</h2>
+                    <p class="modal-sub" id="forgot-description">Enter your school email. We’ll send a link to set or
                         reset your password.</p>
                 </div>
                 <button type="button" class="modal-close" data-modal-close aria-label="Close dialog"><svg class="icon"
@@ -782,7 +737,7 @@
                     </div>
                 </form>
                 <section id="fp-accepted" class="email-accepted" aria-label="Email request accepted" hidden>
-                    <p class="email-lead">If this email is registered, we sent a reset link to:</p>
+                    <p class="email-lead">If this email is registered, we sent a link to:</p>
                     <p class="email-destination"><strong id="fp-sent-to"></strong></p>
                     <a class="btn btn-primary email-open" id="fp-open-mail" href="https://mail.google.com/" target="_blank" rel="noopener">Open inbox</a>
                     <p class="email-note">Not there? Check Spam or Junk.</p>
@@ -797,8 +752,7 @@
                     </svg><span data-status-text></span></p>
             </div>
             <footer class="modal-foot" id="fp-footer">
-                <button class="btn btn-primary" type="submit" form="forgot-form" id="fp-submit">Send reset
-                    email</button>
+                <button class="btn btn-primary" type="submit" form="forgot-form" id="fp-submit">Send link</button>
             </footer>
         </div>
     </div>
@@ -873,12 +827,12 @@
     <script defer src="assets/js/shared/page-extras.js?v=20261031a"></script>
     <script defer src="assets/js/shared/device-revoke.js?v=20261031b"></script>
     <script defer src="assets/js/shared/stage-sync.js?v=20261031a"></script>
-    <script defer src="assets/js/landing/auth-modals.js?v=20261031b"></script>
+    <script defer src="assets/js/landing/auth-modals.js?v=20261031z"></script>
     <script defer src="assets/js/landing/auth-form-helpers.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-sign-in.js?v=20261101a"></script>
     <script defer src="assets/js/landing/auth-student-join.js?v=20261031f"></script>
     <script defer src="assets/js/landing/auth-device-reset.js?v=20261101a"></script>
-    <script defer src="assets/js/landing/auth-email-requests.js?v=20261031f"></script>
+    <script defer src="assets/js/landing/auth-email-requests.js?v=20261031g"></script>
     <script defer src="assets/js/landing/auth-greeting.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-resume.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-hero-join.js?v=20261031e"></script>
