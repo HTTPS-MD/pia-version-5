@@ -5372,3 +5372,40 @@ h4 {
 :root[data-session='pending'] .hero-resume {
     visibility: hidden;
 }
+
+/* reset and activate: no reserved blank space, even gaps when a message appears */
+#modal-forgot .modal-body,
+#modal-activate .modal-body {
+    display: grid;
+    gap: var(--sp-4);
+    padding-bottom: var(--sp-6);
+}
+#modal-forgot .field-msg:empty,
+#modal-activate .field-msg:empty,
+#modal-forgot .email-cooldown:empty,
+#modal-activate .email-cooldown:empty {
+    display: none;
+}
+#modal-forgot .field-msg,
+#modal-activate .field-msg {
+    margin-top: var(--sp-2);
+}
+#modal-forgot .email-cooldown,
+#modal-activate .email-cooldown {
+    min-height: 0;
+    margin: 0;
+}
+#modal-forgot .auth-status,
+#modal-activate .auth-status {
+    min-height: 0;
+    margin: 0;
+    line-height: 1.55;
+}
+#modal-forgot .auth-status:not(.is-error):not(.is-ok),
+#modal-activate .auth-status:not(.is-error):not(.is-ok) {
+    display: none;
+}
+#modal-forgot .modal-foot,
+#modal-activate .modal-foot {
+    padding-top: var(--sp-2);
+}
