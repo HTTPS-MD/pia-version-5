@@ -118,9 +118,6 @@ html[data-surface='admin'] .btn-icon {
 html[data-surface='admin'] .btn-icon:hover {
     background: var(--bg-chip);
 }
-html[data-surface='admin'] .sidebar-user .avatar {
-    box-shadow: 0 0 0 2px var(--admin-pill);
-}
 @media (min-width: 56.3125rem) {
     html[data-surface='admin'] .app {
         grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -140,9 +137,8 @@ html[data-surface='admin'] .sidebar-user .avatar {
         margin-right: var(--bar-edge);
     }
     html[data-surface='admin'] .topbar {
-        padding-left: 12rem;
-        padding-right: calc(var(--bar-edge) + 3.25rem);
-    }
+    padding-left: 12rem;
+}
     html[data-surface='admin'] .main {
         grid-area: main;
     }
@@ -310,9 +306,6 @@ html[data-surface='admin'] .table tbody tr:hover {
 }
 html[data-surface='admin'] .stage-switch {
     border-radius: 999px;
-}
-html[data-surface='admin'] .stage-switch.is-on {
-    background: var(--accent);
 }
 html[data-surface='admin'] .user-menu {
     border-radius: 18px;
@@ -497,12 +490,8 @@ html[data-surface='admin'] .head-search .input {
 .show-details {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
     margin-left: auto;
-    height: 34px;
-    padding: 0 14px;
     border: 1px solid var(--line-input);
-    border-radius: 999px;
     background: var(--bg-surface);
     color: var(--text);
     font: 600 var(--fs-sm) var(--font-body);
@@ -514,7 +503,6 @@ html[data-surface='admin'] .head-search .input {
 }
 #view-students .panel-bar {
     flex-wrap: wrap;
-    gap: 10px 12px;
 }
 #view-students .panel-bar .bar-group {
     margin-left: auto;
@@ -680,7 +668,6 @@ html[data-surface='admin'] .mk-pair .btn {
     overflow: visible;
 }
 .class-strip .prof-card-host {
-    flex: 1 1 22rem;
     margin: 0;
     min-width: 0;
     position: relative;
@@ -1043,7 +1030,6 @@ html[data-surface='admin'] .table {
 html[data-surface='admin'] .theme-toggle {
     display: grid;
     place-items: center;
-    width: var(--tap-min, 44px);
     height: var(--tap-min, 44px);
     flex: 0 0 var(--tap-min, 44px);
     border: 2px solid currentColor;
@@ -1061,7 +1047,6 @@ html[data-surface='admin'] .theme-toggle:hover {
 .as-table {
     border: 1px solid var(--line);
     border-radius: 0.9rem;
-    overflow: hidden;
 }
 .as-cells {
     display: grid;
@@ -1402,7 +1387,6 @@ html[data-surface='admin'] #modal-scores .score-input {
     align-items: center;
     gap: 4px;
     padding: 0;
-    margin-left: 14px;
 }
 
 /* the eye beside the section title */
@@ -1411,9 +1395,6 @@ html[data-surface='admin'] #modal-scores .score-input {
     align-items: center;
     gap: 14px;
     min-width: 0;
-}
-#view-students .page-title-row .show-details {
-    margin-left: 0;
 }
 
 /* search and group filter take the table's own colour, with one plain outline on focus */
@@ -1700,32 +1681,18 @@ html[data-surface='admin'][data-theme='dark'] .show-details {
 #view-mathtask .qb-strip {
     display: flex;
     align-items: center;
-    gap: 10px;
-    height: 48px;
-    padding: 0 8px;
     box-sizing: border-box;
-    border-radius: 24px;
 }
 #view-mathtask .qb-strip[hidden] {
     display: none;
-}
-
-#view-mathtask .qb-strip {
-    padding: 0 10px;
-    gap: 10px;
 }
 #view-mathtask .qb-strip .btn {
     margin: 0;
 }
 #view-mathtask .card-head[hidden] {
     display: none;
-}
+}/* the account button is as big as the theme button beside it (the avatar plus its 2px ring is 44px) */
 
-/* the account button is as big as the theme button beside it (the avatar plus its 2px ring is 44px) */
-html[data-surface='admin'] .sidebar-user .avatar {
-    width: 40px;
-    height: 40px;
-}
 /* the questions table keeps the card's rounded corners */
 #view-mathtask .card[data-region='mathtask']:not(.qb-config) {
     overflow: clip;
@@ -1742,18 +1709,11 @@ html[data-surface='admin'] .sidebar-user .avatar {
 }
 
 html[data-surface='admin'] .sidebar-user {
-    display: grid;
     place-items: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
     flex: none;
 }
 html[data-surface='admin'] .sidebar-user .avatar {
     flex: none;
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
     aspect-ratio: 1;
     border-radius: 50%;
 }
@@ -1846,22 +1806,14 @@ html[data-surface='admin'] .sidebar-user .avatar {
     #view-students .stage-items {
         gap: 8px 18px;
     }
-    #view-mathtask .page-head {
-        align-items: stretch;
-    }
-    #view-mathtask .qb-strip {
-        width: 100%;
-        justify-content: flex-end;
-    }
     html[data-surface='admin'] .topbar {
         padding-right: 5.75rem;
     }
 }
 @media (max-width: 30rem) {
     #view-mathtask .qb-strip .btn {
-        flex: 1 1 0;
-        justify-content: center;
-    }
+    justify-content: center;
+}
     .page-title {
         overflow-wrap: anywhere;
     }
@@ -1950,10 +1902,8 @@ html[data-surface='admin'] .sidebar-user .avatar {
 }
 @media (max-width: 47.99rem) {
     .qb-table {
-        display: table;
-        table-layout: fixed;
-        min-width: 44rem;
-    }
+    display: table;
+}
     .qb-table thead {
         display: table-header-group;
     }
@@ -1969,27 +1919,11 @@ html[data-surface='admin'] .sidebar-user .avatar {
     }
     .qb-table tbody td,
     .qb-table tbody td.qb-cell-q {
-        display: table-cell;
-        height: var(--qb-row-h);
-        padding: 0 var(--sp-5);
-        vertical-align: middle;
-    }
+    display: table-cell;
+    vertical-align: middle;
+}
     .qb-table tbody td.qb-cell-q {
         padding-right: var(--sp-3);
-    }
-    .qb-table tbody td.qb-cell-answer,
-    .qb-table tbody td.qb-cell-points {
-        padding: 0 var(--sp-2);
-    }
-    .qb-col-answer {
-        width: 10rem;
-    }
-    .qb-col-points {
-        width: 6.5rem;
-    }
-    .qb-q {
-        height: calc(var(--qb-lh) * 2);
-        -webkit-line-clamp: 2;
     }
     .qb-cell-label {
         position: absolute;
@@ -2010,9 +1944,6 @@ html[data-surface='admin'] .sidebar-user .avatar {
     #modal-scores .score-out {
         grid-column: auto;
     }
-    #modal-scores .scores-table th.col-score {
-        width: 15rem;
-    }
 }
 @media (max-width: 30rem) {
     #view-settings .panel-bar {
@@ -2023,14 +1954,11 @@ html[data-surface='admin'] .sidebar-user .avatar {
 /* phone: the scores stay a table you swipe sideways, with the student's name pinned */
 @media (max-width: 40rem) {
     #modal-scores .table-wrap {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
+    -webkit-overflow-scrolling: touch;
+}
     #modal-scores .scores-table {
-        display: table;
-        width: 100%;
-        min-width: 32rem;
-    }
+    display: table;
+}
     #modal-scores .scores-table thead {
         display: table-header-group;
     }
@@ -2053,13 +1981,10 @@ html[data-surface='admin'] .sidebar-user .avatar {
     }
     #modal-scores .scores-table th:first-child,
     #modal-scores .scores-table td:first-child {
-        position: sticky;
-        left: 0;
-        z-index: 1;
-        min-width: 9rem;
-        background: var(--bg-surface);
-        box-shadow: 1px 0 0 var(--line);
-    }
+    left: 0;
+    z-index: 1;
+    background: var(--bg-surface);
+}
 }
 
 @media (max-width: 40rem) {
@@ -2071,16 +1996,15 @@ html[data-surface='admin'] .sidebar-user .avatar {
         box-shadow: 1px 0 0 var(--line);
     }
     html[data-surface='admin'] #view-students .table tbody td:first-child {
-        position: sticky;
-        left: 0;
-        z-index: 2;
-        width: 9rem !important;
-        min-width: 9rem;
-        max-width: 9rem !important;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        background: var(--bg-surface);
-    }
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    width: 9rem !important;
+    min-width: 9rem;
+    max-width: 9rem !important;
+    text-overflow: ellipsis;
+    background: var(--bg-surface);
+}
     html[data-surface='admin'] #view-students .table thead th:first-child {
         width: 9rem !important;
         min-width: 9rem;
@@ -2169,11 +2093,6 @@ html[data-surface='admin'] .as-addbar .input {
 }
 
 @media (max-width: 40rem) {
-    #modal-scores .scores-table th:first-child,
-    #modal-scores .scores-table td:first-child {
-        min-width: 7.5rem;
-        max-width: 7.5rem;
-    }
 }
 
 /* input scores: the pre-test and post-test tabs are for phones only */
@@ -2201,9 +2120,8 @@ html[data-surface='admin'] .as-addbar .input {
         overflow-x: hidden;
     }
     #modal-scores .scores-table {
-        min-width: 0;
-        table-layout: auto;
-    }
+    min-width: 0;
+}
     #modal-scores .scores-table th:first-child,
     #modal-scores .scores-table td:first-child {
         position: static;
@@ -2211,21 +2129,12 @@ html[data-surface='admin'] .as-addbar .input {
         max-width: none;
         box-shadow: none;
     }
-    #modal-scores .scores-table th.col-score {
-        width: auto;
-    }
 }
 
 @media (max-width: 40rem) {
     #modal-scores .scores-table {
         table-layout: fixed;
         width: 100%;
-    }
-    #modal-scores .scores-table th:first-child {
-        width: 42%;
-    }
-    #modal-scores .scores-table th.col-score {
-        width: 58%;
     }
     #modal-scores .scores-table td:first-child .cell-name {
         overflow-wrap: anywhere;
@@ -2237,19 +2146,12 @@ html[data-surface='admin'] .as-addbar .input {
 }
 
 @media (max-width: 40rem) {
-    #modal-scores .scores-table th:first-child {
-        width: 38%;
-    }
-    #modal-scores .scores-table th.col-score {
-        width: 62%;
-    }
     #modal-scores .scores-table td:first-child {
         padding-right: 8px;
     }
     #modal-scores .score-pair {
-        grid-template-columns: minmax(0, 4rem) auto auto;
-        column-gap: 6px;
-    }
+    grid-template-columns: minmax(0, 4rem) auto auto;
+}
     #modal-scores .score-out {
         white-space: nowrap;
     }
@@ -2319,12 +2221,6 @@ html[data-surface='admin'] .as-addbar .input {
         min-width: 0;
         width: 100%;
         table-layout: fixed;
-    }
-    .qb-col-answer {
-        width: 4.5rem;
-    }
-    .qb-col-points {
-        width: 4rem;
     }
     .qb-table thead th {
         padding-inline: 10px;
