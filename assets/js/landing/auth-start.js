@@ -95,9 +95,20 @@
             return;
         }
 
-        var key = ['staff', 'activate', 'forgot'].includes(target) ? target : 'signin';
+        var expired = target === 'expired';
+        var key = expired
+            ? 'forgot'
+            : ['staff', 'activate', 'forgot'].includes(target)
+              ? target
+              : 'signin';
         var statusId = key === 'staff' ? 'staff-status' : 'signin-status';
         Auth.openAuth(key);
+        if (expired) {
+            Auth.setEmailIntro(
+                'Request a new link',
+                'Enter your school email. We’ll send you a new link.'
+            );
+        }
         if (ENTRY_REASONS[reason]) {
             setTimeout(function () {
                 Auth.setStatus(statusId, ENTRY_REASONS[reason], 'error');

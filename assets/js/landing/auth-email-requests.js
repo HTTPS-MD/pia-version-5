@@ -22,13 +22,35 @@
 
     var emailTimer = null;
 
+    var DEFAULT_TITLE = emailRequests.forgot.title;
+    var DEFAULT_SUB = '';
+
     function invalidateEmailView(id) {
         Object.keys(emailRequests).forEach(function (kind) {
             if (id === 'modal-' + kind) {
                 emailRequests[kind].version++;
             }
         });
+        if (id === 'modal-forgot') {
+            setIntro(DEFAULT_TITLE, DEFAULT_SUB);
+        }
     }
+
+    // The window can introduce itself differently, for example after an expired link.
+    function setIntro(title, sub) {
+        emailRequests.forgot.title = title;
+        var node = $('#forgot-description');
+        if (node) {
+            if (!DEFAULT_SUB) {
+                DEFAULT_SUB = node.textContent;
+            }
+            node.textContent = sub || DEFAULT_SUB;
+        }
+    }
+    Auth.setEmailIntro = function (title, sub) {
+        setIntro(title, sub);
+        renderEmailRequests();
+    };
     Auth.invalidateEmailView = invalidateEmailView;
 
     function renderEmailRequests() {
