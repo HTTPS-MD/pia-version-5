@@ -2415,3 +2415,23 @@ html[data-surface='admin'] .as-addbar .input {
 #view-students .page-title-row .stage-let .stage-items {
     align-items: center;
 }
+
+/* participant and teacher profile: the notes ("No result yet", "No sessions yet") have room inside their box */
+.drawer-body .notice {
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 18px;
+    border-radius: var(--r-md);
+}
+.drawer-body .notice .icon {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+}
+.drawer-body .notice-title {
+    line-height: 1.4;
+}
+.drawer-body .notice-text {
+    margin-top: 6px;
+    line-height: 1.6;
+}
