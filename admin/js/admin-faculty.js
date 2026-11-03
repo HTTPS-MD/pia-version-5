@@ -147,6 +147,12 @@
             }
         });
 
+        $('#faculty-unassign').addEventListener('click', function () {
+            if (window.PIACheckin && window.PIACheckin.removeFromSection) {
+                window.PIACheckin.removeFromSection();
+            }
+        });
+
         $('#faculty-reset').addEventListener('click', function () {
             if (Admin.state.activeFaculty) {
                 resetFacultyPassword(Admin.state.activeFaculty.email, this);
@@ -270,9 +276,9 @@
         $('#faculty-title').textContent = f.name || 'Teacher profile';
         var sectionActions = $('#faculty-section-actions');
         if (sectionActions) {
-            var current = window.PIASectionNow && f.assigned_section === window.PIASectionNow;
+            var current = !!(window.PIACheckin && window.PIACheckin.holdsSection && window.PIACheckin.holdsSection(f.email));
             sectionActions.style.display = current ? '' : 'none';
-            $('#faculty-section-label').textContent = 'Section ' + (f.assigned_section || '');
+            $('#faculty-section-label').textContent = 'Section ' + (window.PIASectionNow || '');
         }
         $('#faculty-initials').textContent = Admin.initialsOf(f.name, f.email);
         $('#faculty-subject').textContent = f.email;

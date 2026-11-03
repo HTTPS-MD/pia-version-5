@@ -1183,8 +1183,43 @@
         openProfMenu(anchor);
     }
 
+    function holdsSection(email) {
+        var section = chosen();
+        return !!section && holder[section] === String(email || '').toLowerCase();
+    }
+
+    // Called from the teacher profile: the section keeps its students and waits for a new teacher.
+    async function removeFromSection() {
+        var section = chosen();
+        var Admin = window.PIAAdmin;
+        if (!section || !Admin) {
+            return;
+        }
+        var ok = await Admin.confirmAction({
+            heading: 'Remove the teacher from ' + section + '?',
+            message: 'Their account stays. The section has no teacher until you assign one.',
+            confirmLabel: 'Remove from section'
+        });
+        if (!ok) {
+            return;
+        }
+        Admin.closeModal('modal-faculty');
+        try {
+            await call('admin_set_section_professor', { p_section: section, p_email: null });
+            say('Teacher removed from ' + section + '.');
+            await refreshOverview();
+            if (Admin.loadFaculty) {
+                await Admin.loadFaculty();
+            }
+        } catch (error) {
+            say(failure(error), true);
+        }
+    }
+
     window.PIACheckin = {
         changeProfessor: changeProfessor,
+        holdsSection: holdsSection,
+        removeFromSection: removeFromSection,
         loadNumber: loadNumber,
         decorateRoster: decorateRoster,
         saveNumberFor: function (email, number) {
