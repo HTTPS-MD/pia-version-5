@@ -50,7 +50,8 @@ async function validateDeviceOnLoad() {
         !userEmail ||
         !currentDeviceId ||
         window.location.pathname.includes('admin-dashboard') ||
-        window.location.pathname.includes('sign-in.html')
+        window.location.pathname.includes('sign-in.html') ||
+        window.location.pathname.includes('sign-up.html')
     ) {
         return;
     }
@@ -88,7 +89,8 @@ async function watchDeviceSession() {
     if (!userEmail || !currentDeviceId) return;
     if (
         window.location.pathname.includes('admin-dashboard') ||
-        window.location.pathname.includes('sign-in.html')
+        window.location.pathname.includes('sign-in.html') ||
+        window.location.pathname.includes('sign-up.html')
     )
         return;
 
