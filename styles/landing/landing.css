@@ -5532,3 +5532,26 @@ h4 {
 #modal-activate .email-accepted:not([hidden]) ~ .auth-status {
     display: none;
 }
+
+/* phones: Teacher / Admin sits in the bar and the theme switch moves into the menu.
+   Once Join shows, Teacher / Admin leaves the bar for the menu. */
+.nav-theme-item {
+    display: none;
+}
+@media (max-width: 39.99rem) {
+    .nav:not(.has-auth) .nav-signin {
+        display: inline-flex;
+    }
+    .nav.has-auth .nav-signin {
+        display: none;
+    }
+    .nav .theme-toggle {
+        display: none;
+    }
+    .nav-theme-item {
+        display: block;
+    }
+    .nav:not(.has-auth) .nav-staff-item {
+        display: none;
+    }
+}
