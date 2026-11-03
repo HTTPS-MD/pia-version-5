@@ -92,6 +92,7 @@
         Admin.initChangePassword();
         Admin.initDeleteOwnAccount();
         Admin.initAdminPager();
+        Admin.initAddAdminSync();
 
         $('#new-section-form').addEventListener('submit', async function (event) {
             event.preventDefault();
