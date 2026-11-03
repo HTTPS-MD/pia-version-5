@@ -2001,11 +2001,24 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
     --bg-surface-hi: color-mix(in srgb, var(--hex-ffffff) 9%, var(--hex-142849));
     --line: color-mix(in srgb, var(--hex-fff8e7) 18%, var(--hex-142849));
     --line-soft: color-mix(in srgb, var(--hex-fff8e7) 10%, var(--hex-142849));
+    --bg-field: color-mix(in srgb, var(--palette-paper) 3%, var(--palette-ink));
+    --text: var(--palette-paper);
+    --text-muted: color-mix(in srgb, var(--palette-paper) 72%, var(--palette-ink));
+    --text-faint: color-mix(in srgb, var(--palette-paper) 60%, var(--palette-ink));
+    --danger: var(--status-red-dark);
+    --danger-ink: var(--status-red-dark);
+    --danger-soft: color-mix(in srgb, var(--status-red-dark) 14%, transparent);
 }
 :root[data-theme='light'] body:not(.landing-look) .overlay {
     --bg-surface: var(--hex-fffaf0);
     --bg-surface-hi: var(--hex-ffffff);
     --bg-field: var(--hex-ffffff);
+    --text: var(--palette-ink);
+    --text-muted: color-mix(in srgb, var(--palette-ink) 74%, var(--palette-paper));
+    --text-faint: color-mix(in srgb, var(--palette-ink) 66%, var(--palette-paper));
+    --danger: var(--status-red-ink);
+    --danger-ink: var(--status-red-ink);
+    --danger-soft: color-mix(in srgb, var(--status-red-ink) 12%, transparent);
 }
 body:not(.landing-look) .overlay {
     --r-card: 20px;
