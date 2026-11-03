@@ -150,11 +150,23 @@
         $('#cp-show').addEventListener('change', function () {
             setPasswordsShown(this.checked);
         });
+        // Update stays off until something is typed, and goes off again when the window empties.
+        function syncUpdate() {
+            $('#cp-submit').disabled = !['cp-current', 'cp-new', 'cp-confirm'].some(function (id) {
+                return $('#' + id).value !== '';
+            });
+        }
         ['cp-current', 'cp-new', 'cp-confirm'].forEach(function (id) {
             $('#' + id).addEventListener('input', function () {
                 Admin.setFieldError(id, '');
+                syncUpdate();
             });
         });
+        new MutationObserver(syncUpdate).observe($('#modal-change-password'), {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+        syncUpdate();
     }
     Admin.initChangePassword = initChangePassword;
 

@@ -83,8 +83,16 @@
         });
     }
 
+    // Update stays off until something is typed.
+    function syncUpdate() {
+        $('#cp-submit').disabled = !['cp-current', 'cp-new', 'cp-confirm'].some(function (id) {
+            return document.getElementById(id).value !== '';
+        });
+    }
+
     function resetPasswordForm() {
         $('#password-form').reset();
+        syncUpdate();
         showPasswords(false);
         ['cp-current', 'cp-new', 'cp-confirm'].forEach(function (id) {
             fieldError(id, '');
@@ -167,8 +175,8 @@
                     : 'Password updated. Your other devices were signed out. This one stays signed in.'
             );
         } finally {
-            submit.disabled = false;
-            submit.textContent = 'Update';
+            submit.textContent = 'Update password';
+            syncUpdate();
         }
     }
 
@@ -208,6 +216,7 @@
         ['cp-current', 'cp-new', 'cp-confirm'].forEach(function (id) {
             document.getElementById(id).addEventListener('input', function () {
                 fieldError(id, '');
+                syncUpdate();
             });
         });
     }
