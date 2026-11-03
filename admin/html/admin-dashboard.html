@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261121e">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261105a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261116a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261120c">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261121z">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -293,30 +293,21 @@
                     <h2 class="settings-group" id="your-account-title">Your account</h2>
                     <div class="stack" aria-labelledby="your-account-title">
                         <section class="panel panel-pad" aria-labelledby="profile-details-title">
-                            <h2 class="panel-title" id="profile-details-title">Personal details</h2>
-                            <dl class="facts">
-                                <div><dt>Name</dt><dd id="profile-name">—</dd></div>
-                                <div><dt>Email</dt><dd id="profile-email">—</dd></div>
-                            </dl>
-                        </section>
-
-                        <section class="panel panel-pad" aria-labelledby="profile-password-title">
-                            <div class="panel-row">
-                                <div>
-                                    <h2 class="panel-title" id="profile-password-title">Password</h2>
-                                    <p class="muted">Changing it signs your other devices out; this one stays signed in.</p>
-                                </div>
-                                <button type="button" class="btn btn-secondary" data-modal-open="modal-change-password">Change password</button>
+                            <div class="panel-section">
+                                <h2 class="panel-title" id="profile-details-title">Personal details</h2>
+                                <dl class="facts">
+                                    <div><dt>Name</dt><dd id="profile-name">—</dd></div>
+                                    <div><dt>Email</dt><dd id="profile-email">—</dd></div>
+                                </dl>
                             </div>
-                        </section>
-
-                        <section class="panel panel-pad" aria-labelledby="profile-delete-title">
-                            <div class="panel-row">
-                                <div>
-                                    <h2 class="panel-title" id="profile-delete-title">Delete account</h2>
-                                    <p class="muted">Permanently removes your administrator account. This cannot be undone, and the last administrator cannot be deleted.</p>
+                            <div class="panel-section" aria-labelledby="profile-password-title">
+                                <div class="panel-row">
+                                    <div>
+                                        <h2 class="panel-title" id="profile-password-title">Password</h2>
+                                        <p class="muted">Changing it signs your other devices out; this one stays signed in.</p>
+                                    </div>
+                                    <button type="button" class="btn btn-secondary" data-modal-open="modal-change-password">Change password</button>
                                 </div>
-                                <button type="button" class="btn btn-danger" id="delete-own-account">Delete my account</button>
                             </div>
                         </section>
                     </div>
@@ -340,6 +331,16 @@
                     </section>
                         </div>
                     </div>
+
+                    <section class="panel panel-pad settings-danger" aria-labelledby="profile-delete-title">
+                        <div class="panel-row">
+                            <div>
+                                <h2 class="panel-title" id="profile-delete-title">Delete account</h2>
+                                <p class="muted">Permanently removes your administrator account. This cannot be undone, and the last administrator cannot be deleted.</p>
+                            </div>
+                            <button type="button" class="btn btn-danger" id="delete-own-account">Delete my account</button>
+                        </div>
+                    </section>
                 </section>
 
                 <section class="page is-hidden" id="view-help" data-view-panel="help">

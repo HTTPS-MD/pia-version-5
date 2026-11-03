@@ -2419,3 +2419,27 @@ html[data-surface='admin'] .as-addbar .input {
         width: 4.5rem;
     }
 }
+
+/* settings: one account card beside the team, and the delete action as a quiet bar underneath */
+.settings-col .panel-section + .panel-section {
+    margin-top: var(--sp-6);
+    padding-top: var(--sp-6);
+    border-top: 1px solid var(--line-soft);
+}
+.settings-danger {
+    margin-top: var(--sp-7);
+}
+.settings-danger.panel-pad {
+    padding: var(--sp-6) var(--sp-8);
+}
+.settings-danger .panel-row {
+    gap: var(--sp-6);
+}
+.settings-danger .panel-title {
+    margin-bottom: var(--sp-2);
+}
+.settings-danger .muted {
+    margin: 0;
+    max-width: 60ch;
+    line-height: 1.6;
+}
