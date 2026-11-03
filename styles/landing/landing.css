@@ -5555,3 +5555,40 @@ h4 {
         display: none;
     }
 }
+
+/* phone menu: plain rows without arrows; the theme row sits apart and shows the current mode */
+@media (max-width: 63.99rem) {
+    .nav .nav-link::after {
+        content: none;
+    }
+    .nav .nav-link {
+        justify-content: flex-start;
+        min-height: 3.25rem;
+        font-size: 1.375rem;
+    }
+    .nav-theme-item {
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+        border-top: 1px solid color-mix(in srgb, var(--text) 16%, transparent);
+    }
+    .nav .nav-link-theme {
+        justify-content: space-between;
+        font-size: 1.125rem;
+        font-weight: 600;
+        color: color-mix(in srgb, var(--text) 78%, transparent);
+    }
+    .nav .nav-link-theme::after {
+        content: 'Dark';
+        font-family: var(--font-body);
+        font-size: 0.9375rem;
+        font-weight: 700;
+        opacity: 1;
+        padding: 0.2rem 0.7rem;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--text) 12%, transparent);
+        color: var(--text);
+    }
+    :root[data-theme='light'] .nav .nav-link-theme::after {
+        content: 'Light';
+    }
+}

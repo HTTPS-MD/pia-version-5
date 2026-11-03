@@ -139,7 +139,6 @@
             form.hidden = false;
             submit.disabled = false;
             submit.textContent = label;
-            message('Email link verified. Choose your password.');
 
             history.replaceState(null, '', entry.pathname);
             document.getElementById('setup-password').focus();
