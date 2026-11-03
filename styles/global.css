@@ -1786,92 +1786,89 @@ body.is-locked {
     -webkit-tap-highlight-color: transparent;
 }
 
-/* help pages (teacher and admin) */
+/* help pages (teacher and admin): one open topic at a time */
 .help-layout {
-    display: grid;
-    grid-template-columns: 190px minmax(0, 1fr);
-    gap: 40px;
-    align-items: start;
-}
-.help-toc {
-    position: sticky;
-    top: calc(50% + 40px);
-    transform: translateY(-50%);
-    display: grid;
-    gap: 2px;
-}
-.help-toc button {
-    padding: 8px 12px;
-    border: 0;
-    border-left: 2px solid var(--line);
-    background: transparent;
-    color: var(--text-muted);
-    font: inherit;
-    font-size: var(--fs-sm);
-    text-align: left;
-    cursor: pointer;
-}
-.help-toc button:hover,
-.help-toc button:focus-visible {
-    background: var(--bg-chip);
-    color: var(--text);
-}
-.help-toc button.is-active {
-    border-left-color: var(--accent);
-    color: var(--text);
-    font-weight: 600;
+    max-width: 860px;
+    margin: 0 auto;
 }
 .help-steps {
     display: grid;
+    gap: 14px;
     min-width: 0;
 }
 .help-step {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--bg-surface);
+    overflow: hidden;
+}
+.help-q {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 18px 22px;
+    color: var(--text);
+    cursor: pointer;
+    list-style: none;
+}
+.help-q::-webkit-details-marker {
+    display: none;
+}
+.help-q::after {
+    content: '';
+    flex: none;
+    align-self: center;
+    margin-left: auto;
+    border: 6px solid transparent;
+    border-top: 9px solid currentColor;
+    border-bottom: 0;
+    transition: transform 0.2s;
+}
+.help-step[open] > .help-q {
+    background: var(--accent);
+    color: #fff;
+}
+.help-step[open] > .help-q::after {
+    transform: rotate(180deg);
+}
+.help-q:hover,
+.help-q:focus-visible {
+    background: var(--bg-chip);
+}
+.help-step[open] > .help-q:hover,
+.help-step[open] > .help-q:focus-visible {
+    background: var(--accent-strong);
+}
+.help-num {
+    font-family: var(--font-mono);
+    font-size: var(--fs-sm);
+    font-weight: 700;
+    color: var(--accent);
+}
+.help-step[open] .help-num {
+    color: inherit;
+    opacity: 0.8;
+}
+.help-title {
+    margin: 0;
+    font-size: var(--fs-h4);
+    font-weight: 700;
+}
+.help-a {
     display: grid;
-    gap: 24px;
-    padding: 36px 0;
-    border-top: 1px solid var(--line);
-    scroll-margin-top: 96px;
-}
-.help-step:last-child {
-    min-height: 70vh;
-    align-content: start;
-}
-.help-step:first-child {
-    padding-top: 0;
-    border-top: 0;
-}
-.help-step.has-shot {
-    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-    align-items: center;
+    gap: 20px;
+    padding: 20px 22px 22px;
 }
 .help-shot {
     margin: 0;
     border: 1px solid var(--line);
     border-radius: 8px;
     overflow: hidden;
-    background: var(--bg-surface);
 }
 .help-shot img {
     display: block;
     width: 100%;
     height: auto;
-}
-.help-head {
-    display: flex;
-    align-items: baseline;
-    gap: 14px;
-    margin-bottom: 10px;
-}
-.help-num {
-    font-family: var(--font-mono);
-    font-size: var(--fs-h3);
-    font-weight: 700;
-    color: var(--accent);
-}
-.help-title {
-    margin: 0;
-    font-size: var(--fs-h4);
-    font-weight: 700;
 }
 .help-copy {
     color: var(--text-muted);
@@ -1879,6 +1876,9 @@ body.is-locked {
 }
 .help-copy p {
     margin: 0 0 10px;
+}
+.help-copy > :last-child {
+    margin-bottom: 0;
 }
 .help-copy ul {
     margin: 0 0 10px;
@@ -1888,31 +1888,4 @@ body.is-locked {
 }
 .help-copy strong {
     color: var(--text);
-}
-@media (max-width: 860px) {
-    .help-layout {
-        grid-template-columns: minmax(0, 1fr);
-        gap: 20px;
-    }
-    .help-toc {
-        position: static;
-        transform: none;
-        display: flex;
-        overflow-x: auto;
-        gap: 6px;
-    }
-    .help-toc button {
-        flex: none;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-    }
-    .help-toc button.is-active {
-        border-color: var(--accent);
-    }
-    .help-step.has-shot {
-        grid-template-columns: minmax(0, 1fr);
-    }
-    .help-shot {
-        order: 2;
-    }
 }

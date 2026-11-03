@@ -334,93 +334,102 @@
 
                 <section class="page is-hidden" id="view-help" data-view-panel="help">
                     <div class="page-head">
-                        <h1 class="page-title">Help</h1>
+                        <h1 class="page-title">Admin Help Center</h1>
                     </div>
 
                     <div class="help-layout">
-                        <nav class="help-toc" aria-label="Help topics">
-                            <button type="button" data-help-go="ah-study">How the study runs</button>
-                            <button type="button" data-help-go="ah-sections">Sections and students</button>
-                            <button type="button" data-help-go="ah-roll">Roll call (attendance)</button>
-                            <button type="button" data-help-go="ah-stages">Opening and closing stages</button>
-                            <button type="button" data-help-go="ah-teachers">Teachers</button>
-                            <button type="button" data-help-go="ah-mathtask">Math Task (question bank)</button>
-                            <button type="button" data-help-go="ah-personality">Personality and tutor assignment</button>
-                            <button type="button" data-help-go="ah-account">Your account and other admins</button>
-                        </nav>
+                        
                         <div class="help-steps">
-                            <article class="help-step" id="ah-study">
-                                <div class="help-copy">
-                                    <div class="help-head"><span class="help-num">01</span><h2 class="help-title">How the study runs</h2></div>
-                                    <p>Each student goes through three stages in order: the <strong>OCEAN test</strong> (a short personality questionnaire), <strong>Choose tutor</strong>, and the <strong>Game</strong> (math problems with the tutor).</p>
+                            <details class="help-step" open id="ah-study" name="help-topic">
+<summary class="help-q"><span class="help-num">01</span><span class="help-title">How the study runs</span></summary>
+<div class="help-a">
+
+<div class="help-copy">
+<p>Each student goes through three stages in order: the <strong>OCEAN test</strong> (a short personality questionnaire), <strong>Choose tutor</strong>, and the <strong>Game</strong> (math problems with the tutor).</p>
                                     <p>Students have no password. They enter with their student number, and only after you mark them present and open the stage for their section.</p>
-                                </div>
-                            </article>
-                            <article class="help-step" id="ah-sections">
-                                <figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-sections.webp" data-alt="The Sections page with the student table"></figure>
-                                <div class="help-copy">
-                                    <div class="help-head"><span class="help-num">02</span><h2 class="help-title">Sections and students</h2></div>
-                                    <ul>
+</div>
+</div>
+</details>
+                            <details class="help-step" id="ah-sections" name="help-topic">
+<summary class="help-q"><span class="help-num">02</span><span class="help-title">Sections and students</span></summary>
+<div class="help-a">
+<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-sections.webp" data-alt="The Sections page with the student table"></figure>
+<div class="help-copy">
+<ul>
                                     <li><strong>Manage sections / New section:</strong> create or rename a section, or delete one that has no students.</li>
                                     <li><strong>Add Students:</strong> add students to the chosen section. Each needs a name and an 11-digit student number.</li>
                                     <li><strong>Student table:</strong> shows each student’s section, condition (study group), stage, and character. Use the stage tabs and Reset filters to narrow the list.</li>
                                     <li><strong>Student drawer:</strong> click a student to see details, move them to another section, or fix their record.</li>
                                     <li><strong>Input Scores:</strong> enter the paper pre-test and post-test scores for the section.</li>
                                     </ul>
-                                </div>
-                            </article>
-                            <article class="help-step" id="ah-roll">
-                                <figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-attendance.webp" data-alt="Marking students present or absent"></figure>
-                                <div class="help-copy">
-                                    <div class="help-head"><span class="help-num">03</span><h2 class="help-title">Roll call (attendance)</h2></div>
-                                    <p>Mark each student Present or Absent for the session. A student who is not marked present cannot enter. Teachers see this attendance read-only.</p>
-                                </div>
-                            </article>
-                            <article class="help-step" id="ah-stages">
-                                <figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-stages.webp" data-alt="The stage tabs with their open and close switches"></figure>
-                                <div class="help-copy">
-                                    <div class="help-head"><span class="help-num">04</span><h2 class="help-title">Opening and closing stages</h2></div>
-                                    <p>Use the switch beside each stage tab to open or close that stage for the whole section. A student who opens a page for a stage that is not open to them is sent back to the page they belong on.</p>
+</div>
+</div>
+</details>
+                            <details class="help-step" id="ah-roll" name="help-topic">
+<summary class="help-q"><span class="help-num">03</span><span class="help-title">Roll call (attendance)</span></summary>
+<div class="help-a">
+<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-attendance.webp" data-alt="Marking students present or absent"></figure>
+<div class="help-copy">
+<p>Mark each student Present or Absent for the session. A student who is not marked present cannot enter. Teachers see this attendance read-only.</p>
+</div>
+</div>
+</details>
+                            <details class="help-step" id="ah-stages" name="help-topic">
+<summary class="help-q"><span class="help-num">04</span><span class="help-title">Opening and closing stages</span></summary>
+<div class="help-a">
+<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-stages.webp" data-alt="The stage tabs with their open and close switches"></figure>
+<div class="help-copy">
+<p>Use the switch beside each stage tab to open or close that stage for the whole section. A student who opens a page for a stage that is not open to them is sent back to the page they belong on.</p>
                                     <p>The stage tabs list students by where they are right now. The Offline tab lists students who are not signed in.</p>
-                                </div>
-                            </article>
-                            <article class="help-step" id="ah-teachers">
-                                <figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-teachers.webp" data-alt="A teacher’s profile"></figure>
-                                <div class="help-copy">
-                                    <div class="help-head"><span class="help-num">05</span><h2 class="help-title">Teachers</h2></div>
-                                    <ul>
+</div>
+</div>
+</details>
+                            <details class="help-step" id="ah-teachers" name="help-topic">
+<summary class="help-q"><span class="help-num">05</span><span class="help-title">Teachers</span></summary>
+<div class="help-a">
+<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-teachers.webp" data-alt="A teacher’s profile"></figure>
+<div class="help-copy">
+<ul>
                                     <li><strong>Add teacher:</strong> creates the account and assigns the teacher to a section.</li>
                                     <li><strong>Teacher profile:</strong> shows the teacher’s section and account status. From here you can remove the teacher from the section, reset their password, sign them out everywhere, or remove the account. To give a section a teacher again, use <strong>Assign teacher</strong> on the section.</li>
                                     <li>A teacher sees only the student directory of their own section, read-only. They never see personality results.</li>
                                     </ul>
-                                </div>
-                            </article>
-                            <article class="help-step" id="ah-mathtask">
-                                <figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-mathtask.webp" data-alt="The Math Task question bank"></figure>
-                                <div class="help-copy">
-                                    <div class="help-head"><span class="help-num">06</span><h2 class="help-title">Math Task (question bank)</h2></div>
-                                    <p>Questions here are used to build the game problems. Add or edit a question, review its steps and answers, and save. Use <strong>Rules</strong> to adjust the adaptive rules for the problems.</p>
+</div>
+</div>
+</details>
+                            <details class="help-step" id="ah-mathtask" name="help-topic">
+<summary class="help-q"><span class="help-num">06</span><span class="help-title">Math Task (question bank)</span></summary>
+<div class="help-a">
+<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-mathtask.webp" data-alt="The Math Task question bank"></figure>
+<div class="help-copy">
+<p>Questions here are used to build the game problems. Add or edit a question, review its steps and answers, and save. Use <strong>Rules</strong> to adjust the adaptive rules for the problems.</p>
                                     <p>Check every step and answer before students play, because the tutor teaches from them.</p>
-                                </div>
-                            </article>
-                            <article class="help-step" id="ah-personality">
-                                <div class="help-copy">
-                                    <div class="help-head"><span class="help-num">07</span><h2 class="help-title">Personality and tutor assignment</h2></div>
-                                    <p>The OCEAN scores (Extraversion, Agreeableness, Conscientiousness, Neuroticism, Openness) are used only for students in the <strong>Assigned</strong> group, whose tutor is matched to their result. In <strong>Free choice</strong> the student picks the tutor, <strong>Neutral</strong> gets a neutral tutor, and <strong>Control</strong> has a traditional lesson with no tutor.</p>
+</div>
+</div>
+</details>
+                            <details class="help-step" id="ah-personality" name="help-topic">
+<summary class="help-q"><span class="help-num">07</span><span class="help-title">Personality and tutor assignment</span></summary>
+<div class="help-a">
+
+<div class="help-copy">
+<p>The OCEAN scores (Extraversion, Agreeableness, Conscientiousness, Neuroticism, Openness) are used only for students in the <strong>Assigned</strong> group, whose tutor is matched to their result. In <strong>Free choice</strong> the student picks the tutor, <strong>Neutral</strong> gets a neutral tutor, and <strong>Control</strong> has a traditional lesson with no tutor.</p>
                                     <p>Personality results are confidential. They are for the research team only and are never shown to teachers or students.</p>
-                                </div>
-                            </article>
-                            <article class="help-step" id="ah-account">
-                                <figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-settings.webp" data-alt="The Settings page"></figure>
-                                <div class="help-copy">
-                                    <div class="help-head"><span class="help-num">08</span><h2 class="help-title">Your account and other admins</h2></div>
-                                    <ul>
+</div>
+</div>
+</details>
+                            <details class="help-step" id="ah-account" name="help-topic">
+<summary class="help-q"><span class="help-num">08</span><span class="help-title">Your account and other admins</span></summary>
+<div class="help-a">
+<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-settings.webp" data-alt="The Settings page"></figure>
+<div class="help-copy">
+<ul>
                                     <li><strong>Settings:</strong> your details, change password, and the list of administrators. Use <strong>Add administrator</strong> to invite another.</li>
                                     <li><strong>Password:</strong> changing it signs your other devices out.</li>
                                     <li><strong>Light or dark theme:</strong> in the account menu or the top bar.</li>
                                     </ul>
-                                </div>
-                            </article>
+</div>
+</div>
+</details>
                         </div>
                     </div>
                 </section>
