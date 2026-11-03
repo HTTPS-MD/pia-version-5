@@ -1795,6 +1795,7 @@ body.is-locked {
 #view-help .page-head {
     justify-content: center;
     text-align: center;
+    padding-top: var(--sp-6);
     margin-bottom: var(--sp-9);
 }
 .help-steps {
@@ -1932,6 +1933,16 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
     color: var(--text);
 }
 @media (max-width: 640px) {
+    #view-help .page-head {
+        padding-top: var(--sp-9);
+        margin-bottom: var(--sp-7);
+    }
+    .help-title {
+        font-size: var(--fs-md, 1.0625rem);
+    }
+    .help-steps {
+        gap: var(--sp-3);
+    }
     .help-q {
         padding: var(--sp-5);
         gap: var(--sp-4);
