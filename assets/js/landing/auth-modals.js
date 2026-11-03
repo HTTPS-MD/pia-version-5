@@ -91,6 +91,7 @@
         }
     }
     Auth.openModal = openModal;
+    Auth.closeModal = closeModal;
 
     function closeModal(target, switching) {
         var overlay = typeof target === 'string' ? document.getElementById(target) : target;

@@ -38,7 +38,7 @@
         $('#join-back').hidden = !confirm;
         $('#join-back').textContent = 'No, that is not me';
         $('#si-submit').hidden = false;
-        $('#si-submit').textContent = confirm ? 'Yes, that is me' : 'Next';
+        $('#si-submit').textContent = confirm ? 'Yes, that is me' : 'Join';
         $('#signin-title').textContent = confirm ? 'Is this you?' : 'Enter your code';
         $('#signin-sub').textContent = confirm
             ? 'Check the name and section before you continue.'
@@ -59,6 +59,12 @@
         Auth.clearStatus('signin-status');
     }
     Auth.resetJoin = resetJoin;
+
+    function showJoinError(message) {
+        Auth.closeModal('modal-signin', true);
+        $('#join-error-text').textContent = message;
+        Auth.openModal('modal-join-error');
+    }
 
     function backToNumber(message) {
         setJoinStep('number');
@@ -87,7 +93,7 @@
         var fail =
             ui.fail ||
             function (message) {
-                backToNumber(message);
+                showJoinError(message);
             };
 
         try {
@@ -179,13 +185,8 @@
 
         if (join.step === 'number') {
             var number = $('#join-number').value.replace(/\D/g, '');
-            if (
-                !Auth.setFieldError(
-                    'join-number',
-                    number.length === 11 ? '' : 'We could not find you in this class today. Tell your admin.'
-                )
-            ) {
-                $('#join-number').focus();
+            if (number.length !== 11) {
+                showJoinError('We could not find you in this class today. Tell your admin.');
                 return;
             }
             join.pending = true;
@@ -196,13 +197,9 @@
                     return;
                 }
                 if (!found.ok) {
-                    Auth.setStatus(
-                        'signin-status',
-                        (found.data && found.data.error) ||
-                            'Could not check the number. Try again.',
-                        'error'
+                    showJoinError(
+                        (found.data && found.data.error) || 'Could not check the number. Try again.'
                     );
-                    $('#join-number').focus();
                     return;
                 }
                 join.number = number;
@@ -213,11 +210,7 @@
                 setJoinStep('confirm');
             } catch (err) {
                 if (current()) {
-                    Auth.setStatus(
-                        'signin-status',
-                        'Can’t reach the server. Check your Wi-Fi, then try again.',
-                        'error'
-                    );
+                    showJoinError('Can’t reach the server. Check your Wi-Fi, then try again.');
                 }
             } finally {
                 join.pending = false;
@@ -235,21 +228,15 @@
                 return;
             }
             if (!entered.ok) {
-                Auth.setStatus(
-                    'signin-status',
-                    (entered.data && entered.data.error) || 'Could not let you in. Try again.',
-                    'error'
+                showJoinError(
+                    (entered.data && entered.data.error) || 'Could not let you in. Try again.'
                 );
                 return;
             }
             await enterWithToken(entered.data.token_hash);
         } catch (err) {
             if (current()) {
-                Auth.setStatus(
-                    'signin-status',
-                    'Can’t reach the server. Check your Wi-Fi, then try again.',
-                    'error'
-                );
+                showJoinError('Can’t reach the server. Check your Wi-Fi, then try again.');
             }
         } finally {
             join.pending = false;
