@@ -5264,7 +5264,7 @@ h4 {
     --r-lg: 20px;
     --r-xl: 24px;
     --control-h: 38px;
-    --field-h: 40px;
+    --field-h: 3rem;
     --shadow-sm: none;
     --shadow-card: none;
     --shadow-md: 0 4px 12px var(--black-a18);
