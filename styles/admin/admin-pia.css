@@ -2079,9 +2079,6 @@ html[data-surface='admin'] .as-addbar .input {
     }
 }
 
-@media (max-width: 40rem) {
-}
-
 /* input scores: the pre-test and post-test tabs are for phones only */
 .scores-tabs {
     display: none;

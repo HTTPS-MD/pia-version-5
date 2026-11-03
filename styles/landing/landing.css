@@ -251,19 +251,6 @@ h4 {
     color: var(--bg);
 }
 
-.cta-quiet {
-    background: var(--green);
-    color: var(--on-green);
-}
-.cta-quiet .cta-orb {
-    background: var(--fg);
-    color: var(--bg);
-}
-.cta-quiet:hover {
-    background: var(--fg);
-    color: var(--bg);
-}
-
 .cta:disabled {
     cursor: not-allowed;
     border-style: dashed;
@@ -787,21 +774,6 @@ h4 {
         )
         0 0 / 0.375rem 0.375rem;
     pointer-events: none;
-}
-.hero-kicker {
-    margin: 0 0 clamp(var(--sp-5), 3.5vh, var(--sp-7));
-    padding: 0.4375rem 0.875rem;
-    border: 1px solid var(--rule);
-    background: var(--accent);
-    color: var(--on-accent);
-    font-family: var(--font-mono);
-    font-size: clamp(0.8125rem, 1.1vw, 0.9375rem);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    box-shadow: var(--hard-sm) var(--hard-sm) 0 var(--rule);
-    transform: rotate(1.5deg);
-    transform-origin: 0 100%;
 }
 .drop-title {
     margin: 0;
@@ -1675,27 +1647,6 @@ h4 {
     }
 }
 
-.finale-sub {
-    margin: clamp(var(--sp-6), 4vh, var(--sp-8)) 0 0;
-    max-width: 46ch;
-    padding-inline-start: var(--sp-4);
-    border-inline-start: 1px solid var(--rule);
-    font-size: clamp(1rem, 1.2vw, 1.125rem);
-    line-height: 1.75;
-    color: var(--text-muted);
-}
-
-.finale-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--sp-5);
-    margin-block-start: clamp(var(--sp-7), 5vh, var(--sp-9));
-}
-
-.finale-actions .cta {
-    min-width: 17rem;
-}
-
 .foot-staff {
     display: inline-flex;
     flex-wrap: wrap;
@@ -1752,15 +1703,6 @@ h4 {
 }
 .device-offer[hidden] {
     display: none;
-}
-
-.portal-links {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-2);
-    margin-block-start: var(--sp-2);
-    padding-block-start: var(--sp-4);
-    border-block-start: 1px dashed var(--line);
 }
 
 .portal-note {
@@ -1916,10 +1858,6 @@ h4 {
     .finale-actions {
         width: 100%;
     }
-    .finale-actions .cta {
-        flex: 1 1 100%;
-        min-width: 0;
-    }
 }
 
 @media (max-height: 44rem) {
@@ -1990,10 +1928,6 @@ h4 {
 .overlay .field-msg {
     height: auto;
     overflow-wrap: anywhere;
-}
-.finale-sub {
-    padding: 0;
-    border: 0;
 }
 
 .reel-flow {
@@ -4859,10 +4793,6 @@ h4 {
 }
 .overlay .portal-form .device-offer {
     margin-block-start: 0;
-}
-.overlay .portal-form .portal-links {
-    margin-block-start: var(--sp-2);
-    padding-block-start: var(--sp-5);
 }
 #modal-signin .modal-body,
 #modal-staff .modal-body {

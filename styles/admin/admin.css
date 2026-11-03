@@ -314,13 +314,6 @@ body:not([data-boot='pending']) .boot-veil[hidden] {
 .scores-table td:first-child {
     min-width: 11rem;
 }
-.th-sub {
-    display: block;
-    font-weight: 500;
-    text-transform: none;
-    letter-spacing: 0;
-    color: var(--text-faint);
-}
 
 .score-pair {
     display: grid;
@@ -2418,10 +2411,6 @@ html[data-surface='admin'] .table thead th.col-right {
     padding: 0 12px;
     border-bottom: 1px solid var(--line);
     flex: 0 0 auto;
-}
-.field-hint {
-    font-size: var(--fs-xs);
-    margin: 0;
 }
 .field[hidden] {
     display: none !important;

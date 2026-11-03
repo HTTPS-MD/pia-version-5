@@ -25,17 +25,9 @@
     <path d="M7.8 10V7.6a4.2 4.2 0 0 1 8.4 0V10" />
     <circle cx="12" cy="15.2" r="1.2" fill="currentColor" stroke="none" />
     </symbol>
-    <symbol id="i-arrow-down" viewBox="0 0 24 24">
-    <path d="M12 4v16" />
-    <path d="m6 14 6 6 6-6" />
-    </symbol>
     <symbol id="i-arrow-right" viewBox="0 0 24 24">
     <path d="M4 12h16" />
     <path d="m14 6 6 6-6 6" />
-    </symbol>
-    <symbol id="i-cube" viewBox="0 0 24 24">
-    <path d="M12 3 4 7.2v9.6L12 21l8-4.2V7.2L12 3Z" />
-    <path d="m4 7.2 8 4.3 8-4.3M12 11.5V21" />
     </symbol>
     <symbol id="i-sun" viewBox="0 0 24 24">
     <circle cx="12" cy="12" r="4.2" />
@@ -69,42 +61,13 @@
     <circle cx="12" cy="12" r="8.75" />
     <path d="M7.8 12h8.4" />
     </symbol>
-    <symbol id="i-login" viewBox="0 0 24 24">
-    <path d="M14 4h3.5A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5H14" />
-    <path d="m10 8 4 4-4 4M14 12H4" />
-    </symbol>
     <symbol id="i-spark" viewBox="0 0 24 24">
     <path
     d="M12 3.2c.5 4.3 1.9 6.8 8.8 8.8-6.9 2-8.3 4.5-8.8 8.8-.5-4.3-1.9-6.8-8.8-8.8 6.9-2 8.3-4.5 8.8-8.8Z"
     fill="currentColor" stroke="none" />
     </symbol>
-    <symbol id="i-silhouette" viewBox="0 0 120 160">
-    <path
-    d="M60 14c-23 0-40 16-40 38 0 9 3 17 8 23-3 4-4 9-3 13l7-3c1 3 3 5 6 6l-2 3h48l-2-3c3-1 5-3 6-6l7 3c1-4 0-9-3-13 5-6 8-14 8-23 0-22-17-38-40-38Z" />
-    <path d="M40 96h40l12 42H28l12-42Z" />
-    <path d="M44 138h11v16H44zM65 138h11v16H65z" />
-    <path d="M36 100c-6 6-10 16-10 24l8 2c1-7 4-14 8-19Zm48 0c6 6 10 16 10 24l-8 2c-1-7-4-14-8-19Z" />
-    </symbol>
     <symbol id="i-menu" viewBox="0 0 24 24">
     <path d="M4 7h16M4 12h16M4 17h16" />
-    </symbol>
-    <symbol id="i-eye" viewBox="0 0 24 24">
-    <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" />
-    <circle cx="12" cy="12" r="3" />
-    </symbol>
-    <symbol id="i-eye-off" viewBox="0 0 24 24">
-    <path d="M3 3l18 18" />
-    <path
-    d="M10.6 5.6c.46-.07.93-.1 1.4-.1 6 0 9.5 6.5 9.5 6.5a17 17 0 0 1-2.9 3.7M6.6 6.6C3.9 8.3 2.5 12 2.5 12S6 18.5 12 18.5c1.8 0 3.3-.5 4.6-1.2" />
-    <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
-    </symbol>
-    <symbol id="i-pause" viewBox="0 0 24 24">
-    <rect x="6.5" y="5" width="3.6" height="14" rx="1.2" fill="currentColor" stroke="none" />
-    <rect x="13.9" y="5" width="3.6" height="14" rx="1.2" fill="currentColor" stroke="none" />
-    </symbol>
-    <symbol id="i-play" viewBox="0 0 24 24">
-    <path d="M8 5.6v12.8a1 1 0 0 0 1.53.85l10.1-6.4a1 1 0 0 0 0-1.7L9.53 4.75A1 1 0 0 0 8 5.6Z"
-    fill="currentColor" stroke="none" />
     </symbol>
   </defs>
 </svg>

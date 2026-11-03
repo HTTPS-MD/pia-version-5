@@ -20,12 +20,6 @@
     align-items: center;
     gap: var(--sp-3);
 }
-
-.auth-brand-text {
-    font-size: 16px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-}
 .auth-card {
     width: 100%;
 }
@@ -42,34 +36,6 @@
     font-size: 13.5px;
     line-height: 1.65;
     color: var(--text-muted);
-}
-.auth-identity {
-    display: flex;
-    align-items: center;
-    gap: var(--sp-3);
-    min-height: 56px;
-    margin: var(--sp-5) 0;
-    border-radius: var(--r-md);
-}
-
-.auth-identity .icon {
-    flex: 0 0 18px;
-    color: var(--text-faint);
-}
-.auth-identity-text {
-    min-width: 0;
-}
-.auth-identity-label {
-    font-size: var(--fs-xs);
-    font-weight: 700;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    color: var(--text-faint);
-}
-.auth-identity-value {
-    font-size: var(--fs-sm);
-    font-weight: 600;
-    text-overflow: ellipsis;
 }
 .auth-status {
     display: flex;
@@ -201,15 +167,6 @@
 .auth-card {
     text-align: left;
 }
-.auth-identity {
-    padding: 0;
-    background: none;
-}
-.auth-identity-value {
-    overflow: visible;
-    white-space: normal;
-    overflow-wrap: anywhere;
-}
 .auth-hint {
     text-align: left;
     display: flex;
@@ -223,10 +180,6 @@
 }
 .auth-show-row {
     min-height: 44px;
-}
-.field-hint {
-    font-size: var(--fs-sm);
-    color: var(--text-muted);
 }
 .field-msg {
     color: var(--danger);
@@ -262,12 +215,6 @@
     margin-top: var(--sp-3);
     font-size: 1rem;
     line-height: 1.55;
-}
-.auth-card .auth-identity {
-    margin: var(--sp-6) 0 var(--sp-5);
-    padding: var(--sp-4);
-    border-radius: 1rem;
-    background: var(--bg-field);
 }
 .auth-card .field {
     display: grid;
@@ -353,9 +300,6 @@
 .auth-card .auth-hint a {
     color: var(--volt);
 }
-@media (max-width: 480px) {
-}
-
 /* even spacing, the same rhythm as the landing windows */
 .auth-card {
     display: grid;
