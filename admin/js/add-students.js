@@ -116,19 +116,32 @@
             return { status: 'auth_error', error: authRes.error };
         }
 
+        var row = {
+            full_name: student.fullName,
+            email: student.email,
+            section: student.section,
+            group_type: student.groupType,
+            parental_consent: true,
+            student_assent: true,
+            max_devices: 1,
+            status: 'inactive',
+            role: 'student'
+        };
+        // the name parts are kept apart; a database without those columns still takes the full name
         var insertRes = await sb.from('profiles').insert([
-            {
-                full_name: student.fullName,
-                email: student.email,
-                section: student.section,
-                group_type: student.groupType,
-                parental_consent: true,
-                student_assent: true,
-                max_devices: 1,
-                status: 'inactive',
-                role: 'student'
-            }
+            Object.assign({}, row, {
+                first_name: student.first || null,
+                middle_name: student.middle || null,
+                last_name: student.last || null
+            })
         ]);
+        if (
+            insertRes.error &&
+            window.PIAAdmin &&
+            window.PIAAdmin.isMissingColumn(insertRes.error)
+        ) {
+            insertRes = await sb.from('profiles').insert([row]);
+        }
         if (insertRes.error) {
             return { status: 'profile_error', error: insertRes.error };
         }
@@ -723,6 +736,9 @@
                 var enroll = (window.PIAAdmin && window.PIAAdmin.enrollOne) || createStudent;
                 var result = await enroll({
                     email: email,
+                    first: r.first.trim(),
+                    middle: r.mid.trim(),
+                    last: r.last.trim(),
                     fullName: fullName,
                     section: section,
                     groupType: r.grp

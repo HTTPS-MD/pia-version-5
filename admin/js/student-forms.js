@@ -103,6 +103,26 @@
         snapshot = look();
         syncSave();
         Admin.openModal('modal-edit-student');
+
+        // the parts saved with the student win over the guess from the full name
+        sb.from('profiles')
+            .select('first_name, middle_name, last_name')
+            .eq('email', s.email)
+            .maybeSingle()
+            .then(function (res) {
+                var d = res && res.data;
+                if (!d || (!d.first_name && !d.middle_name && !d.last_name)) {
+                    return;
+                }
+                if ($('#es-original-email').value !== s.email) {
+                    return;
+                }
+                $('#es-first').value = d.first_name || '';
+                $('#es-middle').value = d.middle_name || '';
+                $('#es-last').value = d.last_name || '';
+                snapshot = look();
+                syncSave();
+            });
         window.PIACheckin.numberFor(s.email).then(
             function (number) {
                 var field = $('#es-number');
@@ -160,8 +180,20 @@
 
             var updateRes = await sb
                 .from('profiles')
-                .update({ full_name: fullName, section: section })
+                .update({
+                    full_name: fullName,
+                    section: section,
+                    first_name: first,
+                    middle_name: middle || null,
+                    last_name: last
+                })
                 .eq('email', originalEmail);
+            if (updateRes.error && Admin.isMissingColumn(updateRes.error)) {
+                updateRes = await sb
+                    .from('profiles')
+                    .update({ full_name: fullName, section: section })
+                    .eq('email', originalEmail);
+            }
 
             if (updateRes.error) {
                 Admin.toastErr(
