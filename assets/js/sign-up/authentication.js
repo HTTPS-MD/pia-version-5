@@ -150,6 +150,57 @@
         }
     }
 
+    // Teachers and administrators go straight to their dashboard with the password just set,
+    // through the same seat check as the normal sign-in. Any failure leaves the Sign in button.
+    async function signInStaff(email, password, role) {
+        try {
+            const auth = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (auth.error) return false;
+            const profile = await supabaseClient
+                .from('profiles')
+                .select('*')
+                .eq('email', email)
+                .maybeSingle();
+            if (profile.error || !profile.data) {
+                await supabaseClient.auth.signOut({ scope: 'local' });
+                return false;
+            }
+            try {
+                localStorage.setItem('pia_user_email', email);
+                localStorage.setItem('pia_user_role', role);
+            } catch (err) {}
+
+            let seat = { allowed: true };
+            if (typeof claimStudentSession === 'function') {
+                seat = await claimStudentSession();
+            }
+            if (seat.missing && typeof enforceDeviceLimit === 'function') {
+                seat = await enforceDeviceLimit(email, profile.data);
+            }
+            if (!seat.allowed) {
+                await supabaseClient.auth.signOut({ scope: 'local' });
+                try {
+                    localStorage.removeItem('pia_user_email');
+                    localStorage.removeItem('pia_user_role');
+                } catch (err) {}
+                return false;
+            }
+            form.hidden = true;
+            identity.hidden = true;
+            window.location.replace(
+                role === 'admin'
+                    ? '../../admin/html/admin-dashboard.html'
+                    : '../../teacher/html/teacher-dashboard.html'
+            );
+            return true;
+        } catch (err) {
+            try {
+                await supabaseClient.auth.signOut({ scope: 'local' });
+            } catch (inner) {}
+            return false;
+        }
+    }
+
     document.getElementById('setup-show-password').addEventListener('change', function () {
         ['setup-password', 'setup-confirm-password'].forEach((id) => {
             document.getElementById(id).type = this.checked ? 'text' : 'password';
@@ -234,8 +285,13 @@
                 profileSaved = true;
             }
             operation = 'signout';
+            const email = verifiedUser.email;
             const signedOut = await supabaseClient.auth.signOut();
             if (signedOut.error) throw signedOut.error;
+            if (password && ['admin', 'teacher'].includes(accountRole)) {
+                message('Password saved. Signing you in…');
+                if (await signInStaff(email, password, accountRole)) return;
+            }
             form.hidden = true;
             identity.hidden = true;
             continuation.href =
