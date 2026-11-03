@@ -5592,3 +5592,16 @@ h4 {
         content: 'Light';
     }
 }
+
+/* sign in: a first-time line under the button, in the same yellow link style as Forgot password */
+.overlay .portal-first {
+    margin: var(--sp-4) 0 0;
+    font-size: var(--fs-sm);
+    line-height: 1.5;
+    text-align: center;
+    color: var(--text-muted);
+}
+.overlay .portal-first .link-btn {
+    min-height: 44px;
+    padding-inline: var(--sp-1);
+}
