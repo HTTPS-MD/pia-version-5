@@ -378,6 +378,9 @@
         });
         $('#qb-wiz-back').hidden = !on || wiz.stage === 0;
         $('#qb-wiz-next').hidden = !on || review;
+        if (on && !review) {
+            $('#qb-wiz-next').disabled = !wizReady();
+        }
         $('#qb-edit-save').hidden = on && !review;
         if (on) {
             $('#qb-wiz').innerHTML = wizLabels()
@@ -448,6 +451,27 @@
                     hk +
                     ' gives the answer away. A hint should guide the student, for example "Subtract 900 from 1200", not show the result.';
                 h.focus();
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // the same rules as wizCheck, without messages: Next stays off until this page is complete
+    function wizReady() {
+        if (wiz.stage === 0) {
+            return (
+                $('#qb-question').value.trim() !== '' &&
+                Admin.qbPoints($('#qb-points').value) !== null
+            );
+        }
+        var st = qbReadSteps()[wiz.stage - 1];
+        if (!st || !st.prompt || !st.answer) {
+            return false;
+        }
+        var finalForCheck = $('#qb-final').value.trim() || st.answer;
+        for (var hk = 1; hk <= 3; hk++) {
+            if (qbHintGivesAnswer(st['hint' + hk], [st.answer, finalForCheck])) {
                 return false;
             }
         }
@@ -554,6 +578,9 @@
                 });
         }
         save.disabled = !changed;
+        if (wiz.on && wiz.stage < wizLast()) {
+            $('#qb-wiz-next').disabled = !wizReady();
+        }
     }
     ['input', 'change', 'click'].forEach(function (type) {
         $('#modal-qb-edit').addEventListener(type, function () {
