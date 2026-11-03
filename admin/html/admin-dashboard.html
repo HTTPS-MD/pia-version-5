@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261121e">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261105a">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261116a">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261121w">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261121v">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -287,49 +287,57 @@
                         <h1 class="page-title">Admin Settings</h1>
                     </div>
 
+                    <div class="settings-labels" aria-hidden="true">
+                        <h2 class="settings-group">Your account</h2>
+                        <h2 class="settings-group">Team</h2>
+                    </div>
                     <div class="panel settings-box">
-                        <section class="settings-section" aria-labelledby="profile-details-title">
-                            <h2 class="panel-title" id="profile-details-title">Personal details</h2>
-                            <dl class="facts">
-                                <div><dt>Name</dt><dd id="profile-name">—</dd></div>
-                                <div><dt>Email</dt><dd id="profile-email">—</dd></div>
-                            </dl>
-                        </section>
+                        <div class="settings-grid">
+                            <div class="settings-left">
+                                <section class="settings-section" aria-labelledby="profile-details-title">
+                                    <h2 class="panel-title" id="profile-details-title">Personal details</h2>
+                                    <dl class="facts">
+                                        <div><dt>Name</dt><dd id="profile-name">—</dd></div>
+                                        <div><dt>Email</dt><dd id="profile-email">—</dd></div>
+                                    </dl>
+                                </section>
 
-                        <section class="settings-section" aria-labelledby="profile-password-title">
-                            <div class="panel-row">
-                                <div>
-                                    <h2 class="panel-title" id="profile-password-title">Password</h2>
-                                    <p class="muted">Changing it signs your other devices out; this one stays signed in.</p>
+                                <section class="settings-section" aria-labelledby="profile-password-title">
+                                    <div class="panel-row">
+                                        <div>
+                                            <h2 class="panel-title" id="profile-password-title">Password</h2>
+                                            <p class="muted">Changing it signs your other devices out; this one stays signed in.</p>
+                                        </div>
+                                        <button type="button" class="btn btn-secondary" data-modal-open="modal-change-password">Change password</button>
+                                    </div>
+                                </section>
+                            </div>
+
+                            <section class="settings-right settings-section-table" data-region="admins" aria-labelledby="admins-title">
+                                <div class="panel-bar">
+                                    <h2 class="panel-title" id="admins-title">Administrators</h2>
+                                    <button type="button" class="btn btn-outline btn-sm" data-modal-open="modal-add-admin">+ Add administrator</button>
                                 </div>
-                                <button type="button" class="btn btn-secondary" data-modal-open="modal-change-password">Change password</button>
-                            </div>
-                        </section>
-
-                        <section class="settings-section settings-section-table" data-region="admins" aria-labelledby="admins-title">
-                            <div class="panel-bar">
-                                <h2 class="panel-title" id="admins-title">Administrators</h2>
-                                <button type="button" class="btn btn-outline btn-sm" data-modal-open="modal-add-admin">+ Add administrator</button>
-                            </div>
-                            <div class="table-wrap" tabindex="0" role="region" aria-label="Administrators table">
-                                <table class="table">
-                                    <caption class="sr-only">Administrators</caption>
-                                    <thead>
-                                        <tr><th scope="col">Admin Name</th><th scope="col">Status</th></tr>
-                                    </thead>
-                                    <tbody id="admin-tbody"></tbody>
-                                </table>
-                            </div>
-                            <div class="pager" id="admin-pager">
-                                <span id="admin-pager-info" class="muted"></span>
-                                <div class="pager-btns">
-                                    <button type="button" class="btn btn-secondary btn-sm" id="admin-page-prev" disabled>Previous</button>
-                                    <button type="button" class="btn btn-secondary btn-sm" id="admin-page-next" disabled>Next</button>
+                                <div class="table-wrap" tabindex="0" role="region" aria-label="Administrators table">
+                                    <table class="table">
+                                        <caption class="sr-only">Administrators</caption>
+                                        <thead>
+                                            <tr><th scope="col">Admin Name</th><th scope="col">Status</th></tr>
+                                        </thead>
+                                        <tbody id="admin-tbody"></tbody>
+                                    </table>
                                 </div>
-                            </div>
-                        </section>
+                                <div class="pager" id="admin-pager">
+                                    <span id="admin-pager-info" class="muted"></span>
+                                    <div class="pager-btns">
+                                        <button type="button" class="btn btn-secondary btn-sm" id="admin-page-prev" disabled>Previous</button>
+                                        <button type="button" class="btn btn-secondary btn-sm" id="admin-page-next" disabled>Next</button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
 
-                        <section class="settings-section" aria-labelledby="profile-delete-title">
+                        <section class="settings-section settings-delete" aria-labelledby="profile-delete-title">
                             <div class="panel-row">
                                 <div>
                                     <h2 class="panel-title" id="profile-delete-title">Delete account</h2>

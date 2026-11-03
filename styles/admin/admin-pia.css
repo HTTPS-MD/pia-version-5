@@ -2374,10 +2374,61 @@ html[data-surface='admin'] .as-addbar .input {
     margin-bottom: var(--sp-9);
     text-align: center;
 }
+.settings-labels,
 .settings-box {
-    max-width: 820px;
-    margin: 0 auto var(--sp-10);
+    max-width: 1120px;
+    margin-inline: auto;
+}
+.settings-labels {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    padding-inline: var(--sp-2);
+}
+.settings-labels .settings-group {
+    margin: 0 0 var(--sp-4);
+    padding-inline: var(--sp-2);
+}
+.settings-box {
+    margin-bottom: var(--sp-10);
     overflow: hidden;
+}
+.settings-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+}
+.settings-left {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--line-soft);
+}
+.settings-left .settings-section:last-child {
+    flex: 1;
+}
+.settings-right {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.settings-right .table-wrap {
+    flex: 1;
+}
+.settings-right .pager {
+    margin-top: auto;
+}
+.settings-delete {
+    border-top: 1px solid var(--line-soft);
+}
+@media (max-width: 56.25rem) {
+    .settings-labels {
+        display: none;
+    }
+    .settings-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+    .settings-left {
+        border-right: 0;
+        border-bottom: 1px solid var(--line-soft);
+    }
 }
 .settings-section {
     padding: var(--sp-7) var(--sp-8);
@@ -2406,6 +2457,10 @@ html[data-surface='admin'] .as-addbar .input {
 }
 .settings-section-table {
     padding: 0;
+}
+.settings-left .panel-row {
+    flex-direction: column;
+    align-items: flex-start;
 }
 .settings-section-table .panel-bar {
     padding: var(--sp-6) var(--sp-8);
