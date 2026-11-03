@@ -47,6 +47,10 @@
     }
     function refuse(text, canRetry = false) {
         verifiedUser = null;
+        document.querySelector('.auth-title').textContent = /expired/i.test(text)
+            ? 'Link expired'
+            : 'Link problem';
+        document.querySelector('.auth-lede').hidden = true;
         submit.disabled = true;
         form.hidden = true;
         actions.hidden = false;
@@ -56,7 +60,7 @@
     function unusable(error) {
         if (error && error.code === 'otp_expired') {
             refuse(
-                'This link has expired or was already used. Request a new activation or reset email.'
+                'This link has expired or was already used.'
             );
         } else if (temporary(error)) {
             refuse(
@@ -64,7 +68,7 @@
                 true
             );
         } else {
-            refuse('This link could not be verified. Request a new activation or reset email.');
+            refuse('This link could not be verified.');
         }
     }
     async function verifyLink() {
@@ -81,8 +85,8 @@
             if (linkError) {
                 return refuse(
                     errorCode === 'otp_expired'
-                        ? 'This link has expired or was already used. Request a new email below.'
-                        : 'The email link reported an error and could not be verified. Request a new email below.'
+                        ? 'This link has expired or was already used.'
+                        : 'The email link reported an error and could not be verified.'
                 );
             }
             if (
@@ -112,7 +116,7 @@
             if (identityResult.error) return unusable(identityResult.error);
             if (!identityResult.data.user || identityResult.data.user.id !== session.user.id) {
                 return refuse(
-                    'The account for this link could not be verified. Request a new email.'
+                    'The account for this link could not be verified.'
                 );
             }
             verifiedUser = identityResult.data.user;
@@ -121,7 +125,7 @@
             mode = type === 'recovery' ? 'reset' : type === 'email' ? null : 'activate';
             if (!mode)
                 return refuse(
-                    'This link does not identify an activation or password reset. Request the email you need below.'
+                    'This link does not identify an activation or password reset.'
                 );
             label = 'Confirm and sign in';
             document.querySelector('.auth-title').textContent = 'Set your password';
@@ -236,7 +240,7 @@
                 const checked = await supabaseClient.auth.getUser();
                 if (checked.error) throw checked.error;
                 if (checked.data.user?.id !== verifiedUser.id) {
-                    return refuse('Your account could not be verified. Request a new email link.');
+                    return refuse('Your account could not be verified.');
                 }
             }
             if (!passwordSaved) {

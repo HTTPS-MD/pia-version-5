@@ -437,3 +437,20 @@
         padding: var(--sp-6) var(--sp-5);
     }
 }
+
+/* the request-a-new-link button on an expired link */
+.auth-card .auth-hint a.btn {
+    width: 100%;
+    justify-content: center;
+    color: var(--on-volt);
+    text-decoration: none;
+}
+.auth-card .auth-hint:has(a.btn) {
+    display: block;
+}
+.auth-card #setup-signin {
+    display: flex;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--on-volt);
+}
