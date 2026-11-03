@@ -182,6 +182,9 @@
                 return false;
             }
             form.hidden = true;
+            try {
+                localStorage.removeItem('pia_link_email');
+            } catch (err) {}
             window.location.replace(
                 role === 'admin'
                     ? '../../admin/html/admin-dashboard.html'
@@ -292,6 +295,9 @@
                 '../../index.html?signin=' +
                 (['admin', 'teacher'].includes(accountRole) ? 'staff' : 'student');
             continuation.hidden = false;
+            try {
+                localStorage.removeItem('pia_link_email');
+            } catch (err) {}
             message(
                 mode === 'reset'
                     ? 'Your password has been updated. Sign in with your new password.'

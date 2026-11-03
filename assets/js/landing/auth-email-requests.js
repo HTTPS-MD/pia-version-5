@@ -250,6 +250,9 @@
             }
             state.email = email;
             state.accepted = true;
+            try {
+                localStorage.setItem('pia_link_email', email);
+            } catch (err) {}
             $('#' + p + '-sent-to').textContent = email;
             var inbox = inboxFor(email);
             var open = $('#' + p + '-open-mail');
@@ -292,6 +295,11 @@
         document.addEventListener('visibilitychange', renderEmailRequests);
         renderEmailRequests();
     }
+    // Sends a link to an address already known on this device, for an expired link.
+    Auth.sendLinkTo = function (email) {
+        $('#fp-email').value = email;
+        return requestEmail('forgot', false);
+    };
     Auth.initEmailRequests = initEmailRequests;
 
     var GREETING_NAME_KEY = 'pia_greeting_name';

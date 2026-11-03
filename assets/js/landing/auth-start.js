@@ -108,6 +108,17 @@
                 'Request a new link',
                 'Enter your school email. We’ll send you a new link.'
             );
+            var known = '';
+            try {
+                known = localStorage.getItem('pia_link_email') || '';
+            } catch (err) {}
+            // The address that asked for the last link is kept on this device, so the new
+            // link goes out at once. Another device has none and asks for the address.
+            if (known && Auth.isEmail(known) && Auth.sendLinkTo) {
+                setTimeout(function () {
+                    Auth.sendLinkTo(known);
+                }, 250);
+            }
         }
         if (ENTRY_REASONS[reason]) {
             setTimeout(function () {
