@@ -1795,7 +1795,8 @@ body.is-locked {
 }
 .help-toc {
     position: sticky;
-    top: 96px;
+    top: calc(50% + 40px);
+    transform: translateY(-50%);
     display: grid;
     gap: 2px;
 }
@@ -1891,6 +1892,7 @@ body.is-locked {
     }
     .help-toc {
         position: static;
+        transform: none;
         display: flex;
         overflow-x: auto;
         gap: 6px;

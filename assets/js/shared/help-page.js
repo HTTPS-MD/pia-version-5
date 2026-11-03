@@ -33,31 +33,42 @@
             });
         });
 
-        if (!('IntersectionObserver' in window) || !steps.length) {
+        if (!steps.length) {
             return;
         }
-        var observer = new IntersectionObserver(
-            function (entries) {
-                entries.forEach(function (entry) {
-                    if (!entry.isIntersecting) {
-                        return;
-                    }
-                    tocButtons.forEach(function (btn) {
-                        var on = btn.getAttribute('data-help-go') === entry.target.id;
-                        btn.classList.toggle('is-active', on);
-                        if (on) {
-                            btn.setAttribute('aria-current', 'true');
-                        } else {
-                            btn.removeAttribute('aria-current');
-                        }
-                    });
-                });
-            },
-            { rootMargin: '-20% 0px -65% 0px' }
-        );
-        steps.forEach(function (step) {
-            observer.observe(step);
-        });
+        var ticking = false;
+        function update() {
+            ticking = false;
+            var line = window.innerHeight * 0.35;
+            var atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+            var current = steps[0];
+            steps.forEach(function (step) {
+                if (step.getBoundingClientRect().top <= line) {
+                    current = step;
+                }
+            });
+            if (atEnd) {
+                current = steps[steps.length - 1];
+            }
+            tocButtons.forEach(function (btn) {
+                var on = btn.getAttribute('data-help-go') === current.id;
+                btn.classList.toggle('is-active', on);
+                if (on) {
+                    btn.setAttribute('aria-current', 'true');
+                } else {
+                    btn.removeAttribute('aria-current');
+                }
+            });
+        }
+        function onScroll() {
+            if (!ticking) {
+                ticking = true;
+                window.requestAnimationFrame(update);
+            }
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        update();
     }
 
     document.addEventListener('DOMContentLoaded', function () {
