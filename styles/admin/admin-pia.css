@@ -1077,8 +1077,8 @@ html[data-surface='admin'] .theme-toggle:hover {
     display: none;
 }
 .as-row .btn svg {
-    width: 18px;
-    height: 18px;
+    width: 24px;
+    height: 24px;
 }
 .as-addbar {
     display: flex;
@@ -2395,4 +2395,14 @@ html[data-surface='admin'] .as-addbar .input {
     #modal-scores .scores-toolbar .field-msg:empty {
         display: none;
     }
+}
+
+/* add students: the Rows label sits above the number, Add lines up with the field */
+.as-addbar {
+    align-items: flex-end;
+}
+.as-count-field {
+    display: grid;
+    gap: 6px;
+    font-size: var(--fs-sm);
 }

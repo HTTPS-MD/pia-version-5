@@ -44,6 +44,14 @@
         ]);
     }
 
+    // Save changes stays off until something in the window has been changed.
+    function syncSave() {
+        var save = $('#es-submit');
+        if (save) {
+            save.disabled = look() === snapshot;
+        }
+    }
+
     function openEditStudent(email) {
         var s = Admin.findStudent(email);
         if (!s) {
@@ -52,15 +60,22 @@
 
         Admin.clearFormErrors('edit-student-form');
 
-        var parts = (s.full_name || '').trim().split(/\s+/);
+        // Only the full name is stored, so the parts are worked out from it: the last word is the
+        // last name, the word before it the middle name, and the rest the first name
+        // ("Mark Daniel Bayona Francisco" is Mark Daniel, Bayona, Francisco).
+        var parts = (s.full_name || '').trim().split(/\s+/).filter(Boolean);
         var first = parts[0] || '',
             middle = '',
             last = '';
         if (parts.length === 2) {
             last = parts[1];
-        } else if (parts.length > 2) {
+        } else if (parts.length === 3) {
+            middle = parts[1];
+            last = parts[2];
+        } else if (parts.length > 3) {
             last = parts[parts.length - 1];
-            middle = parts.slice(1, -1).join(' ');
+            middle = parts[parts.length - 2];
+            first = parts.slice(0, -2).join(' ');
         }
 
         $('#es-original-email').value = s.email;
@@ -86,6 +101,7 @@
         $('#es-number').value = '';
         $('#es-number').disabled = true;
         snapshot = look();
+        syncSave();
         Admin.openModal('modal-edit-student');
         window.PIACheckin.numberFor(s.email).then(
             function (number) {
@@ -94,10 +110,12 @@
                 field.disabled = false;
                 field.setAttribute('data-initial', number);
                 snapshot = look();
+                syncSave();
             },
             function () {
                 $('#es-number').disabled = false;
                 $('#es-number').setAttribute('data-initial', '');
+                syncSave();
             }
         );
     }
@@ -165,6 +183,11 @@
 
     function initEditWizard() {
         var overlay = $('#modal-edit-student');
+        ['input', 'change', 'click'].forEach(function (type) {
+            overlay.addEventListener(type, function () {
+                setTimeout(syncSave, 0);
+            });
+        });
         // closing with edits asks first
         function guard(event) {
             if (look() === snapshot) {

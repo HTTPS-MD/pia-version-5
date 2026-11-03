@@ -207,8 +207,8 @@
             '<p class="field-msg" id="as-section-msg"></p></div>' +
             '</div>' +
             '<div class="as-addbar">' +
-            '<input class="input" id="as-count" type="number" inputmode="numeric" min="1" max="50" value="1" aria-label="How many rows to add">' +
-            '<span class="muted">rows</span>' +
+            '<label class="as-count-field" for="as-count"><span class="muted">Rows</span>' +
+            '<input class="input" id="as-count" type="number" inputmode="numeric" min="1" max="50" value="1"></label>' +
             '<button type="button" class="btn btn-secondary btn-sm" id="as-add">' +
             '<svg class="icon"><use href="#i-plus"></use></svg> Add</button>' +
             '</div>' +
