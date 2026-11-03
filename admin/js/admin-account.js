@@ -261,7 +261,7 @@
                 var signedIn = (a.active_devices || []).length > 0;
                 var isYou = a.email === Admin.state.adminEmail;
                 var status = pending
-                    ? '<span class="badge">Awaiting activation</span>'
+                    ? '<span class="presence"><span class="dot dot-off" aria-hidden="true"></span>Account not activated</span>'
                     : '<span class="presence"><span class="dot ' +
                       (signedIn ? 'dot-on' : 'dot-off') +
                       '" aria-hidden="true"></span>' +
