@@ -90,6 +90,7 @@
         $('#add-professor-form').addEventListener('submit', Admin.handleRegisterProfessor);
         $('#add-admin-form').addEventListener('submit', Admin.handleAddAdmin);
         Admin.initChangePassword();
+        Admin.initDeleteOwnAccount();
 
         $('#new-section-form').addEventListener('submit', async function (event) {
             event.preventDefault();

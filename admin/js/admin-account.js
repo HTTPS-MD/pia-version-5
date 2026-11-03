@@ -158,6 +158,53 @@
     }
     Admin.initChangePassword = initChangePassword;
 
+    async function deleteOwnAccount(button) {
+        var ok = await Admin.confirmAction({
+            heading: 'Delete your administrator account?',
+            message:
+                'Your account is removed for good and you are signed out. This cannot be undone.',
+            confirmLabel: 'Delete my account'
+        });
+        if (!ok) {
+            return;
+        }
+
+        var release = Admin.setBusy(button, 'Deleting…');
+        var res;
+        try {
+            res = await sb.rpc('admin_delete_own_account');
+        } catch (err) {
+            res = { error: { message: (err && err.message) || 'The request did not complete.' } };
+        }
+        release();
+
+        if (res.error) {
+            Admin.toastErr(
+                'Account not deleted',
+                Admin.friendlyDbError(res.error, 'Your account was not deleted.')
+            );
+            return;
+        }
+
+        try {
+            await sb.auth.signOut({ scope: 'local' });
+        } catch (err) {}
+        if (typeof clearLocalSession === 'function') {
+            clearLocalSession();
+        }
+        window.location.replace('/index.html');
+    }
+
+    function initDeleteOwnAccount() {
+        var button = $('#delete-own-account');
+        if (button) {
+            button.addEventListener('click', function () {
+                deleteOwnAccount(button);
+            });
+        }
+    }
+    Admin.initDeleteOwnAccount = initDeleteOwnAccount;
+
     var signingOut = false;
 
     async function signOut() {
