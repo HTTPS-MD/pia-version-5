@@ -838,7 +838,7 @@
         }
         var label = document.createElement('label');
         label.className = 'show-details privacy-mode';
-        label.title = 'Hide the students’ names and numbers on this page';
+        label.title = 'Hides the students’ names and numbers on your screen only';
         label.innerHTML =
             '<input type="checkbox" id="hide-details" class="sr-only" role="switch">' +
             '<span class="stage-switch" aria-hidden="true"></span>' +

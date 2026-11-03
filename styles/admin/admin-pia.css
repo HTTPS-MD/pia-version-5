@@ -2449,3 +2449,20 @@ html[data-surface='admin'] .as-addbar .input {
         border-radius: 999px;
     }
 }
+
+/* the stages are labelled; Privacy Mode is a quieter, grey switch because it only changes this screen */
+.stage-let .stage-label {
+    flex: 0 0 auto;
+    margin-right: 4px;
+    font-size: var(--fs-xs);
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--text-muted);
+    white-space: nowrap;
+}
+html[data-surface='admin'] .privacy-mode .stage-switch.is-on {
+    background: color-mix(in srgb, var(--text) 60%, transparent);
+}
+html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
+    background: var(--hex-ffffff);
+}
