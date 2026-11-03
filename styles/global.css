@@ -1567,7 +1567,7 @@ body.is-locked {
     color: var(--danger-ink);
 }
 
-/* session revoked / account deleted: the same blue surface, spacing and yellow button as the other windows */
+/* session revoked / account deleted: the standard window */
 .revoke-modal-overlay {
     position: fixed;
     inset: 0;
@@ -1587,21 +1587,17 @@ body.is-locked {
 }
 
 .revoke-modal-box {
-    --text: var(--hex-f1ead8);
-    --text-muted: color-mix(in srgb, var(--palette-paper) 72%, var(--palette-ink));
     display: flex;
     flex-direction: column;
     gap: var(--sp-5);
     width: 100%;
     max-width: 26rem;
     padding: var(--sp-8) var(--sp-7) var(--sp-7);
-    border-radius: 1.75rem;
-    background: var(--hex-101745);
-    color: var(--hex-f1ead8);
+    border-radius: 1.1rem;
+    background: var(--bg-surface);
+    color: var(--text);
     text-align: center;
-    box-shadow:
-        0 30px 80px var(--black-a50),
-        0 0 0 1px var(--rgb255-248-231-a12);
+    box-shadow: var(--shadow-dialog);
     transform: scale(0.96);
     transition: transform var(--t-layout);
 }
@@ -1617,10 +1613,10 @@ body.is-locked {
     height: 72px;
     margin: 0 auto;
     border-radius: var(--r-pill);
-    background: color-mix(in srgb, var(--hex-ff9a9a) 16%, transparent);
+    background: var(--danger-soft);
 }
 .revoke-modal-box .text-danger {
-    color: var(--hex-ff9a9a);
+    color: var(--danger);
 }
 .revoke-modal-title {
     font-size: 1.75rem;
@@ -1982,159 +1978,3 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
     }
 }
 
-/* change password (admin and teacher): the same blue surface, spacing and yellow button as the landing windows */
-#modal-password .modal,
-#modal-change-password .modal ,
-#modal-delete-account .modal {
-    --bg-field: color-mix(in srgb, var(--palette-paper) 3%, var(--palette-ink));
-    --text: var(--palette-paper);
-    --text-muted: color-mix(in srgb, var(--palette-paper) 72%, var(--palette-ink));
-    --line: color-mix(in srgb, var(--palette-paper) 40%, var(--palette-ink));
-    --line-soft: color-mix(in srgb, var(--palette-paper) 13%, var(--palette-ink));
-    --danger: var(--hex-ff9a9a);
-    border: 0;
-    border-radius: 1.75rem;
-    background: var(--hex-101745);
-    color: var(--hex-f1ead8);
-    box-shadow:
-        0 30px 80px var(--black-a50),
-        0 0 0 1px var(--rgb255-248-231-a12);
-}
-#modal-password .modal-head,
-#modal-change-password .modal-head ,
-#modal-delete-account .modal-head {
-    padding: var(--sp-7) var(--sp-7) var(--sp-4);
-    border: 0;
-    background: transparent;
-}
-#modal-password .modal-title,
-#modal-change-password .modal-title ,
-#modal-delete-account .modal-title {
-    font-size: 1.75rem;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-    color: inherit;
-}
-#modal-password .modal-sub,
-#modal-change-password .modal-sub ,
-#modal-delete-account .modal-sub {
-    margin-top: var(--sp-2);
-    color: var(--text-muted);
-    line-height: 1.55;
-}
-#modal-password .modal-body,
-#modal-change-password .modal-body ,
-#modal-delete-account .modal-body {
-    display: grid;
-    gap: var(--sp-5);
-    padding: var(--sp-3) var(--sp-7) var(--sp-5);
-    background: transparent;
-}
-#modal-password .field,
-#modal-change-password .field ,
-#modal-delete-account .field {
-    gap: var(--sp-2);
-}
-#modal-password .label,
-#modal-change-password .label ,
-#modal-delete-account .label {
-    color: inherit;
-    font-size: var(--fs-sm);
-    font-weight: 600;
-}
-#modal-password .input,
-#modal-change-password .input ,
-#modal-delete-account .input {
-    min-height: 3.25rem;
-    border: 1px solid var(--line);
-    border-radius: 1rem;
-    background: var(--bg-field);
-    color: inherit;
-}
-#modal-password .input:focus,
-#modal-password .input:focus-visible,
-#modal-change-password .input:focus,
-#modal-delete-account .input:focus,
-#modal-change-password .input:focus-visible ,
-#modal-delete-account .input:focus-visible {
-    outline: 2px solid var(--focus-yellow, #ffd83d);
-    outline-offset: 0;
-    border-color: transparent;
-    box-shadow: none;
-}
-#modal-password .field-msg:empty,
-#modal-change-password .field-msg:empty,
-#modal-delete-account .field-msg:empty,
-#modal-password .form-status:empty,
-#modal-change-password .form-status:empty ,
-#modal-delete-account .form-status:empty {
-    display: none;
-}
-#modal-password .field-msg,
-#modal-change-password .field-msg ,
-#modal-delete-account .field-msg {
-    margin: 0;
-}
-#modal-password .form-status,
-#modal-change-password .form-status ,
-#modal-delete-account .form-status {
-    min-height: 0;
-    margin: 0;
-    line-height: 1.55;
-}
-#modal-password .t-check,
-#modal-change-password .check ,
-#modal-delete-account .check {
-    margin-top: var(--sp-1);
-}
-#modal-password .modal-foot,
-#modal-change-password .modal-foot ,
-#modal-delete-account .modal-foot {
-    gap: var(--sp-3);
-    padding: var(--sp-3) var(--sp-7) var(--sp-7);
-    border: 0;
-    background: transparent;
-    box-shadow: none;
-}
-#modal-password .modal-foot .btn,
-#modal-change-password .modal-foot .btn ,
-#modal-delete-account .modal-foot .btn {
-    flex: 1 1 0;
-    min-height: 3.25rem;
-    border: 0;
-    border-radius: 1rem;
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 35%, transparent);
-    background: transparent;
-    color: inherit;
-    font-size: 1.0625rem;
-    font-weight: 700;
-}
-#modal-password .modal-foot .btn-primary,
-#modal-change-password .modal-foot .btn-primary ,
-#modal-delete-account .modal-foot .btn-primary {
-    box-shadow: none;
-    background: var(--volt);
-    color: var(--on-volt);
-}
-#modal-password .modal-foot .btn-primary:hover:not(:disabled),
-#modal-change-password .modal-foot .btn-primary:hover:not(:disabled) ,
-#modal-delete-account .modal-foot .btn-primary:hover:not(:disabled) {
-    background: var(--hex-ffe66d);
-}
-@media (max-width: 30rem) {
-    #modal-password .modal-head,
-    #modal-change-password .modal-head ,
-    #modal-delete-account .modal-head {
-        padding: var(--sp-6) var(--sp-5) var(--sp-3);
-    }
-    #modal-password .modal-body,
-    #modal-change-password .modal-body ,
-    #modal-delete-account .modal-body {
-        padding-inline: var(--sp-5);
-    }
-    #modal-password .modal-foot,
-    #modal-change-password .modal-foot ,
-    #modal-delete-account .modal-foot {
-        padding: var(--sp-3) var(--sp-5) var(--sp-6);
-    }
-}

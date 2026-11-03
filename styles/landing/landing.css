@@ -1771,121 +1771,6 @@ h4 {
     align-items: baseline;
     gap: var(--sp-2) var(--sp-3);
 }
-.overlay {
-    padding: var(--gutter);
-    background: var(--scrim);
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-}
-.modal {
-    border: var(--edge-w) solid var(--rule);
-    background: var(--bg);
-    box-shadow: var(--hard-lg) var(--hard-lg) 0 var(--pop);
-}
-
-.overlay .modal-head {
-    border-block-end: 1px solid var(--rule);
-    padding-block-end: var(--sp-4);
-}
-.overlay .modal-title {
-    font-family: var(--font-display);
-    font-size: 1.625rem;
-    font-weight: 700;
-    letter-spacing: -0.045em;
-}
-.overlay .modal-sub {
-    color: var(--text-muted);
-}
-
-.overlay .input,
-.overlay .select,
-.overlay .textarea {
-    border: 1px solid var(--line);
-    background: var(--bg-field);
-    box-shadow: none;
-    transition:
-        border-color var(--t-snap) linear,
-        box-shadow var(--t-snap) linear;
-}
-
-.overlay .input:hover,
-.overlay .select:hover {
-    border-color: var(--rule);
-}
-.overlay .input:focus,
-.overlay .select:focus,
-.overlay .textarea:focus {
-    border-color: var(--field-focus-edge);
-    background: var(--bg-field);
-    box-shadow: var(--field-focus-ring);
-}
-.overlay .input:focus-visible,
-.overlay .select:focus-visible,
-.overlay .textarea:focus-visible {
-    outline: none;
-}
-
-.overlay .input.is-invalid,
-.overlay .select.is-invalid {
-    border-color: var(--danger);
-    box-shadow: 0 0 0 2px var(--danger-line);
-}
-.overlay .field:has(.input:focus) .label {
-    color: var(--accent-text);
-}
-
-.overlay .modal-foot {
-    border-block-start: 1px solid var(--rule);
-    background: var(--bg-surface);
-    box-shadow: none;
-}
-
-.overlay .btn {
-    min-height: var(--tap-min);
-    padding-inline: var(--sp-5);
-    border: 1px solid var(--rule);
-    font-family: var(--font-display);
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    box-shadow: var(--hard-sm) var(--hard-sm) 0 var(--rule);
-    transition:
-        transform var(--t-snap) var(--ease-snap),
-        box-shadow var(--t-snap) var(--ease-snap),
-        background-color var(--t-snap) linear,
-        color var(--t-snap) linear;
-}
-
-.overlay .btn:hover:not(:disabled) {
-    transform: translate(-2px, -2px);
-    box-shadow: calc(var(--hard-sm) + 2px) calc(var(--hard-sm) + 2px) 0 var(--rule);
-}
-.overlay .btn:active:not(:disabled) {
-    transform: translate(var(--hard-sm), var(--hard-sm));
-    box-shadow: 0 0 0 var(--rule);
-}
-.overlay .btn:disabled {
-    opacity: 1;
-    border-style: dashed;
-    box-shadow: none;
-    background: var(--bg-surface);
-    color: var(--text-faint);
-}
-
-.overlay .btn-primary {
-    background: var(--accent);
-    color: var(--on-accent);
-}
-.overlay .btn-primary:hover:not(:disabled) {
-    background: var(--accent);
-}
-.overlay .btn-secondary {
-    background: var(--bg);
-    color: var(--text);
-}
-.overlay .btn-secondary:hover:not(:disabled) {
-    background: var(--fg);
-    color: var(--bg);
-}
 
 
 .overlay .auth-intro {
@@ -1902,16 +1787,6 @@ h4 {
     background: color-mix(in srgb, var(--fg) 8%, transparent);
     color: var(--text);
     border-inline-start: 0.25rem solid var(--volt);
-}
-
-.overlay .label {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    transition: color var(--t-snap) linear;
 }
 
 .link-btn {
@@ -2159,22 +2034,6 @@ h4 {
     font-size: var(--fs-sm);
     color: var(--text-muted);
 }
-.overlay .modal {
-    text-align: left;
-    box-shadow: var(--shadow-card);
-}
-.overlay .modal-head,
-.overlay .modal-body,
-.overlay .modal-foot {
-    background: var(--bg);
-}
-.overlay .modal-foot {
-    justify-content: flex-end;
-    flex-wrap: wrap;
-}
-.overlay .modal-title {
-    overflow-wrap: anywhere;
-}
 .overlay .auth-intro {
     border: 0;
     padding: 0;
@@ -2213,29 +2072,6 @@ h4 {
 
 .reel-flow {
     margin-block-start: 0;
-}
-.overlay .modal {
-    box-shadow: none;
-    overflow-y: auto;
-}
-.overlay .modal-head {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 44px;
-    gap: var(--sp-3);
-}
-.overlay .modal-head-text {
-    grid-column: 1;
-}
-.overlay .modal-head > .modal-close {
-    grid-column: 2;
-    grid-row: 1;
-}
-.overlay .modal-body {
-    flex: 0 0 auto;
-    overflow: visible;
-}
-.overlay .modal-foot {
-    border: 0;
 }
 .overlay .portal-note {
     text-align: left;
@@ -3561,161 +3397,6 @@ h4 {
 .act-select .stage-art img {
     filter: drop-shadow(0 10px 12px var(--black-a28));
 }
-.overlay {
-    background: var(--rgb6-10-34-a62);
-    -webkit-backdrop-filter: blur(6px);
-    backdrop-filter: blur(6px);
-}
-:root[data-theme='light'] .overlay {
-    background: var(--rgb20-30-70-a38);
-}
-.overlay .modal {
-    border: 0;
-    border-radius: 1.75rem;
-    background: var(--hex-101745);
-    color: var(--hex-f1ead8);
-    text-align: start;
-    box-shadow:
-        0 30px 80px var(--black-a50),
-        0 0 0 1px var(--rgb255-248-231-a12);
-}
-:root[data-theme='light'] .overlay .modal {
-    background: var(--hex-fff8e7);
-    color: var(--hex-0a0f2e);
-    box-shadow:
-        0 30px 80px var(--rgb20-30-70-a30),
-        0 0 0 1px var(--rgb10-15-46-a8);
-}
-.overlay .modal * {
-    text-align: start;
-}
-.overlay .modal-head {
-    border: 0;
-    padding: var(--sp-6) var(--sp-6) var(--sp-3);
-}
-.overlay .modal-body {
-    padding: var(--sp-2) var(--sp-6) var(--sp-6);
-}
-.overlay .modal-title {
-    font-size: 1.75rem;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
-    color: inherit;
-}
-.overlay .modal-sub,
-.overlay .portal-note {
-    color: color-mix(in srgb, currentColor 72%, transparent);
-    font-size: 1rem;
-    line-height: 1.5;
-}
-
-.overlay .label {
-    font-family: var(--font-body);
-    font-size: 0.9375rem;
-    font-weight: 600;
-    letter-spacing: 0;
-    text-transform: none;
-    color: inherit;
-}
-.overlay .field:has(.input:focus) .label {
-    color: inherit;
-}
-.overlay .input {
-    min-height: 3.25rem;
-    border: 0;
-    border-radius: 0.875rem;
-    padding-inline: 1rem;
-    background: var(--hex-0b1138);
-    color: var(--hex-f1ead8);
-    box-shadow: inset 0 0 0 1px var(--rgb255-248-231-a18);
-}
-:root[data-theme='light'] .overlay .input {
-    background: var(--hex-ffffff);
-    color: var(--hex-0a0f2e);
-    box-shadow: inset 0 0 0 1px var(--rgb10-15-46-a20);
-}
-.overlay .input::placeholder {
-    color: color-mix(in srgb, currentColor 50%, transparent);
-}
-.overlay .input:hover {
-    box-shadow: inset 0 0 0 1px var(--rgb255-248-231-a34);
-}
-:root[data-theme='light'] .overlay .input:hover {
-    box-shadow: inset 0 0 0 1px var(--rgb10-15-46-a36);
-}
-.overlay .input:focus,
-.overlay .input:focus-visible {
-    background: var(--hex-0b1138);
-    box-shadow:
-        inset 0 0 0 2px var(--hex-5aa0ff),
-        0 0 0 4px var(--rgb90-160-255-a28);
-}
-:root[data-theme='light'] .overlay .input:focus,
-:root[data-theme='light'] .overlay .input:focus-visible {
-    background: var(--hex-ffffff);
-    box-shadow:
-        inset 0 0 0 2px var(--hex-2f74ee),
-        0 0 0 4px var(--rgb47-116-238-a22);
-}
-.overlay .input.is-invalid {
-    box-shadow:
-        inset 0 0 0 2px var(--danger),
-        0 0 0 4px var(--danger-line);
-}
-
-.overlay .btn {
-    min-height: 3.25rem;
-    border: 0;
-    border-radius: 1rem;
-    box-shadow: none;
-    font-family: var(--font-body);
-    font-size: 1.0625rem;
-    font-weight: 700;
-    letter-spacing: 0;
-}
-.overlay .btn:hover:not(:disabled),
-.overlay .btn:active:not(:disabled) {
-    transform: none;
-    box-shadow: none;
-}
-.overlay .btn-primary {
-    background: var(--volt);
-    color: var(--on-volt);
-}
-.overlay .btn-primary:hover:not(:disabled) {
-    background: var(--hex-ffe66d);
-}
-.overlay .btn-secondary {
-    background: transparent;
-    color: inherit;
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 35%, transparent);
-}
-.overlay .btn-secondary:hover:not(:disabled) {
-    background: color-mix(in srgb, currentColor 10%, transparent);
-    color: inherit;
-}
-.overlay .btn:disabled {
-    border: 0;
-    background: color-mix(in srgb, currentColor 12%, transparent);
-    color: color-mix(in srgb, currentColor 50%, transparent);
-}
-
-.overlay .link-btn {
-    color: var(--hex-7fb4ff);
-    text-decoration: underline;
-    text-underline-offset: 0.2em;
-}
-:root[data-theme='light'] .overlay .link-btn {
-    color: var(--hex-2f74ee);
-}
-.overlay .link-btn:hover {
-    background: none;
-    color: inherit;
-}
-
-.overlay .modal-head {
-    grid-template-columns: minmax(0, 1fr) auto;
-}
 
 .overlay .auth-status .icon,
 .overlay .auth-intro .icon {
@@ -3740,11 +3421,6 @@ h4 {
     border: 0;
     border-radius: 1rem;
     background: color-mix(in srgb, currentColor 8%, transparent);
-}
-.overlay .modal-foot {
-    border: 0;
-    background: none;
-    padding: var(--sp-2) var(--sp-6) var(--sp-6);
 }
 .show-pw {
     color: inherit;
@@ -5341,21 +5017,6 @@ h4 {
     }
 }
 
-/* one focus ring for the landing fields too */
-.overlay .input:focus,
-.overlay .input:focus-visible,
-.overlay .select:focus,
-.overlay .select:focus-visible,
-.overlay .textarea:focus,
-.overlay .textarea:focus-visible,
-:root[data-theme='light'] .overlay .input:focus,
-:root[data-theme='light'] .overlay .input:focus-visible {
-    box-shadow: none;
-    outline: 2px solid var(--focus-yellow, #ffd83d);
-    outline-offset: 0;
-    border-color: transparent;
-}
-
 /* a signed-in student sees one box like the code field: the label, and the button on its right */
 .hero-join .hero-resume {
     flex: 0 0 auto;
@@ -5439,31 +5100,6 @@ h4 {
 }
 .overlay .btn-primary:disabled {
     opacity: 0.45;
-}
-
-/* one surface: head, body and footer share the modal's own colour */
-.overlay .modal-head,
-.overlay .modal-body,
-.overlay .modal-foot {
-    background: transparent;
-    box-shadow: none;
-}
-
-/* the modal is blue in both themes; buttons and links stay yellow */
-:root[data-theme='light'] .overlay .modal {
-    --bg-field: color-mix(in srgb, var(--palette-paper) 3%, var(--palette-ink));
-    --text: var(--palette-paper);
-    --text-muted: color-mix(in srgb, var(--palette-paper) 72%, var(--palette-ink));
-    --text-faint: color-mix(in srgb, var(--palette-paper) 60%, var(--palette-ink));
-    --line: color-mix(in srgb, var(--palette-paper) 40%, var(--palette-ink));
-    --line-soft: color-mix(in srgb, var(--palette-paper) 13%, var(--palette-ink));
-    --bg-chip: color-mix(in srgb, var(--palette-paper) 10%, var(--palette-ink));
-    --danger: var(--hex-ff9a9a);
-    background: var(--hex-101745);
-    color: var(--hex-f1ead8);
-    box-shadow:
-        0 30px 80px var(--black-a50),
-        0 0 0 1px var(--rgb255-248-231-a12);
 }
 :root[data-theme='light'] .overlay .link-btn {
     color: var(--volt);
@@ -5604,4 +5240,17 @@ h4 {
 .overlay .portal-first .link-btn {
     min-height: 44px;
     padding-inline: var(--sp-1);
+}
+
+/* every window follows the admin colours: the same surface, lines and fields as the admin windows */
+:root[data-theme='dark'] .overlay {
+    --bg-surface: color-mix(in srgb, var(--hex-ffffff) 5%, var(--hex-142849));
+    --bg-surface-hi: color-mix(in srgb, var(--hex-ffffff) 9%, var(--hex-142849));
+    --line: color-mix(in srgb, var(--hex-fff8e7) 18%, var(--hex-142849));
+    --line-soft: color-mix(in srgb, var(--hex-fff8e7) 10%, var(--hex-142849));
+}
+:root[data-theme='light'] .overlay {
+    --bg-surface: var(--hex-fffaf0);
+    --bg-surface-hi: var(--hex-ffffff);
+    --bg-field: var(--hex-ffffff);
 }

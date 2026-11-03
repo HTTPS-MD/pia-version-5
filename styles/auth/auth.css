@@ -263,32 +263,25 @@
     border: 1px solid var(--line);
 }
 
-/* the same blue surface, spacing and yellow button as the landing windows */
+/* the same surface, spacing and yellow button as the admin windows */
 .auth-card {
-    --bg-field: color-mix(in srgb, var(--palette-paper) 3%, var(--palette-ink));
-    --text: var(--palette-paper);
-    --text-muted: color-mix(in srgb, var(--palette-paper) 72%, var(--palette-ink));
-    --text-faint: color-mix(in srgb, var(--palette-paper) 60%, var(--palette-ink));
-    --line: color-mix(in srgb, var(--palette-paper) 40%, var(--palette-ink));
-    --danger: var(--hex-ff9a9a);
+    --bg-field: color-mix(in srgb, var(--hex-ffffff) 3%, var(--hex-142849));
+    --text-faint: var(--text-muted);
     max-width: 480px;
     padding: var(--sp-8) var(--sp-7) var(--sp-7);
-    border: 0;
-    border-radius: 1.75rem;
-    background: var(--hex-101745);
-    color: var(--hex-f1ead8);
-    box-shadow:
-        0 30px 80px var(--black-a50),
-        0 0 0 1px var(--rgb255-248-231-a12);
+    border: 1px solid var(--line-soft);
+    border-radius: 1.1rem;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-dialog);
 }
 .auth-brand {
     margin-bottom: var(--sp-7);
 }
 .auth-card .auth-title {
     margin-top: 0;
-    font-size: 1.75rem;
-    line-height: 1.1;
-    letter-spacing: -0.04em;
+    font-size: 1.5rem;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
     color: inherit;
 }
 .auth-card .auth-lede {
@@ -381,7 +374,7 @@
 }
 .auth-card .auth-status.auth-status-error {
     background: none;
-    color: var(--hex-ff9a9a);
+    color: var(--danger);
 }
 .auth-card .auth-status.auth-status-success {
     background: none;
@@ -453,4 +446,15 @@
     justify-content: center;
     text-decoration: none;
     color: var(--on-volt);
+}
+
+/* the admin colours */
+:root[data-theme='dark'] .auth-card {
+    --bg-surface: color-mix(in srgb, var(--hex-ffffff) 5%, var(--hex-142849));
+    --line: color-mix(in srgb, var(--hex-fff8e7) 18%, var(--hex-142849));
+    --line-soft: color-mix(in srgb, var(--hex-fff8e7) 10%, var(--hex-142849));
+}
+:root[data-theme='light'] .auth-card {
+    --bg-surface: var(--hex-fffaf0);
+    --bg-field: var(--hex-ffffff);
 }
