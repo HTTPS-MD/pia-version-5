@@ -222,15 +222,21 @@ function setupRealtimeListener() {
 }
 
 const PRIVACY_TEXT = STAFF
-    ? 'Only the researchers see them. Never your students or the school.'
+    ? 'Only the researchers see your responses. They are never shown to your students or the school.'
     : 'Only the researchers see them. Never your classmates or teachers.';
 
 function showPrivacyStep() {
     const container = document.getElementById('step-container');
     if (!container) return;
     container.innerHTML = `
-        <h1 class="gate-title">Hi! Let’s get to <mark>know you.</mark></h1>
-        <p class="gate-lede">50 quick statements. Pick how much each one sounds like you.</p>
+        <h1 class="gate-title">${
+            STAFF ? 'Teacher <mark>questionnaire.</mark>' : 'Hi! Let’s get to <mark>know you.</mark>'
+        }</h1>
+        <p class="gate-lede">${
+            STAFF
+                ? 'A 50-statement personality questionnaire for your teacher profile in the study. Rate how well each statement describes you.'
+                : '50 quick statements. Pick how much each one sounds like you.'
+        }</p>
 
         <ul class="gate-chips" aria-label="What to expect">
             <li>50 statements</li>
@@ -238,7 +244,7 @@ function showPrivacyStep() {
         </ul>
 
         <section class="privacy-note" aria-labelledby="privacy-title">
-            <h2 class="privacy-title" id="privacy-title">Your answers are private</h2>
+            <h2 class="privacy-title" id="privacy-title">${STAFF ? 'Your responses are confidential' : 'Your answers are private'}</h2>
             <p class="privacy-text">${PRIVACY_TEXT}</p>
         </section>
 
