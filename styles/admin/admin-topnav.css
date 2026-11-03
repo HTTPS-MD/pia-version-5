@@ -173,11 +173,6 @@
 #modal-confirm .modal-hero-text {
     max-width: none;
 }
-.stage-name[data-tut-change] {
-    cursor: pointer;
-    text-decoration: underline dotted;
-    text-underline-offset: 3px;
-}
 .tut-modal {
     position: relative;
 }
