@@ -2406,3 +2406,12 @@ html[data-surface='admin'] .as-addbar .input {
     gap: 6px;
     font-size: var(--fs-sm);
 }
+
+/* the stage switches sit in the middle of the strip: the strip is 48px tall, so the padding is only at the sides */
+#view-students .page-title-row .stage-let {
+    align-content: center;
+    padding-block: 0;
+}
+#view-students .page-title-row .stage-let .stage-items {
+    align-items: center;
+}
