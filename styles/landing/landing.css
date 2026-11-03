@@ -5455,3 +5455,44 @@ h4 {
 :root[data-theme='light'] .overlay .auth-status.is-error {
     color: var(--hex-ff9a9a);
 }
+
+/* sign-in windows: even rhythm, no reserved blank space */
+.overlay .portal-form {
+    gap: var(--sp-5);
+}
+.overlay .portal-form .form-grid {
+    gap: var(--sp-5);
+}
+.overlay .portal-form .field {
+    gap: var(--sp-2);
+}
+.overlay .portal-form .field-msg:empty,
+.overlay .portal-form .auth-status:not(.is-error):not(.is-ok) {
+    display: none;
+}
+.overlay .portal-form .label-row {
+    align-items: center;
+}
+.overlay .portal-form .show-pw {
+    margin-block-start: var(--sp-2);
+}
+.overlay .portal-form .portal-submit {
+    margin-block-start: var(--sp-3);
+    min-height: 3.25rem;
+}
+.overlay .portal-form .auth-status {
+    min-height: 0;
+    margin: 0;
+    line-height: 1.55;
+}
+.overlay .portal-form .device-offer {
+    margin-block-start: 0;
+}
+.overlay .portal-form .portal-links {
+    margin-block-start: var(--sp-2);
+    padding-block-start: var(--sp-5);
+}
+#modal-signin .modal-body,
+#modal-staff .modal-body {
+    padding-bottom: var(--sp-7);
+}
