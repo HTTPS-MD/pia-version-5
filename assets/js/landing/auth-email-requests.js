@@ -14,7 +14,8 @@
             pending: false,
             until: 0,
             version: 0,
-            accepted: false
+            accepted: false,
+            limited: false
         },
         forgot: {
             prefix: 'fp',
@@ -22,7 +23,8 @@
             pending: false,
             until: 0,
             version: 0,
-            accepted: false
+            accepted: false,
+            limited: false
         }
     };
 
@@ -63,9 +65,24 @@
             $('#' + p + '-resend').textContent = state.pending ? 'Sending…' : 'Resend email';
             $('#' + p + '-email').disabled = state.pending;
 
-            $('#' + p + '-cooldown').textContent = remaining
-                ? 'You can request another email in ' + remaining + ' seconds.'
-                : '';
+            if (state.limited && remaining) {
+                $('#' + p + '-cooldown').textContent = '';
+                Auth.setStatus(
+                    kind + '-status',
+                    'Too many email requests. Try again in ' +
+                        remaining +
+                        (remaining === 1 ? ' second.' : ' seconds.'),
+                    'error'
+                );
+            } else {
+                if (state.limited) {
+                    state.limited = false;
+                    Auth.clearStatus(kind + '-status');
+                }
+                $('#' + p + '-cooldown').textContent = remaining
+                    ? 'You can request another email in ' + remaining + ' seconds.'
+                    : '';
+            }
             if (remaining && open) {
                 ticking = true;
             }
@@ -90,6 +107,20 @@
         }
         var match = String((error && error.message) || '').match(/after\s+(\d+)\s+seconds?/i);
         return match ? Number(match[1]) * 1000 : 60000;
+    }
+
+    function inboxUrl(email) {
+        var domain = String(email).split('@')[1] || '';
+        if (/(^|\.)(outlook|hotmail|live|msn)\./i.test(domain)) {
+            return 'https://outlook.live.com/mail/';
+        }
+        if (/(^|\.)yahoo\./i.test(domain)) {
+            return 'https://mail.yahoo.com/';
+        }
+        if (/(^|\.)(icloud|me|mac)\./i.test(domain)) {
+            return 'https://www.icloud.com/mail';
+        }
+        return 'https://mail.google.com/';
     }
 
     function emailRequestError(error) {
@@ -125,6 +156,7 @@
             return;
         }
         var version = ++state.version;
+        state.limited = false;
         state.pending = true;
         renderEmailRequests();
         try {
@@ -145,9 +177,9 @@
                     Number(res.error.status) === 429 ||
                     /rate.limit|too many|after.*seconds/i.test(res.error.message || '')
                 ) {
-                    state.until = Date.now() + retryDelay(res.error);
-                }
-                if (version === state.version) {
+                    state.until = Date.now() + Math.max(retryDelay(res.error), 60000);
+                    state.limited = version === state.version;
+                } else if (version === state.version) {
                     Auth.setStatus(kind + '-status', emailRequestError(res.error), 'error');
                 }
                 return;
@@ -160,6 +192,7 @@
             state.email = email;
             state.accepted = true;
             $('#' + p + '-sent-to').textContent = email;
+            $('#' + p + '-open-mail').href = inboxUrl(email);
             Auth.setStatus(kind + '-status', 'Email request accepted. Check your email.', 'ok');
             renderEmailRequests();
             $('#' + p + '-change-email').focus();
