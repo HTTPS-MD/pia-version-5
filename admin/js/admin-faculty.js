@@ -215,6 +215,49 @@
         );
     }
 
+    var OCEAN_TRAITS = [
+        { key: 'ocean_e', name: 'Extroversion' },
+        { key: 'ocean_a', name: 'Agreeableness' },
+        { key: 'ocean_c', name: 'Conscientiousness' },
+        { key: 'ocean_n', name: 'Neuroticism' },
+        { key: 'ocean_o', name: 'Openness to Experience' }
+    ];
+
+    function renderFacultyOcean(f) {
+        var info = (Admin.state.facultyOcean || {})[String(f.email || '').toLowerCase()];
+        var box = $('#faculty-traits');
+        var meta = $('#faculty-ocean-meta');
+        meta.textContent = '';
+        if (!info || !info.row) {
+            box.innerHTML = '<p class="muted">Not taken yet.</p>';
+            return;
+        }
+        var r = info.row;
+        meta.textContent =
+            'Submitted ' +
+            new Date(r.submitted_at).toLocaleDateString([], {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            }) +
+            (info.done ? '' : ' · retake pending');
+        box.innerHTML = OCEAN_TRAITS.map(function (t) {
+            var v = r[t.key];
+            var width = v == null ? 0 : Math.max(0, Math.min(100, (v / Admin.OCEAN_MAX) * 100));
+            return (
+                '<div class="trait"><div class="trait-top"><span class="trait-name">' +
+                Admin.esc(t.name) +
+                '</span><span class="trait-val tnum">' +
+                (v == null
+                    ? 'n/a'
+                    : Admin.esc(v) + '<span class="trait-of"> / ' + Admin.OCEAN_MAX + '</span>') +
+                '</span></div><div class="bar"><div class="bar-fill" style="width:' +
+                width +
+                '%"></div></div></div>'
+            );
+        }).join('');
+    }
+
     function openFacultyProfile(email, trigger) {
         var f = Admin.state.faculty.filter(function (row) {
             return row.email === email;
@@ -237,6 +280,7 @@
         $('#faculty-section').textContent = f.assigned_section || 'Unassigned';
         $('#faculty-status').textContent = (f.status || '') === 'active' ? 'Active' : 'Inactive';
         setFacultyStatus('', '');
+        renderFacultyOcean(f);
 
         Admin.openModal('modal-faculty', trigger);
     }

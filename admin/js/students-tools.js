@@ -378,102 +378,12 @@
         anchor.parentNode.appendChild(menu);
     }
 
-    var oceanOf = {};
-    var TRAITS = [
-        ['E', 'ocean_e', 'Extraversion'],
-        ['A', 'ocean_a', 'Agreeableness'],
-        ['C', 'ocean_c', 'Conscientiousness'],
-        ['N', 'ocean_n', 'Neuroticism'],
-        ['O', 'ocean_o', 'Openness']
-    ];
-
-    function loadOcean(email) {
-        var slot =
-            oceanOf[email] ||
-            (oceanOf[email] = { at: 0, busy: false, done: null, row: null, known: false });
-        if (slot.busy || Date.now() - slot.at < 15000) {
-            return;
-        }
-        slot.busy = true;
-        Promise.all([
-            sb.from('profiles').select('is_ocean_done').eq('email', email).maybeSingle(),
-            sb
-                .from('ocean_submissions')
-                .select('ocean_e, ocean_a, ocean_c, ocean_n, ocean_o, submitted_at')
-                .eq('email', email)
-                .order('submitted_at', { ascending: false })
-                .limit(1)
-        ])
-            .then(function (r) {
-                slot.done = !!(r[0].data && r[0].data.is_ocean_done);
-                slot.row = (r[1].data && r[1].data[0]) || null;
-                slot.known = !r[0].error && !r[1].error;
-            })
-            .catch(function () {})
-            .then(function () {
-                slot.busy = false;
-                slot.at = Date.now();
-                var el = $('#prof-line');
-                if (el) {
-                    el._sig = '';
-                }
-                renderProfLine();
-            });
-    }
-
     function initials(name) {
         var w = String(name || '')
             .trim()
             .split(/\s+/)
             .filter(Boolean);
         return ((w[0] || '?')[0] + (w.length > 1 ? w[w.length - 1][0] : '')).toUpperCase();
-    }
-
-    function oceanHtml(slot) {
-        if (!slot || !slot.known) {
-            return '<p class="prof-card-note">Checking OCEAN…</p>';
-        }
-        if (slot.done && slot.row) {
-            var when = new Date(slot.row.submitted_at).toLocaleDateString([], {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            });
-            return (
-                '<p class="prof-card-status is-done">OCEAN done · ' +
-                esc(when) +
-                '</p><ul class="prof-ocean" aria-label="OCEAN scores, 0 to 40">' +
-                TRAITS.map(function (t) {
-                    var v = Number(slot.row[t[1]]);
-                    return (
-                        '<li title="' +
-                        t[2] +
-                        '"><span class="prof-ocean-k">' +
-                        t[0] +
-                        '</span>' +
-                        '<span class="prof-ocean-bar"><i data-w="' +
-                        Math.max(0, Math.min(40, v)) +
-                        '"></i></span>' +
-                        '<span class="prof-ocean-v mono">' +
-                        (isFinite(v) ? v : '—') +
-                        '</span></li>'
-                    );
-                }).join('') +
-                '</ul><p class="prof-card-note">Raw scores, 0 to 40. A low N means more stress, because the sheet scores N the other way round.</p>'
-            );
-        }
-        if (slot.row && !slot.done) {
-            return '<p class="prof-card-status">Retake pending · will answer again at the next sign-in</p>';
-        }
-        return '<p class="prof-card-status">OCEAN not taken yet</p>';
-    }
-
-    function paintBars(host) {
-        Array.prototype.slice
-            .call(host.querySelectorAll('.prof-ocean-bar i[data-w]'))
-            .forEach(function (bar) {
-                bar.style.width = (Number(bar.getAttribute('data-w')) / 40) * 100 + '%';
-            });
     }
 
     function renderProfLine() {
@@ -565,17 +475,11 @@
         }
         var list = profsOf(section);
         var who = list.length ? String(list[0].email).toLowerCase() : '';
-        if (who) {
-            loadOcean(who);
-        }
-        var slot = who ? oceanOf[who] : null;
 
         var sig =
             section +
             '|' +
             (list.length ? list[0].email + '|' + list[0].name : '') +
-            '|' +
-            (slot ? [slot.known, slot.done, slot.row && slot.row.submitted_at].join(',') : '') +
             '|' +
             !!profOnline[who];
         if (el._sig === sig) {
@@ -610,11 +514,7 @@
             '<span class="prof-card-name"><span data-mask>' +
             esc(name) +
             '</span></span>' +
-            '</div></div>' +
-            '<div class="prof-card-ocean">' +
-            oceanHtml(slot) +
-            '</div></div>';
-        paintBars(el);
+            '</div></div></div>';
     }
 
     var LAST_KEY = 'pia_students_section';

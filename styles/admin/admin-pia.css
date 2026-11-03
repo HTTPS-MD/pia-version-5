@@ -391,53 +391,6 @@ html[data-surface='admin'] .user-menu {
     width: fit-content;
     max-width: 100%;
 }
-.prof-card-status {
-    margin: 0 0 8px;
-    font-weight: 600;
-    font-size: var(--fs-sm);
-    color: var(--text-muted);
-}
-.prof-card-status.is-done {
-    color: var(--ok);
-}
-.prof-card-note {
-    margin: 8px 0 0;
-    font-size: var(--fs-xs);
-    color: var(--text-muted);
-}
-.prof-ocean {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 8px 28px;
-    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
-}
-.prof-ocean li {
-    display: grid;
-    grid-template-columns: 1.25rem minmax(0, 1fr) 2rem;
-    align-items: center;
-    gap: 8px;
-}
-.prof-ocean-k {
-    font: 700 var(--fs-sm) var(--font-display);
-}
-.prof-ocean-bar {
-    height: 8px;
-    border-radius: 999px;
-    background: var(--bg-chip);
-    overflow: hidden;
-}
-.prof-ocean-bar i {
-    display: block;
-    height: 100%;
-    border-radius: inherit;
-    background: var(--admin-pill);
-}
-.prof-ocean-v {
-    text-align: right;
-    font-size: var(--fs-sm);
-}
 .pia-hide-details .prof-card [data-mask] {
     position: relative;
     display: inline-block;
@@ -715,13 +668,6 @@ html[data-surface='admin'] .mk-pair .btn {
     cursor: inherit;
     text-decoration: none;
     color: var(--text);
-}
-#view-students .prof-card-ocean {
-    margin-left: auto;
-    text-align: right;
-}
-#view-students .prof-card-status {
-    margin: 0;
 }
 .table-title {
     display: flex;
