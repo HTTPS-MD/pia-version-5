@@ -170,14 +170,13 @@
     }
     Admin.initAdminPager = initAdminPager;
 
+    function sameName(typed, expected) {
+        return typed.trim().replace(/\s+/g, ' ').toLowerCase() === expected.trim().toLowerCase();
+    }
+
     async function deleteOwnAccount(button) {
-        var ok = await Admin.confirmAction({
-            heading: 'Delete your administrator account?',
-            message:
-                'Your account is removed for good and you are signed out. This cannot be undone.',
-            confirmLabel: 'Delete my account'
-        });
-        if (!ok) {
+        var expected = Admin.state.adminName || '';
+        if (!sameName($('#da-name').value, expected) || !expected) {
             return;
         }
 
@@ -191,6 +190,7 @@
         release();
 
         if (res.error) {
+            Admin.closeModal('modal-delete-account');
             Admin.toastErr(
                 'Account not deleted',
                 Admin.friendlyDbError(res.error, 'Your account was not deleted.')
@@ -208,12 +208,26 @@
     }
 
     function initDeleteOwnAccount() {
-        var button = $('#delete-own-account');
-        if (button) {
-            button.addEventListener('click', function () {
-                deleteOwnAccount(button);
-            });
+        var open = $('#delete-own-account');
+        var form = $('#delete-account-form');
+        var input = $('#da-name');
+        var submit = $('#da-submit');
+        if (!open || !form) {
+            return;
         }
+        open.addEventListener('click', function () {
+            $('#da-expected').textContent = Admin.state.adminName || '';
+            input.value = '';
+            submit.disabled = true;
+            Admin.openModal('modal-delete-account', open);
+        });
+        input.addEventListener('input', function () {
+            submit.disabled = !sameName(input.value, Admin.state.adminName || '\u0000');
+        });
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            deleteOwnAccount(submit);
+        });
     }
     Admin.initDeleteOwnAccount = initDeleteOwnAccount;
 
