@@ -1903,10 +1903,32 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
     display: grid;
     gap: var(--sp-3);
 }
-.help-copy a {
-    color: var(--help-gold);
+.help-contact {
+    display: grid;
+    justify-items: center;
+    gap: var(--sp-4);
+    margin-top: var(--sp-9);
+    text-align: center;
+}
+.help-contact-title {
+    margin: 0;
+    font-size: var(--fs-h3);
     font-weight: 700;
-    text-underline-offset: 3px;
+}
+.help-contact p {
+    max-width: 52ch;
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.75;
+}
+.help-contact-btn {
+    margin-top: var(--sp-2);
+    background: var(--volt);
+    color: var(--on-volt);
+    text-decoration: none;
+}
+.help-contact-btn:hover:not(:disabled) {
+    background: var(--hex-ffe66d);
 }
 .help-copy strong {
     color: var(--text);
