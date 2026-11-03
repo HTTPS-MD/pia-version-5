@@ -360,7 +360,7 @@
             return r.attendance !== null;
         });
         $('#class-live-dot').classList.toggle('is-on', classOpen);
-        setText($('#class-live-status'), classOpen ? 'Class is open' : 'Class is closed');
+        setText($('#class-live-status'), classOpen ? 'Class is open' : 'Study is not yet started');
 
         var visible = state.rows.filter(matches);
         var body = $('#roster');

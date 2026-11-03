@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261117a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261102c">
     <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261116a">
-    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261102e">
+    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261120a">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -63,7 +63,7 @@
                 </button>
                 <div class="t-account" id="account">
                     <button type="button" class="t-avatar" id="account-btn" aria-haspopup="menu" aria-expanded="false"
-                        aria-controls="account-menu" aria-label="Account menu"><span id="initials" aria-hidden="true">··</span></button>
+                        aria-controls="account-menu" aria-label="Account menu"><span class="t-initials" id="initials" aria-hidden="true">··</span><span class="custom-select-chevron t-chevron" aria-hidden="true"></span></button>
                     <div class="t-menu" id="account-menu" role="menu" aria-label="Account" hidden>
                         <a class="t-menu-item" role="menuitem" href="#settings">
                             <svg class="icon" aria-hidden="true"><use href="#i-gear"></use></svg>Settings</a>
@@ -95,7 +95,7 @@
                         <span class="count-chip" id="dir-count">0 students</span>
                         <span class="class-live" id="class-live">
                             <span class="live-dot" id="class-live-dot" aria-hidden="true"></span>
-                            <span id="class-live-status">Class is closed</span>
+                            <span id="class-live-status">Study is not yet started</span>
                         </span>
                     </div>
 
@@ -212,7 +212,7 @@
     <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
     <script src="../../assets/js/shared/device-revoke.js?v=20261031a"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
-    <script src="../js/teacher-roster.js?v=20261108c"></script>
+    <script src="../js/teacher-roster.js?v=20261120a"></script>
     <script src="../js/teacher-settings.js?v=20261102a"></script>
 </body>
 

@@ -145,17 +145,43 @@ html[data-surface='admin'][data-theme='light'] .t-bar {
     position: relative;
 }
 .t-avatar {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    height: 44px;
+    padding: 0 14px 0 4px;
+    box-sizing: border-box;
+    border: 1px solid var(--line-input);
+    border-radius: 999px;
+    background: var(--bg-surface);
+    color: var(--text);
+    cursor: pointer;
+}
+html[data-theme='dark'] .t-avatar {
+    background: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+}
+.t-initials {
     display: grid;
     place-items: center;
-    width: 40px;
-    height: 40px;
+    flex: none;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    border: 0;
-    background: var(--bg-chip);
-    color: var(--text);
-    box-shadow: 0 0 0 2px var(--admin-pill);
+    background: color-mix(in srgb, var(--text) 18%, transparent);
     font: 700 0.8125rem var(--font-body);
-    cursor: pointer;
+}
+.t-chevron {
+    display: block;
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin: 0 0 3px;
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-3px) rotate(45deg);
+}
+.t-avatar[aria-expanded='true'] .t-chevron {
+    transform: translateY(2px) rotate(225deg);
 }
 .t-menu {
     position: absolute;
