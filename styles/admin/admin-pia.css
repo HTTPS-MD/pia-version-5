@@ -1038,9 +1038,11 @@ html[data-surface='admin'] .theme-toggle {
     color: var(--text);
     box-shadow: none;
 }
-html[data-surface='admin'] .theme-toggle:hover {
-    background: var(--text);
-    color: var(--bg-body);
+@media (hover: hover) {
+    html[data-surface='admin'] .theme-toggle:hover {
+        background: var(--text);
+        color: var(--bg-body);
+    }
 }
 
 /* add students: one bordered table, a header row and a line between rows */

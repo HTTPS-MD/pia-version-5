@@ -415,10 +415,12 @@ h4 {
         transform var(--t-snap) var(--ease-snap);
 }
 
-.theme-toggle:hover,
-.nav-burger:hover {
-    background: var(--fg);
-    color: var(--bg);
+@media (hover: hover) {
+    .theme-toggle:hover,
+    .nav-burger:hover {
+        background: var(--fg);
+        color: var(--bg);
+    }
 }
 .theme-toggle:active,
 .nav-burger:active {
