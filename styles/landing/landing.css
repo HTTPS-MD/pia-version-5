@@ -5271,3 +5271,16 @@ h4 {
     --shadow-lg: 0 8px 24px var(--black-a22);
     --shadow-dialog: 0 8px 24px var(--black-a22);
 }
+
+/* a little larger text in the landing windows */
+.overlay .input,
+.overlay .select,
+.overlay .textarea {
+    font-size: 1.0625rem;
+}
+.overlay .label {
+    font-size: 1rem;
+}
+.overlay .modal-sub {
+    font-size: 1rem;
+}
