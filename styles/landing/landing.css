@@ -5254,3 +5254,20 @@ h4 {
     --bg-surface-hi: var(--hex-ffffff);
     --bg-field: var(--hex-ffffff);
 }
+
+/* the admin shape too: the same corners, field height and soft shadow, with no offset block */
+.overlay {
+    --r-card: 20px;
+    --r-xs: 8px;
+    --r-sm: 12px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-xl: 24px;
+    --control-h: 38px;
+    --field-h: 40px;
+    --shadow-sm: none;
+    --shadow-card: none;
+    --shadow-md: 0 4px 12px var(--black-a18);
+    --shadow-lg: 0 8px 24px var(--black-a22);
+    --shadow-dialog: 0 8px 24px var(--black-a22);
+}
