@@ -259,7 +259,7 @@
         }
         try {
             var both = await Promise.all([
-                sb.from('profiles').select('email, is_ocean_done').in('email', emails),
+                sb.from('profiles').select('email, is_ocean_done, status').in('email', emails),
                 sb
                     .from('ocean_submissions')
                     .select('email, ocean_e, ocean_a, ocean_c, ocean_n, ocean_o, submitted_at')
@@ -274,6 +274,7 @@
                 var m = map[String(r.email).toLowerCase()];
                 if (m) {
                     m.done = !!r.is_ocean_done;
+                    m.account = r.status;
                 }
             });
             (both[1].data || []).forEach(function (r) {
@@ -296,6 +297,14 @@
 
         Admin.state.faculty = res.data || [];
         await loadFacultyOcean();
+        // The account turns active on the profiles row when the teacher sets a password;
+        // the professors row keeps its starting value, so read it from there.
+        Admin.state.faculty.forEach(function (f) {
+            var info = Admin.state.facultyOcean[String(f.email || '').toLowerCase()];
+            if (info && info.account) {
+                f.status = info.account;
+            }
+        });
         $('#nav-count-faculty').textContent = Admin.state.faculty.length;
         Admin.renderFaculty($('#faculty-search') ? $('#faculty-search').value : '');
         Admin.renderSections();
