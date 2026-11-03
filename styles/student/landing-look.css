@@ -1136,7 +1136,32 @@
     }
 }
 
-/* the game's dialogs are the system's standard window; only the game cards keep their own shape */
+/* the game's dialogs look like every other dialog in the system */
+.landing-look .modal {
+    border: 0;
+    border-radius: 1.1rem;
+    background: color-mix(in srgb, var(--palette-paper) 4%, var(--palette-ink));
+    color: var(--text);
+    box-shadow: 0 8px 24px var(--black-a22);
+}
+:root[data-theme='light'] .landing-look .modal {
+    background: var(--palette-paper);
+}
+.landing-look .modal-title {
+    color: var(--text);
+}
+.landing-look .modal-sub,
+.landing-look .modal-text {
+    color: var(--text-muted);
+}
+.landing-look .modal-sub:empty {
+    display: none;
+}
+.landing-look .modal .btn-danger {
+    border-color: transparent;
+    background: var(--danger);
+    color: var(--hex-ffffff);
+}
 .landing-look .modal.game-card {
     border: 0;
     box-shadow: 0 8px 24px var(--black-a22);

@@ -1979,35 +1979,35 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
 }
 
 
-/* fields and buttons in every window, on every page: a slight corner on fields, pill buttons */
-:root .overlay .input,
-:root .overlay .select,
-:root .overlay .textarea,
-:root .overlay .custom-select-trigger {
+/* fields and buttons in every window (the student pages keep their own look): a slight corner on fields, pill buttons */
+:root body:not(.landing-look) .overlay .input,
+:root body:not(.landing-look) .overlay .select,
+:root body:not(.landing-look) .overlay .textarea,
+:root body:not(.landing-look) .overlay .custom-select-trigger {
     border-radius: 8px;
 }
-:root .overlay .btn {
+:root body:not(.landing-look) .overlay .btn {
     border-radius: 999px;
     padding-inline: 18px;
     font-weight: 600;
 }
-:root .overlay .btn-primary {
+:root body:not(.landing-look) .overlay .btn-primary {
     box-shadow: 0 6px 16px var(--black-a16);
 }
 
-/* one design language for every window: the admin surface, lines, corners and shadow, on every page */
-:root[data-theme='dark'] .overlay {
+/* one design language for every window: the admin surface, lines, corners and shadow (the student pages keep their own look) */
+:root[data-theme='dark'] body:not(.landing-look) .overlay {
     --bg-surface: color-mix(in srgb, var(--hex-ffffff) 5%, var(--hex-142849));
     --bg-surface-hi: color-mix(in srgb, var(--hex-ffffff) 9%, var(--hex-142849));
     --line: color-mix(in srgb, var(--hex-fff8e7) 18%, var(--hex-142849));
     --line-soft: color-mix(in srgb, var(--hex-fff8e7) 10%, var(--hex-142849));
 }
-:root[data-theme='light'] .overlay {
+:root[data-theme='light'] body:not(.landing-look) .overlay {
     --bg-surface: var(--hex-fffaf0);
     --bg-surface-hi: var(--hex-ffffff);
     --bg-field: var(--hex-ffffff);
 }
-.overlay {
+body:not(.landing-look) .overlay {
     --r-card: 20px;
     --r-xs: 8px;
     --r-sm: 12px;
