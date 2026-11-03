@@ -14,7 +14,8 @@
         controls: { trail: ['Stage Controls'] },
         mathtask: { trail: ['Math Task'] },
         profile: { trail: ['Profile'] },
-        settings: { trail: ['Settings'] }
+        settings: { trail: ['Settings'] },
+        help: { trail: ['Help'] }
     };
     var PEOPLE_CHILDREN = { students: 1, faculty: 1 };
 

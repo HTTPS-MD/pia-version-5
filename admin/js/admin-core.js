@@ -320,7 +320,7 @@
         PIAAdminShell.closeMobileNav();
     }
 
-    var VIEWS = ['students', 'faculty', 'mathtask', 'settings'];
+    var VIEWS = ['students', 'faculty', 'mathtask', 'settings', 'help'];
 
     function switchView(view) {
         if (view === 'controls') {

@@ -481,10 +481,14 @@
 
     function route() {
         var settings = window.location.hash === '#settings';
-        $('#view-students').hidden = settings;
+        var help = window.location.hash === '#help';
+        $('#view-students').hidden = settings || help;
         $('#view-settings').hidden = !settings;
-        $('#tab-sections').classList.toggle('is-active', !settings);
-        if (settings) {
+        $('#view-help').hidden = !help;
+        $('#tab-sections').classList.toggle('is-active', !settings && !help);
+        if (help) {
+            document.title = 'Help · PIA System';
+        } else if (settings) {
             document.title = 'Settings · PIA System';
             if (window.PIATeacherSettings) {
                 window.PIATeacherSettings.show({ email: state.email, name: state.name });
