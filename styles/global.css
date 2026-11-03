@@ -1637,7 +1637,7 @@ body.is-locked {
 .revoke-modal-box .btn-primary {
     min-height: 3.25rem;
     border: 0;
-    border-radius: 1rem;
+    border-radius: 999px;
     background: var(--volt);
     color: var(--on-volt);
     font-size: 1.0625rem;
@@ -1979,10 +1979,46 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
 }
 
 
-/* fields in every window, landing and admin alike: a slight corner, not a pill */
-html[data-surface] .overlay .input,
-html[data-surface] .overlay .select,
-html[data-surface] .overlay .textarea,
-html[data-surface] .overlay .custom-select-trigger {
+/* fields and buttons in every window, on every page: a slight corner on fields, pill buttons */
+:root .overlay .input,
+:root .overlay .select,
+:root .overlay .textarea,
+:root .overlay .custom-select-trigger {
     border-radius: 8px;
+}
+:root .overlay .btn {
+    border-radius: 999px;
+    padding-inline: 18px;
+    font-weight: 600;
+}
+:root .overlay .btn-primary {
+    box-shadow: 0 6px 16px var(--black-a16);
+}
+
+/* one design language for every window: the admin surface, lines, corners and shadow, on every page */
+:root[data-theme='dark'] .overlay {
+    --bg-surface: color-mix(in srgb, var(--hex-ffffff) 5%, var(--hex-142849));
+    --bg-surface-hi: color-mix(in srgb, var(--hex-ffffff) 9%, var(--hex-142849));
+    --line: color-mix(in srgb, var(--hex-fff8e7) 18%, var(--hex-142849));
+    --line-soft: color-mix(in srgb, var(--hex-fff8e7) 10%, var(--hex-142849));
+}
+:root[data-theme='light'] .overlay {
+    --bg-surface: var(--hex-fffaf0);
+    --bg-surface-hi: var(--hex-ffffff);
+    --bg-field: var(--hex-ffffff);
+}
+.overlay {
+    --r-card: 20px;
+    --r-xs: 8px;
+    --r-sm: 12px;
+    --r-md: 14px;
+    --r-lg: 20px;
+    --r-xl: 24px;
+    --control-h: 38px;
+    --field-h: 40px;
+    --shadow-sm: none;
+    --shadow-card: none;
+    --shadow-md: 0 4px 12px var(--black-a18);
+    --shadow-lg: 0 8px 24px var(--black-a22);
+    --shadow-dialog: 0 8px 24px var(--black-a22);
 }

@@ -308,9 +308,8 @@
     font-weight: 600;
 }
 .auth-card .auth-form .input {
-    min-height: 3.25rem;
     border: 1px solid var(--line);
-    border-radius: 1rem;
+    border-radius: 8px;
     background: var(--bg-field);
     color: inherit;
 }
@@ -330,12 +329,10 @@
     display: none;
 }
 .auth-card .btn {
-    min-height: 3.25rem;
     border: 0;
-    border-radius: 1rem;
+    border-radius: 999px;
     box-shadow: none;
-    font-size: 1.0625rem;
-    font-weight: 700;
+    font-weight: 600;
 }
 .auth-card .btn-primary {
     background: var(--volt);

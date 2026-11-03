@@ -1816,9 +1816,7 @@ h4 {
 
 .overlay .portal-submit {
     width: 100%;
-    min-height: 3rem;
     margin-block-start: var(--sp-2);
-    font-size: var(--fs-body);
 }
 .overlay .device-offer {
     margin-block-start: var(--sp-2);
@@ -5130,7 +5128,6 @@ h4 {
 }
 .overlay .portal-form .portal-submit {
     margin-block-start: var(--sp-3);
-    min-height: 3.25rem;
 }
 .overlay .portal-form .auth-status {
     min-height: 0;
@@ -5240,47 +5237,4 @@ h4 {
 .overlay .portal-first .link-btn {
     min-height: 44px;
     padding-inline: var(--sp-1);
-}
-
-/* every window follows the admin colours: the same surface, lines and fields as the admin windows */
-:root[data-theme='dark'] .overlay {
-    --bg-surface: color-mix(in srgb, var(--hex-ffffff) 5%, var(--hex-142849));
-    --bg-surface-hi: color-mix(in srgb, var(--hex-ffffff) 9%, var(--hex-142849));
-    --line: color-mix(in srgb, var(--hex-fff8e7) 18%, var(--hex-142849));
-    --line-soft: color-mix(in srgb, var(--hex-fff8e7) 10%, var(--hex-142849));
-}
-:root[data-theme='light'] .overlay {
-    --bg-surface: var(--hex-fffaf0);
-    --bg-surface-hi: var(--hex-ffffff);
-    --bg-field: var(--hex-ffffff);
-}
-
-/* the admin shape too: the same corners, field height and soft shadow, with no offset block */
-.overlay {
-    --r-card: 20px;
-    --r-xs: 8px;
-    --r-sm: 12px;
-    --r-md: 14px;
-    --r-lg: 20px;
-    --r-xl: 24px;
-    --control-h: 38px;
-    --field-h: 3rem;
-    --shadow-sm: none;
-    --shadow-card: none;
-    --shadow-md: 0 4px 12px var(--black-a18);
-    --shadow-lg: 0 8px 24px var(--black-a22);
-    --shadow-dialog: 0 8px 24px var(--black-a22);
-}
-
-/* a little larger text in the landing windows */
-.overlay .input,
-.overlay .select,
-.overlay .textarea {
-    font-size: 1.0625rem;
-}
-.overlay .label {
-    font-size: 1rem;
-}
-.overlay .modal-sub {
-    font-size: 1rem;
 }
