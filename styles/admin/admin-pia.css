@@ -558,7 +558,7 @@ html[data-surface='admin'] .head-search .input {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 28px;
-    align-items: start;
+    align-items: stretch;
 }
 @media (min-width: 56.25rem) {
     .settings-cols {
@@ -566,11 +566,27 @@ html[data-surface='admin'] .head-search .input {
     }
 }
 .settings-col {
+    display: flex;
+    flex-direction: column;
     min-width: 0;
 }
 .settings-col > .stack {
     display: grid;
+    flex: 1;
+    grid-template-rows: 1fr;
     gap: var(--sp-5);
+}
+.settings-col > [data-region='admins'] {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+}
+.settings-col > [data-region='admins'] .table-wrap {
+    flex: 1;
+}
+.settings-col > [data-region='admins'] .pager {
+    margin-top: auto;
+    border-top: 1px solid var(--line-soft);
 }
 .settings-col .panel-pad {
     padding: var(--sp-7) var(--sp-8);

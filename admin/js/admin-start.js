@@ -91,6 +91,7 @@
         $('#add-admin-form').addEventListener('submit', Admin.handleAddAdmin);
         Admin.initChangePassword();
         Admin.initDeleteOwnAccount();
+        Admin.initAdminPager();
 
         $('#new-section-form').addEventListener('submit', async function (event) {
             event.preventDefault();

@@ -158,6 +158,18 @@
     }
     Admin.initChangePassword = initChangePassword;
 
+    function initAdminPager() {
+        $('#admin-page-prev').addEventListener('click', function () {
+            adminPage--;
+            renderAdmins();
+        });
+        $('#admin-page-next').addEventListener('click', function () {
+            adminPage++;
+            renderAdmins();
+        });
+    }
+    Admin.initAdminPager = initAdminPager;
+
     async function deleteOwnAccount(button) {
         var ok = await Admin.confirmAction({
             heading: 'Delete your administrator account?',
@@ -301,8 +313,21 @@
         renderAdmins();
     };
 
+    var adminPage = 1;
+
     function renderAdmins() {
-        $('#admin-tbody').innerHTML = Admin.state.admins
+        var list = Admin.state.admins;
+        var perPage = Admin.PAGE_SIZE;
+        var pages = Math.max(1, Math.ceil(list.length / perPage));
+        adminPage = Math.min(Math.max(adminPage, 1), pages);
+        var from = (adminPage - 1) * perPage;
+        $('#admin-pager-info').textContent = list.length
+            ? 'Showing ' + (from + 1) + '–' + Math.min(from + perPage, list.length) + ' of ' + list.length
+            : '';
+        $('#admin-page-prev').disabled = adminPage <= 1;
+        $('#admin-page-next').disabled = adminPage >= pages;
+        $('#admin-tbody').innerHTML = list
+            .slice(from, from + perPage)
             .map(function (a) {
                 var pending = (a.status || '') === 'inactive';
                 var signedIn = (a.active_devices || []).length > 0;
