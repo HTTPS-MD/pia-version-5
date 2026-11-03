@@ -174,9 +174,9 @@
 
     async function resetFacultyPassword(email, sourceBtn) {
         var ok = await Admin.confirmAction({
-            heading: 'Send a reset link to ' + Admin.whoIs(email) + '?',
-            message: 'They choose a new password through the emailed link.',
-            confirmLabel: 'Send reset email',
+            heading: 'Send a password link to ' + Admin.whoIs(email) + '?',
+            message: 'They set a new password through the emailed link.',
+            confirmLabel: 'Send link',
             tone: 'accent'
         });
         if (!ok) {
@@ -184,11 +184,12 @@
         }
 
         var release = Admin.setBusy(sourceBtn, 'Sending…');
-        setFacultyStatus('Sending the reset email…', '');
+        setFacultyStatus('Sending the link…', '');
         var res;
         try {
-            res = await sb.auth.resetPasswordForEmail(email, {
-                redirectTo: Admin.activationRedirect()
+            res = await sb.auth.signInWithOtp({
+                email: email,
+                options: { shouldCreateUser: false, emailRedirectTo: Admin.activationRedirect() }
             });
         } catch (err) {
             res = { error: { message: (err && err.message) || 'The request did not complete.' } };
@@ -200,7 +201,7 @@
         }
         if (res.error) {
             setFacultyStatus(
-                'The reset email was not sent: ' + Admin.authFailureText(res.error, ''),
+                'The link was not sent: ' + Admin.authFailureText(res.error, ''),
                 'error'
             );
             return;
@@ -208,7 +209,7 @@
         setFacultyStatus(
             'The service accepted the request. ' +
                 email +
-                ' can use the link in the email to choose a new password.',
+                ' can use the link in the email to set a new password.',
             'ok'
         );
     }
