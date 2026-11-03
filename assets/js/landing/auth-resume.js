@@ -170,40 +170,6 @@
                 glyph.setAttribute('href', '/assets/icons-landing.svg#i-arrow-right');
             }
         });
-
-        var shown = '';
-        try {
-            var cached = JSON.parse(localStorage.getItem(Auth.GREETING_NAME_KEY) || 'null');
-            if (cached && cached.email === email && cached.name) {
-                shown = cached.name;
-                Auth.writeGreeting(shown);
-            }
-        } catch (err) {}
-
-        var name = shown;
-        try {
-            var res = await sb
-                .from('profiles')
-                .select('full_name')
-                .eq('email', email)
-                .maybeSingle();
-            if (res.data && res.data.full_name) {
-                name = Auth.greetingName(res.data.full_name, email);
-            }
-        } catch (err) {}
-        if (!name) {
-            name = Auth.greetingName('', email);
-        }
-
-        if (name !== shown) {
-            Auth.writeGreeting(name);
-        }
-        try {
-            localStorage.setItem(
-                Auth.GREETING_NAME_KEY,
-                JSON.stringify({ email: email, name: name })
-            );
-        } catch (err) {}
     }
     Auth.offerResume = offerResume;
 })();

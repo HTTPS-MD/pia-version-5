@@ -855,24 +855,6 @@ h4 {
    and Sign in live in the bar there), so without it the whole section goes,
    rule line included, instead of leaving an empty ruled strip. */
 
-:root[data-session]:not([data-greeted]) .hero-kicker,
-:root[data-session]:not([data-greeted]) .drop-title {
-    visibility: hidden;
-    animation: sessionHold 0s linear 2.5s forwards;
-}
-
-@keyframes sessionHold {
-    to {
-        visibility: visible;
-    }
-}
-.drop-title.is-greeting {
-    max-width: 100%;
-    min-width: 0;
-}
-.drop-title.is-greeting .drop-l3 {
-    white-space: nowrap;
-}
 .cast {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));

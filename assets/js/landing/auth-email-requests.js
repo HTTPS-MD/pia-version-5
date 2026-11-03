@@ -302,6 +302,4 @@
     };
     Auth.initEmailRequests = initEmailRequests;
 
-    var GREETING_NAME_KEY = 'pia_greeting_name';
-    Auth.GREETING_NAME_KEY = GREETING_NAME_KEY;
 })();
