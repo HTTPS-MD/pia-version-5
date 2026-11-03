@@ -108,15 +108,6 @@
 .auth-status.auth-status-success .icon {
     opacity: 1;
 }
-.auth-status.hidden {
-    display: flex !important;
-    background: transparent;
-    color: transparent;
-}
-
-.auth-status.hidden .icon {
-    opacity: 0;
-}
 
 .auth-form {
     display: flex;
@@ -355,9 +346,6 @@
 .auth-card .auth-status.auth-status-success {
     background: none;
     color: inherit;
-}
-.auth-card .auth-status.hidden {
-    display: none !important;
 }
 .auth-card .auth-hint {
     margin-top: var(--sp-6);

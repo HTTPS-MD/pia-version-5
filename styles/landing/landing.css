@@ -2757,7 +2757,7 @@ h4 {
     );
 }
 .act-select::before {
-    display: none !important;
+    display: none;
 }
 .act-select .select-title,
 .act-select .select-lede {
@@ -3047,7 +3047,7 @@ h4 {
 .band.band-help::before,
 .foot::before {
     content: '';
-    display: block !important;
+    display: block;
     position: absolute;
     inset-block: 0;
     inset-inline: -50% auto;

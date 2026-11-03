@@ -2285,7 +2285,7 @@ html[data-surface='admin'] .table thead th.col-right {
 }
 .drawer-overlay {
     justify-content: flex-end;
-    padding: 0 !important;
+    padding: 0;
 }
 .drawer {
     max-width: 480px;
@@ -2384,7 +2384,7 @@ html[data-surface='admin'] .table thead th.col-right {
 }
 .palette-overlay {
     align-items: flex-start;
-    padding-top: 12vh !important;
+    padding-top: 12vh;
     background: var(--scrim);
     -webkit-backdrop-filter: blur(2px);
     backdrop-filter: blur(2px);
@@ -2669,7 +2669,7 @@ html[data-surface='admin'] .palette-input:focus-visible {
         flex-wrap: wrap;
     }
     .palette-overlay {
-        padding-top: 8vh !important;
+        padding-top: 8vh;
     }
 }
 

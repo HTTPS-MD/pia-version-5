@@ -394,7 +394,7 @@ html[data-surface='admin'] .user-menu {
     position: relative;
     display: inline-block;
     min-width: 9ch;
-    color: transparent !important;
+    color: transparent;
     user-select: none;
     pointer-events: none;
 }
@@ -508,7 +508,7 @@ html[data-surface='admin'] .head-search .input {
     margin-left: auto;
 }
 #view-students .panel-bar #att-toggle {
-    margin-left: 0 !important;
+    margin-left: 0;
     min-width: 0;
 }
 #view-students .panel-bar .bar-group .custom-select {
@@ -565,7 +565,7 @@ html[data-surface='admin'] .mk-pair .btn {
         margin-left: auto;
     }
     #view-students .panel-bar #att-toggle {
-        margin-left: 0 !important;
+        margin-left: 0;
     }
 }
 @media (max-width: 56.25rem) {
@@ -699,7 +699,7 @@ html[data-surface='admin'] .mk-pair .btn {
     background: var(--ok);
 }
 .class-live #att-toggle {
-    margin-left: 6px !important;
+    margin-left: 6px;
     min-width: 0;
 }
 @media (max-width: 40rem) {
@@ -917,7 +917,7 @@ td .custom-select-trigger {
     display: block;
     width: fit-content;
     min-width: 9ch;
-    color: transparent !important;
+    color: transparent;
     user-select: none;
     pointer-events: none;
 }
@@ -1409,7 +1409,7 @@ html[data-surface='admin'] #view-students .panel-bar .head-search .input:focus-v
 html[data-surface='admin'] #view-students .panel-bar .bar-group .custom-select-trigger:focus-visible {
     background: var(--bg-surface);
     border-color: transparent;
-    box-shadow: none !important;
+    box-shadow: none;
     outline: 2px solid var(--focus-yellow, #ffd83d);
     outline-offset: 0;
 }
@@ -1421,7 +1421,7 @@ html[data-surface='admin'] .textarea:focus,
 html[data-surface='admin'] .input:focus-visible,
 html[data-surface='admin'] .custom-select-trigger:focus,
 html[data-surface='admin'] .custom-select-trigger:focus-visible {
-    box-shadow: none !important;
+    box-shadow: none;
     outline: 2px solid var(--focus-yellow, #ffd83d);
     outline-offset: 0;
     border-color: transparent;
