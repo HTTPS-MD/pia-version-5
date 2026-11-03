@@ -40,16 +40,12 @@
         function update() {
             ticking = false;
             var line = window.innerHeight * 0.35;
-            var atEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
             var current = steps[0];
             steps.forEach(function (step) {
                 if (step.getBoundingClientRect().top <= line) {
                     current = step;
                 }
             });
-            if (atEnd) {
-                current = steps[steps.length - 1];
-            }
             tocButtons.forEach(function (btn) {
                 var on = btn.getAttribute('data-help-go') === current.id;
                 btn.classList.toggle('is-active', on);

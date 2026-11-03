@@ -1832,6 +1832,10 @@ body.is-locked {
     border-top: 1px solid var(--line);
     scroll-margin-top: 96px;
 }
+.help-step:last-child {
+    min-height: 70vh;
+    align-content: start;
+}
 .help-step:first-child {
     padding-top: 0;
     border-top: 0;
