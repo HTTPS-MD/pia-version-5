@@ -4819,10 +4819,14 @@ h4 {
     opacity: 0.45;
 }
 :root[data-theme='light'] .overlay .link-btn {
-    color: var(--volt);
+    color: #8a6300;
+}
+:root[data-theme='light'] .overlay .link-btn:hover {
+    background: var(--volt);
+    color: var(--on-volt);
 }
 :root[data-theme='light'] .overlay .auth-status.is-error {
-    color: var(--hex-ff9a9a);
+    color: var(--danger);
 }
 
 /* sign-in windows: even rhythm, no reserved blank space */
