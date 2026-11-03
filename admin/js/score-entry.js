@@ -168,7 +168,6 @@
             return;
         }
 
-        $('#scores-save').disabled = false;
         $('#scores-note').textContent =
             'Applies to all ' + students.length + ' student' + (students.length === 1 ? '' : 's');
         Admin.clearFormErrors('scores-toolbar');
@@ -205,6 +204,7 @@
         $$('#scores-tbody .score-pair').forEach(paintScorePair);
         paintScoreCounts();
         loaded = look();
+        updateSaveState();
     }
     Admin.openScoresModal = openScoresModal;
 
@@ -226,6 +226,13 @@
             })
             .join('|');
     }
+
+    // Save stays off until something in the window has been changed.
+    function updateSaveState() {
+        $('#scores-save').disabled = loaded === null || look() === loaded;
+    }
+    $('#modal-scores').addEventListener('input', updateSaveState);
+    $('#modal-scores').addEventListener('change', updateSaveState);
 
     function guardScores() {
         var overlay = $('#modal-scores');
