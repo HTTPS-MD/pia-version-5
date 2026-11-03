@@ -368,6 +368,20 @@
             return;
         }
 
+        // The RPC removes the login and profile; the teacher record and the
+        // section links live in their own tables and are cleared here.
+        var lower = String(email).toLowerCase();
+        var rec = await sb.from('professors').delete().ilike('email', lower);
+        if (rec.error) {
+            Admin.toastErr(
+                'Removal incomplete',
+                Admin.friendlyDbError(rec.error, 'The teacher record was not deleted.')
+            );
+            await Admin.loadFaculty();
+            return;
+        }
+        await sb.from('professor_sections').delete().ilike('email', lower);
+
         Admin.toastOk('Teacher removed', Admin.whoIs(email) + ' no longer has access.');
         await Admin.loadFaculty();
         Admin.renderSections();
