@@ -2459,3 +2459,10 @@ html[data-surface='admin'] .as-addbar .input {
     max-width: 60ch;
     line-height: 1.6;
 }
+
+/* settings: the title sits centred above the content, like the Help Center */
+#view-settings > .page-head {
+    justify-content: center;
+    margin-bottom: var(--sp-9);
+    text-align: center;
+}
