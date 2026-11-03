@@ -199,10 +199,6 @@ body.is-playing .learn-main {
     font-family: var(--font-mono);
     font-size: 0.95rem;
 }
-.hint-btn:hover:not(:disabled) {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--palette-ink);
-}
 .hint-btn:active:not(:disabled) {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0 var(--palette-ink);
@@ -344,9 +340,6 @@ body.is-playing .learn-main {
     background-repeat: no-repeat;
     border-right: 3px solid var(--g-edge);
 }
-.step-card.correct {
-    background: var(--correct-soft);
-}
 .step-card.correct::before {
     background-color: var(--green);
 }
@@ -428,10 +421,6 @@ body.is-playing .learn-main {
     font-weight: 500;
     font-size: 1rem;
 }
-.solution-input:focus {
-    background: var(--accent-soft);
-    box-shadow: 4px 4px 0 var(--g-offset);
-}
 .solution-input:disabled {
     background: var(--correct-soft);
     color: var(--text);
@@ -496,10 +485,6 @@ body.is-playing .learn-main {
         transform 0.12s,
         box-shadow 0.12s;
 }
-.btn-check-step:hover:not(:disabled) {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 var(--g-edge);
-}
 .btn-check-step:active:not(:disabled) {
     transform: translate(3px, 3px);
     box-shadow: 1px 1px 0 var(--g-edge);
@@ -537,10 +522,6 @@ body.is-playing .learn-main {
     transition:
         transform 0.12s,
         box-shadow 0.12s;
-}
-.workspace-preview-back:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--palette-ink);
 }
 .workspace-preview-back:active {
     transform: translate(2px, 2px);
@@ -682,13 +663,6 @@ body.is-playing .learn-main {
         box-shadow 0.12s,
         background-color 0.12s;
 }
-.q-btn.active {
-    background: var(--correct-soft);
-}
-.q-btn:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--volt);
-}
 .q-btn:active {
     transform: translate(1px, 1px);
     box-shadow: 2px 2px 0 var(--volt);
@@ -696,11 +670,6 @@ body.is-playing .learn-main {
 .q-btn:focus-visible {
     outline: 3px solid var(--accent);
     outline-offset: 3px;
-}
-.q-btn.previewing {
-    background: var(--volt);
-    color: var(--on-volt);
-    box-shadow: 3px 3px 0 var(--g-edge);
 }
 .q-btn-equation {
     max-width: 100%;

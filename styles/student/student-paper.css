@@ -136,10 +136,6 @@ ul.paper-chips {
     font-size: 1rem;
     font-weight: 700;
 }
-.paper-card .btn-primary {
-    background: var(--palette-violet);
-    color: var(--palette-ink);
-}
 .paper-card .btn:disabled {
     border-style: dashed;
     background: transparent;
@@ -222,9 +218,6 @@ ul.paper-chips {
     border: 2px solid var(--q-ink);
     border-radius: 50%;
     background: var(--hex-ffffff);
-}
-.persona-card.selected .persona-thumb {
-    border-color: var(--palette-ink);
 }
 .persona-thumb img {
     width: 100%;
