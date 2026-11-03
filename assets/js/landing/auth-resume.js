@@ -53,28 +53,19 @@
         }
     }
 
+    // 'go' when the redirect has started, 'stay' when the last redirect came straight back
     function goStraightToDashboard(email, role) {
-        var query;
-        try {
-            query = new URL(window.PIA_ENTRY_URL || window.location.href).searchParams;
-        } catch (err) {
-            return false;
-        }
-        if (query.has('stay') || query.has('signin') || query.has('reason')) {
-            return false;
-        }
-
-        var now = Date.now();
         try {
             var last = Number(sessionStorage.getItem('pia_straight_to_dashboard') || 0);
-            if (now - last < 10000) {
-                return false;
+            if (Date.now() - last < 3000) {
+                return 'stay';
             }
-            sessionStorage.setItem('pia_straight_to_dashboard', String(now));
+            sessionStorage.setItem('pia_straight_to_dashboard', String(Date.now()));
         } catch (err) {}
 
         try {
             localStorage.setItem('pia_user_email', email);
+            localStorage.setItem('pia_user_role', role);
         } catch (err) {}
         if (role === 'admin') {
             window.location.replace('admin/html/admin-dashboard.html');
@@ -83,7 +74,26 @@
         } else {
             window.location.replace('student/html/waiting-room.html');
         }
-        return true;
+        return 'go';
+    }
+
+    function wait(ms) {
+        return new Promise(function (resolve) {
+            setTimeout(resolve, ms);
+        });
+    }
+
+    async function findRole(email) {
+        for (var attempt = 0; attempt < 3; attempt++) {
+            try {
+                var res = await sb.from('profiles').select('role').eq('email', email).maybeSingle();
+                if (!res.error && res.data) {
+                    return Auth.normalizeRole(res.data.role);
+                }
+            } catch (err) {}
+            await wait(600);
+        }
+        return null;
     }
 
     async function offerResume() {
@@ -103,73 +113,23 @@
             root.removeAttribute('data-session');
             return;
         }
-        root.setAttribute('data-session', 'in');
 
         var email = (session.user && session.user.email) || '';
-        var role = null;
-        try {
-            var roleRes = await sb.from('profiles').select('role').eq('email', email).maybeSingle();
-            if (!roleRes.error && roleRes.data) {
-                role = Auth.normalizeRole(roleRes.data.role);
-            }
-        } catch (err) {}
-
-        if (role && goStraightToDashboard(email, role)) {
+        var role = await findRole(email);
+        var outcome = role ? goStraightToDashboard(email, role) : null;
+        if (outcome === 'go') {
             return;
         }
 
-        var finale = $('.finale-sub');
-        if (finale) {
-            finale.textContent =
-                'You are signed in. Continue to the activities available to your account.';
-        }
-        var heroCopy = $('.drop-sub');
-        if (heroCopy) {
-            heroCopy.textContent =
-                'Continue to your dashboard and the activities available to your account.';
-        }
-
-        $$('[data-auth-open="signin"]').forEach(function (btn) {
-            var label = btn.querySelector('.cta-label') || btn;
-            label.textContent = btn.getAttribute('data-resume-label') || 'Continue to dashboard';
-            btn.addEventListener(
-                'click',
-                function (event) {
-                    event.stopImmediatePropagation();
-                    if (!role) {
-                        Auth.toast(
-                            'Dashboard unavailable',
-                            'Your account role could not be verified. Check your connection and reload.',
-                            'danger'
-                        );
-                        return;
-                    }
-
-                    try {
-                        localStorage.setItem('pia_user_email', email);
-                    } catch (err) {}
-                    if (role === 'admin') {
-                        window.location.replace('admin/html/admin-dashboard.html');
-                    } else if (role === 'teacher') {
-                        window.location.replace('teacher/html/teacher-dashboard.html');
-                    } else {
-                        window.location.replace('student/html/waiting-room.html');
-                    }
-                },
-                true
+        // no redirect: the landing page shows as for any visitor
+        root.removeAttribute('data-session');
+        if (!role) {
+            Auth.toast(
+                'Couldn\u2019t confirm your account',
+                'Check your connection, then sign in again.',
+                'danger'
             );
-        });
-
-        $$(
-            '.hero-cta .cta-quiet[data-auth-open="signin"], .finale-actions .cta-quiet[data-auth-open="signin"]'
-        ).forEach(function (btn) {
-            btn.classList.remove('cta-quiet');
-            btn.classList.add('cta-primary');
-            var glyph = btn.querySelector('.cta-orb use');
-            if (glyph) {
-                glyph.setAttribute('href', '/assets/icons-landing.svg#i-arrow-right');
-            }
-        });
+        }
     }
     Auth.offerResume = offerResume;
 })();

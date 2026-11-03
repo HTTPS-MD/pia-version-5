@@ -845,11 +845,6 @@ h4 {
     line-height: 1.65;
     color: color-mix(in srgb, var(--text) 88%, var(--bg-body));
 }
-:root[data-session] [data-auth-open='activate'],
-:root[data-session] [data-auth-open='staff'],
-:root[data-session] .foot-staff {
-    display: none;
-}
 
 /* From 30rem up the staff note was the sheet's only extra (the theme switch
    and Sign in live in the bar there), so without it the whole section goes,
@@ -2157,16 +2152,6 @@ h4 {
 .join-btn:hover {
     background: var(--volt);
     color: var(--on-volt);
-}
-.hero-resume {
-    display: none;
-}
-:root[data-session] .hero-resume {
-    display: inline-flex;
-}
-:root[data-session] .join,
-:root[data-session] .foot-join .foot-btn {
-    display: none;
 }
 .hero-media {
     background: #a9c9ee url('../../assets/images/backgrounds/school-characters-bg-light-v4.webp')
@@ -4997,38 +4982,6 @@ h4 {
     }
 }
 
-/* a signed-in student sees one box like the code field: the label, and the button on its right */
-.hero-join .hero-resume {
-    flex: 0 0 auto;
-    align-items: center;
-    justify-content: space-between;
-    width: min(38rem, 100%);
-    min-height: 0;
-    padding: 0.5rem 0.5rem 0.5rem 1.5rem;
-    border: 0;
-    border-radius: 1.1rem;
-    background: var(--hex-fff8e7);
-    color: var(--hex-0d1230);
-    box-shadow: 0 0.75rem 2rem var(--black-a28);
-    font-size: 1.05rem;
-}
-.hero-join .hero-resume .cta-label {
-    padding-inline: 0;
-}
-.hero-join .hero-resume .cta-orb {
-    flex: none;
-    width: 3.25rem;
-    height: 3.25rem;
-    border: 0;
-    border-radius: 0.8rem;
-    background: var(--volt);
-    color: var(--on-volt);
-}
-
-/* while the saved session is still being checked (and a redirect may follow), the button keeps its place but stays out of sight */
-:root[data-session='pending'] .hero-resume {
-    visibility: hidden;
-}
 
 /* reset and activate: no reserved blank space, even gaps when a message appears */
 #modal-forgot .modal-body{
@@ -5207,4 +5160,19 @@ h4 {
 .overlay .portal-first .link-btn {
     min-height: 44px;
     padding-inline: var(--sp-1);
+}
+
+/* a saved session is being checked: a plain loading screen instead of the landing page */
+:root[data-session='pending'] body::before {
+    content: 'Loading\2026';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: grid;
+    place-items: center;
+    background: var(--bg-body);
+    color: var(--text);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
 }
