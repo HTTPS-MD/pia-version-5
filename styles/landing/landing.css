@@ -3663,11 +3663,11 @@ h4 {
     box-shadow: none;
 }
 .overlay .btn-primary {
-    background: var(--hex-2f74ee);
-    color: var(--hex-ffffff);
+    background: var(--volt);
+    color: var(--on-volt);
 }
 .overlay .btn-primary:hover:not(:disabled) {
-    background: var(--hex-2a68d6);
+    background: var(--hex-ffe66d);
 }
 .overlay .btn-secondary {
     background: transparent;
@@ -5408,4 +5408,19 @@ h4 {
 #modal-forgot .modal-foot,
 #modal-activate .modal-foot {
     padding-top: var(--sp-2);
+}
+
+/* modal links follow the yellow accent: readable gold on light, yellow on dark */
+.overlay .link-btn {
+    color: var(--volt);
+}
+:root[data-theme='light'] .overlay .link-btn {
+    color: var(--hex-8a6300, #8a6300);
+}
+.overlay .link-btn:hover {
+    background: var(--volt);
+    color: var(--on-volt);
+}
+.overlay .btn-primary:disabled {
+    opacity: 0.45;
 }

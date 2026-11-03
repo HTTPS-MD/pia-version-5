@@ -15,7 +15,8 @@
             until: 0,
             version: 0,
             accepted: false,
-            limited: false
+            limited: false,
+            waitKnown: false
         },
         forgot: {
             prefix: 'fp',
@@ -24,7 +25,8 @@
             until: 0,
             version: 0,
             accepted: false,
-            limited: false
+            limited: false,
+            waitKnown: false
         }
     };
 
@@ -69,9 +71,11 @@
                 $('#' + p + '-cooldown').textContent = '';
                 Auth.setStatus(
                     kind + '-status',
-                    'Too many email requests. Try again in ' +
-                        remaining +
-                        (remaining === 1 ? ' second.' : ' seconds.'),
+                    state.waitKnown
+                        ? 'Too many email requests. Try again in ' +
+                              remaining +
+                              (remaining === 1 ? ' second.' : ' seconds.')
+                        : 'Too many email requests. Please wait a few minutes, then try again.',
                     'error'
                 );
             } else {
@@ -106,7 +110,7 @@
             return Math.max(0, Date.parse(raw) - Date.now());
         }
         var match = String((error && error.message) || '').match(/after\s+(\d+)\s+seconds?/i);
-        return match ? Number(match[1]) * 1000 : 60000;
+        return match ? Number(match[1]) * 1000 : null;
     }
 
     function inboxUrl(email) {
@@ -177,8 +181,10 @@
                     Number(res.error.status) === 429 ||
                     /rate.limit|too many|after.*seconds/i.test(res.error.message || '')
                 ) {
-                    state.until = Date.now() + Math.max(retryDelay(res.error), 60000);
+                    var wait = retryDelay(res.error);
+                    state.until = Date.now() + Math.max(wait || 0, 60000);
                     state.limited = version === state.version;
+                    state.waitKnown = wait !== null;
                 } else if (version === state.version) {
                     Auth.setStatus(kind + '-status', emailRequestError(res.error), 'error');
                 }
