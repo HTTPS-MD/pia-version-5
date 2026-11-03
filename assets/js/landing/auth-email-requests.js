@@ -113,18 +113,61 @@
         return match ? Number(match[1]) * 1000 : null;
     }
 
-    function inboxUrl(email) {
+    var INBOXES = {
+        gmail: {
+            web: 'https://mail.google.com/',
+            ios: 'googlegmail://',
+            android: 'com.google.android.gm'
+        },
+        outlook: {
+            web: 'https://outlook.live.com/mail/',
+            ios: 'ms-outlook://',
+            android: 'com.microsoft.office.outlook'
+        },
+        yahoo: {
+            web: 'https://mail.yahoo.com/',
+            ios: 'ymail://',
+            android: 'com.yahoo.mobile.client.android.mail'
+        },
+        icloud: { web: 'https://www.icloud.com/mail', ios: 'message://', android: '' }
+    };
+
+    function inboxFor(email) {
         var domain = String(email).split('@')[1] || '';
         if (/(^|\.)(outlook|hotmail|live|msn)\./i.test(domain)) {
-            return 'https://outlook.live.com/mail/';
+            return INBOXES.outlook;
         }
         if (/(^|\.)yahoo\./i.test(domain)) {
-            return 'https://mail.yahoo.com/';
+            return INBOXES.yahoo;
         }
         if (/(^|\.)(icloud|me|mac)\./i.test(domain)) {
-            return 'https://www.icloud.com/mail';
+            return INBOXES.icloud;
         }
-        return 'https://mail.google.com/';
+        return INBOXES.gmail;
+    }
+
+    // Opens the mail app when the phone has it, and the web inbox otherwise.
+    function openInbox(event) {
+        var link = event.currentTarget;
+        var ua = navigator.userAgent || '';
+        var web = link.href;
+        if (/Android/i.test(ua) && link.dataset.android) {
+            event.preventDefault();
+            window.location.href =
+                'intent://#Intent;package=' +
+                link.dataset.android +
+                ';S.browser_fallback_url=' +
+                encodeURIComponent(web) +
+                ';end';
+        } else if (/iPhone|iPad|iPod/i.test(ua) && link.dataset.ios) {
+            event.preventDefault();
+            window.location.href = link.dataset.ios;
+            setTimeout(function () {
+                if (!document.hidden) {
+                    window.open(web, '_blank', 'noopener');
+                }
+            }, 1200);
+        }
     }
 
     function emailRequestError(error) {
@@ -198,7 +241,11 @@
             state.email = email;
             state.accepted = true;
             $('#' + p + '-sent-to').textContent = email;
-            $('#' + p + '-open-mail').href = inboxUrl(email);
+            var inbox = inboxFor(email);
+            var open = $('#' + p + '-open-mail');
+            open.href = inbox.web;
+            open.dataset.ios = inbox.ios;
+            open.dataset.android = inbox.android;
             Auth.setStatus(kind + '-status', 'Email request accepted. Check your email.', 'ok');
             renderEmailRequests();
             $('#' + p + '-change-email').focus();
@@ -220,6 +267,7 @@
                 event.preventDefault();
                 requestEmail(kind, false);
             });
+            $('#' + p + '-open-mail').addEventListener('click', openInbox);
             $('#' + p + '-resend').addEventListener('click', function () {
                 requestEmail(kind, true);
             });

@@ -1567,6 +1567,7 @@ body.is-locked {
     color: var(--danger-ink);
 }
 
+/* session revoked / account deleted: the same blue surface, spacing and yellow button as the other windows */
 .revoke-modal-overlay {
     position: fixed;
     inset: 0;
@@ -1577,6 +1578,7 @@ body.is-locked {
     padding: var(--sp-4);
     opacity: 0;
     background: var(--scrim);
+    backdrop-filter: blur(4px);
     transition: opacity var(--t-layout);
 }
 
@@ -1585,13 +1587,21 @@ body.is-locked {
 }
 
 .revoke-modal-box {
+    --text: var(--hex-f1ead8);
+    --text-muted: color-mix(in srgb, var(--palette-paper) 72%, var(--palette-ink));
     display: flex;
     flex-direction: column;
-    gap: var(--sp-4);
+    gap: var(--sp-5);
     width: 100%;
-    max-width: 24rem;
-    padding: var(--sp-7);
+    max-width: 26rem;
+    padding: var(--sp-8) var(--sp-7) var(--sp-7);
+    border-radius: 1.75rem;
+    background: var(--hex-101745);
+    color: var(--hex-f1ead8);
     text-align: center;
+    box-shadow:
+        0 30px 80px var(--black-a50),
+        0 0 0 1px var(--rgb255-248-231-a12);
     transform: scale(0.96);
     transition: transform var(--t-layout);
 }
@@ -1603,24 +1613,44 @@ body.is-locked {
 .revoke-modal-icon-wrap {
     display: grid;
     place-items: center;
-    width: 64px;
-    height: 64px;
+    width: 72px;
+    height: 72px;
     margin: 0 auto;
     border-radius: var(--r-pill);
-    background: var(--danger-soft);
+    background: color-mix(in srgb, var(--hex-ff9a9a) 16%, transparent);
+}
+.revoke-modal-box .text-danger {
+    color: var(--hex-ff9a9a);
 }
 .revoke-modal-title {
-    font-size: var(--fs-h4);
+    font-size: 1.75rem;
+    line-height: 1.1;
     font-weight: 800;
-    letter-spacing: -0.01em;
-    color: var(--text);
+    letter-spacing: -0.04em;
+    color: inherit;
 }
 
 .revoke-modal-desc {
-    font-size: var(--fs-sm);
-    line-height: var(--lh-body);
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1.6;
 }
-
+.revoke-modal-actions {
+    margin-top: var(--sp-2);
+}
+.revoke-modal-box .btn-primary {
+    min-height: 3.25rem;
+    border: 0;
+    border-radius: 1rem;
+    background: var(--volt);
+    color: var(--on-volt);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    box-shadow: none;
+}
+.revoke-modal-box .btn-primary:hover:not(:disabled) {
+    background: var(--hex-ffe66d);
+}
 
 .spin {
     animation: spin 1s linear infinite;

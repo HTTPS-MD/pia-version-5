@@ -31,7 +31,7 @@
 
     <script src="assets/js/landing/auth-callback.js"></script>
 
-    <link rel="stylesheet" href="styles/global.css?v=20261117a">
+    <link rel="stylesheet" href="styles/global.css?v=20261121e">
     <link rel="stylesheet" href="styles/landing/landing.css?v=20261115g">
 
     <script defer src="/assets/js/vendor/supabase.js"></script>
@@ -733,11 +733,10 @@
                     </div>
                 </form>
                 <section id="ac-accepted" class="email-accepted" aria-label="Email request accepted" hidden>
-                    <p>If this email belongs to an account that can be activated, you’ll receive an activation email.
-                        Use the activation button or link in the email to set your password. Check Spam or Junk if you
-                        don’t see it.</p>
-                    <p class="email-destination">Request destination: <strong id="ac-sent-to"></strong></p>
+                    <p class="email-lead">If this email can be activated, we sent an activation link to:</p>
+                    <p class="email-destination"><strong id="ac-sent-to"></strong></p>
                     <a class="btn btn-primary email-open" id="ac-open-mail" href="https://mail.google.com/" target="_blank" rel="noopener">Open inbox</a>
+                    <p class="email-note">Not there? Check Spam or Junk.</p>
                     <div class="auth-alt">
                         <button type="button" class="link-btn" id="ac-resend">Resend email</button>
                         <button type="button" class="link-btn" id="ac-change-email">Use a different email</button>
@@ -779,10 +778,10 @@
                     </div>
                 </form>
                 <section id="fp-accepted" class="email-accepted" aria-label="Email request accepted" hidden>
-                    <p>If this email is registered, you’ll receive instructions to reset your password. Click the Reset
-                        password button in the email. Check Spam or Junk if you don’t see it.</p>
-                    <p class="email-destination">Request destination: <strong id="fp-sent-to"></strong></p>
+                    <p class="email-lead">If this email is registered, we sent a reset link to:</p>
+                    <p class="email-destination"><strong id="fp-sent-to"></strong></p>
                     <a class="btn btn-primary email-open" id="fp-open-mail" href="https://mail.google.com/" target="_blank" rel="noopener">Open inbox</a>
+                    <p class="email-note">Not there? Check Spam or Junk.</p>
                     <div class="auth-alt">
                         <button type="button" class="link-btn" id="fp-resend">Resend email</button>
                         <button type="button" class="link-btn" id="fp-change-email">Use a different email</button>
@@ -875,7 +874,7 @@
     <script defer src="assets/js/landing/auth-sign-in.js?v=20261101a"></script>
     <script defer src="assets/js/landing/auth-student-join.js?v=20261031f"></script>
     <script defer src="assets/js/landing/auth-device-reset.js?v=20261101a"></script>
-    <script defer src="assets/js/landing/auth-email-requests.js?v=20261031d"></script>
+    <script defer src="assets/js/landing/auth-email-requests.js?v=20261031e"></script>
     <script defer src="assets/js/landing/auth-greeting.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-resume.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-hero-join.js?v=20261031e"></script>

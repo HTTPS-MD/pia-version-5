@@ -2136,9 +2136,22 @@ h4 {
 .email-accepted {
     line-height: 1.65;
 }
+.email-lead {
+    margin: 0;
+    color: var(--text-muted);
+    line-height: 1.55;
+}
 .email-destination {
-    margin-block: var(--sp-4) var(--sp-2);
+    margin: 0;
     overflow-wrap: anywhere;
+    font-size: 1.0625rem;
+    line-height: 1.4;
+}
+.email-note {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+    text-align: center;
 }
 .email-cooldown {
     min-height: 1.5em;
@@ -2171,7 +2184,10 @@ h4 {
     display: none;
 }
 .overlay .email-open {
-    margin-bottom: var(--sp-4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
     text-decoration: none;
 }
 .overlay .auth-alt {
@@ -5495,4 +5511,24 @@ h4 {
 #modal-signin .modal-body,
 #modal-staff .modal-body {
     padding-bottom: var(--sp-7);
+}
+
+/* check your email: one short message, the destination, then the actions */
+#modal-forgot .email-accepted,
+#modal-activate .email-accepted {
+    display: grid;
+    gap: var(--sp-4);
+    line-height: 1.55;
+}
+#modal-forgot .auth-alt,
+#modal-activate .auth-alt {
+    justify-content: space-between;
+}
+#modal-forgot .email-cooldown,
+#modal-activate .email-cooldown {
+    text-align: center;
+}
+#modal-forgot .email-accepted:not([hidden]) ~ .auth-status,
+#modal-activate .email-accepted:not([hidden]) ~ .auth-status {
+    display: none;
 }
