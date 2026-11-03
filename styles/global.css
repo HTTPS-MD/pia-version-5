@@ -1912,17 +1912,11 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
 }
 .help-contact-title {
     margin: 0;
-    font-size: var(--fs-h3);
+    font-size: var(--fs-h2);
     font-weight: 700;
-}
-.help-contact p {
-    max-width: 52ch;
-    margin: 0;
-    color: var(--text-muted);
-    line-height: 1.75;
+    letter-spacing: -0.02em;
 }
 .help-contact-btn {
-    margin-top: var(--sp-2);
     background: var(--volt);
     color: var(--on-volt);
     text-decoration: none;
