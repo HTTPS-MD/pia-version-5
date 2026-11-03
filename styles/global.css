@@ -1597,7 +1597,7 @@ body.is-locked {
     background: var(--bg-surface);
     color: var(--text);
     text-align: center;
-    box-shadow: var(--shadow-dialog);
+    box-shadow: 0 8px 24px var(--black-a22);
     transform: scale(0.96);
     transition: transform var(--t-layout);
 }
@@ -1996,7 +1996,8 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
 }
 
 /* one design language for every window: the admin surface, lines, corners and shadow (the student pages keep their own look) */
-:root[data-theme='dark'] body:not(.landing-look) .overlay {
+:root[data-theme='dark'] body:not(.landing-look) .overlay,
+:root[data-theme='dark'] body:not(.landing-look) .revoke-modal-overlay {
     --bg-surface: color-mix(in srgb, var(--hex-ffffff) 5%, var(--hex-142849));
     --bg-surface-hi: color-mix(in srgb, var(--hex-ffffff) 9%, var(--hex-142849));
     --line: color-mix(in srgb, var(--hex-fff8e7) 18%, var(--hex-142849));
@@ -2009,7 +2010,8 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
     --danger-ink: var(--status-red-dark);
     --danger-soft: color-mix(in srgb, var(--status-red-dark) 14%, transparent);
 }
-:root[data-theme='light'] body:not(.landing-look) .overlay {
+:root[data-theme='light'] body:not(.landing-look) .overlay,
+:root[data-theme='light'] body:not(.landing-look) .revoke-modal-overlay {
     --bg-surface: var(--hex-fffaf0);
     --bg-surface-hi: var(--hex-ffffff);
     --bg-field: var(--hex-ffffff);
@@ -2020,7 +2022,8 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
     --danger-ink: var(--status-red-ink);
     --danger-soft: color-mix(in srgb, var(--status-red-ink) 12%, transparent);
 }
-body:not(.landing-look) .overlay {
+body:not(.landing-look) .overlay,
+body:not(.landing-look) .revoke-modal-overlay {
     --r-card: 20px;
     --r-xs: 8px;
     --r-sm: 12px;

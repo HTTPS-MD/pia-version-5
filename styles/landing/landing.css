@@ -5049,39 +5049,31 @@ h4 {
 }
 
 /* reset and activate: no reserved blank space, even gaps when a message appears */
-#modal-forgot .modal-body,
-#modal-activate .modal-body {
+#modal-forgot .modal-body{
     display: grid;
     gap: var(--sp-4);
     padding-bottom: var(--sp-6);
 }
 #modal-forgot .field-msg:empty,
-#modal-activate .field-msg:empty,
-#modal-forgot .email-cooldown:empty,
-#modal-activate .email-cooldown:empty {
+#modal-forgot .email-cooldown:empty{
     display: none;
 }
-#modal-forgot .field-msg,
-#modal-activate .field-msg {
+#modal-forgot .field-msg{
     margin-top: var(--sp-2);
 }
-#modal-forgot .email-cooldown,
-#modal-activate .email-cooldown {
+#modal-forgot .email-cooldown{
     min-height: 0;
     margin: 0;
 }
-#modal-forgot .auth-status,
-#modal-activate .auth-status {
+#modal-forgot .auth-status{
     min-height: 0;
     margin: 0;
     line-height: 1.55;
 }
-#modal-forgot .auth-status:not(.is-error):not(.is-ok),
-#modal-activate .auth-status:not(.is-error):not(.is-ok) {
+#modal-forgot .auth-status:not(.is-error):not(.is-ok){
     display: none;
 }
-#modal-forgot .modal-foot,
-#modal-activate .modal-foot {
+#modal-forgot .modal-foot{
     padding-top: var(--sp-2);
 }
 
@@ -5147,22 +5139,18 @@ h4 {
 }
 
 /* check your email: one short message, the destination, then the actions */
-#modal-forgot .email-accepted,
-#modal-activate .email-accepted {
+#modal-forgot .email-accepted{
     display: grid;
     gap: var(--sp-4);
     line-height: 1.55;
 }
-#modal-forgot .auth-alt,
-#modal-activate .auth-alt {
+#modal-forgot .auth-alt{
     justify-content: space-between;
 }
-#modal-forgot .email-cooldown,
-#modal-activate .email-cooldown {
+#modal-forgot .email-cooldown{
     text-align: center;
 }
-#modal-forgot .email-accepted:not([hidden]) ~ .auth-status,
-#modal-activate .email-accepted:not([hidden]) ~ .auth-status {
+#modal-forgot .email-accepted:not([hidden]) ~ .auth-status{
     display: none;
 }
 

@@ -272,7 +272,7 @@
     border: 1px solid var(--line-soft);
     border-radius: 1.1rem;
     background: var(--bg-surface);
-    box-shadow: var(--shadow-dialog);
+    box-shadow: 0 8px 24px var(--black-a22);
 }
 .auth-brand {
     margin-bottom: var(--sp-7);
