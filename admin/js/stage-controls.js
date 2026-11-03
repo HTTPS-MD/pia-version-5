@@ -258,34 +258,17 @@
     }
 
     function paintTutoringState(btn, gate, section, ready) {
-        var host = btn.parentNode.querySelector('.stage-state');
-        var info =
-            ready && Array.isArray(Admin.state.schedules)
-                ? tutStatusText(tutPhase(gate, section))
-                : null;
-        var phase0 = tutPhase(gate, section).phase;
-        var canChange = ready && (phase0 === 'open' || phase0 === 'scheduled');
-        if (!info && !canChange) {
-            if (host) {
-                host.remove();
-            }
-            return;
-        }
-        if (!host) {
-            host = document.createElement('span');
-            host.className = 'stage-state';
-            btn.parentNode.appendChild(host);
-        }
-        var phase = tutPhase(gate, section).phase;
-        host.innerHTML =
-            (info
-                ? '<span class="pill ' + info.cls + '">' + Admin.esc(info.text) + '</span>'
-                : '') +
-            (phase === 'open' || phase === 'scheduled'
-                ? '<button type="button" class="btn btn-sm btn-secondary" data-tut-change>Change</button>'
-                : '');
+        var name = btn.parentNode.querySelector('.stage-name');
+        var ph = tutPhase(gate, section);
+        var info = ready && Array.isArray(Admin.state.schedules) ? tutStatusText(ph) : null;
+        var canChange = ready && (ph.phase === 'open' || ph.phase === 'scheduled');
+        name.toggleAttribute('data-tut-change', canChange);
+        name.title = canChange
+            ? (info ? info.text + '. ' : '') + 'Click to change the schedule.'
+            : info
+              ? info.text
+              : '';
     }
-
     async function toggleTutoring(gate, section) {
         var ph = tutPhase(gate, section);
         if (ph.phase === 'open' || ph.phase === 'scheduled') {

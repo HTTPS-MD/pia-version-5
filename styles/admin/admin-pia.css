@@ -451,8 +451,7 @@ html[data-surface='admin'] .head-search .input {
         flex: none;
     }
 }
-.pia-all-sections .stage-switch,
-.pia-all-sections .stage-state {
+.pia-all-sections .stage-switch {
     display: none !important;
 }
 #att-toggle[hidden] {
@@ -1576,9 +1575,6 @@ html:not(.pia-section-picked) #roster-thead th:nth-child(7) { width: 9%; }
     gap: 8px;
 }
 .stage-item .stage-switch {
-    margin: 0;
-}
-.stage-item .stage-state {
     margin: 0;
 }
 .pia-all-sections .stage-let {

@@ -173,40 +173,10 @@
 #modal-confirm .modal-hero-text {
     max-width: none;
 }
-.stage-state {
-    align-self: center;
-    margin: 0 12px 0 -2px;
-    font-size: var(--fs-sm);
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-muted);
-}
-.stage-state .pill {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 10px;
-    border-radius: 999px;
-    font-weight: 600;
-    background: var(--bg-chip);
-}
-.stage-state .pill::before {
-    content: '';
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: currentColor;
-}
-.stage-state .pill.is-open {
-    color: var(--hex-7fd6a0);
-}
-.stage-state .pill.is-closed {
-    color: var(--hex-f08a8a);
-}
-.stage-state .pill.is-plain {
-    color: var(--text-muted);
+.stage-name[data-tut-change] {
+    cursor: pointer;
+    text-decoration: underline dotted;
+    text-underline-offset: 3px;
 }
 .tut-modal {
     position: relative;
