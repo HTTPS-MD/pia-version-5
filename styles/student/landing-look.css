@@ -1176,3 +1176,33 @@
 .landing-look .time-modal-subtitle {
     color: var(--text-muted);
 }
+
+/* the theme button is the same round toggle as everywhere else: a 44px circle with one thin outline and no fill */
+:root[data-theme='dark'] .landing-look {
+    --line-input: color-mix(in srgb, var(--palette-paper) 52%, var(--palette-ink));
+}
+:root[data-theme='light'] .landing-look {
+    --line-input: color-mix(in srgb, var(--palette-ink) 56%, var(--palette-paper));
+}
+.landing-look :is(.journey-bar-right, .learn-bar-right) .btn-theme {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--line-input);
+    transform: none;
+}
+.landing-look :is(.journey-bar-right, .learn-bar-right) .btn-theme:hover:not(:disabled),
+.landing-look :is(.journey-bar-right, .learn-bar-right) .btn-theme:active:not(:disabled) {
+    background: transparent;
+    color: var(--text);
+    box-shadow: inset 0 0 0 1px var(--line-input);
+    transform: none;
+}
+@media (hover: hover) and (pointer: fine) {
+    .landing-look :is(.journey-bar-right, .learn-bar-right) .btn-theme:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--text) 10%, transparent);
+    }
+}
