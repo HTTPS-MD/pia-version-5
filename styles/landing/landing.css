@@ -5063,14 +5063,14 @@ h4 {
 .nav .theme-switch::before {
     content: '';
     position: absolute;
-    left: 3px;
-    top: 5px;
-    width: 34px;
-    height: 34px;
+    left: 4px;
+    top: 4px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     background: #fff9ea;
     box-shadow: none;
-    translate: 32px 0;
+    translate: 28px 0;
     transition:
         translate 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
         scale 0.3s ease,
@@ -5097,11 +5097,11 @@ h4 {
         transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .nav .theme-switch .icon-sun {
-    left: 12px;
+    left: 14px;
     transform: rotate(-40deg) scale(0.85);
 }
 .nav .theme-switch .icon-moon {
-    left: 44px;
+    left: 42px;
     transform: none;
     color: #0b1233;
 }
