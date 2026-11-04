@@ -47,6 +47,15 @@
         var linkError = errorCode || hash.get('error') || entry.searchParams.get('error');
 
         var linkEmail = Auth.normalizeEmail(entry.searchParams.get('email'));
+        // The address comes with the link (or was kept on this device), so a new link goes
+        // out without asking for it again. Without one there is nothing to send to.
+        var known = Auth.isEmail(linkEmail) ? linkEmail : '';
+        try {
+            known = known || Auth.normalizeEmail(localStorage.getItem('pia_link_email'));
+        } catch (err) {}
+        if (!Auth.isEmail(known)) {
+            known = '';
+        }
         var verifiedUser = null;
         var verifiedSession = null;
         var verifiedExchange = null;
@@ -70,8 +79,16 @@
             form.hidden = true;
             submit.hidden = true;
             retry.hidden = !canRetry;
-            again.hidden = false;
+            offerNext();
             status(text, 'error');
+        }
+
+        // A new link when the address is known; otherwise back to sign in, where Activate
+        // and Forgot password live. The address is never asked for in this window.
+        function offerNext() {
+            again.hidden = !known;
+            continuation.hidden = !!known;
+            continuation.textContent = 'Back to sign in';
         }
 
         function unusable(error) {
@@ -178,6 +195,7 @@
                 sub.hidden = false;
                 retry.hidden = true;
                 again.hidden = true;
+                continuation.hidden = true;
                 form.hidden = false;
                 submit.hidden = false;
                 submit.disabled = false;
@@ -263,15 +281,8 @@
                 'Request a new link',
                 'Enter your school email. We’ll send you a new link.'
             );
-            // The address comes with the link, so a new link goes out without asking again.
-            var known = Auth.isEmail(linkEmail) ? linkEmail : '';
-            try {
-                known = known || localStorage.getItem('pia_link_email') || '';
-            } catch (err) {}
-            if (known && Auth.isEmail(known) && Auth.sendLinkTo) {
-                setTimeout(function () {
-                    Auth.sendLinkTo(known);
-                }, 250);
+            if (known && Auth.sendLinkTo) {
+                Auth.sendLinkTo(known);
             }
         });
 
@@ -388,6 +399,7 @@
                 form.hidden = true;
                 submit.hidden = true;
                 continuation.hidden = false;
+                continuation.textContent = 'Sign in';
                 try {
                     localStorage.removeItem('pia_link_email');
                 } catch (err) {}
@@ -407,7 +419,7 @@
                         'The save result could not be confirmed. Do not submit again. Check your connection, then request a fresh reset email if needed.',
                         'error'
                     );
-                    again.hidden = false;
+                    offerNext();
                 } else {
                     status(
                         passwordSaved
