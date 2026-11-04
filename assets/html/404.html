@@ -11,7 +11,7 @@
     <title>Page Not Found — PIA</title>
 
     <link rel="stylesheet" href="../../styles/global.css">
-    <link rel="stylesheet" href="../../styles/auth/error.css">
+    <link rel="stylesheet" href="../../styles/auth/error.css?v=20261122a">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -19,33 +19,26 @@
 
 <body>
 
-    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
-        <defs>
-            <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m15.2 8.8-1.9 4.5-4.5 1.9 1.9-4.5 4.5-1.9Z"/></symbol>
-            <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M20 12H4"/><path d="m10 6-6 6 6 6"/></symbol>
-        </defs>
-    </svg>
-
     <div class="error-page">
         <div class="error-ambient" aria-hidden="true"></div>
 
-        <main class="error-card">
-            <div class="error-glyph">
-                <svg class="icon icon-lg"><use href="#i-compass"></use></svg>
-            </div>
+        <a class="error-brand" href="../../index.html" aria-label="PIA home">
+            <img class="site-logo" src="/assets/images/logo.svg" alt="" width="48" height="48">
+        </a>
 
-            <p class="error-code">Error 404</p>
+        <main class="error-main">
+            <p class="error-code" aria-hidden="true">4<span class="error-zero">0</span>4</p>
             <h1 class="error-title">We can't find that page</h1>
             <p class="error-lede">
                 The link may be out of date, or the page may have moved. Nothing is
-                wrong with your account — head back and carry on from there.
+                wrong with your account.
             </p>
 
             <div class="error-actions">
                 <a class="btn btn-primary" href="../../index.html">
-                    <svg class="icon"><use href="#i-arrow-left"></use></svg>
-                    Back to sign in
+                    Back to home
                 </a>
+                <a class="btn btn-secondary" href="/?signin=student">Sign in</a>
             </div>
         </main>
     </div>

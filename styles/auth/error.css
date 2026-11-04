@@ -6,7 +6,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     padding: var(--sp-6);
     text-align: center;
 }
@@ -16,8 +15,16 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    background-image: var(--grain);
-    background-size: 11.25rem 11.25rem;
+    background:
+        radial-gradient(
+            38rem 24rem at 50% 38%,
+            color-mix(in srgb, var(--palette-volt) 14%, transparent),
+            transparent 70%
+        ),
+        var(--grain);
+    background-size:
+        auto,
+        11.25rem 11.25rem;
 }
 
 .error-page > * {
@@ -25,37 +32,43 @@
     z-index: 1;
 }
 
-.error-card {
-    width: 100%;
-    max-width: 480px;
-    padding: var(--sp-8);
-    border-radius: var(--r-xl);
-    background: var(--bg-surface);
-    box-shadow: var(--shadow-card);
+.error-brand {
+    display: inline-flex;
+    margin-top: var(--sp-2);
 }
 
-.error-glyph {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto var(--sp-5);
-    border-radius: var(--r-lg);
-    display: grid;
-    place-items: center;
-    background: var(--warning-soft);
-    color: var(--warning);
+.error-main {
+    flex: 1;
+    width: 100%;
+    max-width: 34rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: var(--sp-9, 4rem);
 }
 
 .error-code {
-    font-size: var(--fs-sm);
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-faint);
+    font-size: clamp(6rem, 24vw, 11rem);
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    line-height: 0.95;
+    color: var(--text);
+}
+
+.error-zero {
+    display: inline-block;
+    margin: 0 0.04em;
+    padding: 0 0.12em;
+    border-radius: 0.28em;
+    background: var(--palette-volt);
+    color: var(--palette-ink);
+    transform: rotate(-4deg);
 }
 
 .error-title {
-    margin-top: var(--sp-2);
-    font-size: clamp(24px, 4vw, 32px);
+    margin-top: var(--sp-5);
+    font-size: clamp(22px, 4vw, 30px);
     font-weight: 800;
     letter-spacing: -0.028em;
     line-height: 1.15;
@@ -64,10 +77,11 @@
 
 .error-lede {
     margin: var(--sp-3) auto 0;
-    max-width: 42ch;
-    font-size: 14.5px;
+    max-width: 40ch;
+    font-size: 15px;
     line-height: 1.65;
     color: var(--text-muted);
+    text-wrap: pretty;
 }
 
 .error-actions {
@@ -84,9 +98,6 @@
 }
 
 @media (max-width: 480px) {
-    .error-card {
-        padding: var(--sp-7) var(--sp-5);
-    }
     .error-actions .btn {
         flex: 1 1 100%;
     }
