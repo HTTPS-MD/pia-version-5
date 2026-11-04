@@ -34,7 +34,7 @@
     <script src="assets/js/landing/auth-callback.js?v=20261122a"></script>
 
     <link rel="stylesheet" href="styles/global.css?v=20261122c">
-    <link rel="stylesheet" href="styles/landing/landing.css?v=20261122j">
+    <link rel="stylesheet" href="styles/landing/landing.css?v=20261122k">
 
     <script defer src="/assets/js/vendor/supabase.js"></script>
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
@@ -728,12 +728,18 @@
                     </div>
                 </form>
                 <section id="fp-accepted" class="email-accepted" aria-label="Email request accepted" hidden>
-                    <p class="email-lead">If this email is registered, we sent a link to:</p>
-                    <p class="email-destination"><strong id="fp-sent-to"></strong></p>
+                    <p class="email-lead">If this email is registered, we sent a link to</p>
+                    <p class="email-destination">
+                        <svg class="icon" aria-hidden="true">
+                            <use href="/assets/icons-landing.svg#i-mail"></use>
+                        </svg>
+                        <strong id="fp-sent-to"></strong>
+                    </p>
                     <a class="btn btn-primary email-open" id="fp-open-mail" href="https://mail.google.com/" target="_blank" rel="noopener">Open inbox</a>
                     <p class="email-note">Not there? Check Spam or Junk.</p>
-                    <div class="auth-alt">
+                    <div class="auth-alt email-more">
                         <button type="button" class="link-btn" id="fp-resend">Resend email</button>
+                        <span class="email-dot" aria-hidden="true"></span>
                         <button type="button" class="link-btn" id="fp-change-email">Use a different email</button>
                     </div>
                 </section>
