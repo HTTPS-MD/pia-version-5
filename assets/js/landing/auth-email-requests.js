@@ -15,6 +15,7 @@
             until: 0,
             version: 0,
             accepted: false,
+            auto: false,
             limited: false,
             waitKnown: false
         }
@@ -61,13 +62,17 @@
                 p = state.prefix;
             var remaining = Math.max(0, Math.ceil((state.until - Date.now()) / 1000));
             var open = $('#modal-' + kind).classList.contains('is-open');
-            $('#' + kind + '-form').hidden = state.accepted;
+            // auto: a link is going out for an address we already know, so the form stays out of the way
+            var plain = state.accepted || state.auto;
+            $('#' + kind + '-form').hidden = plain;
             $('#' + p + '-accepted').hidden = !state.accepted;
-            $('#' + p + '-footer').hidden = state.accepted;
+            $('#' + p + '-footer').hidden = plain;
             $('#' + kind + '-title').textContent = state.accepted
                 ? 'Check your email'
-                : state.title;
-            $('#' + kind + '-description').hidden = state.accepted;
+                : state.auto
+                  ? 'Sending your link…'
+                  : state.title;
+            $('#' + kind + '-description').hidden = plain;
             $('#' + p + '-submit').disabled = state.pending || remaining > 0;
             $('#' + p + '-submit').textContent = state.pending ? 'Sending…' : 'Send link';
             $('#' + p + '-resend').disabled = state.pending || remaining > 0;
@@ -197,7 +202,25 @@
         return 'The email request was not accepted. Try again later or contact your admin.';
     }
 
-    async function requestEmail(kind, resend) {
+    // The request went out (or one went out a moment ago): show where to find it.
+    function markAccepted(kind, state, p, email) {
+        state.email = email;
+        state.accepted = true;
+        try {
+            localStorage.setItem('pia_link_email', email);
+        } catch (err) {}
+        $('#' + p + '-sent-to').textContent = email;
+        var inbox = inboxFor(email);
+        var open = $('#' + p + '-open-mail');
+        open.href = inbox.web;
+        open.dataset.ios = inbox.ios;
+        open.dataset.android = inbox.android;
+        Auth.setStatus(kind + '-status', 'Email request accepted. Check your email.', 'ok');
+        renderEmailRequests();
+        $('#' + p + '-open-mail').focus();
+    }
+
+    async function requestEmail(kind, resend, auto) {
         var state = emailRequests[kind],
             p = state.prefix;
         if (state.pending || Date.now() < state.until) {
@@ -217,6 +240,7 @@
         }
         var version = ++state.version;
         state.limited = false;
+        state.auto = !!auto;
         state.pending = true;
         renderEmailRequests();
         try {
@@ -236,6 +260,11 @@
                 ) {
                     var wait = retryDelay(res.error);
                     state.until = Date.now() + Math.max(wait || 0, 60000);
+                    if (auto && version === state.version) {
+                        // a link went out to this address in the last minute: point to it, no error
+                        markAccepted(kind, state, p, email);
+                        return;
+                    }
                     state.limited = version === state.version;
                     state.waitKnown = wait !== null;
                 } else if (version === state.version) {
@@ -248,26 +277,14 @@
             if (version !== state.version) {
                 return;
             }
-            state.email = email;
-            state.accepted = true;
-            try {
-                localStorage.setItem('pia_link_email', email);
-            } catch (err) {}
-            $('#' + p + '-sent-to').textContent = email;
-            var inbox = inboxFor(email);
-            var open = $('#' + p + '-open-mail');
-            open.href = inbox.web;
-            open.dataset.ios = inbox.ios;
-            open.dataset.android = inbox.android;
-            Auth.setStatus(kind + '-status', 'Email request accepted. Check your email.', 'ok');
-            renderEmailRequests();
-            $('#' + p + '-change-email').focus();
+            markAccepted(kind, state, p, email);
         } catch (error) {
             if (version === state.version) {
                 Auth.setStatus(kind + '-status', emailRequestError(error), 'error');
             }
         } finally {
             state.pending = false;
+            state.auto = false;
             renderEmailRequests();
         }
     }
@@ -298,7 +315,7 @@
     // Sends a link to an address already known on this device, for an expired link.
     Auth.sendLinkTo = function (email) {
         $('#fp-email').value = email;
-        return requestEmail('forgot', false);
+        return requestEmail('forgot', false, true);
     };
     Auth.initEmailRequests = initEmailRequests;
 
