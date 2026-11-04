@@ -2475,3 +2475,26 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
         border-radius: 24px;
     }
 }
+
+/* the stages and Privacy Mode sit next to the section title, compact, so the header is not heavy on the right */
+@media (min-width: 48.0625rem) {
+    #view-students .page-title-row {
+        justify-content: flex-start;
+        gap: 16px;
+    }
+    #view-students .page-title-row .stage-let {
+        margin: 0 !important;
+        height: 42px;
+        min-height: 42px;
+        gap: 12px;
+    }
+    #view-students .page-title-row .stage-let .stage-items {
+        gap: 8px 14px;
+    }
+    #view-students .page-title-row .show-details.privacy-mode {
+        margin-left: 0;
+        height: 42px;
+        min-height: 42px;
+        padding: 0 16px;
+    }
+}
