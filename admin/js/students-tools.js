@@ -11,6 +11,7 @@
     var profOnline = {};
     var holder = {};
     var marks = {};
+    var marksSection = null;
     var built = false;
     var polling = false;
 
@@ -573,14 +574,14 @@
         if (btn) {
             btn.hidden = !section;
             var open = !!section && !!openFor(section);
-            btn.textContent = open ? 'Close class' : 'Open class';
+            btn.textContent = open ? 'End session' : 'Start session';
             btn.setAttribute('data-ci', open ? 'stop' : 'start');
             btn.className = 'btn btn-sm ' + (open ? 'btn-secondary' : 'btn-primary');
         }
         var liveState = $('#class-live-status');
         if (liveState) {
             var isOpen2 = !!section && !!openFor(section);
-            liveState.textContent = !section ? 'Choose a section' : isOpen2 ? 'Class is open' : 'Class is closed';
+            liveState.textContent = !section ? 'Choose a section' : isOpen2 ? 'Session is live' : 'Session ended';
             var dot = $('#class-live-dot');
             if (dot) {
                 dot.classList.toggle('is-on', isOpen2);
@@ -650,9 +651,15 @@
                     });
                     tr.insertBefore(cell, tr.children[1] || null);
                 }
+                var key = String(tr.getAttribute('data-student')).toLowerCase();
+                var kept = marks[key];
+                // Live: the Present / Absent buttons. Ended: keep the result. No record: say so.
                 var html = live
-                    ? markCell(String(tr.getAttribute('data-student')).toLowerCase())
-                    : '<span class="scope-line">Not started</span>';
+                    ? markCell(key)
+                    : kept
+                      ? '<span class="att-result ' + (kept.present ? 'is-present' : 'is-absent') + '">' +
+                        (kept.present ? 'Present' : 'Absent') + '</span>'
+                      : '<span class="att-result is-none">Not started</span>';
                 if (cell._html !== html) {
                     cell._html = html;
                     cell.innerHTML = html;
@@ -751,16 +758,29 @@
             holder = map;
         } catch (e) {}
         var section = chosen();
-        marks = {};
-        if (section && openFor(section)) {
-            var rows = await call('admin_attendance', { p_section: section });
-            (rows || []).forEach(function (r) {
-                marks[String(r.email).toLowerCase()] = {
-                    present: !!r.present,
-                    entered: !!r.entered,
-                    refused: Number(r.refused) || 0
-                };
-            });
+        if (section !== marksSection) {
+            marks = {};
+            marksSection = section;
+        }
+        if (section) {
+            // Also read it after the session ended, so the record stays on screen.
+            try {
+                var rows = await call('admin_attendance', { p_section: section });
+                if (rows && rows.length) {
+                    marks = {};
+                    rows.forEach(function (r) {
+                        marks[String(r.email).toLowerCase()] = {
+                            present: !!r.present,
+                            entered: !!r.entered,
+                            refused: Number(r.refused) || 0
+                        };
+                    });
+                }
+            } catch (e) {
+                if (openFor(section)) {
+                    throw e;
+                }
+            }
         }
         ensureSection();
         renderChips();
@@ -864,7 +884,7 @@
         toggle.id = 'att-toggle';
         toggle.hidden = true;
         toggle.className = 'btn btn-sm btn-primary';
-        toggle.textContent = 'Open class';
+        toggle.textContent = 'Start session';
         var actionsBar = $('#bar-actions');
         if (actionsBar) {
             actionsBar.appendChild(toggle);

@@ -81,6 +81,10 @@
             dot.classList.toggle('is-online', !!online);
             dot.title = online ? 'Online' : 'Offline';
         });
+        $$('[data-stage-presence="' + (email || '').replace(/"/g, '\\"') + '"]').forEach(function (t) {
+            t.classList.toggle('is-offline', !online);
+            t.title = online ? '' : 'Offline, last seen in ' + t.textContent;
+        });
     }
     Admin.applyPresence = applyPresence;
 
@@ -92,11 +96,18 @@
     }
     Admin.stageLabel = stageLabel;
 
-    function stageBadge(stageKey) {
+    // Offline students keep their last stage, shown faded so you can see where they stopped.
+    function stageBadge(stageKey, profile) {
         if (!stageKey) {
             return '<span class="muted">—</span>';
         }
-        return Admin.esc(stageLabel(stageKey));
+        var off = profile && isOnline(profile) === false;
+        return (
+            '<span class="stage-text' + (off ? ' is-offline' : '') + '"' +
+            (profile ? ' data-stage-presence="' + Admin.esc(profile.email) + '"' : '') +
+            (off ? ' title="Offline, last seen in ' + Admin.esc(stageLabel(stageKey)) + '"' : '') +
+            '>' + Admin.esc(stageLabel(stageKey)) + '</span>'
+        );
     }
 
     var liveRefreshId = null;
@@ -439,7 +450,7 @@
                         '</td>' +
                         conditionCell(s) +
                         '<td>' +
-                        stageBadge(stageOf(s)) +
+                        stageBadge(stageOf(s), s) +
                         '</td>' +
                         characterCell(s)
                 );

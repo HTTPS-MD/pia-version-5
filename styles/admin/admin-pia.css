@@ -2491,3 +2491,22 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
         padding: 0 16px;
     }
 }
+
+/* Current Stage: faded when the student is offline, so you can see where they stopped */
+#view-students .stage-text.is-offline {
+    opacity: 0.55;
+}
+
+/* Attendance after the session ended, or before it started */
+#view-students .att-result {
+    font-size: 0.9em;
+}
+#view-students .att-result.is-present {
+    color: var(--success, #3fb27f);
+}
+#view-students .att-result.is-absent {
+    color: var(--danger, #e5645c);
+}
+#view-students .att-result.is-none {
+    opacity: 0.6;
+}
