@@ -82,14 +82,17 @@
             if (gate.key === 'dash') {
                 paintTutoringState(btn, gate, section, ready);
             }
-            btn.disabled = !ready || btn.classList.contains('is-working');
+            var locked = !!window.PIASessionLive;
+            btn.disabled = !ready || locked || btn.classList.contains('is-working');
             btn.setAttribute(
                 'aria-label',
                 gate.title + ' for ' + section + (on ? ': open' : ': closed')
             );
             btn.title = !section
                 ? ''
-                : gate.open
+                : locked
+                  ? 'Close the session first. Stages stay locked while the session is open.'
+                  : gate.open
                   ? gate.title +
                     ' is open for every section. Switching it off closes it for all of them.'
                   : on
@@ -101,7 +104,7 @@
 
     async function toggleStage(gate, btn) {
         var section = window.PIASectionNow || '';
-        if (!section || btn.classList.contains('is-working')) {
+        if (!section || window.PIASessionLive || btn.classList.contains('is-working')) {
             return;
         }
         btn.classList.add('is-working');

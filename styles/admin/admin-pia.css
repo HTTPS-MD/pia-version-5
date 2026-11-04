@@ -2510,3 +2510,18 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
 #view-students .att-result.is-none {
     opacity: 0.6;
 }
+
+/* The Attendance column is narrow: let the result and the "Not in yet" badge wrap instead of being cut off */
+#view-students td[data-mk-cell] {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+}
+#view-students td[data-mk-cell] .att-result {
+    display: inline-block;
+    line-height: 1.25;
+}
+#view-students td[data-mk-cell] .badge {
+    display: inline-block;
+    margin-top: 4px;
+}

@@ -574,14 +574,24 @@
         if (btn) {
             btn.hidden = !section;
             var open = !!section && !!openFor(section);
-            btn.textContent = open ? 'End session' : 'Start session';
+            btn.textContent = open ? 'Close session' : 'Open session';
             btn.setAttribute('data-ci', open ? 'stop' : 'start');
             btn.className = 'btn btn-sm ' + (open ? 'btn-secondary' : 'btn-primary');
+        }
+        var markAll = $('#att-markall');
+        if (markAll) {
+            var showAll = !!(section && openFor(section));
+            markAll.hidden = !showAll;
+            markAll.classList.toggle('is-hidden', !showAll);
+        }
+        window.PIASessionLive = !!section && !!openFor(section);
+        if (window.PIAAdmin && window.PIAAdmin.renderStageSwitches) {
+            window.PIAAdmin.renderStageSwitches();
         }
         var liveState = $('#class-live-status');
         if (liveState) {
             var isOpen2 = !!section && !!openFor(section);
-            liveState.textContent = !section ? 'Choose a section' : isOpen2 ? 'Session is live' : 'Session ended';
+            liveState.textContent = !section ? 'Choose a section' : isOpen2 ? 'Session is open' : 'Session is closed';
             var dot = $('#class-live-dot');
             if (dot) {
                 dot.classList.toggle('is-on', isOpen2);
@@ -607,6 +617,8 @@
             '" aria-label="Absent" title="Absent">✗</button></span>';
         if (m && m.entered) {
             html += ' <span class="badge badge-accent">In</span>';
+        } else if (m && m.present) {
+            html += ' <span class="badge">Not in yet</span>';
         }
         return html;
     }
@@ -658,7 +670,12 @@
                     ? markCell(key)
                     : kept
                       ? '<span class="att-result ' + (kept.present ? 'is-present' : 'is-absent') + '">' +
-                        (kept.present ? 'Present' : 'Absent') + '</span>'
+                        (kept.present
+                            ? kept.entered
+                                ? 'Present, participated'
+                                : 'Present, did not participate'
+                            : 'Absent') +
+                        '</span>'
                       : '<span class="att-result is-none">Not started</span>';
                 if (cell._html !== html) {
                     cell._html = html;
@@ -884,24 +901,78 @@
         toggle.id = 'att-toggle';
         toggle.hidden = true;
         toggle.className = 'btn btn-sm btn-primary';
-        toggle.textContent = 'Start session';
+        toggle.textContent = 'Open session';
         var actionsBar = $('#bar-actions');
         if (actionsBar) {
             actionsBar.appendChild(toggle);
         } else {
             ($('#class-live') || bar).appendChild(toggle);
         }
-        toggle.addEventListener('click', function () {
+        toggle.addEventListener('click', async function () {
             var section = chosen();
             if (!section) {
                 return;
             }
             var starting = toggle.getAttribute('data-ci') !== 'stop';
+            if (starting && Object.keys(marks).length) {
+                var again = await window.PIAAdmin.confirmAction({
+                    heading: 'Open the session again?',
+                    message:
+                        'Attendance was already taken for ' +
+                        section +
+                        '. Opening again starts a new record and the earlier marks will no longer show.',
+                    confirmLabel: 'Open again',
+                    tone: 'accent'
+                });
+                if (!again) {
+                    return;
+                }
+            }
             act(toggle, function () {
                 return starting
                     ? call('admin_start_checkin', { p_section: section, p_minutes: 120 })
                     : call('admin_stop_checkin', { p_section: section });
             });
+        });
+        var markAllBtn = document.createElement('button');
+        markAllBtn.type = 'button';
+        markAllBtn.id = 'att-markall';
+        markAllBtn.hidden = true;
+        markAllBtn.className = 'btn btn-sm btn-secondary is-hidden';
+        markAllBtn.textContent = 'Mark all present';
+        toggle.insertAdjacentElement('afterend', markAllBtn);
+        markAllBtn.addEventListener('click', async function () {
+            var section = chosen();
+            if (!section) {
+                return;
+            }
+            var cohort = (window.PIAAdmin.state.cohort || []).filter(function (s) {
+                return s.section === section && s.email;
+            });
+            var todo = cohort.filter(function (s) {
+                return !marks[String(s.email).toLowerCase()];
+            });
+            if (!todo.length) {
+                say('Everyone in ' + section + ' is already marked.');
+                return;
+            }
+            markAllBtn.disabled = true;
+            try {
+                await Promise.all(
+                    todo.map(function (s) {
+                        return call('admin_set_attendance', {
+                            p_section: section,
+                            p_email: String(s.email).toLowerCase(),
+                            p_present: true
+                        });
+                    })
+                );
+                say('');
+                await refreshOverview();
+            } catch (error) {
+                say(failure(error), true);
+            }
+            markAllBtn.disabled = false;
         });
         var was = true;
         try {
