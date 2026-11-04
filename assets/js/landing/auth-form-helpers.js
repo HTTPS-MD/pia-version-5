@@ -158,19 +158,17 @@
 
     function initCapsLock() {
         $$(PW_CONTROLS).forEach(function (control) {
-            var input = pwInput(control);
-            if (!input) {
-                return;
-            }
-            var check = function (event) {
-                if (event.getModifierState) {
-                    setCapsHint(input, event.getModifierState('CapsLock'));
-                }
-            };
-            input.addEventListener('keydown', check);
-            input.addEventListener('keyup', check);
-            input.addEventListener('blur', function () {
-                setCapsHint(input, false);
+            pwInputs(control).forEach(function (input) {
+                var check = function (event) {
+                    if (event.getModifierState) {
+                        setCapsHint(input, event.getModifierState('CapsLock'));
+                    }
+                };
+                input.addEventListener('keydown', check);
+                input.addEventListener('keyup', check);
+                input.addEventListener('blur', function () {
+                    setCapsHint(input, false);
+                });
             });
         });
     }
