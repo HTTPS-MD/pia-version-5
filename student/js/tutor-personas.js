@@ -987,10 +987,10 @@ window.PIA_TUTORS = (function () {
         neutral: {
             name: 'Noel',
             images: {
-                default: '../../assets/images/tutors/pia-neutral/approval.webp',
+                default: '../../assets/images/tutors/pia-neutral/default.webp',
                 happy: '../../assets/images/tutors/pia-neutral/approval.webp',
-                sad: '../../assets/images/tutors/pia-neutral/approval.webp',
-                thinking: '../../assets/images/tutors/pia-neutral/approval.webp'
+                sad: '../../assets/images/tutors/pia-neutral/disapproval.webp',
+                thinking: '../../assets/images/tutors/pia-neutral/default.webp'
             },
             profiles: {
                 struggling: {
@@ -1223,87 +1223,27 @@ window.PIA_TUTORS = (function () {
         'pia-neutral': 'neutral'
     };
 
-    var ART_DIR = '../../assets/images/personas/';
-    var ART = {
-        'pia-open': [
-            'Openness',
-            {
-                default: 'default',
-                happy: 'happy',
-                sad: 'sad',
-                excited: 'excited',
-                thinking: 'default'
-            }
-        ],
-        'pia-conscientious': [
-            'Conscientiousness',
-            {
-                default: 'default',
-                happy: 'happy',
-                sad: 'sad',
-                excited: 'excited',
-                thinking: 'default'
-            }
-        ],
-        'pia-extravert': [
-            'Extraverted',
-            {
-                default: 'default',
-                happy: 'happy',
-                sad: 'sad',
-                excited: 'excited',
-                thinking: 'default'
-            }
-        ],
-        'pia-agreeable': [
-            'Agreeableness',
-            {
-                default: 'default',
-                happy: 'happy',
-                sad: 'sad',
-                excited: 'excited',
-                thinking: 'default'
-            }
-        ],
-        'pia-calm': [
-            'Neuroticism',
-            {
-                default: 'default',
-                happy: 'happy',
-                sad: 'sad',
-                excited: 'excited',
-                thinking: 'default'
-            }
-        ],
-        'pia-neutral': [
-            'Neutral',
-            {
-                default: 'default',
-                happy: 'approval',
-                sad: 'disapproval',
-                excited: 'nod',
-                thinking: 'shrug'
-            }
-        ]
-    };
+    var reducedMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     var out = {};
     Object.keys(KEYS).forEach(function (key) {
         var trait = KEYS[key];
-        var art = ART[key];
-        var images = {};
-        Object.keys(art[1]).forEach(function (mood) {
-            images[mood] = ART_DIR + art[0] + '/' + art[1][mood] + '.webp';
-        });
-
-        var old = PERSONA_CONFIG[trait].images;
-        var fallback = {
-            default: old['default'],
-            happy: old.happy,
-            sad: old.sad,
-            excited: old.happy,
-            thinking: old.thinking || old['default']
+        var art = PERSONA_CONFIG[trait].images;
+        var images = {
+            default: art['default'],
+            happy: art.happy,
+            sad: art.sad,
+            excited: art.happy,
+            thinking: art.thinking || art['default']
         };
+        var fallback = {};
+        Object.keys(images).forEach(function (mood) {
+            fallback[mood] = images[mood].replace(/\.webp$/, '-still.webp');
+            if (reducedMotion) {
+                images[mood] = fallback[mood];
+            }
+        });
 
         out[key] = {
             name: PERSONA_CONFIG[trait].name,

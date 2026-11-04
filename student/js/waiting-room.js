@@ -1,4 +1,4 @@
-const TUTOR_IMG = '../../assets/images/welcome/';
+const TUTOR_IMG = '../../assets/images/tutors/';
 const TUTORS = {
     'pia-open': { name: 'Ava' },
     'pia-conscientious': { name: 'Cara' },
@@ -18,7 +18,7 @@ async function showTutorIfReady(profile) {
         'Your teacher will start the game soon. This page moves on by itself.';
     const img = document.getElementById('wait-tutor');
     const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    img.src = TUTOR_IMG + profile.selected_character + (still ? '-still' : '') + '.webp';
+    img.src = TUTOR_IMG + profile.selected_character + '/default' + (still ? '-still' : '') + '.webp';
     img.alt = tutor.name + ', your tutor';
     img.hidden = false;
     document.querySelector('.wait-card').classList.add('has-tutor');

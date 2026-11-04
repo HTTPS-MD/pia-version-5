@@ -15,10 +15,13 @@ enforceStageLock();
 
 let lines = [];
 
-// the same moving art as the tutors on the landing page
 function showPose() {
     if (selectedChar) {
-        document.getElementById('preview-bg-img').src = '../../assets/images/welcome/' + selectedChar + '.webp';
+        const art = '../../assets/images/tutors/' + selectedChar + '/default.webp';
+        const reducedMotion = window.matchMedia &&
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        document.getElementById('preview-bg-img').src =
+            reducedMotion ? art.replace(/\.webp$/, '-still.webp') : art;
     }
     if (lines.length) {
         document.getElementById('preview-desc').textContent = lines[0];
