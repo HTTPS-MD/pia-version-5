@@ -87,19 +87,27 @@
 
     var PW_CONTROLS = '[data-pw-toggle], [data-pw-check]';
 
-    function pwInput(control) {
-        return document.getElementById(
-            control.getAttribute('data-pw-toggle') || control.getAttribute('data-pw-check')
-        );
+    // a control can name several fields, separated by spaces
+    function pwInputs(control) {
+        var ids = (control.getAttribute('data-pw-toggle') || control.getAttribute('data-pw-check') || '')
+            .split(/\s+/)
+            .filter(Boolean);
+        return ids
+            .map(function (id) {
+                return document.getElementById(id);
+            })
+            .filter(Boolean);
     }
 
-    function setPasswordShown(input, control, shown) {
-        input.type = shown ? 'text' : 'password';
-        if (shown) {
-            input.setAttribute('data-pw-shown', '');
-        } else {
-            input.removeAttribute('data-pw-shown');
-        }
+    function setPasswordShown(inputs, control, shown) {
+        inputs.forEach(function (input) {
+            input.type = shown ? 'text' : 'password';
+            if (shown) {
+                input.setAttribute('data-pw-shown', '');
+            } else {
+                input.removeAttribute('data-pw-shown');
+            }
+        });
         if (control.type === 'checkbox') {
             control.checked = shown;
         } else {
@@ -109,9 +117,9 @@
 
     function maskPasswords(root) {
         $$(PW_CONTROLS, root).forEach(function (control) {
-            var input = pwInput(control);
-            if (input) {
-                setPasswordShown(input, control, false);
+            var inputs = pwInputs(control);
+            if (inputs.length) {
+                setPasswordShown(inputs, control, false);
             }
         });
     }
@@ -119,17 +127,17 @@
 
     function initPasswordToggles() {
         $$(PW_CONTROLS).forEach(function (control) {
-            var input = pwInput(control);
-            if (!input) {
+            var inputs = pwInputs(control);
+            if (!inputs.length) {
                 return;
             }
             if (control.type === 'checkbox') {
                 control.addEventListener('change', function () {
-                    setPasswordShown(input, control, control.checked);
+                    setPasswordShown(inputs, control, control.checked);
                 });
             } else {
                 control.addEventListener('click', function () {
-                    setPasswordShown(input, control, input.type === 'password');
+                    setPasswordShown(inputs, control, inputs[0].type === 'password');
                 });
             }
         });

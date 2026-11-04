@@ -116,6 +116,8 @@
 
         history.replaceState(null, '', entry.pathname);
         document.documentElement.removeAttribute('data-session');
+        // a browser can bring the box back ticked on a reload; start hidden and unticked
+        Auth.maskPasswords(overlay);
         Auth.openModal(MODAL);
         status('Checking your link…', 'ok');
         form.hidden = true;
@@ -264,12 +266,6 @@
                 return false;
             }
         }
-
-        document.getElementById('sp-show-pw').addEventListener('change', function () {
-            var mirror = document.getElementById('sp-show-pw2');
-            mirror.checked = this.checked;
-            mirror.dispatchEvent(new Event('change'));
-        });
 
         retry.addEventListener('click', verifyLink);
 
