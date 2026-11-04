@@ -57,15 +57,8 @@ html[data-surface='admin'] body {
     font-family: var(--font-body);
 }
 html[data-surface='admin'][data-theme='light'] body {
-    background-color: var(--hex-fff8e7);
-    background-image: var(--grain),
-        radial-gradient(ellipse 45% 55% at 28% 55%, var(--white-a75), transparent),
-        radial-gradient(ellipse 35% 50% at 75% 50%, var(--rgb120-160-255-a28), transparent),
-        linear-gradient(
-            160deg,
-            color-mix(in srgb, var(--palette-violet) 14%, var(--hex-fff8e7)) 0%,
-            color-mix(in srgb, var(--palette-violet) 38%, var(--hex-fff8e7)) 100%
-        );
+    background-color: var(--bg-body);
+    background-image: none;
 }
 html[data-surface='admin'] .app {
     background: transparent;

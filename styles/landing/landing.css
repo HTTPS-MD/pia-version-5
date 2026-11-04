@@ -5050,16 +5050,14 @@ h4 {
     padding: 0;
     border: 1px solid color-mix(in srgb, var(--text) 22%, transparent);
     border-radius: 999px;
-    background: color-mix(in srgb, var(--text) 8%, transparent);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--text) 10%, var(--bg));
     transition:
         background-color 0.3s linear,
         border-color 0.3s linear;
 }
 .nav .theme-switch:hover {
     border-color: color-mix(in srgb, var(--text) 42%, transparent);
-    background: color-mix(in srgb, var(--text) 12%, transparent);
+    background: color-mix(in srgb, var(--text) 14%, var(--bg));
 }
 /* the knob */
 .nav .theme-switch::before {

@@ -2053,7 +2053,7 @@ html[data-theme] button#theme-toggle.theme-switch {
     box-sizing: border-box;
     border: 1px solid color-mix(in srgb, var(--text) 22%, transparent);
     border-radius: 999px;
-    background: color-mix(in srgb, var(--text) 8%, transparent);
+    background: color-mix(in srgb, var(--text) 10%, var(--bg));
     box-shadow: none;
     color: var(--text);
     cursor: pointer;
@@ -2133,4 +2133,16 @@ html[data-theme][data-theme][data-theme] .topbar {
     backdrop-filter: blur(18px) saturate(170%);
     border-bottom: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
     box-shadow: none;
+}
+
+/* light mode: the website's background is almost pure white */
+:root[data-theme='light'][data-theme='light'][data-theme='light'][data-theme='light'] {
+    --bg: #fcfcfb;
+    --bg-main: #fcfcfb;
+    --bg-body: #fcfcfb;
+    --g0: #fdfdfc;
+    --g1: #fbfbfa;
+    --g2: #f8f9fa;
+    --g3: #f5f7f9;
+    --g4: #f1f4f8;
 }
