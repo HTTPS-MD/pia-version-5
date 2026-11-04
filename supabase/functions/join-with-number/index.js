@@ -18,8 +18,8 @@
 //
 // WHAT THIS DOES NOT PROVE: who is typing. A student number is known to a
 // student's classmates. What limits it: only a student the admin marked present
-// gets in, only one session per student stays alive (the newest entry wins), and
-// every re-entry is counted in attendance_marks.refused_count.
+// gets in, a student gets in once (the second try is refused, counted in
+// attendance_marks.refused_count, and only the admin's Let back in allows it again).
 //
 // A student who never activated has a profile but no auth user: the function
 // creates it (email confirmed, a random password nobody knows) the first time
@@ -71,21 +71,23 @@ Deno.serve(async (req) => {
         let q = admin
             .from('checkins')
             .select('id', { count: 'exact', head: true })
-            .is('stopped_at', null)
-            .gt('ends_at', nowIso());
+            .gte('started_at', new Date(Date.now() - 16 * 3600 * 1000).toISOString());
         if (section) q = q.eq('section', section);
         const { count } = await q;
         return count ?? 0;
     };
+    // The newest session of the section started in the last 16 hours, open or closed: a student
+    // marked present can still enter after the admin closed the session.
+    const sinceIso = () => new Date(Date.now() - 16 * 3600 * 1000).toISOString();
     const openCheckinId = async (section) => {
         const { data } = await admin
             .from('checkins')
             .select('id')
             .eq('section', section)
-            .is('stopped_at', null)
-            .gt('ends_at', nowIso())
-            .maybeSingle();
-        return data ? String(data.id) : null;
+            .gte('started_at', sinceIso())
+            .order('started_at', { ascending: false })
+            .limit(1);
+        return data && data.length ? String(data[0].id) : null;
     };
     const deps = {
         now: () => Date.now(),

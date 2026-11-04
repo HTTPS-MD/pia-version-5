@@ -2525,3 +2525,7 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     display: inline-block;
     margin-top: 4px;
 }
+
+#view-students td[data-mk-cell] [data-lbi] {
+    margin-top: 4px;
+}

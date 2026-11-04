@@ -600,6 +600,24 @@
         paintMarks();
     }
 
+    // After the entry: In / Not in yet, a count of refused second tries, and Let back in.
+    function entryExtras(m) {
+        var html = '';
+        if (!m || !m.present) {
+            return html;
+        }
+        html += m.entered
+            ? ' <span class="badge badge-accent">In</span>'
+            : ' <span class="badge">Not in yet</span>';
+        if (m.refused > 0) {
+            html += ' <span class="badge badge-warn" title="Second tries that were refused">Blocked ×' + m.refused + '</span>';
+        }
+        if (m.entered) {
+            html += ' <button type="button" class="btn btn-sm btn-secondary" data-lbi>Let back in</button>';
+        }
+        return html;
+    }
+
     function markCell(email) {
         var m = marks[email] || null;
         var state = m ? (m.present ? 'present' : 'absent') : 'none';
@@ -615,12 +633,7 @@
             '" data-mk="absent" aria-pressed="' +
             (state === 'absent') +
             '" aria-label="Absent" title="Absent">✗</button></span>';
-        if (m && m.entered) {
-            html += ' <span class="badge badge-accent">In</span>';
-        } else if (m && m.present) {
-            html += ' <span class="badge">Not in yet</span>';
-        }
-        return html;
+        return html + entryExtras(m);
     }
 
     function paintMarks() {
@@ -670,13 +683,11 @@
                     ? markCell(key)
                     : kept
                       ? '<span class="att-result ' + (kept.present ? 'is-present' : 'is-absent') + '">' +
-                        (kept.present
-                            ? kept.entered
-                                ? 'Present, participated'
-                                : 'Present, did not participate'
-                            : 'Absent') +
-                        '</span>'
-                      : '<span class="att-result is-none">Not started</span>';
+                        (kept.present ? 'Present' : 'Absent') +
+                        '</span>' + entryExtras(kept)
+                      : '<span class="att-result is-none">' +
+                        (Object.keys(marks).length ? 'Not marked' : 'Not started') +
+                        '</span>';
                 if (cell._html !== html) {
                     cell._html = html;
                     cell.innerHTML = html;
@@ -684,7 +695,28 @@
             });
     }
 
+    async function letBackIn(rawEmail) {
+        var section = chosen();
+        var email = String(rawEmail).toLowerCase();
+        try {
+            await call('admin_let_back_in', { p_section: section, p_email: email });
+            if (marks[email]) {
+                marks[email].entered = false;
+                marks[email].refused = 0;
+            }
+            say('');
+        } catch (error) {
+            say(failure(error), true);
+        }
+        renderAttendance();
+        refreshOverview().catch(function () {});
+    }
+
     async function onMark(event, rawEmail) {
+        if (event.target.closest('[data-lbi]')) {
+            await letBackIn(rawEmail);
+            return;
+        }
         var btn = event.target.closest('[data-mk]');
         if (!btn) {
             return;

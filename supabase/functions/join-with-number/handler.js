@@ -9,13 +9,15 @@
 // The flow: while a class is open the admin calls the names and marks each
 // student present or absent. A student types the number and confirms the name
 // (lookup), then enters. Only a student marked present gets a one-time sign-in
-// token. A number can enter again (a closed browser, another computer): the newest
-// sign-in wins and the older one is signed out by the database. Each re-entry is
-// counted so the admin sees it on that student's row.
+// token, and only ONCE: the first entry is free. A second try (a closed browser,
+// another computer, a classmate typing the number) is refused and counted on that
+// student's row; only the admin's "Let back in" lets it through again.
 //
-// A number is accepted only while an admin has the class open for the
-// student's section. While nothing is open, the answer is the same for every
-// number and no name is read, so nothing about the roster leaks.
+// A number is accepted once the admin has taken attendance for the student's
+// section today, and it stays accepted after the session is closed, so a student
+// marked present who has not entered yet can still come in. While no session was
+// opened today the answer is the same for every number and no name is read, so
+// nothing about the roster leaks.
 export const MAX_FAILURES_PER_NUMBER = 5;
 export const MAX_FAILURES_PER_IP = 60; // a whole lab shares one address
 // The address can be faked, so it cannot be the only brake: this caps ALL failed tries
@@ -26,6 +28,8 @@ export const WINDOW_MS = 10 * 60_000;
 export const MESSAGES = {
     notReady: 'Class is not open yet. Please wait.',
     notFound: 'We could not find you in this class today. Tell your admin.',
+    alreadyIn:
+        'You are already signed in. If you lost your connection, tell your admin to let you back in.',
     throttled: 'Too many tries. Please wait a few minutes, or tell your admin.',
     server: 'Something went wrong. Please try again.'
 };
@@ -77,6 +81,13 @@ export async function handleJoin(body, ip, deps) {
         (await deps.checkinOpenFor(student.section));
     if (!student || !allowed) return fail({ status: 404, body: { error: MESSAGES.notFound } });
     if (action === 'lookup') {
+        const seenEmail = student.email.trim().toLowerCase();
+        const seen = await deps.attendanceFor(student.section, seenEmail);
+        if (seen === 'entered') {
+            // Refused at the name step already: count it so the admin sees the try on the row.
+            await deps.noteReentry(student.section, seenEmail);
+            return { status: 409, body: { error: MESSAGES.alreadyIn } };
+        }
         return {
             status: 200,
             body: { ok: true, name: student.full_name ?? '', section: student.section }
@@ -88,19 +99,26 @@ export async function handleJoin(body, ip, deps) {
     // Same words and same status as an unknown number: the reply says nothing about which it was.
     if (mark === 'none' || mark === 'absent')
         return { status: 404, body: { error: MESSAGES.notFound } };
-    // The first entry takes the place; any later one is a re-entry and is only counted.
-    const firstEntry = mark === 'present' && (await deps.claimEntry(student.section, email));
-    if (!firstEntry) await deps.noteReentry(student.section, email);
+    // Only the first entry goes through. A second try is refused and counted for the admin.
+    if (mark === 'entered') {
+        await deps.noteReentry(student.section, email);
+        return { status: 409, body: { error: MESSAGES.alreadyIn } };
+    }
+    const firstEntry = await deps.claimEntry(student.section, email);
+    if (!firstEntry) {
+        await deps.noteReentry(student.section, email);
+        return { status: 409, body: { error: MESSAGES.alreadyIn } };
+    }
     try {
         await deps.ensureAccount(email);
         const tokenHash = await deps.mintToken(email);
         if (!tokenHash) {
-            if (firstEntry) await deps.releaseEntry(student.section, email);
+            await deps.releaseEntry(student.section, email);
             return { status: 500, body: { error: MESSAGES.server } };
         }
         return { status: 200, body: { ok: true, status: 'let_in', email, token_hash: tokenHash } };
     } catch {
-        if (firstEntry) await deps.releaseEntry(student.section, email);
+        await deps.releaseEntry(student.section, email);
         return { status: 500, body: { error: MESSAGES.server } };
     }
 }
