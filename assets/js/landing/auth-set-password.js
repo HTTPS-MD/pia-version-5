@@ -273,17 +273,24 @@
 
         retry.addEventListener('click', verifyLink);
 
-        again.addEventListener('click', function () {
-            finished = true;
-            Auth.closeModal(MODAL, true);
-            Auth.openAuth('forgot');
+        // The request runs here, on this button, and the next window opens already showing
+        // where to find the email.
+        again.addEventListener('click', async function () {
+            if (!known || again.disabled) {
+                return;
+            }
+            again.disabled = true;
+            again.textContent = 'Requesting…';
             Auth.setEmailIntro(
                 'Request a new link',
                 'Enter your school email. We’ll send you a new link.'
             );
-            if (known && Auth.sendLinkTo) {
-                Auth.sendLinkTo(known);
-            }
+            try {
+                await Auth.sendLinkTo(known);
+            } catch (err) {}
+            finished = true;
+            Auth.closeModal(MODAL, true);
+            Auth.openAuth('forgot');
         });
 
         continuation.addEventListener('click', function () {

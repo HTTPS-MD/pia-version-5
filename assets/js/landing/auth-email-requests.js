@@ -15,7 +15,6 @@
             until: 0,
             version: 0,
             accepted: false,
-            auto: false,
             limited: false,
             waitKnown: false
         }
@@ -62,17 +61,13 @@
                 p = state.prefix;
             var remaining = Math.max(0, Math.ceil((state.until - Date.now()) / 1000));
             var open = $('#modal-' + kind).classList.contains('is-open');
-            // auto: a link is going out for an address we already know, so the form stays out of the way
-            var plain = state.accepted || state.auto;
-            $('#' + kind + '-form').hidden = plain;
+            $('#' + kind + '-form').hidden = state.accepted;
             $('#' + p + '-accepted').hidden = !state.accepted;
-            $('#' + p + '-footer').hidden = plain;
+            $('#' + p + '-footer').hidden = state.accepted;
             $('#' + kind + '-title').textContent = state.accepted
                 ? 'Check your email'
-                : state.auto
-                  ? 'Sending your link…'
-                  : state.title;
-            $('#' + kind + '-description').hidden = plain;
+                : state.title;
+            $('#' + kind + '-description').hidden = state.accepted;
             $('#' + p + '-submit').disabled = state.pending || remaining > 0;
             $('#' + p + '-submit').textContent = state.pending ? 'Sending…' : 'Send link';
             $('#' + p + '-resend').disabled = state.pending || remaining > 0;
@@ -240,7 +235,6 @@
         }
         var version = ++state.version;
         state.limited = false;
-        state.auto = !!auto;
         state.pending = true;
         renderEmailRequests();
         try {
@@ -284,7 +278,6 @@
             }
         } finally {
             state.pending = false;
-            state.auto = false;
             renderEmailRequests();
         }
     }
