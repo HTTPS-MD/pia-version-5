@@ -226,7 +226,7 @@
                 email: email,
                 options: {
                     shouldCreateUser: false,
-                    emailRedirectTo: Auth.activationRedirect()
+                    emailRedirectTo: Auth.activationRedirect(email)
                 }
             });
             if (res.error) {

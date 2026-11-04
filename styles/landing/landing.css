@@ -4932,3 +4932,36 @@ h4 {
         background: color-mix(in srgb, var(--text) 10%, transparent);
     }
 }
+
+/* set your password: the same rhythm as the sign-in windows, no reserved blank space */
+#modal-set-password .modal-body {
+    display: grid;
+    gap: var(--sp-4);
+    padding-bottom: var(--sp-7);
+}
+#modal-set-password .portal-form {
+    gap: var(--sp-4);
+}
+#modal-set-password .form-grid {
+    gap: var(--sp-5);
+}
+#modal-set-password .field {
+    gap: var(--sp-2);
+}
+#modal-set-password .field-msg:empty,
+#modal-set-password .auth-status:not(.is-error):not(.is-ok) {
+    display: none;
+}
+#modal-set-password .auth-status {
+    min-height: 0;
+    margin: 0;
+    line-height: 1.55;
+}
+#modal-set-password .portal-submit {
+    margin-block-start: var(--sp-2);
+}
+
+/* the close button stays round when focused (the global focus style would square it) */
+.modal-close:focus-visible {
+    border-radius: 50%;
+}

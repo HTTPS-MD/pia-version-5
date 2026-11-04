@@ -189,7 +189,7 @@
         try {
             res = await sb.auth.signInWithOtp({
                 email: email,
-                options: { shouldCreateUser: false, emailRedirectTo: Admin.activationRedirect() }
+                options: { shouldCreateUser: false, emailRedirectTo: Admin.activationRedirect(email) }
             });
         } catch (err) {
             res = { error: { message: (err && err.message) || 'The request did not complete.' } };

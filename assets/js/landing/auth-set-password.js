@@ -46,6 +46,7 @@
         var errorCode = hash.get('error_code') || entry.searchParams.get('error_code');
         var linkError = errorCode || hash.get('error') || entry.searchParams.get('error');
 
+        var linkEmail = Auth.normalizeEmail(entry.searchParams.get('email'));
         var verifiedUser = null;
         var verifiedSession = null;
         var verifiedExchange = null;
@@ -246,6 +247,12 @@
             }
         }
 
+        document.getElementById('sp-show-pw').addEventListener('change', function () {
+            var mirror = document.getElementById('sp-show-pw2');
+            mirror.checked = this.checked;
+            mirror.dispatchEvent(new Event('change'));
+        });
+
         retry.addEventListener('click', verifyLink);
 
         again.addEventListener('click', function () {
@@ -256,9 +263,10 @@
                 'Request a new link',
                 'Enter your school email. We’ll send you a new link.'
             );
-            var known = '';
+            // The address comes with the link, so a new link goes out without asking again.
+            var known = Auth.isEmail(linkEmail) ? linkEmail : '';
             try {
-                known = localStorage.getItem('pia_link_email') || '';
+                known = known || localStorage.getItem('pia_link_email') || '';
             } catch (err) {}
             if (known && Auth.isEmail(known) && Auth.sendLinkTo) {
                 setTimeout(function () {

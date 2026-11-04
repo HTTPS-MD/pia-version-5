@@ -393,7 +393,7 @@
     function sendAdminLinkEmail(email) {
         return sb.auth.signInWithOtp({
             email: email,
-            options: { shouldCreateUser: false, emailRedirectTo: Admin.activationRedirect() }
+            options: { shouldCreateUser: false, emailRedirectTo: Admin.activationRedirect(email) }
         });
     }
 

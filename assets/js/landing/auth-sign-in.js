@@ -7,8 +7,12 @@
 
     var Auth = window.PIAAuth;
 
-    function activationRedirect() {
-        return emailLinkTo('index.html?flow=set-password');
+    function activationRedirect(email) {
+        var url = new URL(emailLinkTo('index.html?flow=set-password'));
+        if (email) {
+            url.searchParams.set('email', email);
+        }
+        return url.href;
     }
     Auth.activationRedirect = activationRedirect;
 

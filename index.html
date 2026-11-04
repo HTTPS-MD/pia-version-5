@@ -34,7 +34,7 @@
     <script src="assets/js/landing/auth-callback.js?v=20261122a"></script>
 
     <link rel="stylesheet" href="styles/global.css?v=20261122c">
-    <link rel="stylesheet" href="styles/landing/landing.css?v=20261122h">
+    <link rel="stylesheet" href="styles/landing/landing.css?v=20261122j">
 
     <script defer src="/assets/js/vendor/supabase.js"></script>
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
@@ -822,29 +822,31 @@
             </header>
 
             <div class="modal-body">
-                <form id="sp-form" novalidate hidden>
+                <form id="sp-form" class="portal-form" novalidate hidden>
                     <div class="form-grid">
                         <div class="field">
                             <label class="label" for="sp-password">New password</label>
                             <input class="input" type="password" id="sp-password" minlength="8"
-                                autocomplete="new-password" aria-describedby="sp-password-msg" data-autofocus>
+                                autocomplete="new-password" enterkeyhint="next" placeholder="••••••••"
+                                aria-describedby="sp-password-msg" data-autofocus>
                             <p class="field-msg" id="sp-password-msg" data-msg-for="sp-password"></p>
                         </div>
                         <div class="field">
                             <label class="label" for="sp-confirm">Confirm password</label>
                             <input class="input" type="password" id="sp-confirm" minlength="8"
-                                autocomplete="new-password" aria-describedby="sp-confirm-msg">
+                                autocomplete="new-password" enterkeyhint="go" placeholder="••••••••"
+                                aria-describedby="sp-confirm-msg">
                             <p class="field-msg" id="sp-confirm-msg" data-msg-for="sp-confirm"></p>
-                            <label class="show-pw">
-                                <input type="checkbox" id="sp-show-pw" data-pw-check="sp-password">
-                                <span>Show password</span>
-                            </label>
-                            <label class="show-pw">
-                                <input type="checkbox" id="sp-show-pw2" data-pw-check="sp-confirm">
-                                <span>Show confirmation</span>
-                            </label>
                         </div>
                     </div>
+                    <label class="show-pw">
+                        <input type="checkbox" id="sp-show-pw" data-pw-check="sp-password">
+                        <span>Show passwords</span>
+                    </label>
+                    <input type="checkbox" id="sp-show-pw2" data-pw-check="sp-confirm" tabindex="-1" aria-hidden="true"
+                        hidden>
+                    <button class="btn btn-primary portal-submit" type="submit" id="sp-submit">Confirm and sign
+                        in</button>
                 </form>
                 <p class="auth-status" id="sp-status" role="status">
                     <svg class="icon">
@@ -852,18 +854,12 @@
                     </svg>
                     <span data-status-text></span>
                 </p>
+                <button class="btn btn-secondary portal-submit" type="button" id="sp-retry" hidden>Retry
+                    verification</button>
+                <button class="btn btn-primary portal-submit" type="button" id="sp-new-link" hidden>Request a new
+                    link</button>
+                <button class="btn btn-primary portal-submit" type="button" id="sp-signin" hidden>Sign in</button>
             </div>
-
-            <footer class="modal-foot modal-foot-split">
-                <div class="modal-foot-actions">
-                    <button class="btn btn-secondary" type="button" id="sp-retry" hidden>Retry verification</button>
-                    <button class="btn btn-primary" type="button" id="sp-new-link" hidden>Request a new link</button>
-                    <button class="btn btn-primary" type="button" id="sp-signin" hidden>Sign in</button>
-                    <button class="btn btn-primary" type="submit" form="sp-form" id="sp-submit" hidden>
-                        Confirm and sign in
-                    </button>
-                </div>
-            </footer>
         </div>
     </div>
 
@@ -881,11 +877,11 @@
     <script defer src="assets/js/shared/stage-sync.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-modals.js?v=20261031z"></script>
     <script defer src="assets/js/landing/auth-form-helpers.js?v=20261031a"></script>
-    <script defer src="assets/js/landing/auth-sign-in.js?v=20261122a"></script>
+    <script defer src="assets/js/landing/auth-sign-in.js?v=20261122b"></script>
     <script defer src="assets/js/landing/auth-student-join.js?v=20261031f"></script>
     <script defer src="assets/js/landing/auth-device-reset.js?v=20261101a"></script>
-    <script defer src="assets/js/landing/auth-set-password.js?v=20261122a"></script>
-    <script defer src="assets/js/landing/auth-email-requests.js?v=20261121a"></script>
+    <script defer src="assets/js/landing/auth-set-password.js?v=20261122c"></script>
+    <script defer src="assets/js/landing/auth-email-requests.js?v=20261122a"></script>
     <script defer src="assets/js/landing/auth-resume.js?v=20261121b"></script>
     <script defer src="assets/js/landing/auth-hero-join.js?v=20261031e"></script>
     <script defer src="assets/js/landing/auth-start.js?v=20261122a"></script>
