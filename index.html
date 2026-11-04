@@ -31,7 +31,7 @@
 
     <script src="assets/js/landing/early-redirect.js"></script>
 
-    <script src="assets/js/landing/auth-callback.js"></script>
+    <script src="assets/js/landing/auth-callback.js?v=20261122a"></script>
 
     <link rel="stylesheet" href="styles/global.css?v=20261122c">
     <link rel="stylesheet" href="styles/landing/landing.css?v=20261122h">
@@ -806,6 +806,67 @@
         </div>
     </div>
 
+    <div class="overlay" id="modal-set-password" role="dialog" aria-modal="true" aria-labelledby="sp-title"
+        aria-describedby="sp-sub">
+        <div class="modal modal-sm">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="sp-title">Set your password</h2>
+                    <p class="modal-sub" id="sp-sub" hidden></p>
+                </div>
+                <button class="modal-close" data-modal-close aria-label="Close dialog">
+                    <svg class="icon">
+                        <use href="/assets/icons-landing.svg#i-x"></use>
+                    </svg>
+                </button>
+            </header>
+
+            <div class="modal-body">
+                <form id="sp-form" novalidate hidden>
+                    <div class="form-grid">
+                        <div class="field">
+                            <label class="label" for="sp-password">New password</label>
+                            <input class="input" type="password" id="sp-password" minlength="8"
+                                autocomplete="new-password" aria-describedby="sp-password-msg" data-autofocus>
+                            <p class="field-msg" id="sp-password-msg" data-msg-for="sp-password"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="sp-confirm">Confirm password</label>
+                            <input class="input" type="password" id="sp-confirm" minlength="8"
+                                autocomplete="new-password" aria-describedby="sp-confirm-msg">
+                            <p class="field-msg" id="sp-confirm-msg" data-msg-for="sp-confirm"></p>
+                            <label class="show-pw">
+                                <input type="checkbox" id="sp-show-pw" data-pw-check="sp-password">
+                                <span>Show password</span>
+                            </label>
+                            <label class="show-pw">
+                                <input type="checkbox" id="sp-show-pw2" data-pw-check="sp-confirm">
+                                <span>Show confirmation</span>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+                <p class="auth-status" id="sp-status" role="status">
+                    <svg class="icon">
+                        <use href="/assets/icons-landing.svg#i-alert"></use>
+                    </svg>
+                    <span data-status-text></span>
+                </p>
+            </div>
+
+            <footer class="modal-foot modal-foot-split">
+                <div class="modal-foot-actions">
+                    <button class="btn btn-secondary" type="button" id="sp-retry" hidden>Retry verification</button>
+                    <button class="btn btn-primary" type="button" id="sp-new-link" hidden>Request a new link</button>
+                    <button class="btn btn-primary" type="button" id="sp-signin" hidden>Sign in</button>
+                    <button class="btn btn-primary" type="submit" form="sp-form" id="sp-submit" hidden>
+                        Confirm and sign in
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </div>
+
     <div class="toast-stack" id="toast-stack" role="status" aria-live="polite"></div>
 
     <script defer src="assets/js/shared/site-config.js?v=20261031a"></script>
@@ -820,13 +881,14 @@
     <script defer src="assets/js/shared/stage-sync.js?v=20261031a"></script>
     <script defer src="assets/js/landing/auth-modals.js?v=20261031z"></script>
     <script defer src="assets/js/landing/auth-form-helpers.js?v=20261031a"></script>
-    <script defer src="assets/js/landing/auth-sign-in.js?v=20261101a"></script>
+    <script defer src="assets/js/landing/auth-sign-in.js?v=20261122a"></script>
     <script defer src="assets/js/landing/auth-student-join.js?v=20261031f"></script>
     <script defer src="assets/js/landing/auth-device-reset.js?v=20261101a"></script>
+    <script defer src="assets/js/landing/auth-set-password.js?v=20261122a"></script>
     <script defer src="assets/js/landing/auth-email-requests.js?v=20261121a"></script>
     <script defer src="assets/js/landing/auth-resume.js?v=20261121b"></script>
     <script defer src="assets/js/landing/auth-hero-join.js?v=20261031e"></script>
-    <script defer src="assets/js/landing/auth-start.js?v=20261031c"></script>
+    <script defer src="assets/js/landing/auth-start.js?v=20261122a"></script>
     <script defer src="assets/js/landing/scroll-engine.js?v=20261031a"></script>
     <script defer src="assets/js/landing/page-basics.js?v=20261031c"></script>
     <script defer src="assets/js/landing/text-effects.js?v=20261031a"></script>

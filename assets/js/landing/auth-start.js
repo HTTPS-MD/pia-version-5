@@ -64,7 +64,12 @@
                 document.documentElement.removeAttribute('data-session');
                 return;
             }
-            return Auth.offerResume().then(handleEntryIntent);
+            return Auth.handleSetPasswordLink().then(function (settingPassword) {
+                if (settingPassword) {
+                    return;
+                }
+                return Auth.offerResume().then(handleEntryIntent);
+            });
         });
     }
 

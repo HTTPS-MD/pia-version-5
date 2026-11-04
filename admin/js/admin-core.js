@@ -203,7 +203,7 @@
     Admin.generateSecurePassword = generateSecurePassword;
 
     function activationRedirect() {
-        return emailLinkTo('assets/html/sign-up.html');
+        return emailLinkTo('index.html?flow=set-password');
     }
     Admin.activationRedirect = activationRedirect;
 

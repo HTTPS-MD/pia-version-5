@@ -15,7 +15,7 @@
         return;
     }
 
-    if (query.get('flow') === 'device-reset') {
+    if (query.get('flow') === 'device-reset' || query.get('flow') === 'set-password') {
         return;
     }
 
