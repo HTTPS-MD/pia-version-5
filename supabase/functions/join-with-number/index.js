@@ -177,6 +177,8 @@ Deno.serve(async (req) => {
                     .update({ refused_count: (data.refused_count ?? 0) + 1 })
                     .eq('checkin_id', id)
                     .eq('email', email);
+            // One line in the permanent log for each refused try (it ignores a missing table).
+            await admin.from('entry_log').insert({ checkin_id: id, email, kind: 'refused' });
         },
         async ensureAccount(email) {
             const { data: id, error } = await admin.rpc('pia_auth_user_id', { p_email: email });
