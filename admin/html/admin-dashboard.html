@@ -17,10 +17,10 @@
 
     <script src="../../assets/js/shared/admin-fonts.js"></script>
 
-    <link rel="stylesheet" href="../../styles/global.css?v=20261125c">
+    <link rel="stylesheet" href="../../styles/global.css?v=20261126a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261122h">
-    <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261116c">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261125a">
+    <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261126a">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261125c">
     <link rel="stylesheet" href="../../styles/admin/admin-glass.css?v=20261125b">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
@@ -217,6 +217,7 @@
                                         <div class="custom-select-list section-menu bar-more-menu" id="bar-more-menu" role="menu" hidden>
                                             <button type="button" class="custom-select-option section-opt bar-more-item is-hidden" id="section-scores-open" role="menuitem">Input Scores</button>
                                             <button type="button" class="custom-select-option section-opt bar-more-item" data-modal-open="modal-add-students" role="menuitem">Add Students</button>
+                                            <button type="button" class="custom-select-option section-opt bar-more-item is-hidden" id="att-signout-all" role="menuitem" hidden title="Signs out every student of this section who is online, on every device">Sign out everyone</button>
                                         </div>
                                     </div>
                                 </div>
@@ -987,48 +988,11 @@
                     <p class="modal-hero-title" id="confirm-heading">Are you sure?</p>
                     <p class="modal-hero-text" id="confirm-text"></p>
                 </div>
+                <div class="confirm-table" id="confirm-table" hidden></div>
             </div>
             <footer class="modal-foot">
                 <button class="btn btn-secondary" data-modal-close>Cancel</button>
                 <button class="btn btn-danger" id="confirm-accept">Proceed</button>
-            </footer>
-        </div>
-    </div>
-
-    <div class="overlay" id="modal-tutoring" role="dialog" aria-modal="true" aria-labelledby="tut-title">
-        <div class="modal modal-sm tut-modal">
-            <header class="modal-head">
-                <div class="modal-head-text">
-                    <h2 class="modal-title" id="tut-title">Open the game</h2>
-                    <p class="modal-sub" id="tut-sub"></p>
-                </div>
-            </header>
-            <div class="modal-body">
-                <label class="tut-opt"><input type="radio" name="tut-mode" value="schedule" checked>
-                    <b>Schedule</b> <span class="muted">opens and closes by itself</span></label>
-                <div class="tut-sched" id="tut-sched">
-                    <div class="tut-row" data-tut-row="start">
-                        <span class="tut-lab">Start</span>
-                        <span class="tut-box"><input inputmode="numeric" maxlength="2" data-p="mo" aria-label="Start month" placeholder="MM"><i>/</i><input inputmode="numeric" maxlength="2" data-p="d" aria-label="Start day" placeholder="DD"><i>/</i><input inputmode="numeric" maxlength="2" data-p="y" aria-label="Start year" placeholder="YY"></span>
-                        <span class="tut-box"><input inputmode="numeric" maxlength="2" data-p="h" aria-label="Start hour" placeholder="h"><i>:</i><input inputmode="numeric" maxlength="2" data-p="mi" aria-label="Start minute" placeholder="mm"><span class="tut-ampm"><button type="button" data-ap="AM">AM</button><button type="button" data-ap="PM">PM</button></span></span>
-                        <button type="button" class="tut-cal-btn" data-tut-cal="start" aria-label="Pick the start date"><svg class="icon"><use href="#i-grid"></use></svg></button>
-                    </div>
-                    <div class="tut-row" data-tut-row="end">
-                        <span class="tut-lab">End</span>
-                        <span class="tut-box"><input inputmode="numeric" maxlength="2" data-p="mo" aria-label="End month" placeholder="MM"><i>/</i><input inputmode="numeric" maxlength="2" data-p="d" aria-label="End day" placeholder="DD"><i>/</i><input inputmode="numeric" maxlength="2" data-p="y" aria-label="End year" placeholder="YY"></span>
-                        <span class="tut-box"><input inputmode="numeric" maxlength="2" data-p="h" aria-label="End hour" placeholder="h"><i>:</i><input inputmode="numeric" maxlength="2" data-p="mi" aria-label="End minute" placeholder="mm"><span class="tut-ampm"><button type="button" data-ap="AM">AM</button><button type="button" data-ap="PM">PM</button></span></span>
-                        <button type="button" class="tut-cal-btn" data-tut-cal="end" aria-label="Pick the end date"><svg class="icon"><use href="#i-grid"></use></svg></button>
-                    </div>
-                    <div class="tut-cal" id="tut-cal" hidden></div>
-                    <p class="muted tut-summary" id="tut-summary"></p>
-                    <p class="tut-error" id="tut-error" role="alert" hidden></p>
-                </div>
-                <label class="tut-opt"><input type="radio" name="tut-mode" value="now">
-                    <b>Open now</b> <span class="muted">stays open until you close it</span></label>
-            </div>
-            <footer class="modal-foot">
-                <button class="btn btn-secondary" data-modal-close>Cancel</button>
-                <button class="btn btn-primary" id="tut-accept">Schedule</button>
             </footer>
         </div>
     </div>
@@ -1049,6 +1013,7 @@
                     <p class="modal-hero-title" id="notice-heading">Done</p>
                 </div>
                 <p class="notice-pre" id="notice-body"></p>
+                <div class="confirm-table" id="notice-table" hidden></div>
             </div>
             <footer class="modal-foot">
                 <button class="btn btn-primary btn-block" data-modal-close>Understood</button>
@@ -1430,20 +1395,20 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261125b"></script>
+    <script src="../js/students-tools.js?v=20261125g"></script>
     <script src="../js/add-students.js?v=20261122b"></script>
-    <script src="../js/admin-core.js?v=20261122b"></script>
-    <script src="../js/admin-dialogs.js?v=20261122a"></script>
+    <script src="../js/admin-core.js?v=20261126a"></script>
+    <script src="../js/admin-dialogs.js?v=20261125a"></script>
     <script src="../js/admin-loading.js?v=20261105b"></script>
-    <script src="../js/admin-data.js?v=20261120a"></script>
+    <script src="../js/admin-data.js?v=20261126a"></script>
     <script src="../js/students-table.js?v=20261108c"></script>
     <script src="../js/student-drawer.js?v=20261109b"></script>
     <script src="../js/student-forms.js?v=20261122b"></script>
     <script src="../js/admin-faculty.js?v=20261122a"></script>
-    <script src="../js/stage-controls.js?v=20261107k"></script>
+    <script src="../js/stage-controls.js?v=20261126a"></script>
     <script src="../js/admin-account.js?v=20261122d"></script>
     <script src="../js/score-entry.js?v=20261121a"></script>
-    <script src="../js/live-updates.js?v=20261101a"></script>
+    <script src="../js/live-updates.js?v=20261126a"></script>
     <script src="../js/math-task-core.js?v=20261109a"></script>
     <script src="../js/math-task-edit.js?v=20261121b"></script>
     <script src="../js/math-task-rules.js?v=20261111a"></script>

@@ -227,6 +227,66 @@
     }
     Admin.toastErr = toastErr;
 
+    // The name of a student for a dialog: initials under Privacy Mode, never an email (it carries the login number).
+    Admin.studentLabel = function studentLabel(email) {
+        var name = String(Admin.whoIs(email) || '');
+        if (document.documentElement.classList.contains('pia-hide-details')) {
+            return Admin.initialsOf(name, email);
+        }
+        return !name || /@students\.pia\.invalid$/i.test(name) ? 'A student' : name;
+    };
+
+    // Every dialog that lists students shows this table, ten rows to a page.
+    // spec: { columns: ['Student', 'Status'], rows: [[cell, cell]], pageSize }. A cell is text or { text, tone: 'bad'|'warn'|'good' }.
+    function pagedTable(host, spec) {
+        var rows = spec ? spec.rows || [] : [];
+        host.hidden = !rows.length;
+        host.innerHTML = '';
+        if (!rows.length) {
+            return;
+        }
+        var size = spec.pageSize || 10;
+        var pages = Math.ceil(rows.length / size);
+        var page = 0;
+        var head = '<tr>' + spec.columns.map(function (c) {
+            return '<th scope="col">' + Admin.esc(c) + '</th>';
+        }).join('') + '</tr>';
+        function draw() {
+            var from = page * size;
+            var body = rows.slice(from, from + size).map(function (row) {
+                return '<tr>' + row.map(function (c) {
+                    var cell = c && typeof c === 'object' ? c : { text: c };
+                    return '<td' + (cell.tone ? ' class="ct-' + cell.tone + '"' : '') + '>' + Admin.esc(cell.text) + '</td>';
+                }).join('') + '</tr>';
+            }).join('');
+            host.innerHTML =
+                '<div class="table-wrap"><table class="table"><thead>' + head + '</thead><tbody>' + body + '</tbody></table></div>' +
+                (pages > 1
+                    ? '<div class="pager"><span class="muted">' + (from + 1) + '–' + Math.min(from + size, rows.length) +
+                      ' of ' + rows.length + '</span><div class="pager-btns">' +
+                      '<button type="button" class="btn btn-secondary btn-sm" data-ct="-1"' + (page === 0 ? ' disabled' : '') + '>Previous</button>' +
+                      '<button type="button" class="btn btn-secondary btn-sm" data-ct="1"' + (page === pages - 1 ? ' disabled' : '') + '>Next</button></div></div>'
+                    : '');
+        }
+        host.onclick = function (event) {
+            var step = event.target.closest('[data-ct]');
+            if (step) {
+                page += Number(step.getAttribute('data-ct'));
+                draw();
+            }
+        };
+        draw();
+    }
+    Admin.pagedTable = pagedTable;
+
+    // a dialog with a table is wider than one without
+    function fitDialog(overlay, host, spec) {
+        pagedTable(host, spec);
+        var box = overlay.firstElementChild;
+        box.classList.toggle('modal-md', !host.hidden);
+        box.classList.toggle('modal-sm', host.hidden);
+    }
+
     function confirmAction(options) {
         return new Promise(function (resolve) {
             var overlay = $('#modal-confirm');
@@ -237,6 +297,7 @@
             $('#confirm-subtitle').textContent = options.subtitle || '';
             $('#confirm-heading').textContent = '';
             $('#confirm-text').textContent = options.message || '';
+            fitDialog(overlay, $('#confirm-table'), options.table);
 
             var danger = options.tone !== 'accent';
             $('#confirm-glyph').className = 'modal-hero-glyph' + (danger ? '' : ' g-accent');
@@ -290,10 +351,12 @@
     }
     Admin.confirmAction = confirmAction;
 
-    function showNotice(title, body, tone) {
+    function showNotice(title, body, tone, table) {
         $('#notice-title').textContent = title;
         $('#notice-heading').textContent = '';
         $('#notice-body').textContent = body;
+        $('#notice-body').hidden = !body;
+        fitDialog($('#modal-notice'), $('#notice-table'), table);
 
         var danger = tone === 'danger';
         $('#notice-glyph').className = 'modal-hero-glyph' + (danger ? '' : ' g-accent');

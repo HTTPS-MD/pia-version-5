@@ -342,7 +342,6 @@
             console.error('[PIA] stage overrides could not be read:', overrides.error);
         }
         Admin.state.overrides = overrides.error ? null : overrides.data || [];
-        await Admin.loadTutoringSchedules();
 
         Admin.renderGateAccess();
     };

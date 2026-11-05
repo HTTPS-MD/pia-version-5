@@ -272,7 +272,6 @@
         activeSection: null,
         overrides: undefined,
         overridesMissing: false,
-        schedules: undefined,
         gateSelected: { ocean: [], char: [], dash: [] },
         cohortLoaded: false,
         sectionsLoaded: false,

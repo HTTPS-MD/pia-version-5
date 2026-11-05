@@ -95,21 +95,6 @@
                 )
                 .subscribe();
         });
-        registerChannel('admin-realtime-tutoring-schedule', function (channel) {
-            return channel
-                .on(
-                    'postgres_changes',
-                    { event: '*', schema: 'public', table: 'tutoring_schedule' },
-                    function () {
-                        Admin.loadTutoringSchedules()
-                            .then(Admin.renderStageSwitches)
-                            .catch(function (err) {
-                                console.error('Schedule reload failed:', err);
-                            });
-                    }
-                )
-                .subscribe();
-        });
         registerChannel('admin-realtime-question-bank', function (channel) {
             return channel
                 .on(

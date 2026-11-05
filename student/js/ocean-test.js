@@ -411,6 +411,17 @@ function handleAnswer(score) {
     loadQuestion();
 }
 
+// The "Saving your answers" notice is a window over the test, shown until the page moves on (or an error replaces it).
+function setSavingModal(on) {
+    const modal = document.getElementById('saving-modal');
+    const box = document.getElementById('saving-modal-content');
+    if (!modal || !box) return;
+    modal.classList.toggle('modal-active', on);
+    box.classList.toggle('modal-content-active', on);
+    modal.setAttribute('aria-hidden', on ? 'false' : 'true');
+    document.body.style.overflow = on ? 'hidden' : 'auto';
+}
+
 async function submitTestResults() {
     if (!isComplete()) {
         const missing = userResponses.indexOf(null);
@@ -419,13 +430,7 @@ async function submitTestResults() {
     }
     hasSubmitted = true;
 
-    testContainer.innerHTML = `
-        <div class="state-card">
-            <div class="spinner" aria-hidden="true"></div>
-            <h2>Saving your answers…</h2>
-            <p>This only takes a moment. Please don't close this page.</p>
-        </div>
-    `;
+    setSavingModal(true);
 
     if (!supabaseClient) return;
 
@@ -437,6 +442,7 @@ async function submitTestResults() {
     );
 
     if (error) {
+        setSavingModal(false);
         testContainer.innerHTML = `
             <div class="state-card">
                 <h2>We couldn't save your answers</h2>

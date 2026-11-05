@@ -17,23 +17,6 @@
     var built = false;
     var polling = false;
 
-    // Privacy Mode hides names on the page, so a dialog must not show them either. Never show an email:
-    // a student's email carries the student number, which is the login.
-    function privacyOn() {
-        return document.documentElement.classList.contains('pia-hide-details');
-    }
-    function peopleText(emails, max) {
-        if (privacyOn()) {
-            return emails.length + (emails.length === 1 ? ' student' : ' students');
-        }
-        var shown = emails.slice(0, max).map(function (e) {
-            var name = String(window.PIAAdmin.whoIs(e) || '');
-            // whoIs falls back to the email when it finds no name: never show that.
-            return !name || /@students\.pia\.invalid$/i.test(name) ? 'a student' : name;
-        });
-        return shown.join(', ') + (emails.length > max ? ' and ' + (emails.length - max) + ' more' : '');
-    }
-
     function failure(error) {
         var raw = String((error && error.message) || '');
         if (/only an administrator|42501/i.test(raw)) {
@@ -683,7 +666,7 @@
         var ok = await window.PIAAdmin.confirmAction({
             heading: 'Is this the real student?',
             message:
-                'Check in the room before you confirm. Someone using this student\'s number would sign the real student out.',
+                'Check in the room first. If someone else is using this student\'s number, the real student is signed out.',
             confirmLabel: 'Let back in',
             tone: 'accent'
         });
@@ -767,7 +750,6 @@
                 }
             });
         }
-        // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
         b.hidden = !any;
         b.classList.toggle('is-hidden', !any);
     }
@@ -961,56 +943,37 @@
         refreshOverview().catch(function () {});
     }
 
-    // After the Game is closed: list the section's students who are still online and offer to sign them all out.
-    async function offerSignOutAll(section, manual) {
+    // The section's students who are signed in on any device right now (throws when the lookup fails).
+    async function onlineIn(section) {
         var cohort = (window.PIAAdmin.state.cohort || []).filter(function (s) {
             return s.section === section && s.email;
         });
         if (!cohort.length) {
-            if (manual) {
-                say('There are no students in ' + section + '.');
-            }
-            return;
+            return [];
         }
-        var online = [];
-        try {
-            var res = await sb
-                .from('profiles')
-                .select('email, active_devices')
-                .in(
-                    'email',
-                    cohort.map(function (s) {
-                        return s.email;
-                    })
-                );
-            if (res.error) {
-                throw res.error;
-            }
-            (res.data || []).forEach(function (r) {
-                if ((r.active_devices || []).length > 0) {
-                    online.push(String(r.email).toLowerCase());
-                }
+        var res = await sb
+            .from('profiles')
+            .select('email, active_devices')
+            .in(
+                'email',
+                cohort.map(function (s) {
+                    return s.email;
+                })
+            );
+        if (res.error) {
+            throw res.error;
+        }
+        return (res.data || [])
+            .filter(function (r) {
+                return (r.active_devices || []).length > 0;
+            })
+            .map(function (r) {
+                return String(r.email).toLowerCase();
             });
-        } catch (error) {
-            say(failure(error), true);
-            return;
-        }
-        if (!online.length) {
-            if (manual) {
-                say('Nobody in ' + section + ' is online right now.');
-            }
-            return;
-        }
-        var shown = peopleText(online, 12);
-        var ok = await window.PIAAdmin.confirmAction({
-            heading: 'Sign out ' + online.length + (online.length === 1 ? ' student' : ' students') + ' still online?',
-            message: shown + '. They are signed out on every device now.',
-            confirmLabel: 'Sign out all',
-            tone: 'accent'
-        });
-        if (!ok) {
-            return;
-        }
+    }
+
+    // Ends these students' logins on every device and says so.
+    async function signOutEmails(online) {
         var failed = 0;
         await Promise.all(
             online.map(function (e) {
@@ -1021,16 +984,49 @@
         );
         if (failed) {
             say(failed + ' of ' + online.length + ' could not be signed out. Try again.', true);
-        } else if (window.PIAAdmin.toastOk) {
+        } else if (online.length && window.PIAAdmin.toastOk) {
             window.PIAAdmin.toastOk('Signed out', online.length + (online.length === 1 ? ' student was' : ' students were') + ' signed out.');
         }
         refreshOverview().catch(function () {});
+    }
+    window.PIASignOut = { online: onlineIn, signOut: signOutEmails };
+
+    // The "Sign out everyone" button: list the section's students who are online and offer to sign them all out.
+    async function offerSignOutAll(section) {
+        var online;
+        try {
+            online = await onlineIn(section);
+        } catch (error) {
+            say(failure(error), true);
+            return;
+        }
+        if (!online.length) {
+            say('Nobody in ' + section + ' is online right now.');
+            return;
+        }
+        var ok = await window.PIAAdmin.confirmAction({
+            heading: 'Sign out ' + online.length + (online.length === 1 ? ' student' : ' students') + ' still online?',
+            message: 'They will be signed out on every device.',
+            table: {
+                columns: ['Student', 'Status'],
+                rows: online.map(function (e) {
+                    return [window.PIAAdmin.studentLabel(e), { text: 'Online', tone: 'good' }];
+                })
+            },
+            confirmLabel: 'Sign out all',
+            tone: 'accent'
+        });
+        if (!ok) {
+            return;
+        }
+        await signOutEmails(online);
     }
     window.PIAOfferSignOutAll = offerSignOutAll;
 
     // Before the first stage opens: show who is Present, Absent and not in yet, and lock only on a yes.
     // True means go ahead (nothing to confirm, or the admin confirmed). False means stay.
-    async function attendanceCheckpoint(section) {
+    // Returns true (nothing to ask), 'confirmed' (the admin accepted this dialog: it is also the stage's confirmation) or false.
+    async function attendanceCheckpoint(section, stageTitle) {
         if (!section) {
             return true;
         }
@@ -1057,9 +1053,6 @@
         var cohort = (admin.state.cohort || []).filter(function (c) {
             return c.section === section && c.email;
         });
-        function names(list) {
-            return peopleText(list, 8);
-        }
         var emails = cohort.map(function (c) {
             return String(c.email).toLowerCase();
         });
@@ -1067,7 +1060,7 @@
             return !byEmail[e];
         });
         if (unmarked.length) {
-            say('Mark every student Present or Absent first: ' + names(unmarked) + '.', true);
+            say('Mark every student Present or Absent first (' + unmarked.length + ' not marked).', true);
             return false;
         }
         var present = emails.filter(function (e) {
@@ -1079,18 +1072,34 @@
         var notIn = present.filter(function (e) {
             return !byEmail[e].entered;
         });
-        var message =
-            present.length + ' Present, ' + absent.length + ' Absent' + (absent.length ? ': ' + names(absent) : '') + '.';
-        if (notIn.length) {
-            message += ' Present but not in yet: ' + names(notIn) + '. They cannot enter after this.';
-        }
-        message += ' After this, attendance cannot be changed.';
-        return admin.confirmAction({
-            heading: 'Lock attendance and open this stage?',
-            message: message,
+        // the ones to check come first: Absent, then Present but not in yet, then Entered
+        var label = admin.studentLabel;
+        var rowsOut = absent
+            .map(function (e) {
+                return [label(e), { text: 'Absent', tone: 'bad' }];
+            })
+            .concat(
+                notIn.map(function (e) {
+                    return [label(e), { text: 'Present · not in yet', tone: 'warn' }];
+                }),
+                present
+                    .filter(function (e) {
+                        return byEmail[e].entered;
+                    })
+                    .map(function (e) {
+                        return [label(e), { text: 'Entered', tone: 'good' }];
+                    })
+            );
+        var accepted = await admin.confirmAction({
+            heading: 'Lock attendance and open ' + (stageTitle || 'this stage') + '?',
+            message:
+                present.length + ' Present, ' + absent.length + ' Absent. You cannot change attendance after this.' +
+                (notIn.length ? ' ' + notIn.length + ' Present ' + (notIn.length === 1 ? 'student is' : 'students are') + ' not in yet and cannot join after this.' : ''),
+            table: { columns: ['Student', 'Status'], rows: rowsOut },
             confirmLabel: 'Lock and open',
             tone: 'accent'
         });
+        return accepted ? 'confirmed' : false;
     }
     window.PIAAttendanceCheckpoint = attendanceCheckpoint;
 
@@ -1349,14 +1358,8 @@
         } else {
             ($('#class-live') || bar).appendChild(toggle);
         }
-        var signAll = document.createElement('button');
-        signAll.type = 'button';
-        signAll.id = 'att-signout-all';
-        signAll.hidden = true;
-        signAll.className = 'btn btn-sm btn-secondary is-hidden';
-        signAll.textContent = 'Sign out everyone';
-        signAll.title = 'Signs out every student of this section who is online, on every device';
-        toggle.parentNode.insertBefore(signAll, toggle);
+        // "Sign out everyone" lives in the More menu (closing the Game already signs everyone out).
+        var signAll = $('#att-signout-all');
         // At the end of the row: the bell (students who tried to sign in again), then the More menu
         // (Input Scores, Add Students: the rarely used actions).
         var bellBox = document.createElement('div');
@@ -1403,7 +1406,7 @@
             }
             signAll.disabled = true;
             try {
-                await offerSignOutAll(section, true);
+                await offerSignOutAll(section);
             } finally {
                 signAll.disabled = false;
             }
@@ -1421,9 +1424,9 @@
                 var again = await window.PIAAdmin.confirmAction({
                     heading: 'Start attendance again?',
                     message:
-                        'Attendance was already taken for ' +
+                        'Attendance for ' +
                         section +
-                        '. The marks and the students who are already in stay as they are. You can still change a mark until a stage is opened.',
+                        ' was already started. Marks and students who are in stay as they are. You can still change marks until a stage opens.',
                     confirmLabel: 'Start again',
                     tone: 'accent'
                 });

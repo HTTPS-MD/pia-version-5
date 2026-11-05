@@ -79,3 +79,10 @@ A bell at the top with a count of students who tried to sign in again. Let back 
 - One popup open at a time. Opening any popup (bell, More, section menu, teacher picker, account menu, any dropdown) closes the others. Done with one document event, `pia:popup-open`; a new popup must announce itself and close on that event when it is not the one announced.
 - Glass is for what floats (menus, popups, windows, toasts, the top bars). Cards, tables, buttons, inputs and toggles stay solid and flat.
 - The chosen row of every dropdown is a full yellow row.
+
+## I. Game end (decided 2026-11-06)
+
+- Closing the Game by hand (admin) closes it and signs out everyone online in that section, in one dialog (BUILT, local).
+- The Game has NO start or end time any more (decided 2026-11-06): the admin opens and closes it by hand, like OCEAN and Choose a tutor. The time window, its dialog and the cron idea were removed. `supabase/staging/18-remove-game-schedule-rows.sql` empties the old rows (run it once). The table stays, unused.
+- The earlier stage (OCEAN, then Choose a tutor) closes by itself when a later stage opens and nobody is still inside it (BUILT, local).
+- "Sign out everyone" moved to the More menu for the leftovers (a student who logs in after the end).

@@ -2679,3 +2679,39 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
         margin-left: auto !important;
     }
 }
+
+/* Dialogs that list students: the same black table as the pages, ten rows to a page */
+.confirm-table {
+    margin-top: 16px;
+    text-align: left;
+}
+.confirm-table[hidden] {
+    display: none;
+}
+.confirm-table .table-wrap {
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background: var(--bg-surface);
+}
+html[data-theme='dark'] .confirm-table .table-wrap {
+    background: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
+}
+.confirm-table .pager {
+    margin-top: 10px;
+}
+.ct-bad {
+    color: var(--danger);
+}
+.ct-warn {
+    color: var(--warning);
+}
+.ct-good {
+    color: var(--color-correct);
+}
+.modal-hero-title:empty {
+    display: none;
+}
+.confirm-table :is(th, td) {
+    padding-block: 8px;
+}
