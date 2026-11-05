@@ -1215,25 +1215,22 @@ body {
 .modal-close {
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
-    flex: 0 0 36px;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
     border-radius: 50%;
-    background: var(--bg-chip);
+    background: transparent;
     color: var(--text-muted);
-    transition:
-        background-color var(--t-base),
-        color var(--t-base);
+    transition: color var(--t-base);
 }
 
 .modal-close:hover {
-    background: var(--danger-soft);
     color: var(--danger);
 }
 
 .modal-close .icon {
-    width: 16px;
-    height: 16px;
+    width: 22px;
+    height: 22px;
 }
 
 .modal-body {
@@ -1990,9 +1987,6 @@ html[data-surface='admin'][data-theme='dark'] .help-step {
     padding-inline: 18px;
     font-weight: 600;
 }
-:root body:not(.landing-look) .overlay .btn-primary {
-    box-shadow: 0 6px 16px var(--black-a16);
-}
 
 /* one design language for every window: the admin surface, lines, corners and shadow (the student pages keep their own look) */
 :root[data-theme='dark'] body:not(.landing-look) .overlay,
@@ -2161,6 +2155,10 @@ html[data-theme] {
     --lg-dim: rgba(28, 30, 42, 0.1);
     --lg-field: rgba(255, 255, 255, 0.5);
     --lg-field-line: rgba(28, 30, 42, 0.14);
+    --lg-pick-bg: rgba(255, 200, 40, 0.26);
+    --lg-pick-ink: #7a5a00;
+    --lg-base-window: rgba(252, 252, 254, 0.78);
+    --lg-filter-window: blur(16px) saturate(1) brightness(1.04);
 }
 html[data-theme='dark'] {
     --lg-base: rgba(40, 44, 54, 0.44);
@@ -2170,6 +2168,10 @@ html[data-theme='dark'] {
     --lg-dim: rgba(0, 0, 0, 0.38);
     --lg-field: rgba(255, 255, 255, 0.07);
     --lg-field-line: rgba(255, 255, 255, 0.16);
+    --lg-pick-bg: rgba(255, 216, 61, 0.2);
+    --lg-pick-ink: #f1cf55;
+    --lg-base-window: rgba(36, 40, 50, 0.7);
+    --lg-filter-window: blur(18px) saturate(1.1);
 }
 html[data-theme] :is(.custom-select-list, .user-menu, .t-menu, .bar-more-menu, .bar-bell-menu, .modal, .revoke-modal-box, .toast) {
     border: 1px solid var(--lg-rim);
@@ -2177,6 +2179,13 @@ html[data-theme] :is(.custom-select-list, .user-menu, .t-menu, .bar-more-menu, .
     -webkit-backdrop-filter: var(--lg-filter);
     backdrop-filter: var(--lg-filter);
     box-shadow: var(--lg-shadow);
+}
+/* windows hold forms and often sit over a busy picture (the sign-in over the tutors): a more solid sheet and a
+   stronger blur than a menu, so the labels and the yellow links stay easy to read */
+html[data-theme] :is(.modal, .revoke-modal-box) {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 30%), var(--lg-base-window);
+    -webkit-backdrop-filter: var(--lg-filter-window);
+    backdrop-filter: var(--lg-filter-window);
 }
 html[data-theme] :is(.custom-select-list, .user-menu, .t-menu, .bar-more-menu, .bar-bell-menu) {
     padding: 6px;
@@ -2195,12 +2204,12 @@ html[data-theme] :is(.custom-select-option, .user-menu-item, .t-menu-item):is(:h
 html[data-theme] .custom-select-option.is-active {
     background: color-mix(in srgb, var(--text) 9%, transparent);
 }
-/* the chosen row of a dropdown: the whole row is yellow */
+/* the chosen row of a dropdown: a soft gold wash, gold text, and a gold bar on the left */
 html[data-theme] :is(.custom-select-option, .section-opt).is-selected,
 html[data-theme] :is(.custom-select-option, .section-opt).is-selected:hover {
-    background: var(--admin-pill, var(--volt, #ffd83d));
-    color: var(--admin-pill-ink, #0b1233);
-    box-shadow: none;
+    background: var(--lg-pick-bg);
+    color: var(--lg-pick-ink);
+    box-shadow: inset 3px 0 0 #ffd83d;
     font-weight: 600;
 }
 /* behind a window: a light neutral dim, and no blur of its own (the window's glass does the blurring) */

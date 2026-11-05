@@ -172,7 +172,6 @@ html[data-surface='admin'] .nav-item:hover {
 html[data-surface='admin'] .nav-item.is-active {
     background: var(--admin-pill);
     color: var(--admin-pill-ink);
-    box-shadow: 0 6px 16px var(--black-a16);
 }
 @media (max-width: 56.25rem) {
     /* the tabs share the top row with the logo and the account buttons */
@@ -260,9 +259,6 @@ html[data-surface='admin'] .btn {
 html[data-surface='admin'] .btn-sm {
     border-radius: 999px;
     padding: 0 14px;
-}
-html[data-surface='admin'] .btn-primary {
-    box-shadow: 0 6px 16px var(--black-a16);
 }
 html[data-surface='admin'] .btn-primary:hover:not(:disabled) {
     transform: translateY(-1px);
@@ -2670,11 +2666,7 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     opacity: 0.8;
 }
 
-/* ---- flat buttons, section menu rows, pills on the right ---- */
-html[data-surface='admin'] :is(.btn, .btn-primary, .nav-item.is-active),
-:root body:not(.landing-look) .overlay :is(.btn, .btn-primary) {
-    box-shadow: none;
-}
+/* ---- section menu rows, pills on the right (buttons have no shadows: the rules that drew them are gone) ---- */
 /* the section and topic menus have position rules with ids: they take the glass radius and shadow too */
 #view-students .page-title #section-host [data-section-menu],
 #view-mathtask .page-title #qb-topic-host [data-topic-menu] {
@@ -2683,9 +2675,9 @@ html[data-surface='admin'] :is(.btn, .btn-primary, .nav-item.is-active),
 }
 #view-students .page-title #section-host .section-opt.is-selected,
 #view-mathtask .page-title #qb-topic-host .section-opt.is-selected {
-    background: var(--admin-pill, #ffd83d);
-    color: var(--admin-pill-ink, #0b1233);
-    box-shadow: none;
+    background: var(--lg-pick-bg);
+    color: var(--lg-pick-ink);
+    box-shadow: inset 3px 0 0 #ffd83d;
     font-weight: 600;
 }
 /* the stages and Privacy Mode go to the right of the title row */
