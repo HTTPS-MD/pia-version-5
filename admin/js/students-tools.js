@@ -12,6 +12,7 @@
     var holder = {};
     var marks = {};
     var marksSection = null;
+    var onlineMap = {}; // email -> is signed in now, for the chosen section (read every refresh)
     var attState = 'none'; // none | open | ended | locked, from admin_attendance_status
     var built = false;
     var polling = false;
@@ -586,15 +587,30 @@
         })[0];
     }
 
+    // "Sign out everyone" only makes sense while at least one student of the section is signed in.
+    function updateSignAll() {
+        var b = $('#att-signout-all');
+        if (!b) {
+            return;
+        }
+        var section = scoped();
+        var any = false;
+        if (section) {
+            (window.PIAAdmin.state.cohort || []).forEach(function (c) {
+                if (c.section === section && c.email && onlineMap[String(c.email).toLowerCase()]) {
+                    any = true;
+                }
+            });
+        }
+        b.hidden = !any;
+    }
+
     function renderAttendance() {
         var section = scoped();
         var btn = $('#att-toggle');
         if (btn) {
             btn.hidden = !section;
-            var signAllBtn = $('#att-signout-all');
-            if (signAllBtn) {
-                signAllBtn.hidden = !section;
-            }
+            updateSignAll();
             var open = !!section && !!openFor(section);
             var locked = !!section && !open && attState === 'locked';
             btn.textContent = locked ? 'Attendance is final' : open ? 'End attendance' : 'Start attendance';
@@ -1018,6 +1034,7 @@
             marks = {};
             marksSection = section;
             attState = 'none';
+            onlineMap = {};
         }
         if (section) {
             // The state of the newest record: none, open, ended or locked (a stage was opened).
@@ -1026,6 +1043,25 @@
             } catch (e) {
                 attState = openFor(section) ? 'open' : Object.keys(marks).length ? 'ended' : 'none';
             }
+            // Who is signed in now (the Sign out everyone button shows only while someone is).
+            try {
+                var emails = (window.PIAAdmin.state.cohort || [])
+                    .filter(function (c) {
+                        return c.section === section && c.email;
+                    })
+                    .map(function (c) {
+                        return c.email;
+                    });
+                if (emails.length) {
+                    var pres = await sb.from('profiles').select('email, active_devices').in('email', emails);
+                    if (!pres.error) {
+                        onlineMap = {};
+                        (pres.data || []).forEach(function (r) {
+                            onlineMap[String(r.email).toLowerCase()] = (r.active_devices || []).length > 0;
+                        });
+                    }
+                }
+            } catch (e) {}
             // Also read it after the session ended, so the record stays on screen.
             try {
                 var rows = await call('admin_attendance', { p_section: section });
