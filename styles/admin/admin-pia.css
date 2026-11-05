@@ -2620,3 +2620,93 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
 #view-students .bar-more-item:focus-visible {
     background: var(--bg-chip);
 }
+
+/* The bell: students who tried to sign in again, next to the More button */
+#view-students .bar-bell {
+    position: relative;
+}
+#view-students .bar-bell-btn {
+    position: relative;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+#view-students .bell-count {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    box-sizing: border-box;
+    border-radius: 9px;
+    background: var(--warn, #e0a82e);
+    color: #1a1a1a;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+}
+#view-students .bell-count.is-hidden {
+    display: none;
+}
+#view-students .bar-bell-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    z-index: 30;
+    width: 21rem;
+    max-width: calc(100vw - 2rem);
+    padding: 6px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-md);
+}
+#view-students .bar-bell-menu[hidden] {
+    display: none;
+}
+#view-students .bell-head {
+    padding: 6px 8px 8px;
+    font-size: 0.8em;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+}
+#view-students .bell-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: var(--fs-sm);
+}
+#view-students .bell-item:hover {
+    background: var(--bg-chip);
+}
+#view-students .bell-av {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--bg-chip);
+    font-size: 0.8em;
+    font-weight: 700;
+}
+#view-students .bell-text {
+    flex: 1;
+    color: var(--text-muted);
+}
+#view-students .bell-dismiss {
+    opacity: 0.75;
+}
+#view-students .bell-empty {
+    margin: 0;
+    padding: 10px 8px 12px;
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+}

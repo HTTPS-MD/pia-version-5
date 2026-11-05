@@ -587,6 +587,113 @@
         })[0];
     }
 
+    // ---- The bell: students of this section who tried to sign in again ----
+    function dismissedMap() {
+        try {
+            return JSON.parse(localStorage.getItem('pia_bell_dismissed') || '{}') || {};
+        } catch (e) {
+            return {};
+        }
+    }
+    function bellKey(section, email, n) {
+        return section + '|' + email + '|' + n;
+    }
+    function bellItems() {
+        var section = scoped();
+        if (!section) {
+            return [];
+        }
+        var gone = dismissedMap();
+        var list = [];
+        (window.PIAAdmin.state.cohort || []).forEach(function (c) {
+            var key = c.email ? String(c.email).toLowerCase() : '';
+            var m = marks[key];
+            if (c.section === section && m && m.present && m.refused > 0 && !gone[bellKey(section, key, m.refused)]) {
+                list.push({
+                    email: key,
+                    initials: window.PIAAdmin.initialsOf(c.full_name, c.email),
+                    n: m.refused
+                });
+            }
+        });
+        return list;
+    }
+    function renderBell() {
+        var box = $('#att-bell-box');
+        if (!box) {
+            return;
+        }
+        var section = scoped();
+        box.classList.toggle('is-hidden', !section);
+        box.hidden = !section;
+        var items = bellItems();
+        var count = $('#att-bell-count');
+        if (count) {
+            count.textContent = String(items.length);
+            count.classList.toggle('is-hidden', !items.length);
+        }
+        var btn = $('#att-bell');
+        if (btn) {
+            btn.setAttribute(
+                'aria-label',
+                items.length ? items.length + ' student(s) tried to sign in again' : 'No one is waiting to be let back in'
+            );
+        }
+        var menu = $('#att-bell-menu');
+        if (!menu) {
+            return;
+        }
+        var sig =
+            section +
+            '|' +
+            items
+                .map(function (i) {
+                    return i.email + ':' + i.n;
+                })
+                .join(',');
+        if (menu._sig === sig) {
+            return;
+        }
+        menu._sig = sig;
+        menu.innerHTML =
+            '<div class="bell-head">Tried to sign in again · ' + esc(section) + '</div>' +
+            (items.length
+                ? items
+                      .map(function (i) {
+                          return (
+                              '<div class="bell-item" data-email="' + esc(i.email) + '" data-n="' + i.n + '">' +
+                              '<span class="bell-av">' + esc(i.initials) + '</span>' +
+                              '<span class="bell-text">tried ×' + i.n + '</span>' +
+                              '<button type="button" class="att-link" data-bell-lbi>Let back in</button>' +
+                              '<button type="button" class="att-link bell-dismiss" data-bell-dismiss>Dismiss</button>' +
+                              '</div>'
+                          );
+                      })
+                      .join('')
+                : '<p class="bell-empty">No one is waiting.</p>');
+    }
+    async function bellLetBackIn(email) {
+        var ok = await window.PIAAdmin.confirmAction({
+            heading: 'Is this the real student?',
+            message:
+                'Check in the room before you confirm. Someone using this student\'s number would sign the real student out.',
+            confirmLabel: 'Let back in',
+            tone: 'accent'
+        });
+        if (ok) {
+            await letBackIn(email);
+        }
+    }
+    function bellDismiss(email, n) {
+        var section = scoped();
+        var map = dismissedMap();
+        map[bellKey(section, email, n)] = true;
+        try {
+            localStorage.setItem('pia_bell_dismissed', JSON.stringify(map));
+        } catch (e) {}
+        renderBell();
+    }
+
     // "Sign out everyone" only makes sense while at least one student of the section is signed in.
     function updateSignAll() {
         var b = $('#att-signout-all');
@@ -646,6 +753,7 @@
                 dot.classList.toggle('is-on', isOpen2);
             }
         }
+        renderBell();
         paintMarks();
     }
 
@@ -663,19 +771,17 @@
         var meta = [];
         if (m.refused > 0) {
             meta.push(
-                '<span class="att-blocked" title="Second tries that were refused">Blocked ×' +
+                '<span class="att-blocked" title="Tried to sign in again and was refused. Let back in is in the bell.">Tried again ×' +
                     m.refused +
                     '</span>'
             );
         }
-        if (m.entered) {
-            meta.push('<button type="button" class="att-link" data-lbi>Let back in</button>');
-        }
         var signOut = m.entered
-            ? '<span class="att-so"><span class="att-dot">·</span>' +
+            ? '<span class="att-so">' +
+              (meta.length ? '<span class="att-dot">·</span>' : '') +
               '<button type="button" class="att-link" data-so title="End this student\'s login on every device">Sign out</button></span>'
             : '';
-        if (meta.length) {
+        if (meta.length || signOut) {
             html +=
                 '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + signOut + '</span>';
         }
@@ -1201,11 +1307,63 @@
         signAll.title = 'Signs out every student of this section who is online, on every device';
         toggle.parentNode.insertBefore(signAll, toggle);
         // The rarely used actions (Input Scores, Add Students) live in a small menu at the end of the row.
+        var bellBox = document.createElement('div');
+        bellBox.className = 'bar-bell is-hidden';
+        bellBox.id = 'att-bell-box';
+        bellBox.hidden = true;
+        bellBox.innerHTML =
+            '<button type="button" class="btn btn-secondary bar-bell-btn" id="att-bell" aria-haspopup="menu" aria-expanded="false" aria-label="No one is waiting to be let back in" title="Students who tried to sign in again">' +
+            '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>' +
+            '<span class="bell-count is-hidden" id="att-bell-count"></span></button>' +
+            '<div class="bar-bell-menu" id="att-bell-menu" role="menu" hidden></div>';
         var moreBox = $('#bar-more');
         var moreBtn = $('#bar-more-btn');
         var moreMenu = $('#bar-more-menu');
+        if (moreBox && moreBox.parentNode) {
+            moreBox.parentNode.insertBefore(bellBox, moreBox);
+        } else {
+            toggle.parentNode.appendChild(bellBox);
+        }
+        (function () {
+            var bellBtn = $('#att-bell');
+            var bellMenu = $('#att-bell-menu');
+            var setBell = function (open) {
+                bellMenu.hidden = !open;
+                bellBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            };
+            bellBtn.addEventListener('click', function (event) {
+                event.stopPropagation();
+                setBell(bellMenu.hidden);
+            });
+            bellMenu.addEventListener('click', async function (event) {
+                event.stopPropagation();
+                var item = event.target.closest('.bell-item');
+                if (!item) {
+                    return;
+                }
+                var email = item.getAttribute('data-email');
+                if (event.target.closest('[data-bell-dismiss]')) {
+                    bellDismiss(email, Number(item.getAttribute('data-n')));
+                } else if (event.target.closest('[data-bell-lbi]')) {
+                    setBell(false);
+                    await bellLetBackIn(email);
+                }
+            });
+            document.addEventListener('click', function (event) {
+                if (!bellBox.contains(event.target)) {
+                    setBell(false);
+                }
+            });
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    setBell(false);
+                }
+            });
+        })();
         if (moreBox && moreBtn && moreMenu) {
             moreBox.parentNode.appendChild(moreBox);
+            // The bell stays right before the More button, at the end of the row.
+            moreBox.parentNode.insertBefore(bellBox, moreBox);
             var setMore = function (open) {
                 moreMenu.hidden = !open;
                 moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');

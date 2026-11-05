@@ -60,3 +60,12 @@ Proposed, waiting for a decision:
 22. Describe the intervention: how many sessions, how long, which topic, how long the control group is in class.
 23. Numbers: 4 groups of 19 is 76, not 73; make "89 students" clear; add a pre-test equality check; consider ANCOVA; choose "randomized" or "quasi-experimental".
 24. Write the remaining holes as Limitations and Recommendations (Chapter 5).
+
+## G. Re-entry bell (design in progress, nothing built yet)
+
+A bell at the top with a count of students who tried to sign in again. Let back in moves from the row into the bell.
+- DECIDED: the bell shows the student's initials (already visible in the table under Privacy Mode) and the section name.
+- DECIDED: tapping Let back in first asks "Is this the real student? Check in the room before you confirm." (the person trying may be someone using the student's number; the newest sign-in wins, so a blind tap would sign the real student out).
+- DECIDED: the count covers only the section being viewed, because sessions never run at the same time in two sections. Revisit if that changes.
+- Known and accepted: Dismiss is kept in the browser only; the record stays in entry_log and the row keeps a small "Tried again xN".
+- Other things the panel may ask: the bell should not grow into a general notification center (scope).
