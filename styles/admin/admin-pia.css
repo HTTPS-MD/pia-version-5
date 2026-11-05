@@ -2710,3 +2710,9 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     font-size: var(--fs-sm);
     color: var(--text-muted);
 }
+
+/* Entered: the student is in (so Present is understood) */
+#view-students .att-result.is-in {
+    color: var(--accent, #7fb0ff);
+    font-weight: 600;
+}

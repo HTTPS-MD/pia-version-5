@@ -758,16 +758,18 @@
     }
 
     // After the entry: In / Not in yet, a count of refused second tries, and Let back in.
-    function entryExtras(m) {
+    // noState: the result already says Entered, so do not say it twice.
+    function entryExtras(m, noState) {
         if (!m || !m.present) {
             return '';
         }
-        // Line 1: Present · In (or Not in yet). Line 2, only when needed: Blocked x3 · Let back in.
-        var html =
-            '<span class="att-dot">·</span>' +
-            (m.entered
-                ? '<span class="att-state is-in">Entered</span>'
-                : '<span class="att-state">Not in yet</span>');
+        // Line 1: Present · Not in yet (or Entered). Line 2, only when needed: Tried again x3 · Sign out.
+        var html = noState
+            ? ''
+            : '<span class="att-dot">·</span>' +
+              (m.entered
+                  ? '<span class="att-state is-in">Entered</span>'
+                  : '<span class="att-state">Not in yet</span>');
         var meta = [];
         if (m.refused > 0) {
             meta.push(
@@ -786,6 +788,18 @@
                 '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + signOut + '</span>';
         }
         return html;
+    }
+
+    // After the attendance ended: Entered (nobody who is Absent can enter, so Present is not repeated),
+    // Present · Not in yet, or Absent.
+    function closedCell(m) {
+        if (!m.present) {
+            return '<span class="att-result is-absent">Absent</span>';
+        }
+        if (m.entered) {
+            return '<span class="att-result is-in">Entered</span>' + entryExtras(m, true);
+        }
+        return '<span class="att-result is-present">Present</span>' + entryExtras(m);
     }
 
     function markCell(email) {
@@ -852,9 +866,7 @@
                 var html = live
                     ? markCell(key)
                     : kept
-                      ? '<span class="att-result ' + (kept.present ? 'is-present' : 'is-absent') + '">' +
-                        (kept.present ? 'Present' : 'Absent') +
-                        '</span>' + entryExtras(kept)
+                      ? closedCell(kept)
                       : '<span class="att-result is-none">' +
                         (Object.keys(marks).length ? 'Not marked' : 'Not started') +
                         '</span>';
