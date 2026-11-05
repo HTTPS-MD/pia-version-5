@@ -436,10 +436,17 @@
 
         var none = Admin.state.rosterPage.length === 0;
         empty.classList.toggle('is-hidden', !none);
-        $('#reset-filters').classList.toggle('is-hidden', !filtersActive());
-        $('#student-empty .state-title').textContent = filtersActive()
+        // A search, a stage tab or a group that matches nobody: Reset filters. A section that has no students at all: Add students.
+        var f = Admin.state.filters;
+        var narrowed = !!(f.stage || f.group !== 'all' || f.search.trim());
+        var emptySection = none && !narrowed;
+        $('#reset-filters').classList.toggle('is-hidden', !narrowed);
+        $('#empty-add-students').classList.toggle('is-hidden', !emptySection);
+        $('#student-empty .state-title').textContent = !emptySection
             ? 'No matching students'
-            : 'No students yet';
+            : f.section
+              ? 'No students in ' + f.section + ' yet'
+              : 'No students yet';
 
         tbody.innerHTML = Admin.state.rosterPage
             .map(function (s) {
