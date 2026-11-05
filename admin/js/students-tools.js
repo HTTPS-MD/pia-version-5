@@ -591,6 +591,10 @@
         var btn = $('#att-toggle');
         if (btn) {
             btn.hidden = !section;
+            var signAllBtn = $('#att-signout-all');
+            if (signAllBtn) {
+                signAllBtn.hidden = !section;
+            }
             var open = !!section && !!openFor(section);
             var locked = !!section && !open && attState === 'locked';
             btn.textContent = locked ? 'Attendance is final' : open ? 'End attendance' : 'Start attendance';
@@ -779,11 +783,14 @@
     }
 
     // After the Game is closed: list the section's students who are still online and offer to sign them all out.
-    async function offerSignOutAll(section) {
+    async function offerSignOutAll(section, manual) {
         var cohort = (window.PIAAdmin.state.cohort || []).filter(function (s) {
             return s.section === section && s.email;
         });
         if (!cohort.length) {
+            if (manual) {
+                say('There are no students in ' + section + '.');
+            }
             return;
         }
         var online = [];
@@ -810,6 +817,9 @@
             return;
         }
         if (!online.length) {
+            if (manual) {
+                say('Nobody in ' + section + ' is online right now.');
+            }
             return;
         }
         var shown = peopleText(online, 12);
@@ -1144,6 +1154,26 @@
         } else {
             ($('#class-live') || bar).appendChild(toggle);
         }
+        var signAll = document.createElement('button');
+        signAll.type = 'button';
+        signAll.id = 'att-signout-all';
+        signAll.hidden = true;
+        signAll.className = 'btn btn-sm btn-secondary';
+        signAll.textContent = 'Sign out everyone';
+        signAll.title = 'Signs out every student of this section who is online, on every device';
+        toggle.parentNode.insertBefore(signAll, toggle);
+        signAll.addEventListener('click', async function () {
+            var section = chosen();
+            if (!section) {
+                return;
+            }
+            signAll.disabled = true;
+            try {
+                await offerSignOutAll(section, true);
+            } finally {
+                signAll.disabled = false;
+            }
+        });
         toggle.addEventListener('click', async function () {
             var section = chosen();
             if (!section) {
