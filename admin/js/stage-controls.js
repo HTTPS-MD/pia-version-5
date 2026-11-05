@@ -274,9 +274,9 @@
             await revokeSections(gate.key, null);
             if (!sectionOpen(gate, section)) {
                 // The experiment is over: offer to sign out whoever is still logged in.
-                if (Admin.offerSignOutAll) {
+                if (window.PIAOfferSignOutAll) {
                     setTimeout(function () {
-                        Admin.offerSignOutAll(section);
+                        window.PIAOfferSignOutAll(section);
                     }, 400);
                 }
                 await saveTutoringSchedule(section, null, null, true);

@@ -813,7 +813,7 @@
         }
         refreshOverview().catch(function () {});
     }
-    window.PIAAdmin.offerSignOutAll = offerSignOutAll;
+    window.PIAOfferSignOutAll = offerSignOutAll;
 
     async function onMark(event, rawEmail) {
         if (event.target.closest('[data-lbi]')) {
