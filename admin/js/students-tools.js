@@ -574,7 +574,7 @@
         if (btn) {
             btn.hidden = !section;
             var open = !!section && !!openFor(section);
-            btn.textContent = open ? 'Close session' : 'Open session';
+            btn.textContent = open ? 'End attendance' : 'Start attendance';
             btn.setAttribute('data-ci', open ? 'stop' : 'start');
             btn.className = 'btn btn-sm ' + (open ? 'btn-secondary' : 'btn-primary');
         }
@@ -591,7 +591,7 @@
         var liveState = $('#class-live-status');
         if (liveState) {
             var isOpen2 = !!section && !!openFor(section);
-            liveState.textContent = !section ? 'Choose a section' : isOpen2 ? 'Session is open' : 'Session is closed';
+            liveState.textContent = !section ? 'Choose a section' : isOpen2 ? 'Attendance is open' : 'Attendance has ended';
             var dot = $('#class-live-dot');
             if (dot) {
                 dot.classList.toggle('is-on', isOpen2);
@@ -602,18 +602,28 @@
 
     // After the entry: In / Not in yet, a count of refused second tries, and Let back in.
     function entryExtras(m) {
-        var html = '';
         if (!m || !m.present) {
-            return html;
+            return '';
         }
-        html += m.entered
-            ? ' <span class="badge badge-accent">In</span>'
-            : ' <span class="badge">Not in yet</span>';
+        // Line 1: Present · In (or Not in yet). Line 2, only when needed: Blocked x3 · Let back in.
+        var html =
+            '<span class="att-dot">·</span>' +
+            (m.entered
+                ? '<span class="att-state is-in">In</span>'
+                : '<span class="att-state">Not in yet</span>');
+        var meta = [];
         if (m.refused > 0) {
-            html += ' <span class="badge badge-warn" title="Second tries that were refused">Blocked ×' + m.refused + '</span>';
+            meta.push(
+                '<span class="att-blocked" title="Second tries that were refused">Blocked ×' +
+                    m.refused +
+                    '</span>'
+            );
         }
         if (m.entered) {
-            html += ' <button type="button" class="btn btn-sm btn-secondary" data-lbi>Let back in</button>';
+            meta.push('<button type="button" class="att-link" data-lbi>Let back in</button>');
+        }
+        if (meta.length) {
+            html += '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + '</span>';
         }
         return html;
     }
@@ -933,7 +943,7 @@
         toggle.id = 'att-toggle';
         toggle.hidden = true;
         toggle.className = 'btn btn-sm btn-primary';
-        toggle.textContent = 'Open session';
+        toggle.textContent = 'Start attendance';
         var actionsBar = $('#bar-actions');
         if (actionsBar) {
             actionsBar.appendChild(toggle);
@@ -948,12 +958,12 @@
             var starting = toggle.getAttribute('data-ci') !== 'stop';
             if (starting && Object.keys(marks).length) {
                 var again = await window.PIAAdmin.confirmAction({
-                    heading: 'Open the session again?',
+                    heading: 'Start attendance again?',
                     message:
                         'Attendance was already taken for ' +
                         section +
-                        '. Opening again starts a new record and the earlier marks will no longer show.',
-                    confirmLabel: 'Open again',
+                        '. Starting again begins a new record and the earlier marks will no longer show.',
+                    confirmLabel: 'Start again',
                     tone: 'accent'
                 });
                 if (!again) {

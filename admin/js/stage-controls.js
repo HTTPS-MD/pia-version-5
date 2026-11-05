@@ -91,7 +91,7 @@
             btn.title = !section
                 ? ''
                 : locked
-                  ? 'Close the session first. Stages stay locked while the session is open.'
+                  ? 'End attendance first. Stages stay locked while attendance is open.'
                   : gate.open
                   ? gate.title +
                     ' is open for every section. Switching it off closes it for all of them.'

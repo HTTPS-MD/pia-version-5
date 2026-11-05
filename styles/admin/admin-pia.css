@@ -2529,3 +2529,44 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
 #view-students td[data-mk-cell] [data-lbi] {
     margin-top: 4px;
 }
+
+/* Attendance cell: Present · In on the first line; Blocked ×N · Let back in (small link) on the second */
+#view-students td[data-mk-cell] .att-dot {
+    opacity: 0.45;
+    margin: 0 5px;
+}
+#view-students td[data-mk-cell] .att-state {
+    font-size: 0.85em;
+    opacity: 0.7;
+}
+#view-students td[data-mk-cell] .att-state.is-in {
+    opacity: 1;
+    font-weight: 600;
+    color: var(--accent, #7fb0ff);
+}
+#view-students td[data-mk-cell] .att-meta {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.8em;
+    line-height: 1.3;
+}
+#view-students td[data-mk-cell] .att-blocked {
+    color: var(--warn, #e0a82e);
+    font-weight: 600;
+}
+#view-students td[data-mk-cell] .att-link {
+    all: unset;
+    cursor: pointer;
+    color: var(--accent, #7fb0ff);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    margin: 0;
+}
+#view-students td[data-mk-cell] .att-link:hover {
+    opacity: 0.8;
+}
+#view-students td[data-mk-cell] .att-link:focus-visible {
+    outline: 2px solid var(--accent, #7fb0ff);
+    outline-offset: 2px;
+    border-radius: 3px;
+}
