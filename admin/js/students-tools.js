@@ -12,6 +12,7 @@
     var holder = {};
     var marks = {};
     var marksSection = null;
+    var attState = 'none'; // none | open | ended | locked, from admin_attendance_status
     var built = false;
     var polling = false;
 
@@ -574,9 +575,12 @@
         if (btn) {
             btn.hidden = !section;
             var open = !!section && !!openFor(section);
-            btn.textContent = open ? 'End attendance' : 'Start attendance';
-            btn.setAttribute('data-ci', open ? 'stop' : 'start');
-            btn.className = 'btn btn-sm ' + (open ? 'btn-secondary' : 'btn-primary');
+            var locked = !!section && !open && attState === 'locked';
+            btn.textContent = locked ? 'Attendance is final' : open ? 'End attendance' : 'Start attendance';
+            btn.setAttribute('data-ci', locked ? 'locked' : open ? 'stop' : 'start');
+            btn.className = 'btn btn-sm ' + (open || locked ? 'btn-secondary' : 'btn-primary');
+            btn.disabled = locked;
+            btn.title = locked ? 'A stage was already opened, so attendance can no longer change.' : '';
         }
         var markAll = $('#att-markall');
         if (markAll) {
@@ -591,7 +595,13 @@
         var liveState = $('#class-live-status');
         if (liveState) {
             var isOpen2 = !!section && !!openFor(section);
-            liveState.textContent = !section ? 'Choose a section' : isOpen2 ? 'Attendance is open' : 'Attendance has ended';
+            liveState.textContent = !section
+                ? 'Choose a section'
+                : isOpen2
+                  ? 'Attendance is open'
+                  : attState === 'locked'
+                    ? 'Attendance is final'
+                    : 'Attendance has ended';
             var dot = $('#class-live-dot');
             if (dot) {
                 dot.classList.toggle('is-on', isOpen2);
@@ -815,6 +825,75 @@
     }
     window.PIAOfferSignOutAll = offerSignOutAll;
 
+    // Before the first stage opens: show who is Present, Absent and not in yet, and lock only on a yes.
+    // True means go ahead (nothing to confirm, or the admin confirmed). False means stay.
+    async function attendanceCheckpoint(section) {
+        if (!section) {
+            return true;
+        }
+        var st;
+        try {
+            st = await call('admin_attendance_status', { p_section: section });
+        } catch (e) {
+            return true;
+        }
+        if (st !== 'ended') {
+            return true;
+        }
+        var rows = [];
+        try {
+            rows = (await call('admin_attendance', { p_section: section })) || [];
+        } catch (e) {
+            return true;
+        }
+        var admin = window.PIAAdmin;
+        var byEmail = {};
+        rows.forEach(function (r) {
+            byEmail[String(r.email).toLowerCase()] = r;
+        });
+        var cohort = (admin.state.cohort || []).filter(function (c) {
+            return c.section === section && c.email;
+        });
+        function names(list) {
+            var shown = list.slice(0, 8).map(function (e) {
+                return admin.whoIs(e);
+            });
+            return shown.join(', ') + (list.length > 8 ? ' and ' + (list.length - 8) + ' more' : '');
+        }
+        var emails = cohort.map(function (c) {
+            return String(c.email).toLowerCase();
+        });
+        var unmarked = emails.filter(function (e) {
+            return !byEmail[e];
+        });
+        if (unmarked.length) {
+            say('Mark every student Present or Absent first: ' + names(unmarked) + '.', true);
+            return false;
+        }
+        var present = emails.filter(function (e) {
+            return byEmail[e].present;
+        });
+        var absent = emails.filter(function (e) {
+            return !byEmail[e].present;
+        });
+        var notIn = present.filter(function (e) {
+            return !byEmail[e].entered;
+        });
+        var message =
+            present.length + ' Present, ' + absent.length + ' Absent' + (absent.length ? ': ' + names(absent) : '') + '.';
+        if (notIn.length) {
+            message += ' Present but not in yet: ' + names(notIn) + '. They cannot enter after this.';
+        }
+        message += ' After this, attendance cannot be changed.';
+        return admin.confirmAction({
+            heading: 'Lock attendance and open this stage?',
+            message: message,
+            confirmLabel: 'Lock and open',
+            tone: 'accent'
+        });
+    }
+    window.PIAAttendanceCheckpoint = attendanceCheckpoint;
+
     async function onMark(event, rawEmail) {
         if (event.target.closest('[data-lbi]')) {
             await letBackIn(rawEmail);
@@ -917,8 +996,15 @@
         if (section !== marksSection) {
             marks = {};
             marksSection = section;
+            attState = 'none';
         }
         if (section) {
+            // The state of the newest record: none, open, ended or locked (a stage was opened).
+            try {
+                attState = await call('admin_attendance_status', { p_section: section });
+            } catch (e) {
+                attState = openFor(section) ? 'open' : Object.keys(marks).length ? 'ended' : 'none';
+            }
             // Also read it after the session ended, so the record stays on screen.
             try {
                 var rows = await call('admin_attendance', { p_section: section });
@@ -1052,6 +1138,9 @@
             if (!section) {
                 return;
             }
+            if (toggle.getAttribute('data-ci') === 'locked') {
+                return;
+            }
             var starting = toggle.getAttribute('data-ci') !== 'stop';
             if (starting && Object.keys(marks).length) {
                 var again = await window.PIAAdmin.confirmAction({
@@ -1059,7 +1148,7 @@
                     message:
                         'Attendance was already taken for ' +
                         section +
-                        '. Starting again begins a new record and the earlier marks will no longer show.',
+                        '. The marks and the students who are already in stay as they are. You can still change a mark until a stage is opened.',
                     confirmLabel: 'Start again',
                     tone: 'accent'
                 });
@@ -1072,46 +1161,6 @@
                     ? call('admin_start_checkin', { p_section: section, p_minutes: 120 })
                     : call('admin_stop_checkin', { p_section: section });
             });
-        });
-        var markAllBtn = document.createElement('button');
-        markAllBtn.type = 'button';
-        markAllBtn.id = 'att-markall';
-        markAllBtn.hidden = true;
-        markAllBtn.className = 'btn btn-sm btn-secondary is-hidden';
-        markAllBtn.textContent = 'Mark all present';
-        toggle.insertAdjacentElement('afterend', markAllBtn);
-        markAllBtn.addEventListener('click', async function () {
-            var section = chosen();
-            if (!section) {
-                return;
-            }
-            var cohort = (window.PIAAdmin.state.cohort || []).filter(function (s) {
-                return s.section === section && s.email;
-            });
-            var todo = cohort.filter(function (s) {
-                return !marks[String(s.email).toLowerCase()];
-            });
-            if (!todo.length) {
-                say('Everyone in ' + section + ' is already marked.');
-                return;
-            }
-            markAllBtn.disabled = true;
-            try {
-                await Promise.all(
-                    todo.map(function (s) {
-                        return call('admin_set_attendance', {
-                            p_section: section,
-                            p_email: String(s.email).toLowerCase(),
-                            p_present: true
-                        });
-                    })
-                );
-                say('');
-                await refreshOverview();
-            } catch (error) {
-                say(failure(error), true);
-            }
-            markAllBtn.disabled = false;
         });
         var was = true;
         try {

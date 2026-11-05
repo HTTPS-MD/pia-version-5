@@ -131,27 +131,25 @@ Deno.serve(async (req) => {
             if (!id) return 'none';
             const { data } = await admin
                 .from('attendance_marks')
-                .select('present, entered_at')
+                .select('present, entered_at, entered_once')
                 .eq('checkin_id', id)
                 .eq('email', email)
                 .maybeSingle();
             if (!data) return 'none';
             if (!data.present) return 'absent';
-            return data.entered_at ? 'entered' : 'present';
+            if (data.entered_at) return 'entered';
+            // Locked when the first stage opened: only a student who entered before may still come back in.
+            const { data: ci } = await admin.from('checkins').select('locked_at').eq('id', id).maybeSingle();
+            if (ci && ci.locked_at && !data.entered_once) return 'late';
+            return 'present';
         },
         async claimEntry(section, email) {
             const id = await openCheckinId(section);
             if (!id) return false;
-            // One statement: only the first caller finds entered_at still empty.
-            const { data } = await admin
-                .from('attendance_marks')
-                .update({ entered_at: nowIso() })
-                .eq('checkin_id', id)
-                .eq('email', email)
-                .eq('present', true)
-                .is('entered_at', null)
-                .select('email');
-            return (data?.length ?? 0) === 1;
+            // One atomic step in the database: Present, not already in, and not locked out.
+            const { data, error } = await admin.rpc('pia_claim_entry', { p_checkin: id, p_email: email });
+            if (error) throw error;
+            return data === true;
         },
         async releaseEntry(section, email) {
             const id = await openCheckinId(section);

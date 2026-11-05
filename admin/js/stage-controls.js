@@ -111,6 +111,19 @@
         btn.disabled = true;
         try {
             Admin.state.gateSelected[gate.key] = [section];
+            var opening =
+                gate.key === 'dash' && Array.isArray(Admin.state.schedules)
+                    ? ['open', 'scheduled'].indexOf(tutPhase(gate, section).phase) === -1
+                    : !sectionOpen(gate, section);
+            if (opening && window.PIAAttendanceCheckpoint) {
+                if (!(await window.PIAAttendanceCheckpoint(section))) {
+                    return;
+                }
+                // The confirm box is still closing (160 ms). Opening the next one now would be hidden by that close.
+                await new Promise(function (resolve) {
+                    setTimeout(resolve, 300);
+                });
+            }
             if (gate.key === 'dash' && Array.isArray(Admin.state.schedules)) {
                 await toggleTutoring(gate, section);
             } else if (sectionOpen(gate, section)) {

@@ -70,17 +70,16 @@ function pageHasActiveWork() {
     }
 }
 
+// Shown once per page load, as the same modal every other popup uses.
+let stageClosedShown = false;
 function showStageClosedNotice() {
-    if (document.getElementById('pia-stage-closed')) return;
-    const bar = document.createElement('div');
-    bar.id = 'pia-stage-closed';
-    bar.setAttribute('role', 'status');
-    bar.style.cssText =
-        'position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:9997;width:min(34rem,calc(100vw - 2rem));' +
-        'background:var(--bg-surface);color:var(--text);border-radius:var(--r-card);padding:var(--sp-4) var(--sp-5);' +
-        'box-shadow:var(--shadow-lg);font-size:var(--fs-sm);line-height:1.5';
-    bar.innerHTML =
-        '<strong style="display:block;margin-bottom:2px">This stage has been closed by your teacher.</strong>' +
-        'You can finish and submit what you have started. It will not be lost, but you will not be able to start it again.';
-    document.body.appendChild(bar);
+    if (stageClosedShown || document.getElementById('pia-stage-closed')) return;
+    stageClosedShown = true;
+    const dialog = piaDialog({
+        id: 'pia-stage-closed',
+        role: 'alertdialog',
+        title: 'This stage has been closed',
+        text: 'Your teacher closed this stage. You can finish and submit what you have started. It will not be lost, but you will not be able to start it again.',
+        actions: [{ id: 'pia-stage-closed-ok', label: 'Got it', primary: true, onClick: () => dialog.close() }]
+    });
 }

@@ -30,6 +30,7 @@ export const MESSAGES = {
     notFound: 'We could not find you in this class today. Tell your admin.',
     alreadyIn:
         'You are already signed in. If you lost your connection, tell your admin to let you back in.',
+    late: 'The session has already started. Tell your admin.',
     throttled: 'Too many tries. Please wait a few minutes, or tell your admin.',
     server: 'Something went wrong. Please try again.'
 };
@@ -88,6 +89,8 @@ export async function handleJoin(body, ip, deps) {
             await deps.noteReentry(student.section, seenEmail);
             return { status: 409, body: { error: MESSAGES.alreadyIn } };
         }
+        // The attendance was locked when the first stage opened: a Present student who never entered is out.
+        if (seen === 'late') return { status: 403, body: { error: MESSAGES.late } };
         return {
             status: 200,
             body: { ok: true, name: student.full_name ?? '', section: student.section }
@@ -99,6 +102,7 @@ export async function handleJoin(body, ip, deps) {
     // Same words and same status as an unknown number: the reply says nothing about which it was.
     if (mark === 'none' || mark === 'absent')
         return { status: 404, body: { error: MESSAGES.notFound } };
+    if (mark === 'late') return { status: 403, body: { error: MESSAGES.late } };
     // Only the first entry goes through. A second try is refused and counted for the admin.
     if (mark === 'entered') {
         await deps.noteReentry(student.section, email);
