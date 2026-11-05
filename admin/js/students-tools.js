@@ -602,7 +602,9 @@
                 }
             });
         }
+        // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
         b.hidden = !any;
+        b.classList.toggle('is-hidden', !any);
     }
 
     function renderAttendance() {
@@ -1194,7 +1196,7 @@
         signAll.type = 'button';
         signAll.id = 'att-signout-all';
         signAll.hidden = true;
-        signAll.className = 'btn btn-sm btn-secondary';
+        signAll.className = 'btn btn-sm btn-secondary is-hidden';
         signAll.textContent = 'Sign out everyone';
         signAll.title = 'Signs out every student of this section who is online, on every device';
         toggle.parentNode.insertBefore(signAll, toggle);
