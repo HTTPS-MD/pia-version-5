@@ -1198,6 +1198,34 @@
         signAll.textContent = 'Sign out everyone';
         signAll.title = 'Signs out every student of this section who is online, on every device';
         toggle.parentNode.insertBefore(signAll, toggle);
+        // The rarely used actions (Input Scores, Add Students) live in a small menu at the end of the row.
+        var moreBox = $('#bar-more');
+        var moreBtn = $('#bar-more-btn');
+        var moreMenu = $('#bar-more-menu');
+        if (moreBox && moreBtn && moreMenu) {
+            moreBox.parentNode.appendChild(moreBox);
+            var setMore = function (open) {
+                moreMenu.hidden = !open;
+                moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+            };
+            moreBtn.addEventListener('click', function (event) {
+                event.stopPropagation();
+                setMore(moreMenu.hidden);
+            });
+            moreMenu.addEventListener('click', function () {
+                setMore(false);
+            });
+            document.addEventListener('click', function (event) {
+                if (!moreBox.contains(event.target)) {
+                    setMore(false);
+                }
+            });
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    setMore(false);
+                }
+            });
+        }
         signAll.addEventListener('click', async function () {
             var section = chosen();
             if (!section) {

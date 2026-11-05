@@ -2578,3 +2578,45 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
 #view-students tr:has(.avatar-dot.is-online) td[data-mk-cell] .att-so {
     display: inline;
 }
+
+/* "More" menu at the end of the class buttons: Input Scores and Add Students */
+#view-students .bar-more {
+    position: relative;
+}
+#view-students .bar-more-btn {
+    padding: 0 14px;
+    font-size: 20px;
+    line-height: 1;
+    letter-spacing: 1px;
+}
+#view-students .bar-more-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    z-index: 30;
+    min-width: 12rem;
+    padding: 4px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-md);
+}
+#view-students .bar-more-menu[hidden] {
+    display: none;
+}
+#view-students .bar-more-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 38px;
+    padding: 0 12px;
+    border-radius: 10px;
+    font-size: var(--fs-sm);
+    color: var(--text);
+    text-align: left;
+    cursor: pointer;
+}
+#view-students .bar-more-item:hover,
+#view-students .bar-more-item:focus-visible {
+    background: var(--bg-chip);
+}

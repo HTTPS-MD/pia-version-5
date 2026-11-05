@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261124i">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261122h">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261116c">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261124a">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261124b">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -211,8 +211,13 @@
                                     <option value="control">Control</option>
                                 </select>
                                 <div class="bar-actions" id="bar-actions">
-                                    <button type="button" class="btn btn-secondary is-hidden" id="section-scores-open">Input Scores</button>
-                                    <button type="button" class="btn btn-secondary" data-modal-open="modal-add-students">Add Students</button>
+                                    <div class="bar-more" id="bar-more">
+                                        <button type="button" class="btn btn-secondary bar-more-btn" id="bar-more-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions" title="More actions">⋯</button>
+                                        <div class="bar-more-menu" id="bar-more-menu" role="menu" hidden>
+                                            <button type="button" class="bar-more-item is-hidden" id="section-scores-open" role="menuitem">Input Scores</button>
+                                            <button type="button" class="bar-more-item" data-modal-open="modal-add-students" role="menuitem">Add Students</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1424,7 +1429,7 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261122i"></script>
+    <script src="../js/students-tools.js?v=20261122j"></script>
     <script src="../js/add-students.js?v=20261122b"></script>
     <script src="../js/admin-core.js?v=20261122b"></script>
     <script src="../js/admin-dialogs.js?v=20261122a"></script>
