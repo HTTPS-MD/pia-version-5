@@ -73,3 +73,9 @@ A bell at the top with a count of students who tried to sign in again. Let back 
 - DECIDED: the count covers only the section being viewed, because sessions never run at the same time in two sections. Revisit if that changes.
 - Known and accepted: Dismiss is kept in the browser only; the record stays in entry_log and the row keeps a small "Tried again xN".
 - Other things the panel may ask: the bell should not grow into a general notification center (scope).
+
+## H. UI rules (decided)
+
+- One popup open at a time. Opening any popup (bell, More, section menu, teacher picker, account menu, any dropdown) closes the others. Done with one document event, `pia:popup-open`; a new popup must announce itself and close on that event when it is not the one announced.
+- Glass is for what floats (menus, popups, windows, toasts, the top bars). Cards, tables, buttons, inputs and toggles stay solid and flat.
+- The chosen row of every dropdown is a full yellow row.

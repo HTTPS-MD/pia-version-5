@@ -2579,8 +2579,10 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     display: inline;
 }
 
-/* "More" menu at the end of the class buttons: Input Scores and Add Students */
-#view-students .bar-more {
+/* ---- class buttons: the bell and the More menu ----
+   Their menus are the section dropdown's own component (custom-select-list section-menu): the glass and the rows
+   come from global.css. Here: where they sit, how wide, and the bell's own rows. */
+#view-students :is(.bar-more, .bar-bell) {
     position: relative;
 }
 #view-students .bar-more-btn {
@@ -2589,50 +2591,14 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     line-height: 1;
     letter-spacing: 1px;
 }
-#view-students .bar-more-menu {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 6px);
-    z-index: 30;
-    min-width: 12rem;
-    padding: 4px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: var(--bg-surface);
-    box-shadow: var(--shadow-md);
-}
-#view-students .bar-more-menu[hidden] {
-    display: none;
-}
-#view-students .bar-more-item {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 38px;
-    padding: 0 12px;
-    border-radius: 10px;
-    font-size: var(--fs-sm);
-    color: var(--text);
-    text-align: left;
-    cursor: pointer;
-}
-#view-students .bar-more-item:hover,
-#view-students .bar-more-item:focus-visible {
-    background: var(--bg-chip);
-}
-
-/* The bell: students who tried to sign in again, next to the More button */
-#view-students .bar-bell {
-    position: relative;
-}
 #view-students .bar-bell-btn {
     position: relative;
-    padding: 0 12px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    padding: 0 12px;
 }
-#view-students .bell-count {
+.bell-count {
     position: absolute;
     top: -6px;
     right: -6px;
@@ -2648,45 +2614,37 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     line-height: 18px;
     text-align: center;
 }
-#view-students .bell-count.is-hidden {
-    display: none;
+/* open, they live on <body> (placed by script), so they are fixed */
+.bar-more-menu,
+.bar-bell-menu {
+    position: fixed;
+    z-index: 260;
+    margin-top: 0;
+    max-height: min(70vh, 30rem);
 }
-#view-students .bar-bell-menu {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 6px);
-    z-index: 30;
+.bar-bell-menu {
     width: 21rem;
     max-width: calc(100vw - 2rem);
-    padding: 6px;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: var(--bg-surface);
-    box-shadow: var(--shadow-md);
 }
-#view-students .bar-bell-menu[hidden] {
-    display: none;
+:is(.bell-head, .bell-item, .bell-empty) {
+    justify-content: flex-start;
+    gap: 10px;
+    cursor: default;
 }
-#view-students .bell-head {
-    padding: 6px 8px 8px;
-    font-size: 0.8em;
+:is(.bell-head, .bell-item, .bell-empty):hover {
+    background: transparent;
+}
+.bell-head {
+    color: var(--text-muted);
     font-weight: 600;
-    letter-spacing: 0.02em;
-    text-transform: uppercase;
+}
+.bell-empty {
     color: var(--text-muted);
 }
-#view-students .bell-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 8px;
-    border-radius: 10px;
-    font-size: var(--fs-sm);
+.bell-text {
+    flex: 1;
 }
-#view-students .bell-item:hover {
-    background: var(--bg-chip);
-}
-#view-students .bell-av {
+.bell-av {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2697,18 +2655,8 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     font-size: 0.8em;
     font-weight: 700;
 }
-#view-students .bell-text {
-    flex: 1;
-    color: var(--text-muted);
-}
-#view-students .bell-dismiss {
+.bell-dismiss {
     opacity: 0.75;
-}
-#view-students .bell-empty {
-    margin: 0;
-    padding: 10px 8px 12px;
-    font-size: var(--fs-sm);
-    color: var(--text-muted);
 }
 
 /* Entered: the student is in (so Present is understood) */
@@ -2720,4 +2668,29 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
 /* Present, did not participate: a little quieter than Present */
 #view-students .att-result.is-dnp {
     opacity: 0.8;
+}
+
+/* ---- flat buttons, section menu rows, pills on the right ---- */
+html[data-surface='admin'] :is(.btn, .btn-primary, .nav-item.is-active),
+:root body:not(.landing-look) .overlay :is(.btn, .btn-primary) {
+    box-shadow: none;
+}
+/* the section and topic menus have position rules with ids: they take the glass radius and shadow too */
+#view-students .page-title #section-host [data-section-menu],
+#view-mathtask .page-title #qb-topic-host [data-topic-menu] {
+    border-radius: var(--lg-radius-menu);
+    box-shadow: var(--lg-shadow);
+}
+#view-students .page-title #section-host .section-opt.is-selected,
+#view-mathtask .page-title #qb-topic-host .section-opt.is-selected {
+    background: var(--admin-pill, #ffd83d);
+    color: var(--admin-pill-ink, #0b1233);
+    box-shadow: none;
+    font-weight: 600;
+}
+/* the stages and Privacy Mode go to the right of the title row */
+@media (min-width: 48.0625rem) {
+    #view-students .page-title-row .stage-let {
+        margin-left: auto !important;
+    }
 }

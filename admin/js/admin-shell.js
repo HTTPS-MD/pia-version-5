@@ -165,8 +165,15 @@
         }
     }
 
+    document.addEventListener('pia:popup-open', function (event) {
+        if (event.detail !== 'user' && $('#user-menu')) {
+            closeUserMenu(false);
+        }
+    });
+
     function openUserMenu(focusFirst) {
         var menu = $('#user-menu');
+        document.dispatchEvent(new CustomEvent('pia:popup-open', { detail: 'user' }));
         paintThemeItem();
         menu.hidden = false;
         $('#user-menu-btn').setAttribute('aria-expanded', 'true');

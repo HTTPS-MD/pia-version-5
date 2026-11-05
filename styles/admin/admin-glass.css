@@ -1,0 +1,43 @@
+/*
+ * Admin glass: the top bar, the tab bar and the drawer use the same glass as the menus (tokens in global.css),
+ * plus a quiet colour wash behind the page so the glass has something to blur.
+ * Cards, tables, buttons, inputs and the toggles stay solid and flat.
+ * To go back to a flat admin, remove the one <link> to this file in admin/html/admin-dashboard.html.
+ */
+html[data-surface='admin'][data-theme] body {
+    background-color: var(--bg-body);
+    background-image:
+        radial-gradient(64rem 46rem at 4% 0%, color-mix(in srgb, #7f5af0 13%, transparent), transparent 68%),
+        radial-gradient(58rem 44rem at 98% 10%, color-mix(in srgb, #ffd83d 16%, transparent), transparent 68%),
+        radial-gradient(64rem 46rem at 55% 108%, color-mix(in srgb, #2cb67d 11%, transparent), transparent 68%);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+}
+html[data-surface='admin'][data-theme='dark'] body {
+    background-image:
+        radial-gradient(64rem 46rem at 4% 0%, color-mix(in srgb, #7f5af0 18%, transparent), transparent 68%),
+        radial-gradient(58rem 44rem at 98% 10%, color-mix(in srgb, #ffd83d 7%, transparent), transparent 68%),
+        radial-gradient(64rem 46rem at 55% 108%, color-mix(in srgb, #2cb67d 10%, transparent), transparent 68%);
+}
+/* three attributes: the older solid top bar rule is that strong */
+html[data-surface='admin'][data-theme][data-theme][data-theme] :is(.topbar, .sidebar-nav, .drawer) {
+    background: var(--lg-fill);
+    -webkit-backdrop-filter: var(--lg-filter);
+    backdrop-filter: var(--lg-filter);
+    border-color: var(--lg-rim);
+    box-shadow: inset 0 -1px 0.5px rgba(255, 255, 255, 0.18);
+}
+html[data-surface='admin'][data-theme][data-theme][data-theme] :is(.topbar, .sidebar-nav) {
+    border-bottom: 1px solid var(--lg-rim);
+}
+html[data-surface='admin'][data-theme][data-theme][data-theme] .drawer {
+    box-shadow: var(--lg-shadow);
+}
+@media (prefers-reduced-transparency: reduce) {
+    html[data-surface='admin'][data-theme][data-theme][data-theme] :is(.topbar, .sidebar-nav, .drawer) {
+        background: var(--bg-surface);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+}

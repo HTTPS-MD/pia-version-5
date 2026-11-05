@@ -357,8 +357,15 @@
         }
     }
 
+    document.addEventListener('pia:popup-open', function (event) {
+        if (event.detail !== 'prof') {
+            closeProfMenu();
+        }
+    });
+
     function openProfMenu(anchor) {
         closeProfMenu();
+        document.dispatchEvent(new CustomEvent('pia:popup-open', { detail: 'prof' }));
         var section = chosen();
         var current = holder[section] || '';
         var rows = profs
@@ -656,12 +663,12 @@
         }
         menu._sig = sig;
         menu.innerHTML =
-            '<div class="bell-head">Tried to sign in again · ' + esc(section) + '</div>' +
+            '<div class="custom-select-option section-opt bell-head">Tried to sign in again · ' + esc(section) + '</div>' +
             (items.length
                 ? items
                       .map(function (i) {
                           return (
-                              '<div class="bell-item" data-email="' + esc(i.email) + '" data-n="' + i.n + '">' +
+                              '<div class="custom-select-option section-opt bell-item" data-email="' + esc(i.email) + '" data-n="' + i.n + '">' +
                               '<span class="bell-av">' + esc(i.initials) + '</span>' +
                               '<span class="bell-text">tried ×' + i.n + '</span>' +
                               '<button type="button" class="att-link" data-bell-lbi>Let back in</button>' +
@@ -670,7 +677,7 @@
                           );
                       })
                       .join('')
-                : '<p class="bell-empty">No one is waiting.</p>');
+                : '<div class="custom-select-option section-opt bell-empty">No one is waiting.</div>');
     }
     async function bellLetBackIn(email) {
         var ok = await window.PIAAdmin.confirmAction({
@@ -692,6 +699,57 @@
             localStorage.setItem('pia_bell_dismissed', JSON.stringify(map));
         } catch (e) {}
         renderBell();
+    }
+
+    // A menu that opens under a button moves to <body> and sits right under the button, right edges lined up.
+    // On <body> its frosted-glass blur can see the whole page (inside a glass card it could not).
+    function placeFloating(button, menu) {
+        if (menu.parentNode !== document.body) {
+            document.body.appendChild(menu);
+        }
+        var r = button.getBoundingClientRect();
+        menu.style.top = Math.round(r.bottom + 8) + 'px';
+        menu.style.right = Math.max(8, Math.round(window.innerWidth - r.right)) + 'px';
+        menu.style.left = 'auto';
+    }
+
+    // A button that opens a floating menu. One popup at a time: opening any popup announces itself
+    // (event pia:popup-open) and every other popup closes. Also closes on an outside click, Esc, scroll or resize.
+    // Returns set(open).
+    function floatingMenu(id, button, menu, box) {
+        function set(open) {
+            if (open) {
+                document.dispatchEvent(new CustomEvent('pia:popup-open', { detail: id }));
+                placeFloating(button, menu);
+            }
+            menu.hidden = !open;
+            button.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+        function close() {
+            set(false);
+        }
+        button.addEventListener('click', function (event) {
+            event.stopPropagation();
+            set(menu.hidden);
+        });
+        document.addEventListener('pia:popup-open', function (event) {
+            if (event.detail !== id) {
+                close();
+            }
+        });
+        document.addEventListener('click', function (event) {
+            if (!box.contains(event.target) && !menu.contains(event.target)) {
+                close();
+            }
+        });
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                close();
+            }
+        });
+        window.addEventListener('resize', close);
+        document.addEventListener('scroll', close, true);
+        return set;
     }
 
     // "Sign out everyone" only makes sense while at least one student of the section is signed in.
@@ -1333,7 +1391,8 @@
         signAll.textContent = 'Sign out everyone';
         signAll.title = 'Signs out every student of this section who is online, on every device';
         toggle.parentNode.insertBefore(signAll, toggle);
-        // The rarely used actions (Input Scores, Add Students) live in a small menu at the end of the row.
+        // At the end of the row: the bell (students who tried to sign in again), then the More menu
+        // (Input Scores, Add Students: the rarely used actions).
         var bellBox = document.createElement('div');
         bellBox.className = 'bar-bell is-hidden';
         bellBox.id = 'att-bell-box';
@@ -1342,75 +1401,33 @@
             '<button type="button" class="btn btn-secondary bar-bell-btn" id="att-bell" aria-haspopup="menu" aria-expanded="false" aria-label="No one is waiting to be let back in" title="Students who tried to sign in again">' +
             '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>' +
             '<span class="bell-count is-hidden" id="att-bell-count"></span></button>' +
-            '<div class="bar-bell-menu" id="att-bell-menu" role="menu" hidden></div>';
+            '<div class="custom-select-list section-menu bar-bell-menu" id="att-bell-menu" role="menu" hidden></div>';
         var moreBox = $('#bar-more');
-        var moreBtn = $('#bar-more-btn');
-        var moreMenu = $('#bar-more-menu');
         if (moreBox && moreBox.parentNode) {
+            moreBox.parentNode.appendChild(moreBox);
             moreBox.parentNode.insertBefore(bellBox, moreBox);
         } else {
             toggle.parentNode.appendChild(bellBox);
         }
-        (function () {
-            var bellBtn = $('#att-bell');
-            var bellMenu = $('#att-bell-menu');
-            var setBell = function (open) {
-                bellMenu.hidden = !open;
-                bellBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-            };
-            bellBtn.addEventListener('click', function (event) {
-                event.stopPropagation();
-                setBell(bellMenu.hidden);
-            });
-            bellMenu.addEventListener('click', async function (event) {
-                event.stopPropagation();
-                var item = event.target.closest('.bell-item');
-                if (!item) {
-                    return;
-                }
-                var email = item.getAttribute('data-email');
-                if (event.target.closest('[data-bell-dismiss]')) {
-                    bellDismiss(email, Number(item.getAttribute('data-n')));
-                } else if (event.target.closest('[data-bell-lbi]')) {
-                    setBell(false);
-                    await bellLetBackIn(email);
-                }
-            });
-            document.addEventListener('click', function (event) {
-                if (!bellBox.contains(event.target)) {
-                    setBell(false);
-                }
-            });
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') {
-                    setBell(false);
-                }
-            });
-        })();
-        if (moreBox && moreBtn && moreMenu) {
-            moreBox.parentNode.appendChild(moreBox);
-            // The bell stays right before the More button, at the end of the row.
-            moreBox.parentNode.insertBefore(bellBox, moreBox);
-            var setMore = function (open) {
-                moreMenu.hidden = !open;
-                moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-            };
-            moreBtn.addEventListener('click', function (event) {
-                event.stopPropagation();
-                setMore(moreMenu.hidden);
-            });
-            moreMenu.addEventListener('click', function () {
+        var bellMenu = $('#att-bell-menu');
+        var setBell = floatingMenu('bell', $('#att-bell'), bellMenu, bellBox);
+        bellMenu.addEventListener('click', async function (event) {
+            var item = event.target.closest('.bell-item');
+            if (!item) {
+                return;
+            }
+            var email = item.getAttribute('data-email');
+            if (event.target.closest('[data-bell-dismiss]')) {
+                bellDismiss(email, Number(item.getAttribute('data-n')));
+            } else if (event.target.closest('[data-bell-lbi]')) {
+                setBell(false);
+                await bellLetBackIn(email);
+            }
+        });
+        if (moreBox) {
+            var setMore = floatingMenu('more', $('#bar-more-btn'), $('#bar-more-menu'), moreBox);
+            $('#bar-more-menu').addEventListener('click', function () {
                 setMore(false);
-            });
-            document.addEventListener('click', function (event) {
-                if (!moreBox.contains(event.target)) {
-                    setMore(false);
-                }
-            });
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Escape') {
-                    setMore(false);
-                }
             });
         }
         signAll.addEventListener('click', async function () {
@@ -1548,11 +1565,19 @@
                 t.setAttribute('aria-expanded', 'false');
             }
         };
+        document.addEventListener('pia:popup-open', function (event) {
+            if (event.detail !== 'section') {
+                closeMenu();
+            }
+        });
         h1.addEventListener('click', function (event) {
             if (event.target.closest('[data-section-toggle]')) {
                 var m = h1.querySelector('[data-section-menu]');
                 if (m) {
                     m.hidden = !m.hidden;
+                    if (!m.hidden) {
+                        document.dispatchEvent(new CustomEvent('pia:popup-open', { detail: 'section' }));
+                    }
                     h1.querySelector('[data-section-toggle]').setAttribute(
                         'aria-expanded',
                         String(!m.hidden)

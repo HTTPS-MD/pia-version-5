@@ -633,6 +633,7 @@
                 }
             });
             refresh();
+            document.dispatchEvent(new CustomEvent('pia:popup-open', { detail: 'cs:' + id }));
             open = true;
             document.body.appendChild(list);
             list.hidden = false;
@@ -718,6 +719,13 @@
                 }
             });
         });
+        // One popup at a time: opening any other popup closes this one.
+        function onOtherPopup(event) {
+            if (event.detail !== 'cs:' + id) {
+                close(false);
+            }
+        }
+        document.addEventListener('pia:popup-open', onOtherPopup);
         customSelects[id] = {
             refresh: refresh,
             close: close,
@@ -725,6 +733,7 @@
             destroy: function () {
                 close(false);
                 list.remove();
+                document.removeEventListener('pia:popup-open', onOtherPopup);
                 document.removeEventListener('pointerdown', onPointerDown);
                 delete customSelects[id];
             }
