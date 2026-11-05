@@ -718,13 +718,24 @@
         var section = scoped();
         var btn = $('#att-toggle');
         if (btn) {
-            btn.hidden = !section;
-            updateSignAll();
             var open = !!section && !!openFor(section);
+            // A section with no students has nothing to take attendance of: no Start button.
+            var meta = null;
+            overview.sections.forEach(function (x) {
+                if (x.section === section) {
+                    meta = x;
+                }
+            });
+            var noStudents = !!meta && Number(meta.students) === 0 && !open;
+            var hideBtn = !section || noStudents;
+            btn.hidden = hideBtn;
+            updateSignAll();
             var locked = !!section && !open && attState === 'locked';
             btn.textContent = locked ? 'Attendance is final' : open ? 'End attendance' : 'Start attendance';
             btn.setAttribute('data-ci', locked ? 'locked' : open ? 'stop' : 'start');
-            btn.className = 'btn btn-sm ' + (open || locked ? 'btn-secondary' : 'btn-primary');
+            // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
+            btn.className =
+                'btn btn-sm ' + (open || locked ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
             btn.disabled = locked;
             btn.title = locked ? 'A stage was already opened, so attendance can no longer change.' : '';
         }

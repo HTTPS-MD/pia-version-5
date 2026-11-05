@@ -67,18 +67,24 @@ Deno.serve(async (req) => {
         .filter(Boolean);
     const ip = req.headers.get('cf-connecting-ip') ?? forwarded[forwarded.length - 1] ?? 'unknown';
     const nowIso = () => new Date().toISOString();
+    // "Today" is the calendar day in Philippine time (UTC+8, no daylight saving). Same rule as the database
+    // (pia_current_checkin): at 12:00 AM the section goes back to needing a new Start attendance.
+    const sinceIso = (nowMs = Date.now()) => {
+        const manila = new Date(nowMs + 8 * 3600 * 1000);
+        manila.setUTCHours(0, 0, 0, 0);
+        return new Date(manila.getTime() - 8 * 3600 * 1000).toISOString();
+    };
     const openCount = async (section) => {
         let q = admin
             .from('checkins')
             .select('id', { count: 'exact', head: true })
-            .gte('started_at', new Date(Date.now() - 16 * 3600 * 1000).toISOString());
+            .gte('started_at', sinceIso());
         if (section) q = q.eq('section', section);
         const { count } = await q;
         return count ?? 0;
     };
-    // The newest session of the section started in the last 16 hours, open or closed: a student
-    // marked present can still enter after the admin closed the session.
-    const sinceIso = () => new Date(Date.now() - 16 * 3600 * 1000).toISOString();
+    // The newest session of the section started today, open or closed: a student marked present can
+    // still enter after the admin ended the attendance, until a stage is opened.
     const openCheckinId = async (section) => {
         const { data } = await admin
             .from('checkins')

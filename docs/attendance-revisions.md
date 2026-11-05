@@ -23,6 +23,10 @@ Decided:
 
 3d. DECIDED: **The door closes when attendance locks.** After End attendance, Present students can still enter (the admin waits for everyone). The moment the admin confirms the checkpoint and the first stage opens, a Present student who has not entered yet can no longer enter (recorded as "Present, did not participate"). Let back in is only for a student who already entered and crashed. The checkpoint also lists "Present but not in yet" so the admin can cancel and wait. This replaces the 3-hour cutoff idea for the door.
 
+3e. DECIDED (built locally, SQL 17 not run yet): **the attendance day is the calendar day in Philippine time**, not the last 16 hours. At 12:00 AM the section goes back to "Start attendance". Same rule in the database (`pia_current_checkin`, `admin_attendance`, `admin_let_back_in`) and in the door. Known edge: a session that starts before midnight and runs past it is cut at midnight.
+3f. DECIDED and shipped: after the lock, a Present student who never entered shows "Present, did not participate"; a student who is in shows only "Entered".
+Note: `docs/session-flowchart-recommended.png` still says "within the last 16 hours" and does not show the checkpoint and lock. Redraw it before the defense.
+
 Proposed, waiting for a decision:
 4. A separate **"Start a new session"** button, with a heavy warning, for a truly fresh start on the same day.
 5. Define "the day" as the same window the door uses (not midnight).

@@ -5070,7 +5070,7 @@ h4 {
     border-radius: 50%;
     background: #fff9ea;
     box-shadow: none;
-    translate: 28px 0;
+    translate: 0 0;
     transition:
         translate 0.55s cubic-bezier(0.34, 1.56, 0.64, 1),
         scale 0.3s ease,
@@ -5078,7 +5078,7 @@ h4 {
 }
 :root[data-theme='light'] .nav .theme-switch::before {
     background: #ffd83d;
-    translate: 0 0;
+    translate: 28px 0;
 }
 .nav .theme-switch:hover::before {
     scale: 1.08;
@@ -5097,11 +5097,11 @@ h4 {
         transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 .nav .theme-switch .icon-sun {
-    left: 14px;
+    left: 42px;
     transform: rotate(-40deg) scale(0.85);
 }
 .nav .theme-switch .icon-moon {
-    left: 42px;
+    left: 14px;
     transform: none;
     color: #0b1233;
 }
