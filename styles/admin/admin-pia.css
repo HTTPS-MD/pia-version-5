@@ -2568,14 +2568,6 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     border-radius: 3px;
 }
 
-/* Sign out only shows while the student is online (the green dot on the same row) */
-#view-students td[data-mk-cell] .att-so {
-    display: none;
-}
-#view-students tr:has(.avatar-dot.is-online) td[data-mk-cell] .att-so {
-    display: inline;
-}
-
 /* ---- class buttons: the bell and the More menu ----
    Their menus are the section dropdown's own component (custom-select-list section-menu): the glass and the rows
    come from global.css. Here: where they sit, how wide, and the bell's own rows. */

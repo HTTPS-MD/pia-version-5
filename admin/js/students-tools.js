@@ -847,14 +847,8 @@
                     '</span>'
             );
         }
-        var signOut = m.entered
-            ? '<span class="att-so">' +
-              (meta.length ? '<span class="att-dot">·</span>' : '') +
-              '<button type="button" class="att-link" data-so title="End this student\'s login on every device">Sign out</button></span>'
-            : '';
-        if (meta.length || signOut) {
-            html +=
-                '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + signOut + '</span>';
+        if (meta.length) {
+            html += '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + '</span>';
         }
         return html;
     }
@@ -965,30 +959,6 @@
         }
         renderAttendance();
         refreshOverview().catch(function () {});
-    }
-
-    // Ends the student's login on every device (for anyone still signed in after the experiment).
-    // The student cannot enter again on their own: the one-entry rule still applies.
-    async function signOutStudent(rawEmail) {
-        var email = String(rawEmail).toLowerCase();
-        var ok = await window.PIAAdmin.confirmAction({
-            heading: 'Sign this student out?',
-            message: peopleText([email], 1) + ' will be signed out on every device now.',
-            confirmLabel: 'Sign out',
-            tone: 'accent'
-        });
-        if (!ok) {
-            return;
-        }
-        try {
-            await call('admin_revoke_sessions', { p_email: email });
-            if (window.PIAAdmin.toastOk) {
-                window.PIAAdmin.toastOk('Signed out', peopleText([email], 1) + ' was signed out.');
-            }
-            say('');
-        } catch (error) {
-            say(failure(error), true);
-        }
     }
 
     // After the Game is closed: list the section's students who are still online and offer to sign them all out.
@@ -1127,10 +1097,6 @@
     async function onMark(event, rawEmail) {
         if (event.target.closest('[data-lbi]')) {
             await letBackIn(rawEmail);
-            return;
-        }
-        if (event.target.closest('[data-so]')) {
-            await signOutStudent(rawEmail);
             return;
         }
         var btn = event.target.closest('[data-mk]');
@@ -1471,11 +1437,11 @@
                     : call('admin_stop_checkin', { p_section: section });
             });
         });
-        var chosen = null;
+        var tabChoice = null;
         try {
-            chosen = sessionStorage.getItem('pia_hide_details');
+            tabChoice = sessionStorage.getItem('pia_hide_details');
         } catch (e) {}
-        if (chosen === null) {
+        if (tabChoice === null) {
             // First load of this sign-in: hidden until the account setting arrives, then follow it.
             setHidden(true);
             if (window.PIAAdmin && window.PIAAdmin.loadPrivacyDefault) {
@@ -1484,7 +1450,7 @@
                 });
             }
         } else {
-            setHidden(chosen !== '0');
+            setHidden(tabChoice !== '0');
         }
     }
 
