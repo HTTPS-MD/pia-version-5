@@ -1162,11 +1162,21 @@
                     : call('admin_stop_checkin', { p_section: section });
             });
         });
-        var was = true;
+        var chosen = null;
         try {
-            was = sessionStorage.getItem('pia_hide_details') !== '0';
+            chosen = sessionStorage.getItem('pia_hide_details');
         } catch (e) {}
-        setHidden(was);
+        if (chosen === null) {
+            // First load of this sign-in: hidden until the account setting arrives, then follow it.
+            setHidden(true);
+            if (window.PIAAdmin && window.PIAAdmin.loadPrivacyDefault) {
+                window.PIAAdmin.loadPrivacyDefault().then(function (on) {
+                    setHidden(on);
+                });
+            }
+        } else {
+            setHidden(chosen !== '0');
+        }
     }
 
     function build() {

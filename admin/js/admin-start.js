@@ -91,6 +91,7 @@
         $('#add-admin-form').addEventListener('submit', Admin.handleAddAdmin);
         Admin.initChangePassword();
         Admin.initDeleteOwnAccount();
+        Admin.initPrivacyPref();
         Admin.initAdminPager();
         Admin.gateSubmit('modal-add-admin', 'aa-submit', ['aa-name', 'aa-email']);
         Admin.gateSubmit('modal-add-professor', 'ap-submit', ['ap-name', 'ap-email', 'ap-dept']);

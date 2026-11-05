@@ -243,6 +243,53 @@
     }
     Admin.initDeleteOwnAccount = initDeleteOwnAccount;
 
+    // The account setting "Start in Privacy Mode every time I sign in". No row yet means on.
+    var privacyDefaultPromise = null;
+    Admin.loadPrivacyDefault = function loadPrivacyDefault() {
+        if (!privacyDefaultPromise) {
+            privacyDefaultPromise = sb
+                .rpc('admin_get_privacy_default')
+                .then(function (res) {
+                    return res.error ? true : res.data !== false;
+                })
+                .catch(function () {
+                    return true;
+                });
+        }
+        return privacyDefaultPromise;
+    };
+
+    Admin.initPrivacyPref = function initPrivacyPref() {
+        var box = $('#pref-privacy-default');
+        var msg = $('#pref-privacy-msg');
+        if (!box) {
+            return;
+        }
+        Admin.loadPrivacyDefault().then(function (on) {
+            box.checked = on;
+            box.disabled = false;
+        });
+        box.addEventListener('change', async function () {
+            var want = box.checked;
+            box.disabled = true;
+            var res = await sb.rpc('admin_set_privacy_default', { p_on: want });
+            box.disabled = false;
+            if (res.error) {
+                box.checked = !want;
+                if (msg) {
+                    msg.textContent = 'Not saved. The latest database update may not be applied yet.';
+                }
+                return;
+            }
+            privacyDefaultPromise = Promise.resolve(want);
+            if (msg) {
+                msg.textContent = want
+                    ? 'Saved. Privacy Mode will be on each time you sign in.'
+                    : 'Saved. Privacy Mode will be off each time you sign in.';
+            }
+        });
+    };
+
     var signingOut = false;
 
     async function signOut() {
@@ -250,6 +297,10 @@
             return;
         }
         signingOut = true;
+        // The next sign-in in this tab starts from the account setting again.
+        try {
+            sessionStorage.removeItem('pia_hide_details');
+        } catch (e) {}
 
         var status = $('#signout-status');
         var item = $('#user-signout');
