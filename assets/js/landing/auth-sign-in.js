@@ -95,7 +95,9 @@
             );
         };
         signInPending = true;
-        var release = Auth.setBusy($('#' + opts.submitId), 'Signing in…');
+        var submit = $('#' + opts.submitId);
+        var release = Auth.setBusy(submit, 'Signing in…');
+        var succeeded = false;
 
         try {
             var auth = await sb.auth.signInWithPassword({ email: email, password: password });
@@ -171,9 +173,17 @@
             }
 
             await routeAfterSignIn(profile, role, function (message, tone) {
-                Auth.setStatus(opts.statusId, message, tone);
+                if (tone === 'ok' && submit) {
+                    // Success shows on the button itself, until the page changes.
+                    succeeded = true;
+                    submit.innerHTML = '\u2713 Login successful';
+                    Auth.setStatus(opts.statusId, '', 'ok');
+                } else {
+                    Auth.setStatus(opts.statusId, message, tone);
+                }
             });
         } catch (err) {
+            succeeded = false;
             if (current()) {
                 Auth.setStatus(
                     opts.statusId,
@@ -183,7 +193,9 @@
             }
         } finally {
             signInPending = false;
-            release();
+            if (!succeeded) {
+                release();
+            }
         }
     }
 

@@ -172,6 +172,7 @@ html[data-surface='admin'] .nav-item:hover {
 html[data-surface='admin'] .nav-item.is-active {
     background: var(--admin-pill);
     color: var(--admin-pill-ink);
+    box-shadow: none;
 }
 @media (max-width: 56.25rem) {
     /* the tabs share the top row with the logo and the account buttons */

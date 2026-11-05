@@ -31,7 +31,11 @@ html[data-surface='admin'][data-theme][data-theme][data-theme] :is(.topbar, .sid
 html[data-surface='admin'][data-theme][data-theme][data-theme] :is(.topbar, .sidebar-nav) {
     border-bottom: 1px solid var(--lg-rim);
 }
+/* the drawer holds a student's profile: a window, so the same firmer glass as the sign-in */
 html[data-surface='admin'][data-theme][data-theme][data-theme] .drawer {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 30%), var(--lg-base-window);
+    -webkit-backdrop-filter: var(--lg-filter-window);
+    backdrop-filter: var(--lg-filter-window);
     box-shadow: var(--lg-shadow);
 }
 @media (prefers-reduced-transparency: reduce) {
