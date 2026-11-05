@@ -2146,31 +2146,31 @@ html[data-theme][data-theme][data-theme] .topbar {
    drawer: admin-glass.css). Cards, tables, buttons, inputs and toggles stay solid and flat.
    Change the tokens here and every surface follows. */
 html[data-theme] {
-    --lg-base: rgba(252, 252, 254, 0.62);
+    --lg-base: rgba(238, 244, 255, 0.62);
     --lg-filter: blur(10px) saturate(1) brightness(1.04);
     --lg-fill: linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 30%), var(--lg-base);
     --lg-rim: rgba(0, 0, 0, 0.1);
     --lg-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.18), 0 12px 40px rgba(0, 0, 0, 0.22), 0 2px 8px rgba(0, 0, 0, 0.1);
     --lg-radius-menu: 16px;
     --lg-dim: rgba(28, 30, 42, 0.1);
-    --lg-field: rgba(255, 255, 255, 0.5);
+    --lg-field: rgba(244, 248, 255, 0.5);
     --lg-field-line: rgba(28, 30, 42, 0.14);
     --lg-pick-bg: rgba(255, 200, 40, 0.26);
     --lg-pick-ink: #7a5a00;
-    --lg-base-window: rgba(252, 252, 254, 0.78);
+    --lg-base-window: rgba(238, 244, 255, 0.78);
     --lg-filter-window: blur(16px) saturate(1) brightness(1.04);
 }
 html[data-theme='dark'] {
-    --lg-base: rgba(40, 44, 54, 0.44);
+    --lg-base: rgba(34, 48, 78, 0.46);
     --lg-filter: blur(10px) saturate(1);
     --lg-rim: rgba(255, 255, 255, 0.12);
     --lg-shadow: inset 0 0 0 0.5px rgba(255, 255, 255, 0.14), 0 14px 44px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
     --lg-dim: rgba(0, 0, 0, 0.38);
-    --lg-field: rgba(255, 255, 255, 0.07);
+    --lg-field: rgba(150, 180, 255, 0.09);
     --lg-field-line: rgba(255, 255, 255, 0.16);
     --lg-pick-bg: rgba(255, 216, 61, 0.2);
     --lg-pick-ink: #f1cf55;
-    --lg-base-window: rgba(36, 40, 50, 0.7);
+    --lg-base-window: rgba(30, 44, 74, 0.7);
     --lg-filter-window: blur(18px) saturate(1.1);
 }
 html[data-theme] :is(.custom-select-list, .user-menu, .t-menu, .bar-more-menu, .bar-bell-menu, .modal, .palette, .revoke-modal-box, .toast, .t-toast) {
@@ -2224,6 +2224,18 @@ html[data-theme] :is(.overlay:has(> .modal), .overlay:has(> .palette), .revoke-m
 html[data-theme] :is(.overlay, .revoke-modal-box) :is(.input, .select, textarea, .custom-select-trigger) {
     background: var(--lg-field);
     border: 1px solid var(--lg-field-line);
+}
+/* boxes inside a window (notes like "No result yet", the action list) are frosted like the fields, not solid navy */
+html[data-theme] :is(.modal, .drawer) :is(.notice, .action-list, .game-report-stat, .game-history-row) {
+    background: var(--lg-field);
+    border: 1px solid var(--lg-field-line);
+}
+html[data-theme] :is(.modal, .drawer) .action-list-item {
+    background: transparent;
+    border-color: var(--lg-field-line);
+}
+html[data-theme] :is(.modal, .drawer) .action-list-item:hover {
+    background: color-mix(in srgb, var(--text) 9%, transparent);
 }
 @media (prefers-reduced-transparency: reduce) {
     html[data-theme] :is(.custom-select-list, .user-menu, .t-menu, .bar-more-menu, .bar-bell-menu, .modal, .palette, .revoke-modal-box, .toast, .t-toast) {
