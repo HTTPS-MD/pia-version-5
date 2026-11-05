@@ -609,7 +609,7 @@
         var html =
             '<span class="att-dot">·</span>' +
             (m.entered
-                ? '<span class="att-state is-in">In</span>'
+                ? '<span class="att-state is-in">Entered</span>'
                 : '<span class="att-state">Not in yet</span>');
         var meta = [];
         if (m.refused > 0) {
@@ -621,12 +621,14 @@
         }
         if (m.entered) {
             meta.push('<button type="button" class="att-link" data-lbi>Let back in</button>');
-            meta.push(
-                '<button type="button" class="att-link" data-so title="End this student\'s login on every device">Sign out</button>'
-            );
         }
+        var signOut = m.entered
+            ? '<span class="att-so"><span class="att-dot">·</span>' +
+              '<button type="button" class="att-link" data-so title="End this student\'s login on every device">Sign out</button></span>'
+            : '';
         if (meta.length) {
-            html += '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + '</span>';
+            html +=
+                '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + signOut + '</span>';
         }
         return html;
     }
@@ -748,6 +750,70 @@
             say(failure(error), true);
         }
     }
+
+    // After the Game is closed: list the section's students who are still online and offer to sign them all out.
+    async function offerSignOutAll(section) {
+        var cohort = (window.PIAAdmin.state.cohort || []).filter(function (s) {
+            return s.section === section && s.email;
+        });
+        if (!cohort.length) {
+            return;
+        }
+        var online = [];
+        try {
+            var res = await sb
+                .from('profiles')
+                .select('email, active_devices')
+                .in(
+                    'email',
+                    cohort.map(function (s) {
+                        return s.email;
+                    })
+                );
+            if (res.error) {
+                throw res.error;
+            }
+            (res.data || []).forEach(function (r) {
+                if ((r.active_devices || []).length > 0) {
+                    online.push(String(r.email).toLowerCase());
+                }
+            });
+        } catch (error) {
+            say(failure(error), true);
+            return;
+        }
+        if (!online.length) {
+            return;
+        }
+        var names = online.map(function (e) {
+            return window.PIAAdmin.whoIs(e);
+        });
+        var shown = names.slice(0, 12).join(', ') + (names.length > 12 ? ' and ' + (names.length - 12) + ' more' : '');
+        var ok = await window.PIAAdmin.confirmAction({
+            heading: 'Sign out ' + online.length + (online.length === 1 ? ' student' : ' students') + ' still online?',
+            message: shown + '. They are signed out on every device now.',
+            confirmLabel: 'Sign out all',
+            tone: 'accent'
+        });
+        if (!ok) {
+            return;
+        }
+        var failed = 0;
+        await Promise.all(
+            online.map(function (e) {
+                return call('admin_revoke_sessions', { p_email: e }).catch(function () {
+                    failed += 1;
+                });
+            })
+        );
+        if (failed) {
+            say(failed + ' of ' + online.length + ' could not be signed out. Try again.', true);
+        } else if (window.PIAAdmin.toastOk) {
+            window.PIAAdmin.toastOk('Signed out', online.length + (online.length === 1 ? ' student was' : ' students were') + ' signed out.');
+        }
+        refreshOverview().catch(function () {});
+    }
+    window.PIAAdmin.offerSignOutAll = offerSignOutAll;
 
     async function onMark(event, rawEmail) {
         if (event.target.closest('[data-lbi]')) {

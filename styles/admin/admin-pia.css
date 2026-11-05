@@ -2570,3 +2570,11 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     outline-offset: 2px;
     border-radius: 3px;
 }
+
+/* Sign out only shows while the student is online (the green dot on the same row) */
+#view-students td[data-mk-cell] .att-so {
+    display: none;
+}
+#view-students tr:has(.avatar-dot.is-online) td[data-mk-cell] .att-so {
+    display: inline;
+}

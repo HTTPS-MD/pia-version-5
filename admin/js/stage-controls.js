@@ -273,6 +273,12 @@
             Admin.state.gateSelected[gate.key] = [section];
             await revokeSections(gate.key, null);
             if (!sectionOpen(gate, section)) {
+                // The experiment is over: offer to sign out whoever is still logged in.
+                if (Admin.offerSignOutAll) {
+                    setTimeout(function () {
+                        Admin.offerSignOutAll(section);
+                    }, 400);
+                }
                 await saveTutoringSchedule(section, null, null, true);
             }
             return;
