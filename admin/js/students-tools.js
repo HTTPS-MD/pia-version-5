@@ -799,6 +799,10 @@
         if (m.entered) {
             return '<span class="att-result is-in">Entered</span>' + entryExtras(m, true);
         }
+        // Locked: a Present student who never entered can no longer enter. Before the lock he still can.
+        if (attState === 'locked') {
+            return '<span class="att-result is-present is-dnp">Present, did not participate</span>' + entryExtras(m, true);
+        }
         return '<span class="att-result is-present">Present</span>' + entryExtras(m);
     }
 

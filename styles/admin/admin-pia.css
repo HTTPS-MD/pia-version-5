@@ -2716,3 +2716,8 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     color: var(--accent, #7fb0ff);
     font-weight: 600;
 }
+
+/* Present, did not participate: a little quieter than Present */
+#view-students .att-result.is-dnp {
+    opacity: 0.8;
+}
