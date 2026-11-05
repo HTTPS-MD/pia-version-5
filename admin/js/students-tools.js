@@ -16,6 +16,23 @@
     var built = false;
     var polling = false;
 
+    // Privacy Mode hides names on the page, so a dialog must not show them either. Never show an email:
+    // a student's email carries the student number, which is the login.
+    function privacyOn() {
+        return document.documentElement.classList.contains('pia-hide-details');
+    }
+    function peopleText(emails, max) {
+        if (privacyOn()) {
+            return emails.length + (emails.length === 1 ? ' student' : ' students');
+        }
+        var shown = emails.slice(0, max).map(function (e) {
+            var name = String(window.PIAAdmin.whoIs(e) || '');
+            // whoIs falls back to the email when it finds no name: never show that.
+            return !name || /@students\.pia\.invalid$/i.test(name) ? 'a student' : name;
+        });
+        return shown.join(', ') + (emails.length > max ? ' and ' + (emails.length - max) + ' more' : '');
+    }
+
     function failure(error) {
         var raw = String((error && error.message) || '');
         if (/only an administrator|42501/i.test(raw)) {
@@ -743,7 +760,7 @@
         var email = String(rawEmail).toLowerCase();
         var ok = await window.PIAAdmin.confirmAction({
             heading: 'Sign this student out?',
-            message: email + ' will be signed out on every device now.',
+            message: peopleText([email], 1) + ' will be signed out on every device now.',
             confirmLabel: 'Sign out',
             tone: 'accent'
         });
@@ -753,7 +770,7 @@
         try {
             await call('admin_revoke_sessions', { p_email: email });
             if (window.PIAAdmin.toastOk) {
-                window.PIAAdmin.toastOk('Signed out', email + ' was signed out.');
+                window.PIAAdmin.toastOk('Signed out', peopleText([email], 1) + ' was signed out.');
             }
             say('');
         } catch (error) {
@@ -795,10 +812,7 @@
         if (!online.length) {
             return;
         }
-        var names = online.map(function (e) {
-            return window.PIAAdmin.whoIs(e);
-        });
-        var shown = names.slice(0, 12).join(', ') + (names.length > 12 ? ' and ' + (names.length - 12) + ' more' : '');
+        var shown = peopleText(online, 12);
         var ok = await window.PIAAdmin.confirmAction({
             heading: 'Sign out ' + online.length + (online.length === 1 ? ' student' : ' students') + ' still online?',
             message: shown + '. They are signed out on every device now.',
@@ -855,10 +869,7 @@
             return c.section === section && c.email;
         });
         function names(list) {
-            var shown = list.slice(0, 8).map(function (e) {
-                return admin.whoIs(e);
-            });
-            return shown.join(', ') + (list.length > 8 ? ' and ' + (list.length - 8) + ' more' : '');
+            return peopleText(list, 8);
         }
         var emails = cohort.map(function (c) {
             return String(c.email).toLowerCase();
