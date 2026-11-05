@@ -621,6 +621,9 @@
         }
         if (m.entered) {
             meta.push('<button type="button" class="att-link" data-lbi>Let back in</button>');
+            meta.push(
+                '<button type="button" class="att-link" data-so title="End this student\'s login on every device">Sign out</button>'
+            );
         }
         if (meta.length) {
             html += '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + '</span>';
@@ -722,9 +725,37 @@
         refreshOverview().catch(function () {});
     }
 
+    // Ends the student's login on every device (for anyone still signed in after the experiment).
+    // The student cannot enter again on their own: the one-entry rule still applies.
+    async function signOutStudent(rawEmail) {
+        var email = String(rawEmail).toLowerCase();
+        var ok = await window.PIAAdmin.confirmAction({
+            heading: 'Sign this student out?',
+            message: email + ' will be signed out on every device now.',
+            confirmLabel: 'Sign out',
+            tone: 'accent'
+        });
+        if (!ok) {
+            return;
+        }
+        try {
+            await call('admin_revoke_sessions', { p_email: email });
+            if (window.PIAAdmin.toastOk) {
+                window.PIAAdmin.toastOk('Signed out', email + ' was signed out.');
+            }
+            say('');
+        } catch (error) {
+            say(failure(error), true);
+        }
+    }
+
     async function onMark(event, rawEmail) {
         if (event.target.closest('[data-lbi]')) {
             await letBackIn(rawEmail);
+            return;
+        }
+        if (event.target.closest('[data-so]')) {
+            await signOutStudent(rawEmail);
             return;
         }
         var btn = event.target.closest('[data-mk]');
