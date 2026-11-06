@@ -2721,11 +2721,7 @@ html[data-theme='dark'] .confirm-table .table-wrap {
     padding-block: 8px;
 }
 
-/* Entered, then gone: " · offline" shows only while the student's dot on the same row is not online */
-#view-students td[data-mk-cell] .att-off {
+/* Entered, then gone: the word goes grey while the student's dot on the same row is not online */
+#view-students tr:not(:has(.avatar-dot.is-online)) td[data-mk-cell] :is(.att-result, .att-state).is-in {
     color: var(--text-muted);
-    font-weight: 400;
-}
-#view-students tr:has(.avatar-dot.is-online) td[data-mk-cell] .att-off {
-    display: none;
 }
