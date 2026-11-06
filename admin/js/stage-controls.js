@@ -414,6 +414,7 @@
                           ? inside.length + (inside.length === 1 ? ' student is' : ' students are') + ' inside now. They go back to the Waiting Room. '
                           : 'Nobody is inside right now. ') +
                     'Nothing they submitted is removed.' +
+                    (endsExperiment ? ' The experiment ends and the attendance becomes final.' : '') +
                     (everyone ? '' : ' Other sections keep their access.'),
                 table: online.length
                     ? {
@@ -435,7 +436,11 @@
                         return row;
                     })
                 },
-                confirmLabel: online.length ? 'Close Game and sign out all' : 'Close stage'
+                confirmLabel: online.length
+                    ? 'Close Game and sign out all'
+                    : endsExperiment
+                      ? 'Close Game'
+                      : 'Close stage'
         }));
         if (!ok) {
             return;
