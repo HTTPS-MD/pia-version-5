@@ -78,9 +78,37 @@
         Auth.openModal('modal-join-error');
     }
 
-    // Only the admin can help (the session has started, or class is not open yet): say so, tell the admin
-    // (the door counts the first try) and keep asking quietly until the admin lets the student in.
-    // The student then lands on "Is this you?" as usual, so the name is still checked.
+    // The admin let the student in: go straight in, with no more taps.
+    async function enterNow(number, who) {
+        Auth.closeModal('modal-join-error', true);
+        Auth.openModal('modal-signin');
+        join.number = number;
+        join.name = who.name || '';
+        join.section = who.section || '';
+        $('#join-who').textContent = join.name;
+        $('#join-section').textContent = join.section ? 'Section ' + join.section : '';
+        setJoinStep('confirm');
+        join.pending = true;
+        var release = Auth.setBusy($('#si-submit'), 'Entering…');
+        try {
+            var entered = await joinCall({ action: 'enter', number: number });
+            if (!entered.ok) {
+                refused(entered, number, 'Could not let you in. Try again.');
+                return;
+            }
+            await enterWithToken(entered.data.token_hash);
+        } catch (err) {
+            showJoinError('Can’t reach the server. Check your Wi-Fi, then try again.');
+        } finally {
+            join.pending = false;
+            release();
+            $('#si-submit').textContent = join.step === 'confirm' ? 'Yes, that is me' : 'Next';
+        }
+    }
+
+    // Only the admin can help (the session has started, you are marked in already, or class is not open yet): say so,
+    // tell the admin (the door counts the first try) and keep asking quietly until the admin lets the student in.
+    // Then the student goes straight in.
     function showJoinWaiting(message, number) {
         showJoinError(message);
         $('#join-error-wait').hidden = false;
@@ -99,14 +127,7 @@
                     }
                     if (again.ok) {
                         stopWaiting();
-                        Auth.closeModal('modal-join-error', true);
-                        Auth.openModal('modal-signin');
-                        join.number = number;
-                        join.name = again.data.name || '';
-                        join.section = again.data.section || '';
-                        $('#join-who').textContent = join.name;
-                        $('#join-section').textContent = join.section ? 'Section ' + join.section : '';
-                        setJoinStep('confirm');
+                        await enterNow(number, again.data);
                         return;
                     }
                     var data = again.data || {};

@@ -86,8 +86,8 @@ export async function handleJoin(body, ip, deps) {
         const seen = await deps.attendanceFor(student.section, seenEmail);
         if (seen === 'entered') {
             // Refused at the name step already: count it so the admin sees the try on the row.
-            await deps.noteReentry(student.section, seenEmail);
-            return { status: 409, body: { error: MESSAGES.alreadyIn } };
+            if (!body.quiet) await deps.noteReentry(student.section, seenEmail);
+            return { status: 409, body: { error: MESSAGES.alreadyIn, waiting: true } };
         }
         // The attendance was locked when the first stage opened: a Present student who never entered is out.
         // A try after the lock is counted too, so the admin sees it in the bell and can let the student in.
@@ -113,8 +113,8 @@ export async function handleJoin(body, ip, deps) {
     }
     // Only the first entry goes through. A second try is refused and counted for the admin.
     if (mark === 'entered') {
-        await deps.noteReentry(student.section, email);
-        return { status: 409, body: { error: MESSAGES.alreadyIn } };
+        if (!body.quiet) await deps.noteReentry(student.section, email);
+        return { status: 409, body: { error: MESSAGES.alreadyIn, waiting: true } };
     }
     const firstEntry = await deps.claimEntry(student.section, email);
     if (!firstEntry) {
