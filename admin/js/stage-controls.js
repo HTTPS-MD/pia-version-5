@@ -461,6 +461,17 @@
         if (online.length && window.PIASignOut) {
             window.PIASignOut.signOut(online);
         }
+        // Closing the Game ends the experiment: the teacher's attendance record for the section becomes final.
+        if (gate.key === 'dash') {
+            (everyone
+                ? (Admin.state.sections || []).map(function (x) {
+                      return x.name || x;
+                  })
+                : names
+            ).forEach(function (name) {
+                sb.rpc('admin_finalize_attendance', { p_section: name }).then(function () {}, function () {});
+            });
+        }
 
         if (Array.isArray(Admin.state.overrides)) {
             Admin.state.overrides = Admin.state.overrides.filter(function (o) {

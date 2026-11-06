@@ -99,3 +99,10 @@ A bell at the top with a count of students who tried to sign in again. Let back 
 - Every refusal is one answer, "Can't let you in yet. Tell your admin." (unknown number, absent, late, already in, nothing open), same status, same Waiting for your admin screen. From outside the class nobody can tell whether the session started or whether a number is registered.
 - A refused student waits and asks again every 5 seconds (up to 10 minutes) without being counted again. The first try of a real student is counted for the admin's bell. Let back in then lets them straight in. Before the admin lets back in, the admin asks the class who the student is.
 - Known limitation (for Chapter 5): an unknown number counts as a failed try (the brake against guessing numbers) and a real number in the "late / already in" case does not, so someone who tries one number many times can slowly tell them apart by when they get throttled. The limits per number, per address and overall keep it slow.
+
+## L. The teacher's attendance (decided and built 2026-11-06; SQL 22 not run yet)
+
+- Live, until the Game is closed: Present / Absent / Not marked, and **Entered** (accent colour while the student is online, faded after they leave).
+- Final, once the admin closes the Game for the section (`admin_finalize_attendance`, sets `checkins.final_at`): **Present** (entered, even if only briefly), **Absent**, **Did not participate** (marked Present but never entered). It does not change after that.
+- **Download attendance** (CSV for Excel) appears only when the record is final: Name, Section, Date, Status, Time entered (Manila time). No student number, group, stage, personality label, result or score. A name that starts like a formula is made safe.
+- For the paper: "Did not participate" means "marked Present, but never entered the session".

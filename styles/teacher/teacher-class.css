@@ -362,3 +362,17 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
     max-width: 40rem;
     margin-inline: auto;
 }
+
+/* Attendance while the session runs: Entered in the accent colour, faded once the student is offline;
+   and the final "Did not participate" (marked Present, never entered) */
+.t-att-in {
+    color: var(--accent);
+    font-weight: 600;
+}
+.t-att-in.is-away {
+    color: var(--text);
+    opacity: 0.55;
+}
+.t-att-dnp {
+    color: var(--text-muted);
+}

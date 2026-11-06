@@ -18,7 +18,9 @@
         filter: 'all',
         term: '',
         loadedAt: 0,
-        loading: false
+        loading: false,
+        final: false,
+        classDate: ''
     };
     var pollId = null;
     var signingOut = false;
@@ -289,9 +291,15 @@
                     key: String(r.student_key || ''),
                     name: String(r.full_name || 'Unnamed student'),
                     online: r.online === true,
-                    attendance: r.attendance || null
+                    attendance: r.attendance || null,
+                    entered: r.entered === true,
+                    enteredAt: r.entered_at || null
                 };
             });
+            // The same for every row: the record is final once the admin closed the Game.
+            var first = (res.data || [])[0] || {};
+            state.final = first.final === true;
+            state.classDate = first.class_date || '';
             state.loadedAt = Date.now();
             render();
             paintFoot('Read-only. Updated ' + clock(state.loadedAt) + '.');
@@ -325,10 +333,19 @@
         return !term || row.name.toLowerCase().indexOf(term) !== -1;
     }
 
-    function attendanceCell(td, value) {
-        if (value === 'present') {
+    // Live: Entered (full colour while the student is online, faded after they leave). Final: Present, Absent or
+    // Did not participate (marked Present but never entered).
+    function attendanceCell(td, row) {
+        var value = row.attendance;
+        if (value === 'present' && !state.final && row.entered) {
+            td.className = 't-att-in' + (row.online ? '' : ' is-away');
+            td.textContent = 'Entered';
+        } else if (value === 'present') {
             td.className = 't-att-present';
             td.textContent = '✓ Present';
+        } else if (value === 'did_not_participate') {
+            td.className = 't-att-dnp';
+            td.textContent = 'Did not participate';
         } else if (value === 'absent') {
             td.className = 't-att-absent';
             td.textContent = '✗ Absent';
@@ -360,7 +377,12 @@
             return r.attendance !== null;
         });
         $('#class-live-dot').classList.toggle('is-on', classOpen);
-        setText($('#class-live-status'), classOpen ? 'Class is open' : 'Study is not yet started');
+        setText(
+            $('#class-live-status'),
+            state.final ? 'Attendance is final' : classOpen ? 'Class is open' : 'Study is not yet started'
+        );
+        // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
+        $('#download-att').classList.toggle('is-hidden', !state.final);
 
         var visible = state.rows.filter(matches);
         var body = $('#roster');
@@ -394,7 +416,7 @@
             who.appendChild(user);
 
             var att = document.createElement('td');
-            attendanceCell(att, r.attendance);
+            attendanceCell(att, r);
 
             tr.appendChild(who);
             tr.appendChild(att);
@@ -409,7 +431,56 @@
         );
     }
 
+    // One line per student, opened in Excel. Only the name, the section, the date, the status and the time entered:
+    // no student number, group, stage or result. A name that starts like a formula is made safe.
+    function csvCell(value) {
+        var text = String(value == null ? '' : value);
+        if (/^[=+\-@\t\r]/.test(text)) {
+            text = "'" + text;
+        }
+        return '"' + text.replace(/"/g, '""') + '"';
+    }
+    var STATUS_WORDS = {
+        present: 'Present',
+        absent: 'Absent',
+        did_not_participate: 'Did not participate',
+        not_marked: 'Not marked'
+    };
+    function downloadAttendance() {
+        var clockFmt = new Intl.DateTimeFormat('en-GB', {
+            timeZone: 'Asia/Manila',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+        var lines = [['Name', 'Section', 'Date', 'Status', 'Time entered'].map(csvCell).join(',')];
+        state.rows.forEach(function (r) {
+            lines.push(
+                [
+                    r.name,
+                    state.section,
+                    state.classDate,
+                    STATUS_WORDS[r.attendance] || '',
+                    r.enteredAt ? clockFmt.format(new Date(r.enteredAt)) : ''
+                ]
+                    .map(csvCell)
+                    .join(',')
+            );
+        });
+        var blob = new Blob(['\ufeff' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8' });
+        var link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'attendance-' + (state.section || 'section') + '-' + state.classDate + '.csv';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(function () {
+            URL.revokeObjectURL(link.href);
+        }, 1000);
+    }
+
     function bindControls() {
+        $('#download-att').addEventListener('click', downloadAttendance);
         $('#filters').addEventListener('click', function (event) {
             var tab = event.target.closest('[data-filter]');
             if (!tab) {
