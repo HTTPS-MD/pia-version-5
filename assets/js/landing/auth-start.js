@@ -34,7 +34,6 @@
         }
 
         $('#signin-form').addEventListener('submit', Auth.handleStudentJoin);
-        $('#join-back').addEventListener('click', Auth.backToNumber);
         $('#staff-form').addEventListener('submit', Auth.handleStaffSignIn);
         Auth.initEmailRequests();
         $('#device-reset-form').addEventListener('submit', Auth.handleDeviceResetCode);

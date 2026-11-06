@@ -6,9 +6,9 @@
 
     var Auth = window.PIAAuth;
 
+    // defined in auth-student-join.js, which loads after this file: look it up when it is needed
     function showJoinError(message) {
-        $('#join-error-text').textContent = message;
-        Auth.openModal('modal-join-error');
+        Auth.showJoinError(message);
     }
 
     var heroJoinPending = false;
@@ -24,7 +24,7 @@
             return;
         }
         if (number.length !== 11) {
-            showJoinError('We could not find you in this class today. Tell your admin.');
+            showJoinError('Can’t let you in yet. Tell your admin.');
             return;
         }
 
@@ -33,24 +33,14 @@
         var release = Auth.setBusy(button, 'Wait…');
         var walkedIn = false;
         try {
-            var found = await Auth.joinCall({ action: 'lookup', number: number });
-            if (!found.ok) {
-                showJoinError(
-                    (found.data && found.data.error) || 'Could not check the number. Try again.'
-                );
-                return;
-            }
-            var entered = await Auth.joinCall({ action: 'enter', number: number });
-            if (!entered.ok) {
-                showJoinError(
-                    (entered.data && entered.data.error) || 'Could not let you in. Try again.'
-                );
-                return;
-            }
             walkedIn = true;
-            await Auth.enterWithToken(entered.data.token_hash, {
+            // a refusal waits for the admin and then enters on its own (see auth-student-join.js)
+            var inside = await Auth.joinWithNumber(number, {
                 current: function () {
                     return true;
+                },
+                working: function () {
+                    Auth.setBusy(button, 'Wait…');
                 },
                 fail: function (message) {
                     walkedIn = false;
@@ -60,6 +50,9 @@
                     button.textContent = 'Wait…';
                 }
             });
+            if (!inside) {
+                walkedIn = false;
+            }
         } catch (err) {
             walkedIn = false;
             showJoinError('Can’t reach the server. Check your Wi-Fi, then try again.');

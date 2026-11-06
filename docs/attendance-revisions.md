@@ -92,3 +92,10 @@ A bell at the top with a count of students who tried to sign in again. Let back 
 - End attendance shows the table (Absent, Present not in yet, Entered) and locks the attendance in the same step (`supabase/staging/20-end-attendance-locks-it.sql`, run once). After that: no mark changes, no Start again, a Present student who has not entered can no longer enter (Let back in still works for one who did).
 - Opening a stage then shows who can enter (Present) and who stays out (Absent). The old "Lock attendance and open" dialog only appears if attendance ended without a lock (the 12-hour ceiling).
 - Start attendance cannot be pressed twice after End any more. A late student must be marked or enter before End.
+
+## K. The door says the same to everyone (decided 2026-11-06)
+
+- No more "Is this you?" and no name is ever sent by the door (the `lookup` action is gone). One step: type the number, Join.
+- Every refusal is one answer, "Can't let you in yet. Tell your admin." (unknown number, absent, late, already in, nothing open), same status, same Waiting for your admin screen. From outside the class nobody can tell whether the session started or whether a number is registered.
+- A refused student waits and asks again every 5 seconds (up to 10 minutes) without being counted again. The first try of a real student is counted for the admin's bell. Let back in then lets them straight in. Before the admin lets back in, the admin asks the class who the student is.
+- Known limitation (for Chapter 5): an unknown number counts as a failed try (the brake against guessing numbers) and a real number in the "late / already in" case does not, so someone who tries one number many times can slowly tell them apart by when they get throttled. The limits per number, per address and overall keep it slow.

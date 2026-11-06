@@ -1,13 +1,16 @@
 /*
  * Student sign-in with a student number.
- * Two steps: type the number, confirm the name, then enter.
+ * One step: type the number and join. The door answers the same way to every refusal, so nothing about who is
+ * registered or whether the session started leaks. A refused student waits (quietly asking again) until the
+ * admin lets them in, and then goes straight in.
  */
 (function () {
     'use strict';
 
     var Auth = window.PIAAuth;
 
-    var join = { step: 'number', number: '', name: '', section: '', pending: false };
+    var join = { pending: false };
+    var REFUSED = 'Can’t let you in yet. Tell your admin.';
 
     function joinCall(payload) {
         return sb.functions
@@ -29,38 +32,6 @@
     }
     Auth.joinCall = joinCall;
 
-    function setJoinStep(step) {
-        join.step = step;
-        var confirm = step === 'confirm';
-        $('#join-step-code').hidden = confirm;
-        $('#join-step-name').hidden = !confirm;
-
-        $('#join-back').hidden = !confirm;
-        $('#join-back').textContent = 'No, that is not me';
-        $('#si-submit').hidden = false;
-        $('#si-submit').textContent = confirm ? 'Yes, that is me' : 'Join';
-        $('#signin-title').textContent = confirm ? 'Is this you?' : 'Enter your code';
-        $('#signin-sub').textContent = confirm
-            ? 'Check the name and section before you continue.'
-            : '';
-        $('#signin-sub').hidden = !confirm;
-    }
-
-    function resetJoin() {
-        if (!$('#join-step-code')) {
-            return;
-        }
-        join.number = '';
-        join.pending = false;
-        $('#join-number').value = '';
-        $('#join-who').textContent = '';
-        $('#join-section').textContent = '';
-        setJoinStep('number');
-        Auth.clearFormErrors('signin-form');
-        Auth.clearStatus('signin-status');
-    }
-    Auth.resetJoin = resetJoin;
-
     var waitTimer = null;
     function stopWaiting() {
         clearTimeout(waitTimer);
@@ -71,97 +42,24 @@
         }
     }
 
+    function resetJoin() {
+        if (!$('#join-number')) {
+            return;
+        }
+        join.pending = false;
+        $('#join-number').value = '';
+        Auth.clearFormErrors('signin-form');
+        Auth.clearStatus('signin-status');
+    }
+    Auth.resetJoin = resetJoin;
+
     function showJoinError(message) {
         stopWaiting();
         Auth.closeModal('modal-signin', true);
         $('#join-error-text').textContent = message;
         Auth.openModal('modal-join-error');
     }
-
-    // The admin let the student in: go straight in, with no more taps.
-    async function enterNow(number, who) {
-        Auth.closeModal('modal-join-error', true);
-        Auth.openModal('modal-signin');
-        join.number = number;
-        join.name = who.name || '';
-        join.section = who.section || '';
-        $('#join-who').textContent = join.name;
-        $('#join-section').textContent = join.section ? 'Section ' + join.section : '';
-        setJoinStep('confirm');
-        join.pending = true;
-        var release = Auth.setBusy($('#si-submit'), 'Entering…');
-        try {
-            var entered = await joinCall({ action: 'enter', number: number });
-            if (!entered.ok) {
-                refused(entered, number, 'Could not let you in. Try again.');
-                return;
-            }
-            await enterWithToken(entered.data.token_hash);
-        } catch (err) {
-            showJoinError('Can’t reach the server. Check your Wi-Fi, then try again.');
-        } finally {
-            join.pending = false;
-            release();
-            $('#si-submit').textContent = join.step === 'confirm' ? 'Yes, that is me' : 'Next';
-        }
-    }
-
-    // Only the admin can help (the session has started, you are marked in already, or class is not open yet): say so,
-    // tell the admin (the door counts the first try) and keep asking quietly until the admin lets the student in.
-    // Then the student goes straight in.
-    function showJoinWaiting(message, number) {
-        showJoinError(message);
-        $('#join-error-wait').hidden = false;
-        var until = Date.now() + 10 * 60000;
-        (function tick() {
-            waitTimer = setTimeout(async function () {
-                if (!$('#modal-join-error').classList.contains('is-open') || Date.now() > until) {
-                    stopWaiting();
-                    return;
-                }
-                try {
-                    var again = await joinCall({ action: 'lookup', number: number, quiet: true });
-                    if (!$('#modal-join-error').classList.contains('is-open')) {
-                        stopWaiting();
-                        return;
-                    }
-                    if (again.ok) {
-                        stopWaiting();
-                        await enterNow(number, again.data);
-                        return;
-                    }
-                    var data = again.data || {};
-                    if (!data.waiting && !data.closed) {
-                        showJoinError(data.error || 'Could not check the number. Try again.');
-                        return;
-                    }
-                } catch (err) {}
-                tick();
-            }, 5000);
-        })();
-    }
-
-    function refused(result, number, fallback) {
-        var data = result.data || {};
-        var message = data.error || fallback;
-        if (data.waiting || data.closed) {
-            showJoinWaiting(message, number);
-        } else {
-            showJoinError(message);
-        }
-    }
-
-    function backToNumber(message) {
-        setJoinStep('number');
-        $('#join-number').value = '';
-        Auth.clearFormErrors('signin-form');
-        Auth.clearStatus('signin-status');
-        if (typeof message === 'string' && message) {
-            Auth.setStatus('signin-status', message, 'error');
-        }
-        $('#join-number').focus();
-    }
-    Auth.backToNumber = backToNumber;
+    Auth.showJoinError = showJoinError;
 
     async function enterWithToken(tokenHash, ui) {
         ui = ui || {};
@@ -251,6 +149,63 @@
     }
     Auth.enterWithToken = enterWithToken;
 
+    // Refused: say so, wait, and keep asking quietly (the door counts only the first try, for the admin's bell)
+    // until the admin lets the student in. Then the student goes straight in. Stops when the window is closed.
+    function showJoinWaiting(message, number, ui) {
+        showJoinError(message);
+        $('#join-error-wait').hidden = false;
+        var until = Date.now() + 10 * 60000;
+        (function tick() {
+            waitTimer = setTimeout(async function () {
+                var box = $('#modal-join-error');
+                if (!box.classList.contains('is-open') || Date.now() > until) {
+                    stopWaiting();
+                    return;
+                }
+                try {
+                    var again = await joinCall({ action: 'enter', number: number, quiet: true });
+                    if (!box.classList.contains('is-open')) {
+                        stopWaiting();
+                        return;
+                    }
+                    if (again.ok) {
+                        stopWaiting();
+                        Auth.closeModal('modal-join-error', true);
+                        if (ui.working) {
+                            ui.working();
+                        }
+                        await enterWithToken(again.data.token_hash, ui);
+                        return;
+                    }
+                    var data = again.data || {};
+                    if (!data.waiting) {
+                        showJoinError(data.error || 'Could not let you in. Try again.');
+                        return;
+                    }
+                } catch (err) {}
+                tick();
+            }, 5000);
+        })();
+    }
+
+    // One door for both boxes (the first screen and the sign-in window).
+    async function joinWithNumber(number, ui) {
+        var res = await joinCall({ action: 'enter', number: number });
+        if (!res.ok) {
+            var data = res.data || {};
+            var message = data.error || 'Could not let you in. Try again.';
+            if (data.waiting) {
+                showJoinWaiting(message, number, ui);
+            } else {
+                showJoinError(message);
+            }
+            return false;
+        }
+        await enterWithToken(res.data.token_hash, ui);
+        return true;
+    }
+    Auth.joinWithNumber = joinWithNumber;
+
     async function handleStudentJoin(event) {
         event.preventDefault();
         if (join.pending || $('#si-submit').disabled) {
@@ -259,70 +214,36 @@
         Auth.clearFormErrors('signin-form');
         Auth.clearStatus('signin-status');
 
-        var overlay = $('#modal-signin');
-        var version = overlay.dataset.authVersion || '0';
-        var current = function () {
-            return (
-                overlay.classList.contains('is-open') &&
-                (overlay.dataset.authVersion || '0') === version
-            );
-        };
-
-        if (join.step === 'number') {
-            var number = $('#join-number').value.replace(/\D/g, '');
-            if (number.length !== 11) {
-                showJoinError('We could not find you in this class today. Tell your admin.');
-                return;
-            }
-            join.pending = true;
-            var release = Auth.setBusy($('#si-submit'), 'Checking…');
-            try {
-                var found = await joinCall({ action: 'lookup', number: number });
-                if (!current()) {
-                    return;
-                }
-                if (!found.ok) {
-                    refused(found, number, 'Could not check the number. Try again.');
-                    return;
-                }
-                join.number = number;
-                join.name = found.data.name || '';
-                join.section = found.data.section || '';
-                $('#join-who').textContent = join.name;
-                $('#join-section').textContent = join.section ? 'Section ' + join.section : '';
-                setJoinStep('confirm');
-            } catch (err) {
-                if (current()) {
-                    showJoinError('Can’t reach the server. Check your Wi-Fi, then try again.');
-                }
-            } finally {
-                join.pending = false;
-                release();
-                $('#si-submit').textContent = join.step === 'confirm' ? 'Yes, that is me' : 'Next';
-            }
+        var number = $('#join-number').value.replace(/\D/g, '');
+        if (number.length !== 11) {
+            showJoinError(REFUSED);
             return;
         }
-
+        var overlay = $('#modal-signin');
+        var version = overlay.dataset.authVersion || '0';
         join.pending = true;
-        var releaseEnter = Auth.setBusy($('#si-submit'), 'Entering…');
+        var release = Auth.setBusy($('#si-submit'), 'Entering…');
         try {
-            var entered = await joinCall({ action: 'enter', number: join.number });
-            if (!current()) {
-                return;
-            }
-            if (!entered.ok) {
-                refused(entered, join.number, 'Could not let you in. Try again.');
-                return;
-            }
-            await enterWithToken(entered.data.token_hash);
+            await joinWithNumber(number, {
+                // after a wait the window is opened again, which is a new version of it
+                working: function () {
+                    Auth.openModal('modal-signin');
+                    version = overlay.dataset.authVersion || '0';
+                    Auth.setBusy($('#si-submit'), 'Entering…');
+                },
+                current: function () {
+                    return (
+                        overlay.classList.contains('is-open') &&
+                        (overlay.dataset.authVersion || '0') === version
+                    );
+                }
+            });
         } catch (err) {
-            if (current()) {
-                showJoinError('Can’t reach the server. Check your Wi-Fi, then try again.');
-            }
+            showJoinError('Can’t reach the server. Check your Wi-Fi, then try again.');
         } finally {
             join.pending = false;
-            releaseEnter();
-            $('#si-submit').textContent = join.step === 'confirm' ? 'Yes, that is me' : 'Next';
+            release();
+            $('#si-submit').textContent = 'Join';
         }
     }
     Auth.handleStudentJoin = handleStudentJoin;

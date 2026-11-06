@@ -3,15 +3,19 @@
 // index.js wires Deps to Supabase; tests/sim wires the same handler to an
 // in-memory store, so the use cases can be rehearsed without a database.
 //
-//   { action: 'lookup', number }   -> { ok, name, section }
-//   { action: 'enter',  number }   -> { ok, status: 'let_in', email, token_hash }
+//   { action: 'enter', number, quiet? } -> { ok, status: 'let_in', email, token_hash }
 //
 // The flow: while a class is open the admin calls the names and marks each
-// student present or absent. A student types the number and confirms the name
-// (lookup), then enters. Only a student marked present gets a one-time sign-in
-// token, and only ONCE: the first entry is free. A second try (a closed browser,
-// another computer, a classmate typing the number) is refused and counted on that
-// student's row; only the admin's "Let back in" lets it through again.
+// student present or absent. A student types the number and enters. Only a student
+// marked present gets a one-time sign-in token, and only ONCE: the first entry is
+// free. A second try (a closed browser, another computer, a classmate typing the
+// number) is refused and counted on that student's row; only the admin's
+// "Let back in" lets it through again.
+//
+// EVERY refusal is the same answer (same words, same status, waiting: true): an unknown number, an
+// absent student, a late one, one already in, nothing open. Outside the class nobody can tell whether the
+// session started or whether a number is registered, and no name is ever sent. A refused student waits and
+// asks again with quiet: true (not counted again for the admin's bell) until the admin lets them in.
 //
 // A number is accepted once the admin has taken attendance for the student's
 // section today, and it stays accepted after the session is closed, so a student
@@ -26,11 +30,7 @@ export const MAX_FAILURES_PER_IP = 60; // a whole lab shares one address
 export const MAX_FAILURES_ALL = 200;
 export const WINDOW_MS = 10 * 60_000;
 export const MESSAGES = {
-    notReady: 'Class is not open yet. Please wait.',
-    notFound: 'We could not find you in this class today. Tell your admin.',
-    alreadyIn:
-        'You are already signed in. If you lost your connection, tell your admin to let you back in.',
-    late: 'The session has already started. Tell your admin.',
+    refused: 'Can’t let you in yet. Tell your admin.',
     throttled: 'Too many tries. Please wait a few minutes, or tell your admin.',
     server: 'Something went wrong. Please try again.'
 };
@@ -42,11 +42,11 @@ export function normalizeNumber(raw) {
 }
 export const NUMBER_PATTERN = /^\d{11}$/;
 export async function handleJoin(body, ip, deps) {
-    const action = String(body.action ?? '');
-    if (action !== 'lookup' && action !== 'enter')
+    if (String(body.action ?? '') !== 'enter')
         return { status: 400, body: { error: 'Unknown action.' } };
+    const refused = { status: 403, body: { error: MESSAGES.refused, waiting: true } };
     const key = normalizeNumber(body.number);
-    if (!NUMBER_PATTERN.test(key)) return { status: 404, body: { error: MESSAGES.notFound } };
+    if (!NUMBER_PATTERN.test(key)) return refused;
     const since = deps.now() - WINDOW_MS;
     const [byNumber, byIp, byAll] = await Promise.all([
         deps.countFailures('n:' + key, since),
@@ -60,17 +60,17 @@ export async function handleJoin(body, ip, deps) {
     ) {
         return { status: 429, body: { error: MESSAGES.throttled } };
     }
-    const fail = async (reply) => {
+    // An unknown number counts as a failed try (the brake against guessing numbers).
+    const fail = async () => {
         await Promise.all([
             deps.record('n:' + key, false),
             deps.record('ip:' + ip, false),
             deps.record('all', false)
         ]);
-        return reply;
+        return refused;
     };
-    // Nothing open anywhere: say so, whatever the number. No name is read, nothing leaks.
-    if (!(await deps.anyCheckinOpen()))
-        return { status: 403, body: { error: MESSAGES.notReady, closed: true } };
+    // Nothing open anywhere: the same refusal, whatever the number. No name is read, nothing leaks.
+    if (!(await deps.anyCheckinOpen())) return refused;
     const student = await deps.findStudent(key);
     const role = String(student?.role ?? 'student')
         .trim()
@@ -80,46 +80,19 @@ export async function handleJoin(body, ip, deps) {
         role !== 'admin' &&
         role !== 'teacher' &&
         (await deps.checkinOpenFor(student.section));
-    if (!student || !allowed) return fail({ status: 404, body: { error: MESSAGES.notFound } });
-    if (action === 'lookup') {
-        const seenEmail = student.email.trim().toLowerCase();
-        const seen = await deps.attendanceFor(student.section, seenEmail);
-        if (seen === 'entered') {
-            // Refused at the name step already: count it so the admin sees the try on the row.
-            if (!body.quiet) await deps.noteReentry(student.section, seenEmail);
-            return { status: 409, body: { error: MESSAGES.alreadyIn, waiting: true } };
-        }
-        // The attendance was locked when the first stage opened: a Present student who never entered is out.
-        // A try after the lock is counted too, so the admin sees it in the bell and can let the student in.
-        // The waiting page asks again every few seconds with quiet: those asks are not counted again.
-        if (seen === 'late') {
-            if (!body.quiet) await deps.noteReentry(student.section, seenEmail);
-            return { status: 403, body: { error: MESSAGES.late, waiting: true } };
-        }
-        return {
-            status: 200,
-            body: { ok: true, name: student.full_name ?? '', section: student.section }
-        };
-    }
-    // ---- enter ----------------------------------------------------------------
+    if (!student || !allowed) return fail();
     const email = student.email.trim().toLowerCase();
     const mark = await deps.attendanceFor(student.section, email);
-    // Same words and same status as an unknown number: the reply says nothing about which it was.
-    if (mark === 'none' || mark === 'absent')
-        return { status: 404, body: { error: MESSAGES.notFound } };
-    if (mark === 'late') {
+    if (mark === 'none' || mark === 'absent') return fail();
+    // Late (after the lock) or already in: refused, and counted once for the admin's bell.
+    if (mark === 'late' || mark === 'entered') {
         if (!body.quiet) await deps.noteReentry(student.section, email);
-        return { status: 403, body: { error: MESSAGES.late, waiting: true } };
-    }
-    // Only the first entry goes through. A second try is refused and counted for the admin.
-    if (mark === 'entered') {
-        if (!body.quiet) await deps.noteReentry(student.section, email);
-        return { status: 409, body: { error: MESSAGES.alreadyIn, waiting: true } };
+        return refused;
     }
     const firstEntry = await deps.claimEntry(student.section, email);
     if (!firstEntry) {
-        await deps.noteReentry(student.section, email);
-        return { status: 409, body: { error: MESSAGES.alreadyIn } };
+        if (!body.quiet) await deps.noteReentry(student.section, email);
+        return refused;
     }
     try {
         await deps.ensureAccount(email);
