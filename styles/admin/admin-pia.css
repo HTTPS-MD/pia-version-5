@@ -2620,8 +2620,16 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     gap: 10px;
     cursor: default;
 }
-:is(.bell-head, .bell-item, .bell-empty):hover {
+/* the rows are not choices: no hover (the global menu hover is more specific, so this one is too) */
+html[data-theme] :is(.bell-head, .bell-item, .bell-empty):hover {
     background: transparent;
+}
+/* a line between one row and the next */
+.bell-item {
+    border-radius: 0;
+}
+.bell-item + .bell-item {
+    border-top: 1px solid var(--lg-field-line);
 }
 .bell-head {
     color: var(--text-muted);
@@ -2643,9 +2651,6 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     background: var(--bg-chip);
     font-size: 0.8em;
     font-weight: 700;
-}
-.bell-dismiss {
-    opacity: 0.75;
 }
 
 /* Entered: the student is in (so Present is understood) */

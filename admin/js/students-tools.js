@@ -654,8 +654,8 @@
                               '<div class="custom-select-option section-opt bell-item" data-email="' + esc(i.email) + '" data-n="' + i.n + '">' +
                               '<span class="bell-av">' + esc(i.initials) + '</span>' +
                               '<span class="bell-text">tried ×' + i.n + '</span>' +
-                              '<button type="button" class="att-link" data-bell-lbi>Let back in</button>' +
-                              '<button type="button" class="att-link bell-dismiss" data-bell-dismiss>Dismiss</button>' +
+                              '<button type="button" class="btn btn-sm btn-primary" data-bell-lbi>Let back in</button>' +
+                              '<button type="button" class="btn btn-sm btn-secondary" data-bell-dismiss>Dismiss</button>' +
                               '</div>'
                           );
                       })
@@ -786,6 +786,7 @@
             markAll.classList.toggle('is-hidden', !showAll);
         }
         window.PIASessionLive = !!section && !!openFor(section);
+        window.PIAAttState = section ? attState : '';
         if (window.PIAAdmin && window.PIAAdmin.renderStageSwitches) {
             window.PIAAdmin.renderStageSwitches();
         }
@@ -1024,9 +1025,10 @@
     window.PIAOfferSignOutAll = offerSignOutAll;
 
     // Before the first stage opens: show who is Present, Absent and not in yet, and lock only on a yes.
-    // True means go ahead (nothing to confirm, or the admin confirmed). False means stay.
-    // Returns true (nothing to ask), 'confirmed' (the admin accepted this dialog: it is also the stage's confirmation) or false.
-    async function attendanceCheckpoint(section, stageTitle) {
+    // The table the admin sees before attendance is locked: Absent, Present but not in yet, Entered.
+    // ending = End attendance (locks it). Otherwise it is the first stage opening (only when attendance ended without a lock).
+    // Returns true (nothing to ask), 'confirmed' (the admin accepted: for a stage this is also the stage's confirmation) or false.
+    async function attendanceCheckpoint(section, stageTitle, ending) {
         if (!section) {
             return true;
         }
@@ -1036,7 +1038,7 @@
         } catch (e) {
             return true;
         }
-        if (st !== 'ended') {
+        if (ending ? st !== 'open' : st !== 'ended') {
             return true;
         }
         var rows = [];
@@ -1091,17 +1093,23 @@
                     })
             );
         var accepted = await admin.confirmAction({
-            heading: 'Lock attendance and open ' + (stageTitle || 'this stage') + '?',
+            heading: ending ? 'End attendance and lock it?' : 'Lock attendance and open ' + (stageTitle || 'this stage') + '?',
             message:
                 present.length + ' Present, ' + absent.length + ' Absent. You cannot change attendance after this.' +
                 (notIn.length ? ' ' + notIn.length + ' Present ' + (notIn.length === 1 ? 'student is' : 'students are') + ' not in yet and cannot join after this.' : ''),
             table: { columns: ['Student', 'Status'], rows: rowsOut },
-            confirmLabel: 'Lock and open',
+            confirmLabel: ending ? 'End and lock' : 'Lock and open',
             tone: 'accent'
         });
         return accepted ? 'confirmed' : false;
     }
     window.PIAAttendanceCheckpoint = attendanceCheckpoint;
+    // The day's marks for a section: [{ email, present, entered }] (null if they cannot be read).
+    window.PIAAttendanceRows = function (section) {
+        return call('admin_attendance', { p_section: section }).catch(function () {
+            return null;
+        });
+    };
 
     async function onMark(event, rawEmail) {
         if (event.target.closest('[data-lbi]')) {
@@ -1433,6 +1441,9 @@
                 if (!again) {
                     return;
                 }
+            }
+            if (!starting && !(await attendanceCheckpoint(section, null, true))) {
+                return;
             }
             act(toggle, function () {
                 return starting

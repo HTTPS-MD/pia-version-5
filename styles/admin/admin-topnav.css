@@ -163,15 +163,19 @@
     opacity: 0.5;
     cursor: progress;
 }
-#modal-confirm .modal-hero {
+:is(#modal-confirm, #modal-notice) .modal-hero {
     align-items: flex-start;
     text-align: left;
 }
-#modal-confirm .modal-hero-glyph {
+:is(#modal-confirm, #modal-notice) .modal-hero-glyph {
     display: none;
 }
-#modal-confirm .modal-hero-text {
+:is(#modal-confirm, #modal-notice) .modal-hero-text {
     max-width: none;
+}
+#modal-notice .modal-hero-text {
+    white-space: pre-line;
+    overflow-wrap: anywhere;
 }
 
 @media (max-width: 56.3rem) {

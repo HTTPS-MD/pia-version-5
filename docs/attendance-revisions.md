@@ -86,3 +86,9 @@ A bell at the top with a count of students who tried to sign in again. Let back 
 - The Game has NO start or end time any more (decided 2026-11-06): the admin opens and closes it by hand, like OCEAN and Choose a tutor. The time window, its dialog and the cron idea were removed. `supabase/staging/18-remove-game-schedule-rows.sql` empties the old rows (run it once). The table stays, unused.
 - The earlier stage (OCEAN, then Choose a tutor) closes by itself when a later stage opens and nobody is still inside it (BUILT, local).
 - "Sign out everyone" moved to the More menu for the leftovers (a student who logs in after the end).
+
+## J. End attendance locks it (decided 2026-11-06)
+
+- End attendance shows the table (Absent, Present not in yet, Entered) and locks the attendance in the same step (`supabase/staging/20-end-attendance-locks-it.sql`, run once). After that: no mark changes, no Start again, a Present student who has not entered can no longer enter (Let back in still works for one who did).
+- Opening a stage then shows who can enter (Present) and who stays out (Absent). The old "Lock attendance and open" dialog only appears if attendance ended without a lock (the 12-hour ceiling).
+- Start attendance cannot be pressed twice after End any more. A late student must be marked or enter before End.

@@ -166,6 +166,26 @@
             return;
         }
 
+        // A student who is signed in or inside a stage is not moved: they would keep playing in a section whose
+        // stage may be closed, and their attendance would stay on the old section.
+        var current = (Admin.state.cohort || []).filter(function (c) {
+            return String(c.email || '').toLowerCase() === originalEmail.toLowerCase();
+        })[0];
+        if (current && current.section !== section) {
+            var inside = Admin.GATES.filter(function (g) {
+                return g.label === current.current_stage;
+            })[0];
+            if (inside || Admin.isOnline(current)) {
+                Admin.setFieldError(
+                    'es-section',
+                    inside
+                        ? 'This student is in ' + inside.title + ' now. Close it for the old section first.'
+                        : 'This student is signed in now. Sign them out first, then move them.'
+                );
+                return;
+            }
+        }
+
         var fullName = [first, middle, last].filter(Boolean).join(' ');
         var release = Admin.setBusy($('#es-submit'), 'Saving…');
 

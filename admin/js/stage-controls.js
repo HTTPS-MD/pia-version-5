@@ -76,14 +76,18 @@
             btn.setAttribute('aria-checked', on ? 'true' : 'false');
             btn.classList.toggle('is-on', on);
             var locked = !!window.PIASessionLive;
-            btn.disabled = !ready || locked || btn.classList.contains('is-working');
+            // No attendance taken yet: nobody can be let in, so a closed stage cannot be opened.
+            var noAttendance = window.PIAAttState === 'none' && !on;
+            btn.disabled = !ready || locked || noAttendance || btn.classList.contains('is-working');
             btn.setAttribute(
                 'aria-label',
                 gate.title + ' for ' + section + (on ? ': open' : ': closed')
             );
             btn.title = !section
                 ? ''
-                : locked
+                : noAttendance
+                  ? 'Start and end attendance first.'
+                  : locked
                   ? 'End attendance first. Stages stay locked while attendance is open.'
                   : gate.open
                   ? gate.title +
@@ -95,10 +99,11 @@
     }
     Admin.renderStageSwitches = renderStageSwitches;
 
-    // The stage before this one, when it is open for this section only (not for everyone) and so can be closed on its own.
-    function earlierOpenGate(gate, section) {
-        var prev = Admin.GATES[Admin.GATES.indexOf(gate) - 1];
-        return prev && !prev.open && sectionOpen(prev, section) ? prev : null;
+    // The stages before this one that are open for this section only (not for everyone), so each can be closed on its own.
+    function earlierOpenGates(gate, section) {
+        return Admin.GATES.slice(0, Admin.GATES.indexOf(gate)).filter(function (g) {
+            return !g.open && sectionOpen(g, section);
+        });
     }
     function insideStage(gate, section) {
         return Admin.state.cohort.filter(function (s) {
@@ -115,6 +120,9 @@
         if (gate.key === 'char' && group !== 'non-assigned') {
             return 'Is given a tutor, nothing to choose';
         }
+        if (gate.key === 'char' && s.selected_character) {
+            return Admin.tutorLabel(s);
+        }
         if (gate.key === 'dash' && group === 'non-assigned' && !s.selected_character) {
             return 'Has not chosen a tutor yet';
         }
@@ -122,14 +130,44 @@
     }
 
     // The question before a stage opens. OCEAN has no earlier stage: Present students enter. The others list who can enter and who stays out.
-    function openStageDialog(gate, section) {
+    async function openStageDialog(gate, section) {
         var dialog = {
             heading: 'Open ' + gate.title + ' for ' + section + '?',
             confirmLabel: 'Open stage',
             tone: 'accent'
         };
         if (gate.key === 'ocean') {
-            dialog.message = 'Students marked Present can enter.';
+            // Attendance is locked by now: Present students enter, Absent ones do not.
+            var marks = window.PIAAttendanceRows ? await window.PIAAttendanceRows(section) : null;
+            if (!marks || !marks.length) {
+                dialog.message = 'Students marked Present can enter.';
+                return dialog;
+            }
+            // Present and not finished: can enter. Present but already finished: left alone (opening OCEAN never resets them).
+            var done = {};
+            Admin.state.cohort.forEach(function (c) {
+                done[String(c.email || '').toLowerCase()] = !!c.is_ocean_done;
+            });
+            var enter = [];
+            var finished = [];
+            var absent = [];
+            marks.forEach(function (m) {
+                var who = Admin.studentLabel(m.email);
+                if (!m.present) {
+                    absent.push([who, { text: 'Absent', tone: 'bad' }]);
+                } else if (done[String(m.email).toLowerCase()]) {
+                    finished.push([who, 'Already finished the OCEAN test']);
+                } else {
+                    enter.push([who, { text: 'Can enter', tone: 'good' }]);
+                }
+            });
+            dialog.message =
+                enter.length + ' can enter. ' + finished.length + ' already finished. ' + absent.length + ' Absent.';
+            dialog.table = { columns: ['Student', 'Status'], rows: absent.concat(finished, enter) };
+            if (!enter.length) {
+                dialog.blocked = true;
+                dialog.message = 'Nobody can enter the OCEAN test. Everyone is Absent or has already finished it.';
+            }
             return dialog;
         }
         var stay = [];
@@ -138,19 +176,30 @@
             if (s.section !== section || !s.email) {
                 return;
             }
-            var prev = earlierOpenGate(gate, section);
-            var why = prev && s.current_stage === prev.label ? 'Still in the ' + prev.title : stayOutReason(gate, s);
+            var inEarlier = earlierOpenGates(gate, section).filter(function (g) {
+                return s.current_stage === g.label;
+            })[0];
+            var why = inEarlier ? 'Still in the ' + inEarlier.title : stayOutReason(gate, s);
             (why ? stay : enter).push([Admin.studentLabel(s.email), why ? { text: why, tone: 'warn' } : { text: 'Can enter', tone: 'good' }]);
         });
         dialog.message = enter.length + ' can enter. ' + stay.length + ' stay out.';
-        var before = earlierOpenGate(gate, section);
-        if (before) {
+        earlierOpenGates(gate, section).forEach(function (before) {
             var still = insideStage(before, section).length;
             dialog.message += still
                 ? ' ' + before.title + ' stays open: ' + still + (still === 1 ? ' student is' : ' students are') + ' still inside.'
                 : ' ' + before.title + ' closes now, nobody is inside.';
-        }
+        });
         dialog.table = { columns: ['Student', 'Status'], rows: stay.concat(enter) };
+        // Nobody could get in: the stage is not opened at all.
+        if (!enter.length) {
+            dialog.blocked = true;
+            dialog.message =
+                'Nobody can enter ' +
+                (gate.key === 'dash' ? 'the Game' : gate.title) +
+                ' yet. Students must finish the OCEAN test' +
+                (gate.key === 'dash' ? ' and, if they choose their tutor, choose it' : '') +
+                ' first.';
+        }
         return dialog;
     }
 
@@ -159,11 +208,21 @@
         if (!section || window.PIASessionLive || btn.classList.contains('is-working')) {
             return;
         }
+        if (window.PIAAttState === 'none' && !sectionOpen(gate, section)) {
+            return;
+        }
         btn.classList.add('is-working');
         btn.disabled = true;
         try {
             Admin.state.gateSelected[gate.key] = [section];
             var opening = !sectionOpen(gate, section);
+            if (opening) {
+                var preview = await openStageDialog(gate, section);
+                if (preview.blocked) {
+                    Admin.showNotice('Cannot open ' + gate.title + ' yet', preview.message, 'danger', preview.table);
+                    return;
+                }
+            }
             // When attendance is still to be locked, that dialog is the only question: accepting it opens the stage.
             var asked = false;
             if (opening && window.PIAAttendanceCheckpoint) {
@@ -178,7 +237,7 @@
             } else if (asked) {
                 await grantSections(gate.key, null);
             } else {
-                var ok = await Admin.confirmAction(openStageDialog(gate, section));
+                var ok = await Admin.confirmAction(await openStageDialog(gate, section));
                 if (ok) {
                     await grantSections(gate.key, null);
                 }
@@ -246,12 +305,17 @@
         });
         await Admin.refreshAll();
 
-        // The stage before closes by itself once nobody is inside it (a student still inside keeps it open).
+        // An earlier stage closes by itself once nobody is inside it (a student still inside keeps it open).
         for (var c = 0; c < names.length; c++) {
-            var earlier = earlierOpenGate(gate, names[c]);
-            if (earlier && !failed.some(function (f) { return f.section === names[c]; }) && !insideStage(earlier, names[c]).length) {
-                Admin.state.gateSelected[earlier.key] = [names[c]];
-                await revokeSections(earlier.key, null, true);
+            if (failed.some(function (f) { return f.section === names[c]; })) {
+                continue;
+            }
+            var empties = earlierOpenGates(gate, names[c]).filter(function (g) {
+                return !insideStage(g, names[c]).length;
+            });
+            for (var e = 0; e < empties.length; e++) {
+                Admin.state.gateSelected[empties[e].key] = [names[c]];
+                await revokeSections(empties[e].key, null, true);
             }
         }
 

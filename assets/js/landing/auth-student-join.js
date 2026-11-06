@@ -61,10 +61,73 @@
     }
     Auth.resetJoin = resetJoin;
 
+    var waitTimer = null;
+    function stopWaiting() {
+        clearTimeout(waitTimer);
+        waitTimer = null;
+        var line = $('#join-error-wait');
+        if (line) {
+            line.hidden = true;
+        }
+    }
+
     function showJoinError(message) {
+        stopWaiting();
         Auth.closeModal('modal-signin', true);
         $('#join-error-text').textContent = message;
         Auth.openModal('modal-join-error');
+    }
+
+    // Only the admin can help (the session has started, or class is not open yet): say so, tell the admin
+    // (the door counts the first try) and keep asking quietly until the admin lets the student in.
+    // The student then lands on "Is this you?" as usual, so the name is still checked.
+    function showJoinWaiting(message, number) {
+        showJoinError(message);
+        $('#join-error-wait').hidden = false;
+        var until = Date.now() + 10 * 60000;
+        (function tick() {
+            waitTimer = setTimeout(async function () {
+                if (!$('#modal-join-error').classList.contains('is-open') || Date.now() > until) {
+                    stopWaiting();
+                    return;
+                }
+                try {
+                    var again = await joinCall({ action: 'lookup', number: number, quiet: true });
+                    if (!$('#modal-join-error').classList.contains('is-open')) {
+                        stopWaiting();
+                        return;
+                    }
+                    if (again.ok) {
+                        stopWaiting();
+                        Auth.closeModal('modal-join-error', true);
+                        Auth.openModal('modal-signin');
+                        join.number = number;
+                        join.name = again.data.name || '';
+                        join.section = again.data.section || '';
+                        $('#join-who').textContent = join.name;
+                        $('#join-section').textContent = join.section ? 'Section ' + join.section : '';
+                        setJoinStep('confirm');
+                        return;
+                    }
+                    var data = again.data || {};
+                    if (!data.waiting && !data.closed) {
+                        showJoinError(data.error || 'Could not check the number. Try again.');
+                        return;
+                    }
+                } catch (err) {}
+                tick();
+            }, 5000);
+        })();
+    }
+
+    function refused(result, number, fallback) {
+        var data = result.data || {};
+        var message = data.error || fallback;
+        if (data.waiting || data.closed) {
+            showJoinWaiting(message, number);
+        } else {
+            showJoinError(message);
+        }
     }
 
     function backToNumber(message) {
@@ -198,9 +261,7 @@
                     return;
                 }
                 if (!found.ok) {
-                    showJoinError(
-                        (found.data && found.data.error) || 'Could not check the number. Try again.'
-                    );
+                    refused(found, number, 'Could not check the number. Try again.');
                     return;
                 }
                 join.number = number;
@@ -229,9 +290,7 @@
                 return;
             }
             if (!entered.ok) {
-                showJoinError(
-                    (entered.data && entered.data.error) || 'Could not let you in. Try again.'
-                );
+                refused(entered, join.number, 'Could not let you in. Try again.');
                 return;
             }
             await enterWithToken(entered.data.token_hash);

@@ -90,7 +90,12 @@ export async function handleJoin(body, ip, deps) {
             return { status: 409, body: { error: MESSAGES.alreadyIn } };
         }
         // The attendance was locked when the first stage opened: a Present student who never entered is out.
-        if (seen === 'late') return { status: 403, body: { error: MESSAGES.late } };
+        // A try after the lock is counted too, so the admin sees it in the bell and can let the student in.
+        // The waiting page asks again every few seconds with quiet: those asks are not counted again.
+        if (seen === 'late') {
+            if (!body.quiet) await deps.noteReentry(student.section, seenEmail);
+            return { status: 403, body: { error: MESSAGES.late, waiting: true } };
+        }
         return {
             status: 200,
             body: { ok: true, name: student.full_name ?? '', section: student.section }
@@ -102,7 +107,10 @@ export async function handleJoin(body, ip, deps) {
     // Same words and same status as an unknown number: the reply says nothing about which it was.
     if (mark === 'none' || mark === 'absent')
         return { status: 404, body: { error: MESSAGES.notFound } };
-    if (mark === 'late') return { status: 403, body: { error: MESSAGES.late } };
+    if (mark === 'late') {
+        if (!body.quiet) await deps.noteReentry(student.section, email);
+        return { status: 403, body: { error: MESSAGES.late, waiting: true } };
+    }
     // Only the first entry goes through. A second try is refused and counted for the admin.
     if (mark === 'entered') {
         await deps.noteReentry(student.section, email);
