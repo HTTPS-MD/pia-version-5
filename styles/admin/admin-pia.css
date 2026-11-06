@@ -2721,7 +2721,8 @@ html[data-theme='dark'] .confirm-table .table-wrap {
     padding-block: 8px;
 }
 
-/* Entered, then gone: the word goes grey while the student's dot on the same row is not online */
+/* Entered, then gone: faded like the Current Stage text while the student's dot on the same row is not online */
 #view-students tr:not(:has(.avatar-dot.is-online)) td[data-mk-cell] :is(.att-result, .att-state).is-in {
-    color: var(--text-muted);
+    color: var(--text);
+    opacity: 0.55;
 }
