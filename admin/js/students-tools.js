@@ -809,6 +809,9 @@
         paintMarks();
     }
 
+    // " · offline" after Entered: shown by CSS only while the student's dot on the same row is not online.
+    var OFFLINE_TAG = '<span class="att-off"> · offline</span>';
+
     // After the entry: In / Not in yet, a count of refused second tries, and Let back in.
     // noState: the result already says Entered, so do not say it twice.
     function entryExtras(m, noState) {
@@ -820,7 +823,7 @@
             ? ''
             : '<span class="att-dot">·</span>' +
               (m.entered
-                  ? '<span class="att-state is-in">Entered</span>'
+                  ? '<span class="att-state is-in">Entered</span>' + OFFLINE_TAG
                   : '<span class="att-state">Not in yet</span>');
         var meta = [];
         if (m.refused > 0) {
@@ -843,7 +846,7 @@
             return '<span class="att-result is-absent">Absent</span>';
         }
         if (m.entered) {
-            return '<span class="att-result is-in">Entered</span>' + entryExtras(m, true);
+            return '<span class="att-result is-in">Entered</span>' + OFFLINE_TAG + entryExtras(m, true);
         }
         // Locked: a Present student who never entered can no longer enter. Before the lock he still can.
         if (attState === 'locked') {
