@@ -1415,15 +1415,14 @@
         if (stages && titleRow && stages.parentNode !== titleRow) {
             titleRow.appendChild(stages);
         }
-        // The live count sits at the right end of the tabs row.
-        var countChip = $('#att-count');
-        var tabsRow = $('#stage-tabs') && $('#stage-tabs').parentNode;
-        if (countChip && tabsRow) {
-            tabsRow.appendChild(countChip);
-        }
         // Open gate / Close gate: right beside Privacy Mode, on its left.
         var startEnd = $('#att-toggle');
         if (startEnd && titleRow && details) {
+            // the live count (Entered x of n) sits right before the gate button
+            var countChip = $('#att-count');
+            if (countChip) {
+                titleRow.insertBefore(countChip, details);
+            }
             titleRow.insertBefore(startEnd, details);
         }
         if (details && titleRow && titleRow.lastChild !== details) {

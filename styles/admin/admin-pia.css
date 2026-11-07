@@ -2851,3 +2851,8 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
 /* the stages, the gate button and Privacy Mode are evenly spaced; the stages take the free space on their left */
 #view-students .page-title-row #att-toggle { margin-left: 8px; }
 #view-students .page-title-row:has(.stage-let[hidden]) #att-toggle { margin-left: auto; }
+
+/* Entered x of n: in the title row, right before the gate button */
+#view-students .page-title-row .att-count { order: 2; margin-left: 8px; flex: 0 0 auto; }
+#view-students .page-title-row:has(.stage-let[hidden]) .att-count:not(.is-hidden) { margin-left: auto; }
+#view-students .page-title-row:has(.stage-let[hidden]) .att-count:not(.is-hidden) ~ #att-toggle { margin-left: 8px; }
