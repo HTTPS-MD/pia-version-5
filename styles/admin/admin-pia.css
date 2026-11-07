@@ -2703,7 +2703,7 @@ html[data-theme='dark'] .confirm-table .table-wrap {
 #view-students .page-title-row .stage-let:not([hidden]) + #att-toggle {
     margin-left: 8px;
 }
-#view-students .page-title-row #att-toggle + .show-details.privacy-mode {
+#view-students .page-title-row #att-toggle ~ .show-details.privacy-mode {
     margin-left: 8px;
     border-radius: 999px;
 }
@@ -2832,3 +2832,18 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
     background: color-mix(in srgb, var(--text) 8%, var(--bg));
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 22%, transparent);
 }
+
+/* Privacy Mode is the last item of the title row, at the far right, with or without the buttons before it */
+#view-students .page-title-row .show-details.privacy-mode {
+    margin-left: auto;
+}
+#view-students .page-title-row .stage-let:not([hidden]) ~ .show-details.privacy-mode,
+#view-students .page-title-row #att-toggle:not(.is-hidden) ~ .show-details.privacy-mode {
+    margin-left: 8px;
+}
+
+/* the row never wraps Privacy Mode: the note shrinks and wraps its text instead */
+#view-students .page-title-row { flex-wrap: nowrap; }
+#view-students .page-title-row .stage-let { flex: 0 1 auto; min-width: 0; }
+#view-students .page-title-row #att-toggle,
+#view-students .page-title-row .show-details.privacy-mode { flex: 0 0 auto; }

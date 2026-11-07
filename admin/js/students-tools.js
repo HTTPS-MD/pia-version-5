@@ -745,6 +745,18 @@
         var section = scoped();
         var btn = $('#att-toggle');
         var open = !!section && !!openFor(section);
+        // Privacy Mode hides names and numbers: with no student and no teacher in the section there is nothing to hide.
+        var privacyBox = document.querySelector('label.privacy-mode');
+        if (privacyBox) {
+            var info = null;
+            overview.sections.forEach(function (x) {
+                if (x.section === section) {
+                    info = x;
+                }
+            });
+            var nothing = !!section && !!info && Number(info.students) === 0 && !holder[section];
+            privacyBox.classList.toggle('is-hidden', nothing);
+        }
         var ended = !!section && !open && sessionState === 'locked';
         if (btn) {
             // A section with no students has nobody to let in: no Start button.
@@ -761,8 +773,7 @@
             // The button says which section it acts on: it sits in the top bar, which is the same on every tab.
             var over = ended && window.PIAGameClosed === section; // the Game was closed: the experiment is over
             btn.textContent =
-                (over ? 'Experiment ended' : ended ? 'Gate closed' : open ? 'Close gate' : 'Open gate') +
-                (section && !over ? ' · ' + section : '');
+                (over ? 'Experiment ended' : ended ? 'Gate closed' : open ? 'Close gate' : 'Open gate');
             btn.setAttribute('data-ci', ended ? 'locked' : open ? 'stop' : 'start');
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
@@ -774,7 +785,7 @@
                 : ended
                   ? 'The gate was closed today. No new student can enter.'
                   : open
-                    ? 'Close gate: stop letting students in and get ready to start the experiment'
+                    ? 'Students are entering. Press Close gate to stop letting students in and start the experiment.'
                     : 'Open gate: let the students in';
         }
         // The live count at the top: Entered x of n (only once the session has started).

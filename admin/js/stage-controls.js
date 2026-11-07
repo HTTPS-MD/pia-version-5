@@ -63,18 +63,14 @@
         // aside, with a short note and a way to bring them back.
         var finished = !!section && !running && !anyOpen && window.PIAGameClosed === section;
         // Once the experiment is over the whole bar steps aside (the button says "Experiment ended").
-        bar.hidden = !section || finished || !(running || ended || anyOpen);
+        bar.hidden = !section || finished || running || !(ended || anyOpen);
         var label = bar.querySelector('.stage-label');
         var items = bar.querySelector('.stage-items');
-        var note = $('#stage-note');
         if (label) {
             label.classList.toggle('is-hidden', running || finished);
         }
         if (items) {
             items.classList.toggle('is-hidden', running || finished);
-        }
-        if (note) {
-            note.classList.toggle('is-hidden', !running);
         }
         Admin.GATES.forEach(function (gate) {
             var btn = bar.querySelector('[data-gate-switch="' + gate.key + '"]');
