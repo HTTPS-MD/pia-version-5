@@ -290,7 +290,7 @@
     }
 
     function teacherLook() {
-        return [$('#et-name').value.trim(), Admin.normalizeEmail($('#et-email').value), $('#et-section').value].join('|');
+        return [$('#et-name').value.trim(), Admin.normalizeEmail($('#et-email').value)].join('|');
     }
     var teacherSnapshot = '';
     function syncTeacherSave() {
@@ -310,18 +310,6 @@
         $('#et-original-email').value = f.email;
         $('#et-name').value = f.name || '';
         $('#et-email').value = f.email;
-        var select = $('#et-section');
-        select.innerHTML =
-            '<option value="">Unassigned</option>' +
-            (Admin.state.sections || [])
-                .map(function (sec) {
-                    return '<option value="' + Admin.esc(sec.name) + '">' + Admin.esc(sec.name) + '</option>';
-                })
-                .join('');
-        select.value = f.assigned_section || '';
-        if (Admin.refreshCustomSelect) {
-            Admin.refreshCustomSelect('et-section');
-        }
         teacherSnapshot = teacherLook();
         syncTeacherSave();
         Admin.openModal('modal-edit-teacher');
@@ -333,7 +321,8 @@
         var original = $('#et-original-email').value;
         var name = $('#et-name').value.trim();
         var email = Admin.normalizeEmail($('#et-email').value);
-        var section = $('#et-section').value;
+        // the section stays as it is
+        var section = (Admin.state.activeFaculty && Admin.state.activeFaculty.assigned_section) || '';
 
         var valid = true;
         valid = Admin.setFieldError('et-name', name ? '' : 'Full name is required.') && valid;
@@ -351,9 +340,7 @@
             });
             if (res.error) {
                 var msg = Admin.friendlyDbError(res.error, 'Could not update the teacher.');
-                if (/section/i.test(msg)) {
-                    Admin.setFieldError('et-section', msg);
-                } else if (/email/i.test(msg)) {
+                if (/email/i.test(msg)) {
                     Admin.setFieldError('et-email', msg);
                 } else {
                     Admin.toastErr('Update failed', msg);
