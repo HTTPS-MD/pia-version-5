@@ -443,7 +443,9 @@
             (await Admin.confirmAction({
                 heading: everyone
                     ? 'Close ' + gate.title + ' for every section?'
-                    : 'Close ' + gate.title + ' for ' + names.join(', ') + '?',
+                    : endsExperiment
+                      ? 'End experiment for ' + names[0] + '?'
+                      : 'Close ' + gate.title + ' for ' + names.join(', ') + '?',
                 message:
                     (online.length
                         ? 'The experiment ends. Everyone below is signed out on every device. '
@@ -451,7 +453,7 @@
                           ? inside.length + (inside.length === 1 ? ' student is' : ' students are') + ' inside now. They go back to the Waiting Room. '
                           : 'Nobody is inside right now. ') +
                     'Nothing they submitted is removed.' +
-                    (endsExperiment ? ' The experiment ends.' : '') +
+                    (endsExperiment ? ' The stages stay hidden until tomorrow.' : '') +
                     (everyone ? '' : ' Other sections keep their access.'),
                 table: online.length
                     ? {
@@ -474,9 +476,9 @@
                     })
                 },
                 confirmLabel: online.length
-                    ? 'Close Game and sign out all'
+                    ? 'End experiment'
                     : endsExperiment
-                      ? 'Close Game'
+                      ? 'End experiment'
                       : 'Close stage'
         }));
         if (!ok) {
