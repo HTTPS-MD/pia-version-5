@@ -2857,3 +2857,11 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
 #view-students .page-title-row:has(.stage-let[hidden]) .att-count:not(.is-hidden) { margin-left: auto; }
 #view-students .page-title-row:has(.stage-let[hidden]) .att-count:not(.is-hidden) ~ #att-toggle { margin-left: 8px; }
 
+
+/* light mode: the three topic boxes are the same colour as the table under them */
+html[data-theme='light'] .topic-box {
+    background: var(--bg-surface);
+    box-shadow:
+        inset 0 0 0 1px var(--line-soft),
+        0 14px 34px var(--black-a16);
+}

@@ -5157,3 +5157,22 @@ h4 {
 .nav .nav-signin {
     min-height: 2.75rem;
 }
+
+/* the "Can't let you in yet" window: short, even spacing, one Okay button */
+#modal-join-error .modal-head {
+    padding-bottom: 0;
+}
+#modal-join-error .modal-body {
+    padding-top: var(--sp-2);
+    padding-bottom: var(--sp-3);
+}
+#modal-join-error .portal-note {
+    margin: 0;
+}
+#modal-join-error .portal-note + .portal-note {
+    margin-top: var(--sp-2);
+}
+#modal-join-error .modal-foot {
+    padding-top: var(--sp-2);
+    justify-content: flex-end;
+}
