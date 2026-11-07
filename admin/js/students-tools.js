@@ -759,18 +759,23 @@
             btn.hidden = hideBtn;
             updateArchivedButton();
             // The button says which section it acts on: it sits in the top bar, which is the same on every tab.
-            btn.textContent = (ended ? 'Ended' : open ? 'End' : 'Start') + (section ? ' ' + section : '');
+            var over = ended && window.PIAGameClosed === section; // the Game was closed: the experiment is over
+            btn.textContent =
+                (over ? 'Experiment ended' : ended ? 'Gate closed' : open ? 'Close gate' : 'Open gate') +
+                (section && !over ? ' · ' + section : '');
             btn.setAttribute('data-ci', ended ? 'locked' : open ? 'stop' : 'start');
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             btn.className =
                 'btn ' + (open || ended ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
             btn.disabled = ended;
-            btn.title = ended
-                ? 'This session ended today.'
-                : open
-                  ? 'End: stop letting students in and get ready to start the experiment'
-                  : 'Start: let the students in';
+            btn.title = over
+                ? 'The Game was closed for this section.'
+                : ended
+                  ? 'The gate was closed today. No new student can enter.'
+                  : open
+                    ? 'Close gate: stop letting students in and get ready to start the experiment'
+                    : 'Open gate: let the students in';
         }
         // The live count at the top: Entered x of n (only once the session has started).
         var chip = $('#att-count');
@@ -960,7 +965,7 @@
     window.PIASignOut = { online: onlineIn, signOut: signOutEmails };
 
 
-    // End: the students who have not entered are listed, and the admin chooses to close, or to close and open OCEAN.
+    // Close gate: the students who have not entered are listed, and the admin chooses to close, or to close and open OCEAN.
     // Returns true (closed), 'ocean' (closed and OCEAN is opening) or false (cancelled).
     async function endDialog(section) {
         var rows = [];
@@ -988,7 +993,7 @@
         var preview = admin.previewStage ? await admin.previewStage('ocean', section) : null;
         var canOpen = !!preview && !preview.blocked && !admin.stageIsOpen('ocean', section);
         var answer = await admin.confirmAction({
-            heading: 'Are you sure you want to close?',
+            heading: 'Close the gate?',
             message: notIn.length
                 ? emails.length - notIn.length + ' of ' + emails.length + ' entered. Students who have not entered cannot enter after this.'
                 : 'Everyone entered.',
@@ -998,7 +1003,7 @@
                     return [admin.studentLabel(e), { text: 'Not in yet', tone: 'warn' }];
                 })
             },
-            confirmLabel: canOpen ? 'Close and open OCEAN' : 'Close',
+            confirmLabel: canOpen ? 'Close gate and open OCEAN' : 'Close gate',
             tone: 'accent'
         });
         if (!answer) {
@@ -1138,6 +1143,14 @@
                     }
                 }
             } catch (e) {}
+            // Has the Game been closed for this section? (the experiment is over: the stage controls step aside)
+            try {
+                var closedNow = await call('admin_game_closed', { p_section: section });
+                window.PIAGameClosed = closedNow ? section : '';
+                if (!closedNow) {
+                    window.PIAShowStages = '';
+                }
+            } catch (e) {}
             // The latest learning profile the decision tree gave each student of the section.
             try {
                 var lps = await call('admin_learning_profiles', { p_section: section });
@@ -1269,11 +1282,8 @@
         if (actionsBar) {
             actionsBar.appendChild(countChip);
         }
-        // Start / End sits in the top bar, right beside the theme switch.
-        var themeSw = $('#theme-toggle');
-        if (themeSw && themeSw.parentNode) {
-            themeSw.parentNode.insertBefore(toggle, themeSw);
-        } else if (actionsBar) {
+        // Start / End sits beside Privacy Mode (moved there by build()).
+        if (actionsBar) {
             actionsBar.appendChild(toggle);
         }
         // The bell: students who tried to sign in again.
@@ -1402,6 +1412,11 @@
         var tabsRow = $('#stage-tabs') && $('#stage-tabs').parentNode;
         if (countChip && tabsRow) {
             tabsRow.appendChild(countChip);
+        }
+        // Open gate / Close gate: right beside Privacy Mode, on its left.
+        var startEnd = $('#att-toggle');
+        if (startEnd && titleRow && details) {
+            titleRow.insertBefore(startEnd, details);
         }
         if (details && titleRow && titleRow.lastChild !== details) {
             titleRow.appendChild(details);

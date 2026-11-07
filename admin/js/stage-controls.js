@@ -59,18 +59,29 @@
             return sectionOpen(g, section);
         });
         var ended = window.PIASessionState === 'locked' || window.PIASessionState === 'ended';
+        // The experiment is over once the Game was closed for the section (and no stage is open again): the switches step
+        // aside, with a short note and a way to bring them back.
+        var finished = !!section && !running && !anyOpen && window.PIAGameClosed === section && window.PIAShowStages !== section;
         bar.hidden = !section || !(running || ended || anyOpen);
         var label = bar.querySelector('.stage-label');
         var items = bar.querySelector('.stage-items');
         var note = $('#stage-note');
         if (label) {
-            label.classList.toggle('is-hidden', running);
+            label.classList.toggle('is-hidden', running || finished);
         }
         if (items) {
-            items.classList.toggle('is-hidden', running);
+            items.classList.toggle('is-hidden', running || finished);
         }
         if (note) {
             note.classList.toggle('is-hidden', !running);
+        }
+        var done = $('#stage-done');
+        var show = $('#stage-show');
+        if (done) {
+            done.classList.toggle('is-hidden', !finished);
+        }
+        if (show) {
+            show.classList.toggle('is-hidden', !finished);
         }
         Admin.GATES.forEach(function (gate) {
             var btn = bar.querySelector('[data-gate-switch="' + gate.key + '"]');
@@ -106,9 +117,9 @@
             btn.title = !section
                 ? ''
                 : notStarted
-                  ? 'Press Start, then End, first.'
+                  ? 'Open the gate, then close it, first.'
                   : locked
-                  ? 'Press End first. Stages stay locked while the session is running.'
+                  ? 'Close the gate first. The stages stay locked while students are entering.'
                   : gate.open
                   ? gate.title +
                     ' is open for every section. Switching it off closes it for all of them.'
@@ -283,6 +294,13 @@
     };
 
     function initGates() {
+        var showStages = $('#stage-show');
+        if (showStages) {
+            showStages.addEventListener('click', function () {
+                window.PIAShowStages = window.PIASectionNow || '';
+                renderStageSwitches();
+            });
+        }
         var tabsBar = $('#stage-let');
         if (tabsBar) {
             tabsBar.addEventListener('click', function (event) {

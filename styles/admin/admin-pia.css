@@ -2687,16 +2687,45 @@ html[data-theme='dark'] .confirm-table .table-wrap {
     align-self: center;
 }
 
-/* Start / End: in the top bar, right beside the theme switch, the same height */
-#att-toggle {
-    height: 44px;
-    min-height: 44px;
-    padding: 0 20px;
+/* Start / End: in the title row, on the left of Privacy Mode, the same height as the pills around it */
+#view-students .page-title-row #att-toggle {
+    height: 42px;
+    min-height: 42px;
+    padding: 0 22px;
+    margin-left: auto;
     font-size: var(--fs-sm);
     white-space: nowrap;
-    max-width: 14rem;
+    max-width: 16rem;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex: none;
+}
+#view-students .page-title-row .stage-let:not([hidden]) + #att-toggle {
+    margin-left: 8px;
+}
+#view-students .page-title-row #att-toggle + .show-details.privacy-mode {
+    margin-left: 8px;
+    border-radius: 999px;
+}
+/* in the title row: the stages (or the note that takes their place), then Start / End, then Privacy Mode */
+#view-students .page-title-row .stage-let {
+    order: 1;
+    flex: 0 1 auto;
+    min-width: 0;
+}
+#view-students .page-title-row #att-toggle {
+    order: 2;
+}
+#view-students .page-title-row .show-details.privacy-mode {
+    order: 3;
+}
+#stage-note {
+    font-size: var(--fs-sm);
+    line-height: 1.35;
+    color: var(--text-muted);
+}
+#stage-note.is-hidden {
+    display: none;
 }
 /* Archived: the actions sit in the footer and change with what is ticked */
 .removed-foot {
@@ -2792,4 +2821,40 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
 /* a dialog that steps aside while a question is open on top of it (Archived, while Delete asks) */
 .overlay.is-suspended {
     visibility: hidden;
+}
+
+/* the stage controls step aside once the Game is closed: a note and a small link to bring them back */
+#stage-done {
+    font-size: var(--fs-sm);
+    color: var(--text-muted);
+}
+#stage-done.is-hidden {
+    display: none;
+}
+.stage-show {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--text);
+    font: inherit;
+    font-size: var(--fs-sm);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+.stage-show:hover {
+    color: #ffd83d;
+}
+.stage-show.is-hidden {
+    display: none;
+}
+
+/* the gate button, when it only reports ("Gate closed", "Experiment ended"): dimmed, but easy to read */
+#att-toggle:disabled {
+    opacity: 1;
+    cursor: default;
+    color: var(--text-muted);
+    background: color-mix(in srgb, var(--text) 8%, var(--bg));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 22%, transparent);
 }
