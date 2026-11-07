@@ -770,7 +770,7 @@
                 'btn ' + (open || ended ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
             btn.disabled = ended;
             btn.title = over
-                ? 'The Game was closed for this section.'
+                ? 'The experiment ended for this section (Game closed). The stages stay hidden until tomorrow.'
                 : ended
                   ? 'The gate was closed today. No new student can enter.'
                   : open
@@ -1147,9 +1147,6 @@
             try {
                 var closedNow = await call('admin_game_closed', { p_section: section });
                 window.PIAGameClosed = closedNow ? section : '';
-                if (!closedNow) {
-                    window.PIAShowStages = '';
-                }
             } catch (e) {}
             // The latest learning profile the decision tree gave each student of the section.
             try {

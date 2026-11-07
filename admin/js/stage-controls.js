@@ -61,8 +61,9 @@
         var ended = window.PIASessionState === 'locked' || window.PIASessionState === 'ended';
         // The experiment is over once the Game was closed for the section (and no stage is open again): the switches step
         // aside, with a short note and a way to bring them back.
-        var finished = !!section && !running && !anyOpen && window.PIAGameClosed === section && window.PIAShowStages !== section;
-        bar.hidden = !section || !(running || ended || anyOpen);
+        var finished = !!section && !running && !anyOpen && window.PIAGameClosed === section;
+        // Once the experiment is over the whole bar steps aside (the button says "Experiment ended").
+        bar.hidden = !section || finished || !(running || ended || anyOpen);
         var label = bar.querySelector('.stage-label');
         var items = bar.querySelector('.stage-items');
         var note = $('#stage-note');
@@ -74,14 +75,6 @@
         }
         if (note) {
             note.classList.toggle('is-hidden', !running);
-        }
-        var done = $('#stage-done');
-        var show = $('#stage-show');
-        if (done) {
-            done.classList.toggle('is-hidden', !finished);
-        }
-        if (show) {
-            show.classList.toggle('is-hidden', !finished);
         }
         Admin.GATES.forEach(function (gate) {
             var btn = bar.querySelector('[data-gate-switch="' + gate.key + '"]');
@@ -294,13 +287,6 @@
     };
 
     function initGates() {
-        var showStages = $('#stage-show');
-        if (showStages) {
-            showStages.addEventListener('click', function () {
-                window.PIAShowStages = window.PIASectionNow || '';
-                renderStageSwitches();
-            });
-        }
         var tabsBar = $('#stage-let');
         if (tabsBar) {
             tabsBar.addEventListener('click', function (event) {

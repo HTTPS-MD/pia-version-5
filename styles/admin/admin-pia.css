@@ -2823,32 +2823,6 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
     visibility: hidden;
 }
 
-/* the stage controls step aside once the Game is closed: a note and a small link to bring them back */
-#stage-done {
-    font-size: var(--fs-sm);
-    color: var(--text-muted);
-}
-#stage-done.is-hidden {
-    display: none;
-}
-.stage-show {
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--text);
-    font: inherit;
-    font-size: var(--fs-sm);
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    cursor: pointer;
-}
-.stage-show:hover {
-    color: #ffd83d;
-}
-.stage-show.is-hidden {
-    display: none;
-}
 
 /* the gate button, when it only reports ("Gate closed", "Experiment ended"): dimmed, but easy to read */
 #att-toggle:disabled {
