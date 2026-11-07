@@ -144,6 +144,9 @@
             return 'Has not finished the OCEAN test';
         }
         if (gate.key === 'char' && group !== 'non-assigned') {
+            if (group === 'control') {
+                return 'Control group, has no tutor to choose';
+            }
             return 'Is given a tutor, nothing to choose';
         }
         if (gate.key === 'char' && s.selected_character) {
@@ -420,7 +423,7 @@
                 return 'Control group has no tutor to choose';
             }
             if (group === 'neutral') {
-                return 'Neutral group has no tutor to choose';
+                return 'Already has an assigned tutor';
             }
             return 'Does not choose a tutor';
         }
