@@ -152,6 +152,9 @@
         if (gate.key === 'char' && s.selected_character) {
             return Admin.tutorLabel(s);
         }
+        if (gate.key === 'dash' && group === 'control') {
+            return 'Control group does not play the Game';
+        }
         if (gate.key === 'dash' && group === 'non-assigned' && !s.selected_character) {
             return 'Has not chosen a tutor yet';
         }
