@@ -810,6 +810,13 @@
                 </div>
 
                 <div>
+                    <p class="eyebrow" style="margin-bottom:12px">Actions</p>
+                    <div class="action-list">
+                        <button class="action-list-item" id="faculty-edit">Edit details</button>
+                    </div>
+                </div>
+
+                <div>
                     <div class="eyebrow-row">
                         <p class="eyebrow">OCEAN Test Result</p>
                         <span class="eyebrow-meta" id="faculty-ocean-meta"></span>
@@ -836,6 +843,45 @@
                     <p class="form-status" id="faculty-status-msg" role="status" aria-live="polite"></p>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-edit-teacher" role="dialog" aria-modal="true" aria-labelledby="edit-teacher-title">
+        <div class="modal modal-md">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="edit-teacher-title">Edit teacher</h2>
+                </div>
+            </header>
+
+            <div class="modal-body">
+                <form id="edit-teacher-form" novalidate>
+                    <input type="hidden" id="et-original-email">
+                    <div class="form-grid">
+                        <div class="field">
+                            <label class="label" for="et-name">Full name <span class="req">*</span></label>
+                            <input class="input" type="text" id="et-name" autocomplete="off">
+                            <p class="field-msg" data-msg-for="et-name"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="et-email">Email address <span class="req">*</span></label>
+                            <input class="input" type="email" id="et-email" autocomplete="off">
+                            <p class="field-msg" data-msg-for="et-email"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label" for="et-section">Assigned section</label>
+                            <select class="select" id="et-section"></select>
+                            <p class="field-msg" data-msg-for="et-section"></p>
+                        </div>
+                    </div>
+                    <p class="form-status" id="et-note" role="status"></p>
+                </form>
+            </div>
+
+            <footer class="modal-foot">
+                <button class="btn btn-secondary" type="button" data-modal-close>Cancel</button>
+                <button class="btn btn-primary" type="submit" form="edit-teacher-form" id="et-submit" disabled>Save changes</button>
+            </footer>
         </div>
     </div>
 
@@ -1320,7 +1366,7 @@
     <script src="../js/students-table.js?v=20261126a"></script>
     <script src="../js/student-drawer.js?v=20261127b"></script>
     <script src="../js/student-forms.js?v=20261127a"></script>
-    <script src="../js/admin-faculty.js?v=20261122a"></script>
+    <script src="../js/admin-faculty.js?v=20261128a"></script>
     <script src="../js/stage-controls.js?v=20261128j"></script>
     <script src="../js/admin-account.js?v=20261122d"></script>
     <script src="../js/score-entry.js?v=20261121a"></script>

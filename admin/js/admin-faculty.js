@@ -145,6 +145,12 @@
             }
         });
 
+        $('#faculty-edit').addEventListener('click', openEditTeacher);
+        $('#edit-teacher-form').addEventListener('submit', saveTeacher);
+        ['input', 'change'].forEach(function (type) {
+            $('#edit-teacher-form').addEventListener(type, syncTeacherSave);
+        });
+
         $('#faculty-reset').addEventListener('click', function () {
             if (Admin.state.activeFaculty) {
                 resetFacultyPassword(Admin.state.activeFaculty.email, this);
@@ -282,6 +288,91 @@
         renderFacultyOcean(f);
 
         Admin.openModal('modal-faculty', trigger);
+    }
+
+    function teacherLook() {
+        return [$('#et-name').value.trim(), Admin.normalizeEmail($('#et-email').value), $('#et-section').value].join('|');
+    }
+    var teacherSnapshot = '';
+    function syncTeacherSave() {
+        $('#et-submit').disabled = teacherLook() === teacherSnapshot;
+        var changed = Admin.normalizeEmail($('#et-email').value) !== Admin.normalizeEmail($('#et-original-email').value);
+        $('#et-note').textContent = changed
+            ? 'Changing the email signs this teacher out everywhere. They sign in again with the new email and the same password.'
+            : '';
+    }
+
+    function openEditTeacher() {
+        var f = Admin.state.activeFaculty;
+        if (!f) {
+            return;
+        }
+        Admin.clearFormErrors('edit-teacher-form');
+        $('#et-original-email').value = f.email;
+        $('#et-name').value = f.name || '';
+        $('#et-email').value = f.email;
+        var select = $('#et-section');
+        select.innerHTML =
+            '<option value="">Unassigned</option>' +
+            (Admin.state.sections || [])
+                .map(function (sec) {
+                    return '<option value="' + Admin.esc(sec.name) + '">' + Admin.esc(sec.name) + '</option>';
+                })
+                .join('');
+        select.value = f.assigned_section || '';
+        if (Admin.refreshCustomSelect) {
+            Admin.refreshCustomSelect('et-section');
+        }
+        teacherSnapshot = teacherLook();
+        syncTeacherSave();
+        Admin.openModal('modal-edit-teacher');
+    }
+
+    async function saveTeacher(event) {
+        event.preventDefault();
+        Admin.clearFormErrors('edit-teacher-form');
+        var original = $('#et-original-email').value;
+        var name = $('#et-name').value.trim();
+        var email = Admin.normalizeEmail($('#et-email').value);
+        var section = $('#et-section').value;
+
+        var valid = true;
+        valid = Admin.setFieldError('et-name', name ? '' : 'Full name is required.') && valid;
+        valid = Admin.setFieldError('et-email', Admin.isEmail(email) ? '' : 'Enter a valid email address.') && valid;
+        if (!valid) {
+            return;
+        }
+        var release = Admin.setBusy($('#et-submit'), 'Saving…');
+        try {
+            var res = await sb.rpc('admin_update_teacher', {
+                p_email: original,
+                p_name: name,
+                p_new_email: email,
+                p_section: section
+            });
+            if (res.error) {
+                var msg = Admin.friendlyDbError(res.error, 'Could not update the teacher.');
+                if (/section/i.test(msg)) {
+                    Admin.setFieldError('et-section', msg);
+                } else if (/email/i.test(msg)) {
+                    Admin.setFieldError('et-email', msg);
+                } else {
+                    Admin.toastErr('Update failed', msg);
+                }
+                return;
+            }
+            teacherSnapshot = teacherLook();
+            Admin.closeModal('modal-edit-teacher');
+            Admin.closeModal('modal-faculty');
+            Admin.toastOk('Teacher updated', name + ' was saved.');
+            await Admin.loadFaculty();
+            Admin.renderSections();
+            if (Admin.refreshAll) {
+                Admin.refreshAll();
+            }
+        } finally {
+            release();
+        }
     }
 
     async function signOutFacultyEverywhere(email, sourceBtn) {
