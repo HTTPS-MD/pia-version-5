@@ -1552,36 +1552,33 @@
 
     // ---- Remove from this session / Add back ----
     // A removed student keeps the account and every answer; the roster, the count, the door and the teacher stop counting them.
-    function askReason(email, name) {
+    async function askReason(email) {
         var Admin = window.PIAAdmin;
-        var form = $('#remove-form');
-        var input = $('#remove-reason');
-        var status = $('#remove-status');
-        $('#remove-sub').textContent =
-            Admin.studentLabel(email) + ' will not be counted, and cannot enter. Their answers and account stay. You can add them back or delete them from Archived.';
-        input.value = '';
-        status.textContent = '';
-        Admin.openModal('modal-remove');
-        input.focus();
-        form.onsubmit = async function (event) {
-            event.preventDefault();
-            var reason = input.value.trim();
-            if (!reason) {
-                status.textContent = 'Write the reason first.';
-                return;
-            }
-            $('#remove-submit').disabled = true;
-            try {
-                await call('admin_remove_from_session', { p_email: email, p_reason: reason });
-                Admin.closeModal('modal-remove');
-                say('Archived. You can add them back or delete them from Archived.');
-                await Admin.refreshAll();
-                await refreshOverview();
-            } catch (error) {
-                status.textContent = failure(error);
-            }
-            $('#remove-submit').disabled = false;
-        };
+        var ok = await Admin.confirmAction({
+            heading: 'Archive ' + Admin.studentLabel(email) + '?',
+            message: 'They will not be counted and cannot enter. Their answers and account stay. You can add them back or delete them from Archived.',
+            confirmLabel: 'Archive',
+            tone: 'accent'
+        });
+        if (!ok) {
+            return;
+        }
+        try {
+            await call('admin_remove_from_session', { p_email: email });
+            // A student who is signed in is signed out: they are no longer part of the session.
+            await signOutEmails(await onlineIn(chosen()).then(function (list) {
+                return list.filter(function (e) {
+                    return e === String(email).toLowerCase();
+                });
+            }).catch(function () {
+                return [];
+            }));
+            say('Archived. You can add them back or delete them from Archived.');
+            await Admin.refreshAll();
+            await refreshOverview();
+        } catch (error) {
+            say(failure(error), true);
+        }
     }
 
     async function showRemoved() {
@@ -1592,7 +1589,7 @@
         Admin.openModal('modal-removed');
         var res = await sb
             .from('profiles')
-            .select('email, full_name, removed_at, removed_reason')
+            .select('email, full_name, removed_at')
             .eq('section', section)
             .not('removed_at', 'is', null)
             .order('removed_at', { ascending: false });
@@ -1606,14 +1603,14 @@
             return;
         }
         host.innerHTML =
-            '<div class="table-wrap"><table class="table"><thead><tr><th scope="col">Student</th><th scope="col">Reason</th><th scope="col"></th></tr></thead><tbody>' +
+            '<div class="table-wrap"><table class="table"><thead><tr><th scope="col">Student</th><th scope="col"></th></tr></thead><tbody>' +
             rows
                 .map(function (r) {
                     var who = document.documentElement.classList.contains('pia-hide-details')
                         ? Admin.initialsOf(r.full_name, r.email)
                         : r.full_name;
                     return (
-                        '<tr><td>' + esc(who) + '</td><td>' + esc(r.removed_reason || '') + '</td>' +
+                        '<tr><td>' + esc(who) + '</td>' +
                         '<td class="nowrap"><button type="button" class="btn btn-sm btn-secondary" data-edit>Edit</button>' +
                         '<span class="is-hidden" data-actions><button type="button" class="btn btn-sm btn-secondary" data-addback="' + esc(r.email) + '">Add back</button> ' +
                         '<button type="button" class="btn btn-sm btn-danger" data-delete="' + esc(r.email) + '" data-who="' + esc(who) + '">Delete permanently</button></span></td></tr>'
