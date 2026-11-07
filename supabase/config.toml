@@ -9,3 +9,6 @@ verify_jwt = false
 
 [functions.learning-profile]
 entrypoint = "./functions/learning-profile/index.js"
+
+[functions.topic-summary]
+entrypoint = "./functions/topic-summary/index.js"

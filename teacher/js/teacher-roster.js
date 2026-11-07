@@ -18,7 +18,8 @@
         filter: 'all',
         term: '',
         loadedAt: 0,
-        loading: false
+        loading: false,
+        topics: null
     };
     var pollId = null;
     var signingOut = false;
@@ -264,6 +265,51 @@
         $('#roster-panel').hidden = !state.section;
     }
 
+    // The three boxes (percent of the whole class that struggled, by topic) appear only after the admin closed the Game.
+    // While it is open, or if it is opened again, they are hidden. The numbers come from the topic-summary function,
+    // which sends percentages only.
+    async function paintTopicBoxes() {
+        var box = $('#topic-boxes');
+        if (!box) {
+            return;
+        }
+        var closed = false;
+        try {
+            var res = await sb.rpc('teacher_closed_section');
+            closed = !res.error && !!res.data;
+        } catch (e) {
+            return;
+        }
+        if (!closed) {
+            state.topics = null;
+            box.classList.add('is-hidden');
+            return;
+        }
+        if (!state.topics) {
+            try {
+                var out = await sb.functions.invoke('topic-summary');
+                if (out.error || !out.data || out.data.closed !== true) {
+                    return;
+                }
+                state.topics = out.data;
+            } catch (e) {
+                return;
+            }
+        }
+        var data = state.topics;
+        [1, 2, 3].forEach(function (t) {
+            var found = (data.topics || []).filter(function (x) {
+                return x.topic === t;
+            })[0];
+            setText($('#topic-' + t), found ? found.percent + '%' : '—');
+        });
+        setText(
+            $('#topic-boxes-note'),
+            data.hidden ? 'The class is too small to show percentages without pointing at a student.' : ''
+        );
+        box.classList.remove('is-hidden');
+    }
+
     async function load() {
         if (state.loading || !state.section) {
             return;
@@ -295,6 +341,7 @@
             });
             state.loadedAt = Date.now();
             render();
+            paintTopicBoxes();
             paintFoot('Read-only. Updated ' + clock(state.loadedAt) + '.');
         } catch (err) {
             paintFoot('Couldn’t reach the server. Showing the last roster.');
