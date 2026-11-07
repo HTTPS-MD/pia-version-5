@@ -399,14 +399,31 @@
             {
                 columns: ['Student', 'Why'],
                 rows: skipped.map(function (item) {
-                    return [Admin.studentLabel(item.email), plainReason(item.reason)];
+                    return [Admin.studentLabel(item.email), plainReason(item.reason, item.email)];
                 })
             }
         );
     }
 
-    function plainReason(reason) {
+    function plainReason(reason, email) {
         var text = String(reason || '').trim();
+        // choosing a tutor only applies to the free-choice group: the others are skipped on purpose
+        if (/does not apply/i.test(text)) {
+            var who = (Admin.state.cohort || []).filter(function (c) {
+                return String(c.email || '').toLowerCase() === String(email || '').toLowerCase();
+            })[0];
+            var group = who && who.group_type;
+            if (group === 'assigned') {
+                return 'Already has an assigned tutor';
+            }
+            if (group === 'control') {
+                return 'Control group has no tutor to choose';
+            }
+            if (group === 'neutral') {
+                return 'Neutral group has no tutor to choose';
+            }
+            return 'Does not choose a tutor';
+        }
         if (/ocean/i.test(text) && /not.*complet/i.test(text)) {
             return 'Has not finished the OCEAN test';
         }
