@@ -172,7 +172,9 @@
                 ? '<div class="game-history-list">' +
                   daily.days
                       .map(function (d) {
-                          var pct = d.questions ? Math.round((d.clean * 100) / d.questions) : 0;
+                          // accuracy is of the questions that were finished; a day of only tries has none yet
+                          var done = d.finished == null ? d.questions : d.finished;
+                          var pct = done ? Math.round((d.clean * 100) / done) : null;
                           return (
                               '<div class="game-history-row"><div class="game-history-top"><span>' +
                               Admin.esc(formatDay(d.day)) +
@@ -182,8 +184,8 @@
                               '<div class="game-history-meta"><span>Questions: ' +
                               Admin.esc(d.questions) +
                               '</span><span>Accuracy: ' +
-                              Admin.esc(pct) +
-                              '%</span><span>Points: ' +
+                              Admin.esc(pct == null ? '—' : pct + '%') +
+                              '</span><span>Points: ' +
                               Admin.esc(d.points) +
                               '</span><span>Errors: ' +
                               Admin.esc(d.errors) +
