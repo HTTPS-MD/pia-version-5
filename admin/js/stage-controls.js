@@ -158,6 +158,23 @@
         return null;
     }
 
+    // "(Control)", "(Free Choice)", "(Neutral)" or "(Assigned)" after the status of a student in the question
+    var GROUP_NAMES = { control: 'Control', 'non-assigned': 'Free Choice', neutral: 'Neutral', assigned: 'Assigned' };
+    function withGroup(email, status) {
+        var who = (Admin.state.cohort || []).filter(function (c) {
+            return String(c.email || '').toLowerCase() === String(email || '').toLowerCase();
+        })[0];
+        var group = String((who && who.group_type) || '').toLowerCase().replace('_', '-');
+        var name = GROUP_NAMES[group];
+        if (!name) {
+            return status;
+        }
+        if (status && typeof status === 'object') {
+            return { text: status.text + ' (' + name + ')', tone: status.tone };
+        }
+        return status + ' (' + name + ')';
+    }
+
     // The question before a stage opens: who can enter and who stays out.
     async function openStageDialog(gate, section) {
         var dialog = {
@@ -183,11 +200,11 @@
             marks.forEach(function (m) {
                 var who = Admin.studentLabel(m.email);
                 if (!m.entered) {
-                    never.push([who, { text: 'Did not enter', tone: 'bad' }]);
+                    never.push([who, withGroup(m.email, { text: 'Did not enter', tone: 'bad' })]);
                 } else if (done[String(m.email).toLowerCase()]) {
-                    finished.push([who, 'Already finished the OCEAN test']);
+                    finished.push([who, withGroup(m.email, 'Already finished the OCEAN test')]);
                 } else {
-                    enter.push([who, { text: 'Can enter', tone: 'good' }]);
+                    enter.push([who, withGroup(m.email, { text: 'Can enter', tone: 'good' })]);
                 }
             });
             dialog.message =
@@ -215,14 +232,17 @@
                 return;
             }
             if (entered && !entered[String(s.email).toLowerCase()]) {
-                stay.push([Admin.studentLabel(s.email), { text: 'Did not enter', tone: 'warn' }]);
+                stay.push([Admin.studentLabel(s.email), withGroup(s.email, { text: 'Did not enter', tone: 'warn' })]);
                 return;
             }
             var inEarlier = earlierOpenGates(gate, section).filter(function (g) {
                 return s.current_stage === g.label;
             })[0];
             var why = inEarlier ? 'Still in the ' + inEarlier.title : stayOutReason(gate, s);
-            (why ? stay : enter).push([Admin.studentLabel(s.email), why ? { text: why, tone: 'warn' } : { text: 'Can enter', tone: 'good' }]);
+            (why ? stay : enter).push([
+                Admin.studentLabel(s.email),
+                withGroup(s.email, why ? { text: why, tone: 'warn' } : { text: 'Can enter', tone: 'good' })
+            ]);
         });
         dialog.message = enter.length + ' can enter. ' + stay.length + ' stay out.';
         earlierOpenGates(gate, section).forEach(function (before) {
