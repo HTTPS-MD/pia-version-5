@@ -1703,13 +1703,13 @@
             .order('removed_at', { ascending: false });
         if (res.error) {
             host.textContent = failure(res.error);
-            return;
+            return -1;
         }
         var rows = res.data || [];
         if (!rows.length) {
             host.innerHTML = '<p class="muted">Nobody is archived in ' + esc(section) + '.</p>';
             paintPicked();
-            return;
+            return 0;
         }
         // The student numbers of the archived students (masked under Privacy Mode, like everywhere else).
         var numbers = {};
@@ -1754,7 +1754,7 @@
                 say('Added back.');
                 await Admin.refreshAll();
                 await refreshOverview();
-                await showRemoved();
+                await reloadRemoved();
             } catch (error) {
                 say(failure(error), true);
                 b.disabled = false;
@@ -1780,6 +1780,15 @@
             }
             paintPicked();
         };
+        return rows.length;
+    }
+
+    // When the last archived student is added back (or deleted) there is nothing left to show: the dialog closes.
+    async function reloadRemoved() {
+        var left = await showRemoved();
+        if (left === 0) {
+            window.PIAAdmin.closeModal('modal-removed');
+        }
     }
 
     function pickedRows() {
@@ -1795,6 +1804,9 @@
         if (!rows.length) {
             return;
         }
+        // The Archived dialog steps aside while the question is open, and comes back if the answer is Cancel.
+        var archived = $('#modal-removed');
+        archived.classList.add('is-suspended');
         var ok = await Admin.confirmAction({
             heading: 'Delete ' + rows.length + (rows.length === 1 ? ' student' : ' students') + ' permanently?',
             message: 'Their profile, account and every response are removed. This cannot be undone and changes your dataset.',
@@ -1806,6 +1818,7 @@
             },
             confirmLabel: 'Delete permanently'
         });
+        archived.classList.remove('is-suspended');
         if (!ok) {
             return;
         }
@@ -1820,7 +1833,7 @@
         say(failed ? failed + ' could not be deleted.' : 'Deleted.', !!failed);
         await Admin.refreshAll();
         await refreshOverview();
-        await showRemoved();
+        await reloadRemoved();
     }
 
     window.PIACheckin = {

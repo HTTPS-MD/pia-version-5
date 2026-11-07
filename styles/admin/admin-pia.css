@@ -2788,3 +2788,8 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
         grid-template-columns: 1fr;
     }
 }
+
+/* a dialog that steps aside while a question is open on top of it (Archived, while Delete asks) */
+.overlay.is-suspended {
+    visibility: hidden;
+}
