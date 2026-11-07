@@ -771,19 +771,22 @@
             btn.hidden = hideBtn;
             updateArchivedButton();
             // The button says which section it acts on: it sits in the top bar, which is the same on every tab.
-            var over = ended && window.PIAGameClosed === section && !!window.PIAStagesFinished; // the Game was closed: the experiment is over
-            btn.textContent =
-                (over ? 'Experiment ended' : ended ? 'Gate closed' : open ? 'Close gate' : 'Open gate');
-            btn.setAttribute('data-ci', ended ? 'locked' : open ? 'stop' : 'start');
-            // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
+            var over = ended && window.PIAGameClosed === section && !!window.PIAStagesFinished; // the experiment is over
+            // After Close gate, once every stage is closed, the same button ends the experiment.
+            var canEnd = ended && !over && !window.PIAStagesOpen;
+            var waitStages = ended && !over && !!window.PIAStagesOpen;
+            btn.textContent = over ? 'Experiment ended' : ended ? (waitStages ? 'Gate closed' : 'End experiment') : open ? 'Close gate' : 'Open gate';
+            btn.setAttribute('data-ci', canEnd ? 'end' : ended ? 'locked' : open ? 'stop' : 'start');
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             btn.className =
                 'btn ' + (open || ended ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
-            btn.disabled = ended;
+            btn.disabled = ended && !canEnd;
             btn.title = over
                 ? 'The experiment ended for this section (Game closed). The stages stay hidden until tomorrow.'
-                : ended
-                  ? 'The gate was closed today. No new student can enter.'
+                : canEnd
+                  ? 'End experiment: the stages are closed. Everyone online is signed out and the stages stay hidden until tomorrow.'
+                  : ended
+                  ? 'The gate was closed today. Close every stage, then you can end the experiment.'
                   : open
                     ? 'Students are entering. Press Close gate to stop letting students in and start the experiment.'
                     : 'Open gate: let the students in';
@@ -978,6 +981,51 @@
 
     // Close gate: the students who have not entered are listed, and the admin chooses to close, or to close and open OCEAN.
     // Returns true (closed), 'ocean' (closed and OCEAN is opening) or false (cancelled).
+    // End experiment: the stages are closed, so this writes the same "Game closed" mark the Game switch writes.
+    async function endExperiment(section, btn) {
+        var admin = window.PIAAdmin;
+        var online = [];
+        if (window.PIASignOut) {
+            online = await window.PIASignOut.online(section).catch(function () {
+                return [];
+            });
+        }
+        var ok = await admin.confirmAction({
+            heading: 'End experiment for ' + section + '?',
+            message:
+                (online.length
+                    ? 'The experiment ends. Everyone below is signed out on every device. '
+                    : 'Nobody is online right now. ') +
+                'Nothing they submitted is removed. The stages stay hidden until tomorrow. Other sections keep their access.',
+            table: online.length
+                ? {
+                      columns: ['Student', 'Now'],
+                      rows: online.map(function (e) {
+                          return [admin.studentLabel(e), { text: 'Online · will be signed out', tone: 'warn' }];
+                      })
+                  }
+                : null,
+            confirmLabel: 'End experiment'
+        });
+        if (!ok) {
+            return;
+        }
+        btn.disabled = true;
+        try {
+            await call('admin_end_experiment', { p_section: section });
+            if (online.length && window.PIASignOut) {
+                window.PIASignOut.signOut(online);
+            }
+            window.PIAGameClosed = section;
+            await refreshOverview();
+            if (admin.refreshAll) {
+                admin.refreshAll();
+            }
+        } catch (error) {
+            say(failure(error), true);
+        }
+    }
+
     async function endDialog(section) {
         var rows = [];
         try {
@@ -1342,6 +1390,10 @@
                 return;
             }
             if (toggle.getAttribute('data-ci') === 'locked') {
+                return;
+            }
+            if (toggle.getAttribute('data-ci') === 'end') {
+                await endExperiment(section, toggle);
                 return;
             }
             var starting = toggle.getAttribute('data-ci') !== 'stop';

@@ -65,8 +65,10 @@
         // Once the experiment is over the whole bar steps aside (the button says "Experiment ended").
         // the gate button says "Experiment ended" only when the bar is hidden because of this
         var wasFinished = window.PIAStagesFinished;
+        var wasOpen = window.PIAStagesOpen;
         window.PIAStagesFinished = finished;
-        if (wasFinished !== finished && window.PIACheckin) window.PIACheckin.refresh();
+        window.PIAStagesOpen = anyOpen;
+        if ((wasFinished !== finished || wasOpen !== anyOpen) && window.PIACheckin) window.PIACheckin.refresh();
         bar.hidden = !section || finished || running || !(ended || anyOpen);
         var label = bar.querySelector('.stage-label');
         var items = bar.querySelector('.stage-items');
