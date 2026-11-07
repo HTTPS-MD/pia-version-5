@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261126a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261122h">
     <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261124a">
-    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261127d">
+    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261127e">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -89,11 +89,10 @@
                     You are not assigned to a section yet. Ask the administrator to assign you one.
                 </p>
 
-                <section class="topic-boxes is-hidden" id="topic-boxes" aria-label="How the class did, by topic">
-                    <div class="topic-box"><p class="topic-box-label">Topic 1 · Finding a percentage</p><p class="topic-box-value" id="topic-1">—</p><p class="topic-box-note">of the class struggled</p></div>
-                    <div class="topic-box"><p class="topic-box-label">Topic 2 · Percentage increase</p><p class="topic-box-value" id="topic-2">—</p><p class="topic-box-note">of the class struggled</p></div>
-                    <div class="topic-box"><p class="topic-box-label">Topic 3 · Percentage decrease</p><p class="topic-box-value" id="topic-3">—</p><p class="topic-box-note">of the class struggled</p></div>
-                    <p class="topic-boxes-note" id="topic-boxes-note"></p>
+                <section class="topic-boxes is-hidden" id="topic-boxes" aria-label="Class accuracy by topic">
+                    <div class="topic-box"><p class="topic-box-label">Topic 1 · Finding a percentage</p><p class="topic-box-value" id="topic-1">—</p><p class="topic-box-note">class accuracy</p></div>
+                    <div class="topic-box"><p class="topic-box-label">Topic 2 · Percentage increase</p><p class="topic-box-value" id="topic-2">—</p><p class="topic-box-note">class accuracy</p></div>
+                    <div class="topic-box"><p class="topic-box-label">Topic 3 · Percentage decrease</p><p class="topic-box-value" id="topic-3">—</p><p class="topic-box-note">class accuracy</p></div>
                 </section>
 
                 <div class="panel" id="roster-panel">
@@ -178,10 +177,10 @@
 <div class="help-copy">
 <p>After the administrator closes the Game for your section, three boxes appear at the top of the page, one for each topic: Finding a percentage, Percentage increase and Percentage decrease.</p>
 <ul>
-                                <li><strong>The number</strong> is the share of the whole class that struggled in that topic, for example 30% means about 3 of every 10 students in your class.</li>
-                                <li><strong>It is the class only.</strong> It never says who. No name, score or answer is shown.</li>
+                                <li><strong>The number</strong> is the class accuracy in that topic: how many of the students’ answers were correct, on average. 100% means every answer was correct; 60% means about 6 of every 10 answers were.</li>
+                                <li><strong>It is the class only.</strong> It never says who. No name, score or answer is shown. A dash means nobody answered in that topic.</li>
                                 <li><strong>Before the Game is closed</strong> the boxes are not shown, so the study is not influenced while students are working. If the Game is opened again, they disappear until it is closed.</li>
-                                <li><strong>“Struggled”</strong> comes from a set of fixed rules (a decision tree) applied to the student’s last answers in the topic. The rules are provisional and are not a grade. A student needs at least four answers in a topic to be counted.</li>
+                                <li><strong>How it is counted:</strong> for each student, correct answers divided by all their answers in the topic (a retry after a wrong answer counts as another answer); then the average of the students who answered. Every student counts equally.</li>
                                 </ul>
 </div>
 </div>
@@ -201,7 +200,7 @@
 <div class="help-a">
 
 <div class="help-copy">
-<p>To protect students, this page does not show personality results, assigned tutor, scores, or any individual performance data. Those are kept for the research team only, as agreed in the study’s ethical review. The only performance information you get is the class-level percentages by topic, after the Game is closed.</p>
+<p>To protect students, this page does not show personality results, assigned tutor, scores, or any individual performance data. Those are kept for the research team only, as agreed in the study’s ethical review. The only performance information you get is the class accuracy by topic, after the Game is closed.</p>
                                 <p>If you notice a problem with a student’s record, tell the administrator.</p>
 </div>
 </div>
@@ -308,7 +307,7 @@
     <script src="../../assets/js/shared/device-revoke.js?v=20261031b"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
     <script src="../../assets/js/shared/help-page.js?v=20261121a"></script>
-    <script src="../js/teacher-roster.js?v=20261127b"></script>
+    <script src="../js/teacher-roster.js?v=20261127c"></script>
     <script src="../js/teacher-settings.js?v=20261121a"></script>
 </body>
 

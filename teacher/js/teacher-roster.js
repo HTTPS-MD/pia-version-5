@@ -18,8 +18,7 @@
         filter: 'all',
         term: '',
         loadedAt: 0,
-        loading: false,
-        topics: null
+        loading: false
     };
     var pollId = null;
     var signingOut = false;
@@ -265,48 +264,35 @@
         $('#roster-panel').hidden = !state.section;
     }
 
-    // The three boxes (percent of the whole class that struggled, by topic) appear only after the admin closed the Game.
-    // While it is open, or if it is opened again, they are hidden. The numbers come from the topic-summary function,
-    // which sends percentages only.
+    // The three boxes (the class accuracy in each topic) appear only after the admin closed the Game. While it is open,
+    // or if it is opened again, they are hidden. The database answers with one percentage per topic and nothing else.
     async function paintTopicBoxes() {
         var box = $('#topic-boxes');
         if (!box) {
             return;
         }
-        var closed = false;
+        var res;
         try {
-            var res = await sb.rpc('teacher_closed_section');
-            closed = !res.error && !!res.data;
+            res = await sb.rpc('teacher_topic_accuracy');
         } catch (e) {
             return;
         }
-        if (!closed) {
-            state.topics = null;
+        if (res.error) {
+            return;
+        }
+        var rows = res.data || [];
+        // no rows: the Game is not closed for this section
+        if (!rows.length) {
             box.classList.add('is-hidden');
             return;
         }
-        if (!state.topics) {
-            try {
-                var out = await sb.functions.invoke('topic-summary');
-                if (out.error || !out.data || out.data.closed !== true) {
-                    return;
-                }
-                state.topics = out.data;
-            } catch (e) {
-                return;
-            }
-        }
-        var data = state.topics;
         [1, 2, 3].forEach(function (t) {
-            var found = (data.topics || []).filter(function (x) {
-                return x.topic === t;
+            var found = rows.filter(function (x) {
+                return Number(x.topic) === t;
             })[0];
-            setText($('#topic-' + t), found ? found.percent + '%' : '—');
+            var value = found && found.accuracy !== null && found.accuracy !== undefined ? Number(found.accuracy) : null;
+            setText($('#topic-' + t), value === null || !isFinite(value) ? '—' : value + '%');
         });
-        setText(
-            $('#topic-boxes-note'),
-            data.hidden ? 'The class is too small to show percentages without pointing at a student.' : ''
-        );
         box.classList.remove('is-hidden');
     }
 
