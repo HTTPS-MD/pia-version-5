@@ -71,7 +71,10 @@
 .landing-look .paper-title mark,
 .landing-look .start-hello mark,
 .landing-look.quiz .gate-title mark {
-    border-radius: 0.2em;
+    padding: 0;
+    background: none;
+    color: inherit;
+    border-radius: 0;
 }
 /* chips and the privacy note */
 .landing-look .paper-chips li,

@@ -8,14 +8,11 @@ const TUTORS = {
     'pia-neutral': { name: 'Noel' }
 };
 
-// A student who already has a tutor is waiting for tutoring: show the tutor, not "Hang tight".
+// A student who already has a tutor sees the tutor while they wait; the words stay "Hang tight!".
 async function showTutorIfReady(profile) {
     const tutor = TUTORS[profile.selected_character];
     if (!tutor || !profile.is_ocean_done || isControlGroup(profile)) return;
 
-    document.getElementById('waiting-title').innerHTML = tutor.name + ' is ready<mark>!</mark>';
-    document.getElementById('waiting-desc').textContent =
-        'Your admin will start the game soon. This page moves on by itself.';
     const img = document.getElementById('wait-tutor');
     const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     img.src = TUTOR_IMG + profile.selected_character + '/default' + (still ? '-still' : '') + '.webp';

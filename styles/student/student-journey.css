@@ -366,11 +366,9 @@ body.opacity-0 {
     text-wrap: auto;
 }
 .quiz .gate-title mark {
-    padding: 0.08em 0.2em;
-    background: var(--palette-volt);
-    color: var(--palette-ink);
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
+    padding: 0;
+    background: none;
+    color: inherit;
 }
 .quiz .gate-lede {
     max-width: none;

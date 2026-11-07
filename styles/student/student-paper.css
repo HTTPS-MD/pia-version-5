@@ -92,11 +92,9 @@ body.is-playing .paper-scene {
     text-wrap: auto;
 }
 .paper-title mark {
-    padding: 0.08em 0.2em;
-    background: var(--palette-volt);
-    color: var(--palette-ink);
-    -webkit-box-decoration-break: clone;
-    box-decoration-break: clone;
+    padding: 0;
+    background: none;
+    color: inherit;
 }
 .paper-lede {
     max-width: none;
@@ -404,9 +402,9 @@ ul.paper-chips {
     line-height: 1.12;
 }
 .paper .start-hello mark {
-    padding: 0.08em 0.2em;
-    background: var(--palette-volt);
-    color: var(--palette-ink);
+    padding: 0;
+    background: none;
+    color: inherit;
 }
 .paper .start-lede {
     margin: 0 0 1.2rem;
