@@ -298,7 +298,7 @@
     margin-top: var(--sp-6);
 }
 .auth-card .auth-hint a {
-    color: var(--volt);
+    color: var(--volt-text);
 }
 /* even spacing, the same rhythm as the landing windows */
 .auth-card {

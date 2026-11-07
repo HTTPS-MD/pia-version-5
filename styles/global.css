@@ -4,6 +4,8 @@
     --palette-paper: #fff9ea;
     --palette-violet: #3a8dff;
     --palette-volt: #ffd83d;
+    /* yellow used as TEXT: the bright volt on dark surfaces, a deep gold on light ones (4.5:1 on white) */
+    --volt-text: var(--palette-volt);
     --palette-green: #2ed573;
     --status-coral: #ffb938;
     --status-coral-ink: #7a4b00;
@@ -2248,4 +2250,9 @@ html[data-theme] :is(.modal, .drawer) .action-list-item:hover {
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
     }
+}
+
+:root[data-theme='light'],
+html[data-theme='light'] {
+    --volt-text: #8a6500;
 }

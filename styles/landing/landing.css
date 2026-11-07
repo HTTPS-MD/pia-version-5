@@ -4746,8 +4746,9 @@ h4 {
     color: var(--volt);
 }
 .overlay .link-btn:hover {
-    background: var(--volt);
-    color: var(--on-volt);
+    background: none;
+    color: var(--text);
+    text-decoration: underline;
 }
 .overlay .btn-primary:disabled {
     opacity: 0.45;
@@ -4756,8 +4757,9 @@ h4 {
     color: #8a6300;
 }
 :root[data-theme='light'] .overlay .link-btn:hover {
-    background: var(--volt);
-    color: var(--on-volt);
+    background: none;
+    color: var(--text);
+    text-decoration: underline;
 }
 :root[data-theme='light'] .overlay .auth-status.is-error {
     color: var(--danger);

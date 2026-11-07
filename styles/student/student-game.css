@@ -195,7 +195,7 @@ body.is-playing .learn-main {
     display: grid;
     place-items: center;
     background: var(--palette-ink);
-    color: var(--volt);
+    color: var(--volt-text);
     font-family: var(--font-mono);
     font-size: 0.95rem;
 }
@@ -285,7 +285,7 @@ body.is-playing .learn-main {
     font-size: 0.9rem;
     font-weight: 700;
     letter-spacing: 0.02em;
-    color: var(--volt);
+    color: var(--volt-text);
     text-decoration: underline wavy var(--rgb255-216-61-a65);
     text-underline-offset: 6px;
 }
