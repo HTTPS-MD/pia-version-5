@@ -2696,3 +2696,16 @@ html[data-theme='dark'] .confirm-table .table-wrap {
 #view-students .table-title .att-count.is-hidden + #att-toggle {
     margin-left: auto;
 }
+
+/* Archived: the two row buttons are the same size */
+.removed-actions {
+    display: inline-flex;
+    gap: 8px;
+}
+.removed-actions .btn {
+    min-width: 9.5rem;
+    justify-content: center;
+}
+.removed-actions.is-hidden {
+    display: none;
+}

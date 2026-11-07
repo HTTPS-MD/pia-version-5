@@ -1222,7 +1222,16 @@
         });
         var removedItem = $('#att-removed');
         if (removedItem) {
-            removedItem.addEventListener('click', showRemoved);
+            removedItem.addEventListener('click', function () {
+                showRemoved(false);
+            });
+        }
+        var removedEdit = $('#removed-edit');
+        if (removedEdit) {
+            removedEdit.addEventListener('click', function () {
+                editing = !editing;
+                paintEdit();
+            });
         }
         toggle.addEventListener('click', async function () {
             var section = chosen();
@@ -1581,8 +1590,21 @@
         }
     }
 
-    async function showRemoved() {
+    var editing = false;
+
+    function paintEdit() {
+        var b = $('#removed-edit');
+        if (b) {
+            b.textContent = editing ? 'Cancel edit' : 'Edit';
+        }
+        Array.prototype.forEach.call(document.querySelectorAll('#removed-table [data-actions]'), function (el) {
+            el.classList.toggle('is-hidden', !editing);
+        });
+    }
+
+    async function showRemoved(keepEditing) {
         var Admin = window.PIAAdmin;
+        editing = keepEditing === true;
         var section = chosen();
         var host = $('#removed-table');
         host.textContent = 'Loading…';
@@ -1600,6 +1622,7 @@
         var rows = res.data || [];
         if (!rows.length) {
             host.innerHTML = '<p class="muted">Nobody is archived in ' + esc(section) + '.</p>';
+            paintEdit();
             return;
         }
         host.innerHTML =
@@ -1611,20 +1634,14 @@
                         : r.full_name;
                     return (
                         '<tr><td>' + esc(who) + '</td>' +
-                        '<td class="nowrap"><button type="button" class="btn btn-sm btn-secondary" data-edit>Edit</button>' +
-                        '<span class="is-hidden" data-actions><button type="button" class="btn btn-sm btn-secondary" data-addback="' + esc(r.email) + '">Add back</button> ' +
+                        '<td class="nowrap"><span class="removed-actions' + (editing ? '' : ' is-hidden') + '" data-actions><button type="button" class="btn btn-sm btn-secondary" data-addback="' + esc(r.email) + '">Add back</button> ' +
                         '<button type="button" class="btn btn-sm btn-danger" data-delete="' + esc(r.email) + '" data-who="' + esc(who) + '">Delete permanently</button></span></td></tr>'
                     );
                 })
                 .join('') +
             '</tbody></table></div>';
+        paintEdit();
         host.onclick = async function (event) {
-            var edit = event.target.closest('[data-edit]');
-            if (edit) {
-                edit.classList.add('is-hidden');
-                edit.parentNode.querySelector('[data-actions]').classList.remove('is-hidden');
-                return;
-            }
             var del = event.target.closest('[data-delete]');
             if (del) {
                 var ok = await Admin.confirmAction({
@@ -1642,7 +1659,7 @@
                 } catch (error) {
                     say(failure(error), true);
                 }
-                await showRemoved();
+                await showRemoved(true);
                 return;
             }
             var b = event.target.closest('[data-addback]');
@@ -1655,7 +1672,7 @@
                 say('Added back.');
                 await Admin.refreshAll();
                 await refreshOverview();
-                await showRemoved();
+                await showRemoved(true);
             } catch (error) {
                 say(failure(error), true);
                 b.disabled = false;
