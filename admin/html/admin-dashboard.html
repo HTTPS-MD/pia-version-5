@@ -115,8 +115,6 @@
                         <svg class="icon icon-sm" aria-hidden="true"><use id="user-theme-icon" href="#i-sun"></use></svg><span id="user-theme-label">Light mode</span></button>
                     <button type="button" class="user-menu-item" role="menuitem" data-user-action="settings">
                         <svg class="icon icon-sm" aria-hidden="true"><use href="#i-gear"></use></svg>Settings</button>
-                    <button type="button" class="user-menu-item" role="menuitem" data-user-action="help">
-                        <svg class="icon icon-sm" aria-hidden="true"><use href="#i-info"></use></svg>Help</button>
                     <button type="button" class="user-menu-item is-signout" role="menuitem" id="user-signout" data-user-action="signout">
                         <svg class="icon icon-sm" aria-hidden="true"><use href="#i-logout"></use></svg>Sign Out</button>
                 </div>
@@ -355,109 +353,6 @@
                                 <button type="button" class="btn btn-danger" id="delete-own-account">Delete my account</button>
                             </div>
                         </section>
-                    </div>
-                </section>
-
-                <section class="page is-hidden" id="view-help" data-view-panel="help">
-                    <div class="page-head">
-                        <h1 class="page-title">Admin Help Center</h1>
-                    </div>
-
-                    <div class="help-layout">
-                        
-                        <div class="help-steps">
-                            <details class="help-step" open id="ah-study" name="help-topic">
-<summary class="help-q"><span class="help-num">01</span><span class="help-title">How the study runs</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
-<div class="help-a">
-
-<div class="help-copy">
-<p>Each student goes through three stages in order: the <strong>OCEAN test</strong> (a short personality questionnaire), <strong>Choose tutor</strong>, and the <strong>Game</strong> (math problems with the tutor).</p>
-                                    <p>Students have no password. They enter with their student number, and only after you mark them present and open the stage for their section.</p>
-</div>
-</div>
-</details>
-                            <details class="help-step" id="ah-sections" name="help-topic">
-<summary class="help-q"><span class="help-num">02</span><span class="help-title">Sections and students</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
-<div class="help-a">
-<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-sections.webp" data-alt="The Sections page with the student table"></figure>
-<div class="help-copy">
-<ul>
-                                    <li><strong>Manage sections / New section:</strong> create or rename a section, or delete one that has no students.</li>
-                                    <li><strong>Add Students:</strong> add students to the chosen section. Each needs a name and an 11-digit student number.</li>
-                                    <li><strong>Student table:</strong> shows each student’s section, condition (study group), stage, and character. Use the stage tabs and Reset filters to narrow the list.</li>
-                                    <li><strong>Student drawer:</strong> click a student to see details, move them to another section, or fix their record.</li>
-                                    <li><strong>Input Scores:</strong> enter the paper pre-test and post-test scores for the section.</li>
-                                    </ul>
-</div>
-</div>
-</details>
-                            <details class="help-step" id="ah-roll" name="help-topic">
-<summary class="help-q"><span class="help-num">03</span><span class="help-title">Starting and ending a session</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
-<div class="help-a">
-<div class="help-copy">
-<p>Check who is in the room face to face first. In a student’s profile, use Remove from this session (and give the reason) for anyone who is not there. Removed students are not counted and cannot enter. Add back puts them on the roster again.</p>
-<p>Press Start so students can enter with their student number. The top shows how many have entered. Press End to close the door: a student who never entered cannot enter after that. Teachers see only Entered or Not in yet.</p>
-</div>
-</div>
-</details>
-                            <details class="help-step" id="ah-stages" name="help-topic">
-<summary class="help-q"><span class="help-num">04</span><span class="help-title">Opening and closing stages</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
-<div class="help-a">
-<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-stages.webp" data-alt="The stage tabs with their open and close switches"></figure>
-<div class="help-copy">
-<p>Use the switch beside each stage tab to open or close that stage for the whole section. A student who opens a page for a stage that is not open to them is sent back to the page they belong on.</p>
-                                    <p>The stage tabs list students by where they are right now. The Offline tab lists students who are not signed in.</p>
-</div>
-</div>
-</details>
-                            <details class="help-step" id="ah-teachers" name="help-topic">
-<summary class="help-q"><span class="help-num">05</span><span class="help-title">Teachers</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
-<div class="help-a">
-<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-teachers.webp" data-alt="A teacher’s profile"></figure>
-<div class="help-copy">
-<ul>
-                                    <li><strong>Add teacher:</strong> creates the account and assigns the teacher to a section.</li>
-                                    <li><strong>Teacher profile:</strong> shows the teacher’s section and account status. From here you can remove the teacher from the section, reset their password, sign them out everywhere, or remove the account. To give a section a teacher again, use <strong>Assign teacher</strong> on the section.</li>
-                                    <li>A teacher sees only the student directory of their own section, read-only. They never see personality results.</li>
-                                    </ul>
-</div>
-</div>
-</details>
-                            <details class="help-step" id="ah-mathtask" name="help-topic">
-<summary class="help-q"><span class="help-num">06</span><span class="help-title">Math Task (question bank)</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
-<div class="help-a">
-<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-mathtask.webp" data-alt="The Math Task question bank"></figure>
-<div class="help-copy">
-<p>Questions here are used to build the game problems. Add or edit a question, review its steps and answers, and save. Use <strong>Rules</strong> to adjust the adaptive rules for the problems.</p>
-                                    <p>Check every step and answer before students play, because the tutor teaches from them.</p>
-</div>
-</div>
-</details>
-                            <details class="help-step" id="ah-personality" name="help-topic">
-<summary class="help-q"><span class="help-num">07</span><span class="help-title">Personality and tutor assignment</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
-<div class="help-a">
-
-<div class="help-copy">
-<p>The OCEAN scores (Extraversion, Agreeableness, Conscientiousness, Neuroticism, Openness) are used only for students in the <strong>Assigned</strong> group, whose tutor is matched to their result. In <strong>Free choice</strong> the student picks the tutor, <strong>Neutral</strong> gets a neutral tutor, and <strong>Control</strong> has a traditional lesson with no tutor.</p>
-                                    <p>Personality results are confidential. They are for the research team only and are never shown to teachers or students.</p>
-</div>
-</div>
-</details>
-                            <details class="help-step" id="ah-account" name="help-topic">
-<summary class="help-q"><span class="help-num">08</span><span class="help-title">Your account and other admins</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
-<div class="help-a">
-<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-settings.webp" data-alt="The Settings page"></figure>
-<div class="help-copy">
-<ul>
-                                    <li><strong>Settings:</strong> your details, change password, and the list of administrators. Use <strong>Add administrator</strong> to invite another.</li>
-                                    <li><strong>Password:</strong> changing it signs your other devices out.</li>
-                                    <li><strong>Light or dark theme:</strong> in the account menu or the top bar.</li>
-                                    <li><strong>Delete account:</strong> removes your own administrator account for good. You cannot delete another administrator, and the last administrator cannot be deleted.</li>
-                                    </ul>
-</div>
-</div>
-</details>
-                        </div>
                     </div>
                 </section>
 
@@ -1406,14 +1301,13 @@
     <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
     <script src="../../assets/js/shared/device-revoke.js?v=20261031b"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
-    <script src="../../assets/js/shared/help-page.js?v=20261121a"></script>
-    <script src="../js/admin-shell.js?v=20261121b"></script>
+    <script src="../js/admin-shell.js?v=20261127b"></script>
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
     <script src="../js/students-tools.js?v=20261127x"></script>
     <script src="../js/add-students.js?v=20261122b"></script>
-    <script src="../js/admin-core.js?v=20261126a"></script>
+    <script src="../js/admin-core.js?v=20261127b"></script>
     <script src="../js/admin-dialogs.js?v=20261127a"></script>
     <script src="../js/admin-loading.js?v=20261105b"></script>
     <script src="../js/admin-data.js?v=20261127a"></script>
