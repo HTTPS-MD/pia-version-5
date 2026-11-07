@@ -771,7 +771,7 @@
             btn.hidden = hideBtn;
             updateArchivedButton();
             // The button says which section it acts on: it sits in the top bar, which is the same on every tab.
-            var over = ended && window.PIAGameClosed === section; // the Game was closed: the experiment is over
+            var over = ended && window.PIAGameClosed === section && !!window.PIAStagesFinished; // the Game was closed: the experiment is over
             btn.textContent =
                 (over ? 'Experiment ended' : ended ? 'Gate closed' : open ? 'Close gate' : 'Open gate');
             btn.setAttribute('data-ci', ended ? 'locked' : open ? 'stop' : 'start');

@@ -2847,3 +2847,7 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
 #view-students .page-title-row .stage-let { flex: 0 1 auto; min-width: 0; }
 #view-students .page-title-row #att-toggle,
 #view-students .page-title-row .show-details.privacy-mode { flex: 0 0 auto; }
+
+/* the stages, the gate button and Privacy Mode are evenly spaced; the stages take the free space on their left */
+#view-students .page-title-row #att-toggle { margin-left: 8px; }
+#view-students .page-title-row:has(.stage-let[hidden]) #att-toggle { margin-left: auto; }
