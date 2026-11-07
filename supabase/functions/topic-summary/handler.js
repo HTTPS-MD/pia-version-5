@@ -8,9 +8,8 @@
 //      topic (topic_features_for_section: no name, no e-mail). Each student x topic that has at least MIN_EVENTS
 //      submissions is classified by the same decision tree as the learning profile (the ml-service Worker).
 //   3. Only percentages of the WHOLE class go back: struggling students / students in the class. No name, no count per
-//      student, no student number. A class smaller than MIN_CLASS gets no numbers at all, so nobody can be guessed.
+//      student, no student number.
 const MIN_EVENTS = 4; // the same minimum as the learning profile
-export const MIN_CLASS = 5;
 const TOPICS = [1, 2, 3];
 const FEATURES = [
     'recent_accuracy',
@@ -78,7 +77,8 @@ export async function handle(req, env, deps, fetchFn = fetch) {
         return reply(502, { error: 'Summary unavailable.' }, origin, env);
     }
     const students = new Set((rows || []).map((r) => r.student_no));
-    if (students.size < MIN_CLASS) return reply(200, { closed: true, hidden: true }, origin, env);
+    // A section with no students has nothing to show.
+    if (students.size === 0) return reply(200, { closed: true, hidden: true }, origin, env);
     const struggling = { 1: 0, 2: 0, 3: 0 };
     try {
         const todo = (rows || []).filter((r) => TOPICS.includes(Number(r.topic)) && Number(r.events) >= MIN_EVENTS);
