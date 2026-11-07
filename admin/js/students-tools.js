@@ -662,7 +662,7 @@
         var ok = await window.PIAAdmin.confirmAction({
             heading: 'Is this the real student?',
             message:
-                'Check in the room first. If someone else is using this student\'s number, the real student is signed out.',
+                'Make sure it is the real student. Anyone else on this number is signed out.',
             confirmLabel: 'Let back in',
             tone: 'accent'
         });
@@ -994,10 +994,7 @@
         var ok = await admin.confirmAction({
             heading: 'End experiment for ' + section + '?',
             message:
-                (online.length
-                    ? 'The experiment ends. Everyone below is signed out on every device. '
-                    : 'Nobody is online right now. ') +
-                'Nothing they submitted is removed. The stages stay hidden until tomorrow. Other sections keep their access.',
+                (online.length ? 'Everyone below is signed out. ' : '') + 'The stages stay hidden until tomorrow.',
             table: online.length
                 ? {
                       columns: ['Student', 'Now'],
@@ -1055,7 +1052,7 @@
         var answer = await admin.confirmAction({
             heading: 'Close the gate?',
             message: notIn.length
-                ? emails.length - notIn.length + ' of ' + emails.length + ' entered. Students who have not entered cannot enter after this.'
+                ? emails.length - notIn.length + ' of ' + emails.length + ' entered. The rest cannot enter after this.'
                 : 'Everyone entered.',
             table: {
                 columns: ['Student', 'Status'],
@@ -1699,7 +1696,7 @@
         }
         var ok = await Admin.confirmAction({
             heading: 'Remove the teacher from ' + section + '?',
-            message: 'Their account stays. The section has no teacher until you assign one.',
+            message: 'The section has no teacher until you assign one.',
             confirmLabel: 'Remove from section'
         });
         if (!ok) {
@@ -1724,7 +1721,7 @@
         var Admin = window.PIAAdmin;
         var ok = await Admin.confirmAction({
             heading: 'Archive ' + Admin.studentLabel(email) + '?',
-            message: 'They will not be counted and cannot enter. Their answers and account stay. You can add them back or delete them from Archived.',
+            message: 'They will not be counted and cannot enter.',
             confirmLabel: 'Archive',
             tone: 'accent'
         });
@@ -1733,7 +1730,7 @@
         }
         try {
             await call('admin_remove_from_session', { p_email: email });
-            say('Archived. You can add them back or delete them from Archived.');
+            say('Archived.');
             // A student who is signed in is signed out: they are no longer part of the session. That, the roster
             // and the counts all go at the same time instead of one after another.
             await Promise.all([
@@ -1925,7 +1922,7 @@
         archived.classList.add('is-suspended');
         var ok = await Admin.confirmAction({
             heading: 'Delete ' + rows.length + (rows.length === 1 ? ' student' : ' students') + ' permanently?',
-            message: 'Their profile, account and every response are removed. This cannot be undone and changes your dataset.',
+            message: 'Their profile, account and responses are removed. This cannot be undone.',
             table: {
                 columns: ['Student'],
                 rows: rows.map(function (tr) {

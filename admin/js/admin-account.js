@@ -492,8 +492,7 @@
         var ok = await Admin.confirmAction({
             heading: 'Add ' + email + ' as administrator?',
             message:
-                'They will see every participant and result, control the stages, and delete accounts. ' +
-                'Only the project owner can remove them later. They get a one-time link to set a password.',
+                'They get full admin access and a link to set their password.',
             confirmLabel: 'Create administrator',
             tone: 'accent'
         });

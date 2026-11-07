@@ -493,13 +493,11 @@
                       : 'Close ' + gate.title + ' for ' + names.join(', ') + '?',
                 message:
                     (online.length
-                        ? 'The experiment ends. Everyone below is signed out on every device. '
+                        ? 'Everyone below is signed out.'
                         : inside.length
-                          ? inside.length + (inside.length === 1 ? ' student is' : ' students are') + ' inside now. They go back to the Waiting Room. '
-                          : 'Nobody is inside right now. ') +
-                    'Nothing they submitted is removed.' +
-                    (endsExperiment ? ' The stages stay hidden until tomorrow.' : '') +
-                    (everyone ? '' : ' Other sections keep their access.'),
+                          ? inside.length + (inside.length === 1 ? ' student goes' : ' students go') + ' back to the Waiting Room.'
+                          : '') +
+                    (endsExperiment ? (online.length || inside.length ? ' ' : '') + 'The stages stay hidden until tomorrow.' : ''),
                 table: online.length
                     ? {
                           columns: ['Student', 'Now'],

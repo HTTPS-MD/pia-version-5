@@ -131,7 +131,7 @@
         var ok = await Admin.confirmAction({
             heading: 'Delete question ' + (index + 1) + '?',
             message:
-                '“' + qbShort(item.q) + '” and its steps and hints will be removed. This cannot be undone.',
+                '“' + qbShort(item.q) + '” will be removed. This cannot be undone.',
             confirmLabel: 'Delete question'
         });
         if (!ok) {
@@ -175,7 +175,7 @@
 
         var ok = await Admin.confirmAction({
             heading: 'Delete all ' + count + ' questions in topic ' + Admin.QB_TOPICS[topic].num + '?',
-            message: 'Their steps and hints are removed too. The other topics are not touched. This cannot be undone.',
+            message: 'This cannot be undone.',
             confirmLabel: 'Delete all'
         });
         if (!ok) {

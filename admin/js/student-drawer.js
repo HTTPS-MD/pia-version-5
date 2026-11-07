@@ -370,7 +370,7 @@
         var ok = await Admin.confirmAction({
             heading: 'Let ' + Admin.whoIs(email) + ' retake OCEAN?',
             message:
-                'They answer all 50 items again. The current result stays in the history, and the new one replaces it when they finish.',
+                'They answer all 50 items again.',
             confirmLabel: 'Allow retake'
         });
         if (!ok) {

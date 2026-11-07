@@ -57,7 +57,7 @@
         var sure = await Admin.confirmAction({
             heading: 'Save the rules?',
             message:
-                'They apply to every section, for questions finished from now on. Scores already earned do not change.',
+                'They apply to every section.',
             confirmLabel: 'Save rules',
             tone: 'accent'
         });

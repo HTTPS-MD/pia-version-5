@@ -411,7 +411,7 @@
     async function signOutFacultyEverywhere(email, sourceBtn) {
         var ok = await Admin.confirmAction({
             heading: 'Sign ' + Admin.whoIs(email) + ' out everywhere?',
-            message: 'Every session ends now and their devices are freed. They sign in again with their password.',
+            message: 'Every session ends now.',
             confirmLabel: 'Sign out everywhere'
         });
         if (!ok) {
@@ -518,7 +518,7 @@
     async function deleteFaculty(email) {
         var ok = await Admin.confirmAction({
             heading: 'Delete ' + Admin.whoIs(email) + '?',
-            message: 'Their account, teacher record and linked profile are removed. Student data stays.',
+            message: 'Their account and teacher record are removed. Student data stays.',
             confirmLabel: 'Remove teacher'
         });
         if (!ok) {
