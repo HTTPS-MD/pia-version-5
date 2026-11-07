@@ -96,9 +96,9 @@
                 </p>
 
                 <section class="topic-boxes is-hidden" id="topic-boxes" aria-label="Class accuracy by topic">
-                    <div class="topic-box"><p class="topic-box-label">Topic 1 · Finding a percentage</p><p class="topic-box-value" id="topic-1">—</p><p class="topic-box-note">class accuracy</p></div>
-                    <div class="topic-box"><p class="topic-box-label">Topic 2 · Percentage increase</p><p class="topic-box-value" id="topic-2">—</p><p class="topic-box-note">class accuracy</p></div>
-                    <div class="topic-box"><p class="topic-box-label">Topic 3 · Percentage decrease</p><p class="topic-box-value" id="topic-3">—</p><p class="topic-box-note">class accuracy</p></div>
+                    <div class="topic-box"><p class="topic-box-label">Topic 1 · Finding a percentage</p><p class="topic-box-value" id="topic-1">—</p><p class="topic-box-note" id="topic-1-note">class accuracy</p></div>
+                    <div class="topic-box"><p class="topic-box-label">Topic 2 · Percentage increase</p><p class="topic-box-value" id="topic-2">—</p><p class="topic-box-note" id="topic-2-note">class accuracy</p></div>
+                    <div class="topic-box"><p class="topic-box-label">Topic 3 · Percentage decrease</p><p class="topic-box-value" id="topic-3">—</p><p class="topic-box-note" id="topic-3-note">class accuracy</p></div>
                 </section>
 
                 <div class="panel" id="roster-panel">
@@ -184,7 +184,8 @@
 <p>After the administrator closes the Game for your section, three boxes appear at the top of the page, one for each topic: Finding a percentage, Percentage increase and Percentage decrease.</p>
 <ul>
                                 <li><strong>The number</strong> is the class accuracy in that topic: how many of the students’ answers were correct, on average. 100% means every answer was correct; 60% means about 6 of every 10 answers were.</li>
-                                <li><strong>It is the class only.</strong> It never says who. No name, score or answer is shown. A dash means nobody answered in that topic.</li>
+                                <li><strong>Who it is based on:</strong> under each number you see how many students answered in that topic, for example “4 of 10 students answered”. Students who have not reached the topic yet are not counted in the accuracy, so read it together with that count. A dash means nobody answered in that topic.</li>
+                                <li><strong>It is the class only.</strong> It never says who. No name, score or answer is shown.</li>
                                 <li><strong>Before the Game is closed</strong> the boxes are not shown, so the study is not influenced while students are working. If the Game is opened again, they disappear until it is closed.</li>
                                 <li><strong>How it is counted:</strong> for each student, correct answers divided by all their answers in the topic (a retry after a wrong answer counts as another answer); then the average of the students who answered. Every student counts equally.</li>
                                 </ul>
@@ -313,7 +314,7 @@
     <script src="../../assets/js/shared/device-revoke.js?v=20261031b"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
     <script src="../../assets/js/shared/help-page.js?v=20261121a"></script>
-    <script src="../js/teacher-roster.js?v=20261127e"></script>
+    <script src="../js/teacher-roster.js?v=20261127f"></script>
     <script src="../js/teacher-settings.js?v=20261121a"></script>
 </body>
 

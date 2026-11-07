@@ -293,6 +293,14 @@
             })[0];
             var value = found && found.accuracy !== null && found.accuracy !== undefined ? Number(found.accuracy) : null;
             setText($('#topic-' + t), value === null || !isFinite(value) ? '—' : value + '%');
+            // "4 of 10 students answered": the accuracy is only of the students who reached the topic
+            var note = $('#topic-' + t + '-note');
+            if (note) {
+                note.textContent =
+                    found && found.reached !== undefined && found.total !== undefined
+                        ? 'class accuracy · ' + found.reached + ' of ' + found.total + ' students answered'
+                        : 'class accuracy';
+            }
         });
         box.classList.remove('is-hidden');
     }
