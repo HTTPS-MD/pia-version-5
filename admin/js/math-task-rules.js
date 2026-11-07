@@ -7,9 +7,12 @@
 
     var Admin = window.PIAAdmin;
 
+    // "dirty" = what is on the screen differs from what is saved; Save stays off until it does
     function qbMarkDirty() {
-        Admin.qb.dirty = true;
-        $('#qb-dirty').classList.add('is-on');
+        Admin.qb.dirty =
+            Admin.qbConfigSig(Admin.qb.closesAt, Admin.qb.rules, null) !== Admin.qb.configSeen;
+        $('#qb-config-save').disabled =
+            Admin.qb.status !== 'ready' || Admin.qb.busy.config || !Admin.qb.dirty;
     }
 
     async function qbSaveRules(event) {
@@ -44,35 +47,6 @@
         }
 
         var row = { id: 1 };
-        if (Admin.qb.hasScoring) {
-            var scv = Admin.qb.scoring,
-                specs = [
-                    ['qb-sc-wrong', scv.wrong, 0, 100, 'a whole number from 0 to 100'],
-                    ['qb-sc-hint', scv.hint, 0, 100, 'a whole number from 0 to 100'],
-                    ['qb-sc-fast', scv.fast, 0, 100, 'a whole number from 0 to 100'],
-                    ['qb-sc-secs', scv.secs, 1, 3600, 'a whole number of seconds from 1 to 3600'],
-                    ['qb-sc-min', scv.min, 0, 500, 'a whole number from 0 to 500'],
-                    ['qb-sc-repeat-pct', scv.repeatPct, 0, 100, 'a whole number from 0 to 100']
-                ],
-                values = {};
-            for (var spi = 0; spi < specs.length; spi++) {
-                var sv = Admin.qbWhole(specs[spi][1], specs[spi][2], specs[spi][3]);
-                if (sv === null) {
-                    Admin.setFieldError(specs[spi][0], 'Use ' + specs[spi][4] + '.');
-                    $('#' + specs[spi][0]).focus();
-                    return;
-                }
-                values[specs[spi][0]] = sv;
-            }
-            row.score_wrong_pct = values['qb-sc-wrong'];
-            row.score_hint_pct = values['qb-sc-hint'];
-            row.score_fast_bonus_pct = values['qb-sc-fast'];
-            row.score_fast_seconds = values['qb-sc-secs'];
-            row.score_min = values['qb-sc-min'];
-            row.score_repeat_pct = values['qb-sc-repeat-pct'];
-            row.score_speed_bonus = !!scv.speed;
-            row.score_repeat_enabled = !!scv.repeatOn;
-        }
         Admin.QB_ORDER.forEach(function (topic) {
             var key = topic.toLowerCase();
             row[key + '_mastery'] = Admin.toInt(Admin.qb.rules[topic].mastery, 80);
@@ -104,24 +78,13 @@
         }
 
         Admin.qb.dirty = false;
-        if (Admin.qb.hasScoring) {
-            Admin.qb.scoring = {
-                wrong: row.score_wrong_pct,
-                hint: row.score_hint_pct,
-                fast: row.score_fast_bonus_pct,
-                secs: row.score_fast_seconds,
-                speed: row.score_speed_bonus,
-                min: row.score_min,
-                repeatOn: row.score_repeat_enabled,
-                repeatPct: row.score_repeat_pct
-            };
-        }
         Admin.qb.configSeen = Admin.qbConfigSig(
             Admin.qb.closesAt,
             Admin.qb.rules,
-            Admin.qb.hasScoring ? Admin.qb.scoring : null
+            null
         );
         Admin.renderQbRules();
+        Admin.closeModal('modal-qb-rules');
         Admin.toastOk('Rules saved', 'All three topics updated.');
     }
 
@@ -281,39 +244,14 @@
                 qbMarkDirty();
             });
         });
-        [
-            ['#qb-sc-wrong', 'wrong'],
-            ['#qb-sc-hint', 'hint'],
-            ['#qb-sc-fast', 'fast'],
-            ['#qb-sc-secs', 'secs'],
-            ['#qb-sc-min', 'min'],
-            ['#qb-sc-repeat-pct', 'repeatPct']
-        ].forEach(function (pair) {
-            $(pair[0]).addEventListener('input', function () {
-                Admin.qb.scoring[pair[1]] = this.value;
-                Admin.setFieldError(this.id, '');
-                qbMarkDirty();
-                Admin.qbRenderScoringExample();
-            });
+        // what is saved is what the window shows when it opens (if the server has not told us yet)
+        $('#qb-rules-btn').addEventListener('click', function () {
+            if (Admin.qb.configSeen === null || Admin.qb.configSeen === undefined) {
+                Admin.qb.configSeen = Admin.qbConfigSig(Admin.qb.closesAt, Admin.qb.rules, null);
+            }
         });
-        [
-            ['#qb-sc-speed', 'speed'],
-            ['#qb-sc-repeat', 'repeatOn']
-        ].forEach(function (pair) {
-            $(pair[0]).addEventListener('change', function () {
-                Admin.qb.scoring[pair[1]] = this.checked;
-                qbMarkDirty();
-                Admin.renderQbRules();
-            });
-        });
-
-        // Rules opens from the questions card; Back to questions closes it
-        function showQbView(view) {
-            $('#qb-views').className = 'grid grid-main qb-view-' + view;
-            $('#qb-strip').hidden = view === 'rules';
-            $('#qb-strip-rules').hidden = view !== 'rules';
-        }
-        async function leaveRules() {
+        // Cancel closes the window; unsaved edits are thrown away after asking
+        $('#qb-config-cancel').addEventListener('click', async function () {
             if (Admin.qb.dirty) {
                 var ok = await Admin.confirmAction({
                     heading: 'Discard changes?',
@@ -326,13 +264,8 @@
                 Admin.qb.dirty = false;
                 await Admin.loadMathTask();
             }
-            showQbView('questions');
-        }
-        $('#qb-rules-btn').addEventListener('click', function () {
-            showQbView('rules');
+            Admin.closeModal('modal-qb-rules');
         });
-        $('#qb-rules-back').addEventListener('click', leaveRules);
-        $('#qb-config-cancel').addEventListener('click', leaveRules);
         $('#qb-config-form').addEventListener('submit', qbSaveRules);
 
         $('#qb-edit-form').addEventListener('submit', Admin.qbSaveEditor);

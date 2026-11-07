@@ -96,18 +96,6 @@
     }
     Admin.qbFromRow = qbFromRow;
 
-    function qbScoringFromRow(c) {
-        return {
-            wrong: Admin.toInt(c.score_wrong_pct, 20),
-            hint: Admin.toInt(c.score_hint_pct, 10),
-            fast: Admin.toInt(c.score_fast_bonus_pct, 20),
-            secs: Admin.toInt(c.score_fast_seconds, 30),
-            speed: c.score_speed_bonus !== false,
-            min: Admin.toInt(c.score_min, 0),
-            repeatOn: c.score_repeat_enabled === true,
-            repeatPct: Admin.toInt(c.score_repeat_pct, 50)
-        };
-    }
 
     function qbWhole(raw, low, high) {
         var text = String(raw == null ? '' : raw).trim();
@@ -119,49 +107,6 @@
     }
     Admin.qbWhole = qbWhole;
 
-    function qbExampleScore(base, errors, hints, fast, sc) {
-        var raw = base - ((base * sc.wrong) / 100) * errors - ((base * sc.hint) / 100) * hints;
-        if (sc.speed && errors === 0 && fast) {
-            raw += (base * sc.fast) / 100;
-        }
-        return Math.max(sc.min, Math.round(raw));
-    }
-
-    function qbRenderScoringExample() {
-        var sc = qb.scoring,
-            n = $('#qb-sc-example');
-        var ok =
-            qbWhole(sc.wrong, 0, 100) !== null &&
-            qbWhole(sc.hint, 0, 100) !== null &&
-            qbWhole(sc.fast, 0, 100) !== null &&
-            qbWhole(sc.secs, 1, 3600) !== null &&
-            qbWhole(sc.min, 0, 500) !== null;
-        if (!ok) {
-            n.textContent = '';
-            return;
-        }
-        var v = {
-            wrong: +sc.wrong,
-            hint: +sc.hint,
-            fast: +sc.fast,
-            secs: +sc.secs,
-            speed: sc.speed,
-            min: +sc.min
-        };
-        var bits = [
-            'clean ' + qbExampleScore(20, 0, 0, false, v),
-            '1 wrong ' + qbExampleScore(20, 1, 0, false, v),
-            '1 hint ' + qbExampleScore(20, 0, 1, false, v),
-            '1 wrong + 1 hint ' + qbExampleScore(20, 1, 1, false, v)
-        ];
-        if (v.speed) {
-            bits.push(
-                'fast and clean (under ' + v.secs + ' s) ' + qbExampleScore(20, 0, 0, true, v)
-            );
-        }
-        n.textContent = 'Example for a 20-point question: ' + bits.join(' · ') + '.';
-    }
-    Admin.qbRenderScoringExample = qbRenderScoringExample;
 
     function qbConfigSig(closes, rules, scoring) {
         return JSON.stringify([
@@ -300,22 +245,16 @@
                 };
             });
             var serverCloses = '';
-            var serverHasScoring = Object.prototype.hasOwnProperty.call(c, 'score_wrong_pct');
-            var serverScoring = serverHasScoring ? qbScoringFromRow(c) : null;
-            var sig = qbConfigSig(serverCloses, serverRules, serverScoring);
+            var sig = qbConfigSig(serverCloses, serverRules, null);
             var byOther = qb.configSeen !== null && qb.configSeen !== sig;
             qb.configSeen = sig;
             qb.hasClosing = false;
-            qb.hasScoring = serverHasScoring;
             if (!qb.dirty) {
                 qb.rules = serverRules;
-                if (serverScoring) {
-                    qb.scoring = serverScoring;
-                }
                 if (byOther) {
                     Admin.toastOk(
                         'Updated by another admin',
-                        'The rules and the scoring on this screen now match what was just saved.'
+                        'The rules on this screen now match what was just saved.'
                     );
                 }
             } else if (byOther) {

@@ -18,7 +18,7 @@
     <script src="../../assets/js/shared/admin-fonts.js"></script>
 
     <link rel="stylesheet" href="../../styles/global.css?v=20261128s">
-    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261122h">
+    <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261129c">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261126b">
     <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261128t">
     <link rel="stylesheet" href="../../styles/admin/admin-glass.css?v=20261125b">
@@ -370,13 +370,8 @@
                                 <button type="button" class="info-tip" data-tip="Questions from this bank are used for new game problems. Review steps and answers before students play." aria-label="About the math task bank"><svg class="icon"><use href="#i-info"></use></svg></button>
                             </div>
                         </div>
-                        <div class="panel qb-strip" id="qb-strip-rules" hidden>
-                            <span class="badge badge-warn qb-dirty" id="qb-dirty">Unsaved</span>
-                            <button class="btn btn-secondary btn-sm" type="button" id="qb-rules-back">Back to questions
-                            </button>
-                        </div>
                         <div class="panel qb-strip" id="qb-strip">
-                            <button class="btn btn-secondary btn-sm" type="button" id="qb-rules-btn">Rules
+                            <button class="btn btn-secondary btn-sm" type="button" data-modal-open="modal-qb-rules" id="qb-rules-btn">Rules
                             </button>
                             <button class="btn btn-primary btn-sm" type="button" id="qb-add-btn">Add question
                             </button>
@@ -385,7 +380,7 @@
 
                     <div class="stack-lg">
 
-                        <div class="grid grid-main qb-view-questions" id="qb-views">
+                        <div class="stack-lg" id="qb-views">
 
                             <div class="card" data-region="mathtask">
                                 <div class="card-head" hidden>
@@ -421,15 +416,24 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                </section>
 
-                            <form class="card qb-config" id="qb-config-form" data-region="mathtask" novalidate>
-                                <div class="card-head">
-                                    <div class="card-head-text">
-                                        <h2 class="card-title">Adaptive rules</h2>
-                                        <p class="card-sub" id="qb-config-sub">Topic 1 · Finding %</p>
-                                    </div>
-                                </div>
-                                <div class="card-body stack">
+            </main>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-qb-rules" role="dialog" aria-modal="true" aria-labelledby="qb-rules-title">
+        <div class="modal modal-md">
+            <form id="qb-config-form" data-region="mathtask" novalidate>
+                <header class="modal-head">
+                    <div class="modal-head-text">
+                        <h2 class="modal-title" id="qb-rules-title">Adaptive rules</h2>
+                        <p class="modal-sub" id="qb-config-sub">Topic 1 · Finding %</p>
+                    </div>
+                </header>
+                                <div class="modal-body stack">
                                     <div class="field">
                                         <div class="qb-range-top">
                                             <span class="with-tip">
@@ -457,68 +461,12 @@
                                         </div>
                                     </div>
 
-                                    <fieldset class="qb-scoring" id="qb-scoring">
-                                        <legend class="label">Scoring rules <span class="qb-scope">All topics</span></legend>
-                                        <p class="qb-help">A question's score = its maximum points, minus a penalty for each wrong answer and each hint, plus a bonus for a fast answer with no wrong answer. Percentages are of that question's own maximum, so they work for any point value. The server works the score out when the question is finished; students never see it.</p>
-                                        <div class="form-grid">
-                                            <div class="field">
-                                                <label class="label" for="qb-sc-wrong">Wrong answer penalty (%)</label>
-                                                <input class="input tnum" type="number" id="qb-sc-wrong" min="0" max="100" step="1" inputmode="numeric" disabled>
-                                                <p class="field-msg" data-msg-for="qb-sc-wrong"></p>
-                                            </div>
-                                            <div class="field">
-                                                <label class="label" for="qb-sc-hint">Hint penalty (%)</label>
-                                                <input class="input tnum" type="number" id="qb-sc-hint" min="0" max="100" step="1" inputmode="numeric" disabled>
-                                                <p class="field-msg" data-msg-for="qb-sc-hint"></p>
-                                            </div>
-                                            <div class="field">
-                                                <label class="label" for="qb-sc-fast">Fast correct bonus (%)</label>
-                                                <input class="input tnum" type="number" id="qb-sc-fast" min="0" max="100" step="1" inputmode="numeric" disabled>
-                                                <p class="field-msg" data-msg-for="qb-sc-fast"></p>
-                                            </div>
-                                            <div class="field">
-                                                <label class="label" for="qb-sc-secs">Fast answer threshold (seconds)</label>
-                                                <input class="input tnum" type="number" id="qb-sc-secs" min="1" max="3600" step="1" inputmode="numeric" disabled>
-                                                <p class="field-msg" data-msg-for="qb-sc-secs"></p>
-                                            </div>
-                                            <div class="field">
-                                                <label class="label" for="qb-sc-min">Minimum score</label>
-                                                <input class="input tnum" type="number" id="qb-sc-min" min="0" max="500" step="1" inputmode="numeric" disabled>
-                                                <p class="field-msg" data-msg-for="qb-sc-min"></p>
-                                            </div>
-                                            <div class="field">
-                                                <label class="label" for="qb-sc-repeat-pct">Repeat score (% of the normal score)</label>
-                                                <input class="input tnum" type="number" id="qb-sc-repeat-pct" min="0" max="100" step="1" inputmode="numeric" disabled>
-                                                <p class="field-msg" data-msg-for="qb-sc-repeat-pct"></p>
-                                            </div>
-                                        </div>
-                                        <label class="check">
-                                            <input type="checkbox" id="qb-sc-speed" disabled>
-                                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
-                                            <span class="check-text">Speed bonus enabled (only for a question answered with no wrong answer; being slow never costs points)</span>
-                                        </label>
-                                        <label class="check">
-                                            <input type="checkbox" id="qb-sc-repeat" disabled>
-                                            <span class="check-box"><svg class="icon"><use href="#i-check"></use></svg></span>
-                                            <span class="check-text">Score repeated questions (off: a question already completed in the session earns 0 when it comes around again; the student can still answer it)</span>
-                                        </label>
-                                        <p class="qb-help" id="qb-sc-example" aria-live="polite"></p>
-                                        <p class="qb-help" id="qb-sc-note">Available after the scoring database update.</p>
-                                    </fieldset>
                                 </div>
-                                <div class="card-foot">
-                                    <button class="btn btn-secondary" type="button" id="qb-config-cancel">Cancel</button>
-                                    <button class="btn btn-primary" type="submit" id="qb-config-save" disabled>
-                                        <svg class="icon"><use href="#i-check"></use></svg>
-                                        Save rules
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </section>
-
-            </main>
+                <footer class="modal-foot">
+                    <button class="btn btn-secondary" type="button" id="qb-config-cancel">Cancel</button>
+                    <button class="btn btn-primary" type="submit" id="qb-config-save" disabled>Save rules</button>
+                </footer>
+            </form>
         </div>
     </div>
 
@@ -1352,9 +1300,9 @@
     <script src="../js/admin-account.js?v=20261122d"></script>
     <script src="../js/score-entry.js?v=20261121a"></script>
     <script src="../js/live-updates.js?v=20261127a"></script>
-    <script src="../js/math-task-core.js?v=20261109a"></script>
-    <script src="../js/math-task-edit.js?v=20261121b"></script>
-    <script src="../js/math-task-rules.js?v=20261111a"></script>
+    <script src="../js/math-task-core.js?v=20261129a"></script>
+    <script src="../js/math-task-edit.js?v=20261129b"></script>
+    <script src="../js/math-task-rules.js?v=20261129e"></script>
     <script src="../js/student-move.js?v=20261105a"></script>
     <script src="../js/admin-start.js?v=20261122c"></script>
 </body>

@@ -72,34 +72,7 @@
             $(sel).disabled = !ready;
         });
 
-        var sc = Admin.qb.scoring,
-            sActive = document.activeElement && document.activeElement.id;
-        [
-            ['#qb-sc-wrong', 'wrong'],
-            ['#qb-sc-hint', 'hint'],
-            ['#qb-sc-fast', 'fast'],
-            ['#qb-sc-secs', 'secs'],
-            ['#qb-sc-min', 'min'],
-            ['#qb-sc-repeat-pct', 'repeatPct']
-        ].forEach(function (pair) {
-            if (sActive !== pair[0].slice(1)) {
-                $(pair[0]).value = String(sc[pair[1]]);
-            }
-            $(pair[0]).disabled = !ready || !Admin.qb.hasScoring;
-        });
-        $('#qb-sc-speed').checked = !!sc.speed;
-        $('#qb-sc-repeat').checked = !!sc.repeatOn;
-        $('#qb-sc-speed').disabled = !ready || !Admin.qb.hasScoring;
-        $('#qb-sc-repeat').disabled = !ready || !Admin.qb.hasScoring;
-        $('#qb-sc-fast').disabled = !ready || !Admin.qb.hasScoring || !sc.speed;
-        $('#qb-sc-secs').disabled = !ready || !Admin.qb.hasScoring || !sc.speed;
-        $('#qb-sc-repeat-pct').disabled = !ready || !Admin.qb.hasScoring || !sc.repeatOn;
-        $('#qb-sc-note').textContent = Admin.qb.hasScoring
-            ? 'Saved with the rules above. A change applies to questions finished from then on; scores already earned are never rewritten.'
-            : 'Available after the scoring database update.';
-        Admin.qbRenderScoringExample();
-        $('#qb-config-save').disabled = !ready || Admin.qb.busy.config;
-        $('#qb-dirty').classList.toggle('is-on', Admin.qb.dirty);
+        $('#qb-config-save').disabled = !ready || Admin.qb.busy.config || !Admin.qb.dirty;
     }
     Admin.renderQbRules = renderQbRules;
 
