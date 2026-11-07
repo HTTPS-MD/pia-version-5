@@ -560,3 +560,10 @@ ul.paper-chips {
         flex: 1 1 auto;
     }
 }
+
+/* the tutorial inside the white card: hidden parts really hidden */
+.tutorial-card[hidden],
+.start-content[hidden],
+.tutorial-actions [hidden] {
+    display: none !important;
+}

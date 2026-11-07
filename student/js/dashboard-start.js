@@ -169,11 +169,12 @@
         await Dash.checkTutoring();
         Dash.watchTutoring();
 
-        Dash.reveal();
-
+        // the first time, the tutorial sits in the white card before Start; it is settled before the page shows
         if (window.PIATutorial) {
-            window.PIATutorial.init(sb).catch(function () {});
+            await window.PIATutorial.init(sb).catch(function () {});
         }
+
+        Dash.reveal();
 
         if (typeof registerChannel === 'function') {
             registerChannel('student-dash-lock', function (channel) {

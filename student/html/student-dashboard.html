@@ -16,8 +16,8 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261128s">
     <link rel="stylesheet" href="../../styles/student/student-dashboard.css?v=20261116a">
     <link rel="stylesheet" href="../../styles/student/student-game.css?v=20261128s">
-    <link rel="stylesheet" href="../../styles/student/student-paper.css?v=20261129a">
-    <link rel="stylesheet" href="../../styles/student/landing-look.css?v=20261129b">
+    <link rel="stylesheet" href="../../styles/student/student-paper.css?v=20261129b">
+    <link rel="stylesheet" href="../../styles/student/landing-look.css?v=20261129d">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -56,7 +56,6 @@
                 </div>
 
                 <div class="learn-bar-right">
-                    <button class="btn btn-tutorial" id="tutorial-btn" type="button" aria-haspopup="dialog">How it works</button>
                     <button class="btn btn-signout" id="signout-btn" data-no-who>Quit</button>
                     <button type="button" class="btn btn-signout btn-theme theme-switch" id="theme-toggle" aria-label="Switch to light theme">
                         <svg class="theme-sun" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9 17 7M7 17l-2.1 2.1"/></svg>
@@ -80,6 +79,17 @@
                     </aside>
 
                     <div class="start-card">
+                        <div class="tutorial-card" id="tutorial-card" hidden>
+                            <p class="start-intro" id="tutorial-step" aria-live="polite">Step 1 of 4</p>
+                            <h1 class="start-hello" id="tutorial-title">Welcome to your tutoring session</h1>
+                            <img class="tutorial-img" id="tutorial-img" alt="" hidden>
+                            <p class="start-lede" id="tutorial-text"></p>
+                            <div class="start-actions tutorial-actions">
+                                <button class="btn btn-secondary" id="tutorial-back" type="button">Back</button>
+                                <button class="btn btn-primary" id="tutorial-next" type="button">Next</button>
+                            </div>
+                        </div>
+                        <div class="start-content" id="start-content">
                         <h1 class="start-hello" id="start-hello">Hi!</h1>
                         <p class="start-intro" id="start-intro"></p>
                         <p class="start-lede" id="start-lede">
@@ -94,6 +104,7 @@
                             <button class="btn btn-primary btn-start" id="start-btn">
                                 <span id="start-btn-label">Start</span>
                             </button>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -195,27 +206,6 @@
         </div>
     </div>
 
-    <div class="overlay" id="modal-tutorial" data-static role="dialog" aria-modal="true"
-        aria-labelledby="tutorial-title" aria-describedby="tutorial-text">
-        <div class="modal modal-md">
-            <header class="modal-head">
-                <div class="modal-head-text">
-                    <p class="tutorial-step" id="tutorial-step" aria-live="polite">Step 1 of 4</p>
-                    <h2 class="modal-title" id="tutorial-title">Tutorial</h2>
-                </div>
-                <button class="modal-close tutorial-close" id="tutorial-close" type="button" aria-label="Close tutorial" hidden><svg class="icon"><use href="#i-x"></use></svg></button>
-            </header>
-            <div class="modal-body">
-                <img class="tutorial-img" id="tutorial-img" alt="" hidden>
-                <p class="tutorial-text" id="tutorial-text"></p>
-            </div>
-            <footer class="modal-foot tutorial-foot">
-                <button class="btn btn-secondary" id="tutorial-back" type="button">Back</button>
-                <button class="btn btn-primary" id="tutorial-next" type="button">Next</button>
-            </footer>
-        </div>
-    </div>
-
     <div class="toast-stack" id="toast-stack" role="status" aria-live="polite"></div>
 
     <script src="../../assets/js/shared/site-config.js?v=20261031a"></script>
@@ -239,8 +229,8 @@
     <script src="../js/problem-steps.js?v=20261031b"></script>
     <script src="../js/answers-and-hints.js?v=20261031a"></script>
     <script src="../js/leave-and-sign-out.js?v=20261031c"></script>
-    <script src="../js/dashboard-start.js?v=20261127b"></script>
-    <script src="../js/student-tutorial.js?v=20261101a"></script>
+    <script src="../js/dashboard-start.js?v=20261129a"></script>
+    <script src="../js/student-tutorial.js?v=20261129b"></script>
     <script src="../js/game-tabs.js"></script>
 </body>
 

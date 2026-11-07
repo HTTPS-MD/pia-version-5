@@ -1162,3 +1162,9 @@
         background: color-mix(in srgb, var(--text) 10%, transparent);
     }
 }
+
+/* the tutorial in the white card: Back and Next on the right, like the questionnaire */
+.landing-look .start-card .start-actions.tutorial-actions {
+    justify-content: flex-end;
+    width: 100%;
+}
