@@ -273,11 +273,10 @@
 
         Admin.state.activeFaculty = f;
         $('#faculty-title').textContent = f.name || 'Teacher profile';
-        var sectionActions = $('#faculty-section-actions');
-        if (sectionActions) {
+        var unassign = $('#faculty-unassign');
+        if (unassign) {
             var current = !!(window.PIACheckin && window.PIACheckin.holdsSection && window.PIACheckin.holdsSection(f.email));
-            sectionActions.style.display = current ? '' : 'none';
-            $('#faculty-section-label').textContent = 'Section ' + (window.PIASectionNow || '');
+            unassign.style.display = current ? '' : 'none';
         }
         $('#faculty-initials').textContent = Admin.initialsOf(f.name, f.email);
         $('#faculty-subject').textContent = f.email;
