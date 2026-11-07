@@ -1733,17 +1733,22 @@
         }
         try {
             await call('admin_remove_from_session', { p_email: email });
-            // A student who is signed in is signed out: they are no longer part of the session.
-            await signOutEmails(await onlineIn(chosen()).then(function (list) {
-                return list.filter(function (e) {
-                    return e === String(email).toLowerCase();
-                });
-            }).catch(function () {
-                return [];
-            }));
             say('Archived. You can add them back or delete them from Archived.');
-            await Admin.refreshAll();
-            await refreshOverview();
+            // A student who is signed in is signed out: they are no longer part of the session. That, the roster
+            // and the counts all go at the same time instead of one after another.
+            await Promise.all([
+                onlineIn(chosen())
+                    .then(function (list) {
+                        return signOutEmails(
+                            list.filter(function (e) {
+                                return e === String(email).toLowerCase();
+                            })
+                        );
+                    })
+                    .catch(function () {}),
+                Admin.refreshAll(),
+                refreshOverview()
+            ]);
         } catch (error) {
             say(failure(error), true);
         }
@@ -1794,17 +1799,9 @@
             paintPicked();
             return 0;
         }
-        // The student numbers of the archived students (masked under Privacy Mode, like everywhere else).
+        // The list shows at once; the student numbers fill in when they arrive (and are never asked for under
+        // Privacy Mode, where they are masked like everywhere else).
         var numbers = {};
-        try {
-            ((await call('admin_numbers_for', {
-                p_emails: rows.map(function (r) {
-                    return r.email;
-                })
-            })) || []).forEach(function (n) {
-                numbers[String(n.email).toLowerCase()] = prettyNumber(n.number);
-            });
-        } catch (e) {}
         var hidden = document.documentElement.classList.contains('pia-hide-details');
         host.innerHTML =
             '<div class="table-wrap"><table class="table"><thead><tr>' +
@@ -1819,13 +1816,34 @@
                         '<tr data-row data-email="' + esc(r.email) + '" data-who="' + esc(who) + '">' +
                         '<td class="removed-check"><input type="checkbox" data-pick aria-label="Select ' + esc(who) + '"></td>' +
                         '<td>' + esc(who) + '</td>' +
-                        '<td class="mono">' + esc(hidden ? '********' : numbers[String(r.email).toLowerCase()] || '—') + '</td>' +
+                        '<td class="mono" data-number-for="' + esc(r.email) + '">' + esc(hidden ? '********' : '…') + '</td>' +
                         '<td class="removed-row-action"><button type="button" class="btn btn-secondary" data-addback="' + esc(r.email) + '">Add back</button></td></tr>'
                     );
                 })
                 .join('') +
             '</tbody></table></div>';
         paintPicked();
+        if (!hidden) {
+            call('admin_numbers_for', {
+                p_emails: rows.map(function (r) {
+                    return r.email;
+                })
+            }).then(
+                function (list) {
+                    (list || []).forEach(function (n) {
+                        numbers[String(n.email).toLowerCase()] = prettyNumber(n.number);
+                    });
+                    Array.prototype.forEach.call(host.querySelectorAll('[data-number-for]'), function (td) {
+                        td.textContent = numbers[String(td.getAttribute('data-number-for')).toLowerCase()] || '—';
+                    });
+                },
+                function () {
+                    Array.prototype.forEach.call(host.querySelectorAll('[data-number-for]'), function (td) {
+                        td.textContent = '—';
+                    });
+                }
+            );
+        }
         host.onclick = async function (event) {
             var b = event.target.closest('[data-addback]');
             if (!b) {
@@ -1833,11 +1851,12 @@
             }
             b.disabled = true;
             try {
-                await call('admin_add_back_to_session', { p_email: b.getAttribute('data-addback') });
+                var email = b.getAttribute('data-addback');
+                await call('admin_add_back_to_session', { p_email: email });
                 say('Added back.');
-                await Admin.refreshAll();
-                await refreshOverview();
-                await reloadRemoved();
+                // the row leaves the list at once; the rest of the page catches up in the background
+                dropArchivedRows([email]);
+                refreshBehind();
             } catch (error) {
                 say(failure(error), true);
                 b.disabled = false;
@@ -1866,12 +1885,26 @@
         return rows.length;
     }
 
-    // When the last archived student is added back (or deleted) there is nothing left to show: the dialog closes.
-    async function reloadRemoved() {
-        var left = await showRemoved();
-        if (left === 0) {
+    // Takes the given students out of the Archived list without asking the server again. When the last one
+    // is gone there is nothing left to show: the dialog closes.
+    function dropArchivedRows(emails) {
+        emails.forEach(function (email) {
+            delete picked[email];
+            Array.prototype.forEach.call(document.querySelectorAll('#removed-table [data-row]'), function (tr) {
+                if (tr.getAttribute('data-email') === email) {
+                    tr.remove();
+                }
+            });
+        });
+        paintPicked();
+        if (!document.querySelector('#removed-table [data-row]')) {
             window.PIAAdmin.closeModal('modal-removed');
         }
+    }
+
+    // The roster and the session counts follow along without keeping the dialog waiting.
+    function refreshBehind() {
+        Promise.all([window.PIAAdmin.refreshAll(), refreshOverview()]).catch(function () {});
     }
 
     function pickedRows() {
@@ -1905,18 +1938,32 @@
         if (!ok) {
             return;
         }
-        var failed = 0;
-        for (var i = 0; i < rows.length; i++) {
-            try {
-                await call('admin_delete_user', { target_email: rows[i].getAttribute('data-email') });
-            } catch (error) {
-                failed += 1;
-            }
-        }
+        // all the deletes go together instead of one after another
+        var emails = rows.map(function (tr) {
+            return tr.getAttribute('data-email');
+        });
+        var results = await Promise.all(
+            emails.map(function (email) {
+                return call('admin_delete_user', { target_email: email }).then(
+                    function () {
+                        return true;
+                    },
+                    function () {
+                        return false;
+                    }
+                );
+            })
+        );
+        var failed = results.filter(function (done) {
+            return !done;
+        }).length;
         say(failed ? failed + ' could not be deleted.' : 'Deleted.', !!failed);
-        await Admin.refreshAll();
-        await refreshOverview();
-        await reloadRemoved();
+        dropArchivedRows(
+            emails.filter(function (email, i) {
+                return results[i];
+            })
+        );
+        refreshBehind();
     }
 
     window.PIACheckin = {
