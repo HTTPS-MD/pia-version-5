@@ -131,6 +131,15 @@ Deno.serve(async (req) => {
                   }
                 : null;
         },
+        // "Experiment ended" = the Game was closed (or End experiment pressed) for the section today.
+        async experimentEndedFor(section) {
+            const { count } = await admin
+                .from('game_closed')
+                .select('section', { count: 'exact', head: true })
+                .eq('section', section)
+                .gte('closed_at', sinceIso());
+            return (count ?? 0) > 0;
+        },
         anyCheckinOpen: async () => (await openCount()) > 0,
         checkinOpenFor: async (section) => (await openCount(section)) > 0,
         async standingFor(section, email) {

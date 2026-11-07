@@ -17,6 +17,8 @@
 // session started or whether a number is registered, and no name is ever sent. A refused student waits and
 // asks again with quiet: true (not counted again for the admin's bell) until the admin lets them in.
 //
+// After the admin ends the experiment for a section, the same refusal applies to everyone in it, with no bell and no count.
+//
 // A number is accepted once the admin has started a session for the student's section today. While no
 // session was started today the answer is the same for every number and no name is read, so nothing
 // about the roster leaks.
@@ -89,6 +91,8 @@ export async function handleJoin(body, ip, deps) {
         role !== 'teacher' &&
         (await deps.checkinOpenFor(student.section));
     if (!student || !allowed) return fail();
+    // Once the experiment has ended for the section (today), nobody comes in and nothing is counted for the admin's bell.
+    if (deps.experimentEndedFor && (await deps.experimentEndedFor(student.section))) return refused;
     const email = student.email.trim().toLowerCase();
     const mark = await deps.standingFor(student.section, email);
     if (mark === 'none' || mark === 'absent') return fail();
