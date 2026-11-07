@@ -955,11 +955,16 @@ body {
     transition: opacity var(--t-base);
 }
 .check input:checked + .check-box {
-    background: var(--accent);
+    background: #ffd83d;
     box-shadow: none;
 }
 .check input:checked + .check-box .icon {
     opacity: 1;
+    color: #0a0f2e;
+}
+/* every checkbox in the system is yellow when ticked (the ones drawn by .check above, and the plain ones) */
+input[type='checkbox'] {
+    accent-color: #ffd83d;
 }
 .check input:focus-visible + .check-box {
     box-shadow: 0 0 0 3px var(--accent-soft);

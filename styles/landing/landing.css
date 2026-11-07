@@ -2082,7 +2082,7 @@ h4 {
     width: 1.125rem;
     height: 1.125rem;
     margin: 0;
-    accent-color: var(--accent);
+    accent-color: #ffd83d;
     cursor: pointer;
 }
 .help-head {
