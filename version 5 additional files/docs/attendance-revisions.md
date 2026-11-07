@@ -60,7 +60,7 @@ Proposed, waiting for a decision:
 18. Who can see the personality labels (the Character column in the admin, the teacher view)? CERC reviewer 2 asked.
 19. Security and retention of `entry_log` and system logs (CERC asked about encryption and access).
 20. Fix the Research Instrument sentence that splits the experimental group into "matching" and "non-matching"; Non-assigned means free choice.
-21. Align the paper with the system: k-means (not Decision Tree and scikit-learn), the answer checker, section names (Earth, Jupiter, Mercury).
+21. Align the paper with the system: a rule-based Decision Tree (manually authored, not trained and not scikit-learn; cut-offs provisional, to be reviewed by an educator), the answer checker, section names (Earth, Jupiter, Mercury). Changed 2026-11-07: the system now uses the tree, no longer K-Means.
 22. Describe the intervention: how many sessions, how long, which topic, how long the control group is in class.
 23. Numbers: 4 groups of 19 is 76, not 73; make "89 students" clear; add a pre-test equality check; consider ANCOVA; choose "randomized" or "quasi-experimental".
 24. Write the remaining holes as Limitations and Recommendations (Chapter 5).

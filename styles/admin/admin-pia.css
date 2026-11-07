@@ -1517,12 +1517,13 @@ html[data-surface='admin'] .game-history-row {
     text-overflow: ellipsis;
 }
 /* a section is picked: Student, Participation, Number, Condition, Stage, Character */
-html.pia-section-picked #roster-thead th:nth-child(1) { width: 25%; }
-html.pia-section-picked #roster-thead th:nth-child(2) { width: 16%; }
-html.pia-section-picked #roster-thead th:nth-child(3) { width: 13%; }
-html.pia-section-picked #roster-thead th:nth-child(5) { width: 14%; }
-html.pia-section-picked #roster-thead th:nth-child(6) { width: 14%; }
-html.pia-section-picked #roster-thead th:nth-child(7) { width: 18%; }
+html.pia-section-picked #roster-thead th:nth-child(1) { width: 21%; }
+html.pia-section-picked #roster-thead th:nth-child(2) { width: 13%; }
+html.pia-section-picked #roster-thead th:nth-child(3) { width: 12%; }
+html.pia-section-picked #roster-thead th:nth-child(5) { width: 13%; }
+html.pia-section-picked #roster-thead th:nth-child(6) { width: 13%; }
+html.pia-section-picked #roster-thead th:nth-child(7) { width: 16%; }
+html.pia-section-picked #roster-thead th:nth-child(8) { width: 12%; }
 /* all sections: the Section column is back */
 html:not(.pia-section-picked) #roster-thead th:nth-child(1) { width: 24%; }
 html:not(.pia-section-picked) #roster-thead th:nth-child(2) { width: 14%; }
@@ -2708,4 +2709,19 @@ html[data-theme='dark'] .confirm-table .table-wrap {
 }
 .removed-actions.is-hidden {
     display: none;
+}
+
+/* Profile column: the learning profile the decision tree gave the student */
+#view-students .lp-tag {
+    font-size: 0.85em;
+    font-weight: 600;
+}
+#view-students .lp-tag.is-struggling {
+    color: var(--danger, #e5645c);
+}
+#view-students .lp-tag.is-average {
+    color: var(--text);
+}
+#view-students .lp-tag.is-outstanding {
+    color: var(--success, #3fb27f);
 }

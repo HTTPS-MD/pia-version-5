@@ -8,7 +8,8 @@
 //   2. Exactly seven numbers are sent to the ML service, picked by name below:
 //      no name, email, student id, session id, tutor or group. The token for the
 //      ML service lives only in this function's secrets.
-//   3. Only {profile, confidence} goes back to the browser. Any failure is a
+//   3. The answer is recorded (record_learning_profile: profile, number of submissions, time, with the student read
+//      from the session) so the admin can see it. Only {profile, confidence: null} goes back to the browser (the rule-based tree has no probability). Any failure is a
 //      plain error and the page keeps its current wording.
 // The browser sends only {session_id}. It cannot send features and cannot send
 // "learn": there is nothing in this path that can change the model.
@@ -23,7 +24,9 @@ const FEATURES = [
 ];
 const PROFILES = ['struggling', 'average', 'outstanding'];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-const MIN_EVENTS = 2; // the attached game waits for two answers before asking
+// The profile is read from the last eight submissions, so it waits for half of them. Until then the answer is
+// 'average' and the service is not asked (two wrong answers in a row would otherwise mean 0% and struggling).
+const MIN_EVENTS = 4;
 function cors(origin, env) {
     const h = { Vary: 'Origin' };
     if (origin && env.allowedOrigins.includes(origin)) {
@@ -43,7 +46,7 @@ function reply(status, body, origin, env) {
         }
     });
 }
-export async function handle(req, env, rpc, fetchFn = fetch) {
+export async function handle(req, env, rpc, fetchFn = fetch, record = async () => {}) {
     const origin = req.headers.get('Origin');
     if (req.method === 'OPTIONS')
         return new Response(null, { status: 204, headers: cors(origin, env) });
@@ -87,12 +90,17 @@ export async function handle(req, env, rpc, fetchFn = fetch) {
         });
         if (!ml.ok) return reply(502, { error: 'Profile service unavailable.' }, origin, env);
         const out = await ml.json();
-        if (!PROFILES.includes(String(out.profile)) || typeof out.confidence !== 'number') {
+        // The decision tree answers only the profile; it has no probability, so confidence is always null.
+        if (!out || !PROFILES.includes(String(out.profile))) {
             return reply(502, { error: 'Profile service unavailable.' }, origin, env);
         }
+        // Keep a record of what the tree answered (the admin screen reads it). A failure here never changes the answer.
+        try {
+            await record(sessionId, String(out.profile), events);
+        } catch (_e) {}
         return reply(
             200,
-            { profile: out.profile, confidence: out.confidence, source: 'ml' },
+            { profile: out.profile, confidence: null, source: 'ml' },
             origin,
             env
         );

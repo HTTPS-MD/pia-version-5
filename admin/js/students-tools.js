@@ -12,6 +12,7 @@
     var holder = {};
     var marks = {};
     var marksSection = null;
+    var learnMap = {}; // email -> the latest learning profile of the chosen section (from the database)
     var onlineMap = {}; // email -> is signed in now, for the chosen section (read every refresh)
     var sessionState = 'none'; // none | open | ended | locked, from the database
     var built = false;
@@ -829,9 +830,39 @@
         } else if (!on && th) {
             th.remove();
         }
+        var lpTh = headRow && headRow.querySelector('[data-lp-th]');
+        if (on && headRow && !lpTh) {
+            lpTh = document.createElement('th');
+            lpTh.scope = 'col';
+            lpTh.setAttribute('data-lp-th', '');
+            lpTh.textContent = 'Profile';
+            headRow.appendChild(lpTh);
+        } else if (!on && lpTh) {
+            lpTh.remove();
+        }
         Array.prototype.slice
             .call(document.querySelectorAll('#student-tbody tr[data-student]'))
             .forEach(function (tr) {
+                var lpCell = tr.querySelector('[data-lp-cell]');
+                if (!on) {
+                    if (lpCell) {
+                        lpCell.remove();
+                    }
+                } else {
+                    if (!lpCell) {
+                        lpCell = document.createElement('td');
+                        lpCell.setAttribute('data-lp-cell', '');
+                        tr.appendChild(lpCell);
+                    }
+                    var lp = learnMap[String(tr.getAttribute('data-student')).toLowerCase()];
+                    var lpHtml = lp
+                        ? '<span class="lp-tag is-' + esc(lp) + '">' + esc(lp.charAt(0).toUpperCase() + lp.slice(1)) + '</span>'
+                        : '<span class="att-result is-none">—</span>';
+                    if (lpCell._html !== lpHtml) {
+                        lpCell._html = lpHtml;
+                        lpCell.innerHTML = lpHtml;
+                    }
+                }
                 var cell = tr.querySelector('[data-mk-cell]');
                 if (!on) {
                     if (cell) {
@@ -1039,6 +1070,7 @@
             marks = {};
             marksSection = section;
             sessionState = 'none';
+            learnMap = {};
             onlineMap = {};
         }
         if (section) {
@@ -1066,6 +1098,14 @@
                         });
                     }
                 }
+            } catch (e) {}
+            // The latest learning profile the decision tree gave each student of the section.
+            try {
+                var lps = await call('admin_learning_profiles', { p_section: section });
+                learnMap = {};
+                (lps || []).forEach(function (r) {
+                    learnMap[String(r.email).toLowerCase()] = String(r.profile);
+                });
             } catch (e) {}
             // Also read it after the session ended, so the record stays on screen.
             try {

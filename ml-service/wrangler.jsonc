@@ -1,5 +1,5 @@
 {
-  // Hardened pia-ml-api. Deploy to YOUR Cloudflare account, staging first.
+  // Hardened pia-ml-api (rule-based decision tree). Deploy to YOUR Cloudflare account, staging first.
   // Secret (never in this file, never in the browser):
   //   npx wrangler secret put ML_TOKEN --env staging
   "name": "pia-ml-api",
@@ -17,9 +17,7 @@
       "name": "pia-ml-api-staging",
       "workers_dev": true,
       "preview_urls": false
-      // Optional: bind a KV namespace named ML_MODEL (READ ONLY use) to carry the
-      // centres of the old live model. Without it the original cold-start
-      // centres in entry.py are used.
+      // No KV namespace is needed: the rule-based decision tree reads and writes nothing.
     }
   }
 }

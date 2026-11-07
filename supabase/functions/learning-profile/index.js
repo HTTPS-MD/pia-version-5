@@ -11,7 +11,7 @@
 //   PIA_ALLOWED_ORIGINS   comma list, e.g. https://your-pia-site.example,http://127.0.0.1:5504
 // Until PIA_ML_URL and PIA_ML_TOKEN are both set the function answers 503 and the
 // game simply keeps its default wording.
-// SUPABASE_URL and SUPABASE_ANON_KEY are provided automatically.
+// SUPABASE_URL, SUPABASE_ANON_KEY and SUPABASE_SERVICE_ROLE_KEY are provided automatically.
 //
 // Gateway JWT check: leave "Enforce JWT verification" ON. The function also reads
 // the database AS the caller, so the game's own guard applies.
@@ -34,5 +34,16 @@ Deno.serve((req) => {
         });
         return await sb.rpc('get_learning_features', { p_session_id: sessionId });
     };
-    return handle(req, env, rpc);
+    // The record is written with the service role (the browser can never write it). The e-mail is read from the session.
+    const record = async (sessionId, profile, events) => {
+        const admin = createClient(Deno.env.get('SUPABASE_URL'), Deno.env.get('SUPABASE_SERVICE_ROLE_KEY'), {
+            auth: { persistSession: false }
+        });
+        await admin.rpc('record_learning_profile', {
+            p_session_id: sessionId,
+            p_profile: profile,
+            p_events: events
+        });
+    };
+    return handle(req, env, rpc, fetch, record);
 });
