@@ -1,35 +1,8 @@
-const TUTOR_IMG = '../../assets/images/tutors/';
-const TUTORS = {
-    'pia-open': { name: 'Ava' },
-    'pia-conscientious': { name: 'Cara' },
-    'pia-extravert': { name: 'Theo' },
-    'pia-agreeable': { name: 'Amy' },
-    'pia-calm': { name: 'Kai' },
-    'pia-neutral': { name: 'Noel' }
-};
-
-// A student who already has a tutor sees the tutor while they wait; the words stay "Hang tight!".
-async function showTutorIfReady(profile) {
-    const tutor = TUTORS[profile.selected_character];
-    if (!tutor || !profile.is_ocean_done || isControlGroup(profile)) return;
-
-    const img = document.getElementById('wait-tutor');
-    const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    img.src = TUTOR_IMG + profile.selected_character + '/default' + (still ? '-still' : '') + '.webp';
-    img.alt = tutor.name + ', your tutor';
-    img.hidden = false;
-    document.querySelector('.wait-card').classList.add('has-tutor');
-    try {
-        await img.decode();
-    } catch (e) {}
-}
-
 /* Evaluates the student's progress state and routes them accordingly without overriding targeted access. */
 async function checkUserAndStage() {
     const profile = await requireStudentSession();
     if (!profile) return;
 
-    await showTutorIfReady(profile);
     document.body.classList.remove('opacity-0');
 
     const targeted = {
