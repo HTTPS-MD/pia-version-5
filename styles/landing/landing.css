@@ -5176,3 +5176,11 @@ h4 {
     padding-top: var(--sp-2);
     justify-content: flex-end;
 }
+
+/* the footer links sit on the dark card: on hover they turn white, never a yellow fill */
+.foot-card .link-btn:hover,
+.foot-card .foot-meta .link-btn:hover {
+    background: none;
+    color: #fff;
+    text-decoration: underline;
+}
