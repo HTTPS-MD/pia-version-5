@@ -265,8 +265,8 @@
         $('#roster-panel').hidden = !state.section;
     }
 
-    // The three boxes (the class accuracy in each topic) appear only after the admin closed the Game. While it is open,
-    // or if it is opened again, they are hidden. The database answers with one percentage per topic and nothing else.
+    // The three boxes (the class accuracy in each topic) are live, like the admin's: they refresh with the roster and may
+    // still change while students play. The database answers with one percentage per topic and nothing else.
     async function paintTopicBoxes() {
         var box = $('#topic-boxes');
         if (!box) {
@@ -282,7 +282,7 @@
             return;
         }
         var rows = res.data || [];
-        // no rows: the Game is not closed for this section
+        // no rows: not a teacher with a section
         if (!rows.length) {
             box.classList.add('is-hidden');
             return;
