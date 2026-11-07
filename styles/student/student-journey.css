@@ -242,7 +242,7 @@ body.opacity-0 {
 .test-nav {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: var(--sp-3);
     max-width: 520px;
     margin: var(--sp-6) auto 0;
@@ -499,7 +499,7 @@ ul.gate-chips {
 .quiz .test-nav {
     max-width: none;
     margin: 0;
-    justify-content: space-between;
+    justify-content: flex-end;
 }
 .quiz .submit-hint {
     margin: 0.9rem 0 0;

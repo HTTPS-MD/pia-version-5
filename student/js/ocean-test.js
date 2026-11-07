@@ -366,14 +366,16 @@ function loadQuestion() {
 
     const prevBtn = document.getElementById('btn-prev');
     const nextBtn = document.getElementById('btn-next');
-    if (prevBtn) prevBtn.disabled = i === 0;
+    if (prevBtn) prevBtn.hidden = i === 0;
     const isLast = i === total - 1;
     const remaining = total - done;
     const firstGap = userResponses.indexOf(null);
-    const showSubmit = isComplete() && (isLast || reviewingUnanswered);
+    // the last question always shows Submit; it stays off until every statement has an answer
+    const showSubmit = reviewingUnanswered ? isComplete() : isLast;
     const canReviewFromLast = isLast && firstGap !== -1 && firstGap < i;
     if (nextBtn) {
-        nextBtn.hidden = showSubmit || (isLast && !canReviewFromLast && !reviewingUnanswered);
+        nextBtn.hidden =
+            (showSubmit && isComplete()) || (isLast && !canReviewFromLast && !reviewingUnanswered);
         nextBtn.disabled = userResponses[i] === null;
         const nextLabel = document.getElementById('btn-next-label');
         if (nextLabel)
