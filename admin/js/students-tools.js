@@ -963,7 +963,6 @@
                 })
             },
             confirmLabel: canOpen ? 'Close and open OCEAN' : 'Close',
-            altLabel: canOpen ? 'Close' : '',
             tone: 'accent'
         });
         if (!answer) {
