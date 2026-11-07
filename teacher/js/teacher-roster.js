@@ -352,7 +352,7 @@
     }
 
     function matches(row) {
-        if (state.filter === 'online' && !row.online) {
+        if (state.filter === 'offline' && row.online) {
             return false;
         }
         var term = state.term.trim().toLowerCase();
@@ -374,10 +374,10 @@
     }
 
     function render() {
-        var counts = { all: state.rows.length, online: 0 };
+        var counts = { all: state.rows.length, offline: 0 };
         state.rows.forEach(function (r) {
-            if (r.online) {
-                counts.online++;
+            if (!r.online) {
+                counts.offline++;
             }
         });
         $$('[data-count]').forEach(function (n) {

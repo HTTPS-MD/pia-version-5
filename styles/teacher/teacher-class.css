@@ -405,3 +405,26 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
         grid-template-columns: 1fr;
     }
 }
+
+/* the top bar is the admin's: the same glass over the same colour wash (admin-glass.css gives the wallpaper) */
+html[data-surface='admin'][data-theme][data-theme][data-theme] .t-bar {
+    background: var(--lg-fill);
+    -webkit-backdrop-filter: var(--lg-filter);
+    backdrop-filter: var(--lg-filter);
+    border-bottom: 1px solid var(--lg-rim);
+    box-shadow: inset 0 -1px 0.5px rgba(255, 255, 255, 0.18);
+}
+@media (prefers-reduced-transparency: reduce) {
+    html[data-surface='admin'][data-theme][data-theme][data-theme] .t-bar {
+        background: var(--bg-surface);
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
+    }
+}
+/* the account pill has the same blue background and outline as the theme switch */
+html[data-surface='admin'] .t-avatar,
+html[data-surface='admin'][data-theme='dark'] .t-avatar {
+    border: 0;
+    background: color-mix(in srgb, var(--text) 10%, var(--bg));
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 26%, transparent);
+}
