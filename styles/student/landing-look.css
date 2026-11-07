@@ -1163,8 +1163,8 @@
     }
 }
 
-/* the tutorial in the white card: Back and Next on the right, like the questionnaire */
-.landing-look .start-card .start-actions.tutorial-actions {
+/* the white card: Back, Next, Start and Continue sit on the right, like the questionnaire */
+.landing-look .start-card .start-actions {
     justify-content: flex-end;
     width: 100%;
 }
