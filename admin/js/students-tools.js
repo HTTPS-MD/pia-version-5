@@ -807,7 +807,8 @@
                 });
             }
             chip.textContent = 'Entered ' + entered + ' of ' + total;
-            chip.classList.toggle('is-hidden', !(section && (open || ended)));
+            // only while the gate is open: once it is closed the count is no longer needed
+            chip.classList.toggle('is-hidden', !(section && open));
         }
         window.PIASessionLive = open;
         window.PIASessionState = section ? sessionState : '';

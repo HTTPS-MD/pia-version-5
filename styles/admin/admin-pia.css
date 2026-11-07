@@ -1715,7 +1715,7 @@ html[data-surface='admin'] .sidebar-user[aria-expanded='true'] .user-chevron {
 /* the account pill is wider than the old round button: the theme button sits right beside it, at the same height */
 @media (min-width: 56.3125rem) {
     html[data-surface='admin'] .topbar {
-        padding-right: calc(var(--bar-edge) + 5.5rem);
+        padding-right: calc(var(--bar-edge) + 4.875rem);
     }
 }
 @media (max-width: 56.25rem) {
