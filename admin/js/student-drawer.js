@@ -240,7 +240,7 @@
         { key: 'ocean_a', name: 'Agreeableness' },
         { key: 'ocean_c', name: 'Conscientiousness' },
         { key: 'ocean_n', name: 'Neuroticism' },
-        { key: 'ocean_o', name: 'Openness to Experience' }
+        { key: 'ocean_o', name: 'Openness' }
     ];
 
     function noticeHtml(iconName, title, text) {
@@ -332,10 +332,17 @@
             );
         }).join('');
 
-        var meta =
-            'Submitted ' +
-            Admin.esc(formatStamp(r.submitted_at)) +
-            (rows.length > 1 ? ' · latest of ' + rows.length + ' attempts' : '');
+        // the strongest trait (all of them if tied)
+        var top = BFPT_TRAITS.reduce(function (best, t) {
+            var v = r[t.key];
+            return v != null && (best === null || v > best) ? v : best;
+        }, null);
+        var strongest = BFPT_TRAITS.filter(function (t) {
+            return top !== null && r[t.key] === top;
+        }).map(function (t) {
+            return t.name;
+        });
+        var meta = strongest.length ? 'Dominant: ' + strongest.join(' & ') : '';
         var matchingNote = '';
 
         $('#drawer-ocean-meta').textContent = meta;

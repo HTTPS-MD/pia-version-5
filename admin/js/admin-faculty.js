@@ -139,9 +139,36 @@
             openFacultyProfile(row.getAttribute('data-faculty'), row);
         });
 
-        $('#faculty-unassign').addEventListener('click', function () {
-            if (window.PIACheckin && window.PIACheckin.removeFromSection) {
-                window.PIACheckin.removeFromSection();
+        // One button: a teacher who holds the section is either taken off it (the default) or removed for good
+        $('#faculty-remove').addEventListener('click', async function () {
+            var f = Admin.state.activeFaculty;
+            if (!f) {
+                return;
+            }
+            var holds = !!(
+                window.PIACheckin &&
+                window.PIACheckin.holdsSection &&
+                window.PIACheckin.holdsSection(f.email)
+            );
+            if (!holds) {
+                Admin.closeModal('modal-faculty');
+                deleteFaculty(f.email);
+                return;
+            }
+            var answer = await Admin.confirmAction({
+                heading: 'Remove ' + Admin.whoIs(f.email) + '?',
+                message: 'Removing from the section keeps their account.',
+                confirmLabel: 'Remove from section',
+                altLabel: 'Permanently delete',
+                altTone: 'danger',
+                tone: 'accent',
+                noCancel: true
+            });
+            if (answer === true) {
+                window.PIACheckin.removeFromSection({ confirmed: true });
+            } else if (answer === 'alt') {
+                Admin.closeModal('modal-faculty');
+                deleteFaculty(f.email);
             }
         });
 
@@ -188,24 +215,12 @@
             true
         );
 
-        $('#faculty-reset').addEventListener('click', function () {
-            if (Admin.state.activeFaculty) {
-                resetFacultyPassword(Admin.state.activeFaculty.email, this);
-            }
-        });
-
         $('#faculty-signout').addEventListener('click', function () {
             if (Admin.state.activeFaculty) {
                 signOutFacultyEverywhere(Admin.state.activeFaculty.email, this);
             }
         });
 
-        $('#faculty-delete').addEventListener('click', function () {
-            if (Admin.state.activeFaculty) {
-                Admin.closeModal('modal-faculty');
-                deleteFaculty(Admin.state.activeFaculty.email);
-            }
-        });
     }
     Admin.initFaculty = initFaculty;
 
@@ -262,7 +277,7 @@
         { key: 'ocean_a', name: 'Agreeableness' },
         { key: 'ocean_c', name: 'Conscientiousness' },
         { key: 'ocean_n', name: 'Neuroticism' },
-        { key: 'ocean_o', name: 'Openness to Experience' }
+        { key: 'ocean_o', name: 'Openness' }
     ];
 
     function renderFacultyOcean(f) {
@@ -275,14 +290,17 @@
             return;
         }
         var r = info.row;
-        meta.textContent =
-            'Submitted ' +
-            new Date(r.submitted_at).toLocaleDateString([], {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric'
-            }) +
-            (info.done ? '' : ' · retake pending');
+        // the strongest trait (all of them if tied)
+        var top = OCEAN_TRAITS.reduce(function (best, t) {
+            var v = r[t.key];
+            return v != null && (best === null || v > best) ? v : best;
+        }, null);
+        var strongest = OCEAN_TRAITS.filter(function (t) {
+            return top !== null && r[t.key] === top;
+        }).map(function (t) {
+            return t.name;
+        });
+        meta.textContent = strongest.length ? 'Dominant: ' + strongest.join(' & ') : '';
         box.innerHTML = OCEAN_TRAITS.map(function (t) {
             var v = r[t.key];
             var width = v == null ? 0 : Math.max(0, Math.min(100, (v / Admin.OCEAN_MAX) * 100));
@@ -310,11 +328,6 @@
 
         Admin.state.activeFaculty = f;
         $('#faculty-title').textContent = f.name || 'Teacher profile';
-        var unassign = $('#faculty-unassign');
-        if (unassign) {
-            var current = !!(window.PIACheckin && window.PIACheckin.holdsSection && window.PIACheckin.holdsSection(f.email));
-            unassign.style.display = current ? '' : 'none';
-        }
         $('#faculty-initials').textContent = Admin.initialsOf(f.name, f.email);
         $('#faculty-subject').textContent = f.email;
         $('#faculty-dept').textContent = f.department || '—';
@@ -517,9 +530,9 @@
 
     async function deleteFaculty(email) {
         var ok = await Admin.confirmAction({
-            heading: 'Delete ' + Admin.whoIs(email) + '?',
+            heading: 'Permanently delete ' + Admin.whoIs(email) + '?',
             message: 'Their account and teacher record are removed. Student data stays.',
-            confirmLabel: 'Remove teacher'
+            confirmLabel: 'Permanently delete'
         });
         if (!ok) {
             return;

@@ -1684,17 +1684,21 @@
     }
 
     // Called from the teacher profile: the section keeps its students and waits for a new teacher.
-    async function removeFromSection() {
+    async function removeFromSection(options) {
         var section = chosen();
         var Admin = window.PIAAdmin;
         if (!section || !Admin) {
             return;
         }
-        var ok = await Admin.confirmAction({
-            heading: 'Remove the teacher from ' + section + '?',
-            message: 'The section has no teacher until you assign one.',
-            confirmLabel: 'Remove from section'
-        });
+        // the Remove Teacher window already asked, so it asks no second time
+        var ok =
+            options && options.confirmed
+                ? true
+                : await Admin.confirmAction({
+                      heading: 'Remove the teacher from ' + section + '?',
+                      message: 'The section has no teacher until you assign one.',
+                      confirmLabel: 'Remove from section'
+                  });
         if (!ok) {
             return;
         }

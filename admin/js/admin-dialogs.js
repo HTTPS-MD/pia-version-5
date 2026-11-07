@@ -96,6 +96,11 @@
         }
 
         setTimeout(function () {
+            // The same window was opened again while this one was still closing (a question that is followed at
+            // once by another question): leave it showing.
+            if (Admin.openLayers.indexOf(overlay) !== -1) {
+                return;
+            }
             overlay.classList.remove('is-mounted');
             if (Admin.openLayers.length) {
                 var back = overlay._returnFocus;
@@ -307,6 +312,10 @@
                 '"></use></svg>';
 
             // a window with only the answers asked for (no Cancel): leaving it with Esc or a click outside keeps editing
+            var xBtn = $('#confirm-x');
+            if (xBtn) {
+                xBtn.style.display = options.noCancel ? '' : 'none';
+            }
             var cancelBtn = $('#confirm-cancel');
             if (cancelBtn) {
                 cancelBtn.classList.toggle('is-hidden', !!options.noCancel);
@@ -321,6 +330,8 @@
             var alt = $('#confirm-alt').cloneNode(true);
             $('#confirm-alt').parentNode.replaceChild(alt, $('#confirm-alt'));
             alt.textContent = options.altLabel || '';
+            alt.classList.toggle('btn-danger-soft', options.altTone === 'danger');
+            alt.classList.toggle('btn-secondary', options.altTone !== 'danger');
             alt.classList.toggle('is-hidden', !options.altLabel);
             alt.addEventListener('click', function () {
                 closeModal(overlay);

@@ -2901,3 +2901,44 @@ html[data-theme='light'] .topic-box {
     background: rgba(180, 35, 24, 0.16);
     color: #8a1a10;
 }
+
+
+/* the drawer's close button: just the X, on the right, no circle */
+.drawer-head .drawer-close {
+    margin-left: auto;
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+.drawer-head .drawer-close:hover {
+    color: var(--text);
+}
+.drawer-head .drawer-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+
+/* the second answer of a question window (for example Permanently delete): easy to read, still the careful one */
+#modal-confirm #confirm-alt.btn-danger-soft {
+    background: rgba(255, 107, 107, 0.14);
+    color: #ffb0b0;
+    border: 1px solid rgba(255, 107, 107, 0.6);
+    font-weight: 600;
+}
+#modal-confirm #confirm-alt.btn-danger-soft:hover:not(:disabled) {
+    background: rgba(255, 107, 107, 0.26);
+    color: #fff;
+}
+:root[data-theme='light'] #modal-confirm #confirm-alt.btn-danger-soft {
+    background: rgba(180, 35, 24, 0.08);
+    color: #b42318;
+    border-color: rgba(180, 35, 24, 0.5);
+}
