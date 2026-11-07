@@ -382,12 +382,7 @@
         }
     }
 
-    // Privacy Mode: only initials on the screen. It is off at first and remembered by this browser only.
-    function initialsOf(fullName) {
-        var words = String(fullName || '').trim().split(/\s+/).filter(Boolean);
-        return ((words[0] || '?')[0] + (words.length > 1 ? words[words.length - 1][0] : (words[0] || '?')[1] || '')).toUpperCase();
-    }
-
+    // Privacy Mode: asterisks instead of the names (the avatar keeps its initials, like the admin's). It is off at first and remembered by this browser only.
     function setPrivacy(on) {
         state.privacy = !!on;
         var box = $('#hide-details');
@@ -450,7 +445,7 @@
             text.className = 'cell-user-text';
             var name = document.createElement('span');
             name.className = 't-name';
-            name.textContent = state.privacy ? initialsOf(r.name) : r.name;
+            name.textContent = state.privacy ? '********' : r.name;
             text.appendChild(name);
             user.append(wrap, text);
             who.appendChild(user);
