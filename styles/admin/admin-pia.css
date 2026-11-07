@@ -2856,3 +2856,19 @@ html[data-surface='admin'][data-theme='dark'] .topic-box {
 #view-students .page-title-row .att-count { order: 2; margin-left: 8px; flex: 0 0 auto; }
 #view-students .page-title-row:has(.stage-let[hidden]) .att-count:not(.is-hidden) { margin-left: auto; }
 #view-students .page-title-row:has(.stage-let[hidden]) .att-count:not(.is-hidden) ~ #att-toggle { margin-left: 8px; }
+
+/* light mode: yellow is a fill with dark ink, like the Sign in button, never yellow text on a pale surface */
+html[data-theme='light'] .topic-box-value {
+    display: inline-block;
+    padding: 2px 12px;
+    border-radius: 999px;
+    background: #ffd83d;
+    color: #0b1233;
+}
+html[data-theme='light'] #view-students .att-count {
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: #ffd83d;
+    color: #0b1233;
+    font-size: 1rem;
+}
