@@ -1008,6 +1008,40 @@
         });
     };
 
+    // The class accuracy of each topic for the chosen section (the same numbers the teacher gets after the Game is closed).
+    var topicsAt = 0;
+    var topicsSection = null;
+    async function paintTopicBoxes(section) {
+        var box = $('#a-topic-boxes');
+        if (!box) {
+            return;
+        }
+        if (!section) {
+            box.classList.add('is-hidden');
+            return;
+        }
+        var rows;
+        try {
+            rows = await call('admin_topic_accuracy', { p_section: section });
+        } catch (e) {
+            return;
+        }
+        if (section !== chosen()) {
+            return;
+        }
+        [1, 2, 3].forEach(function (t) {
+            var found = (rows || []).filter(function (x) {
+                return Number(x.topic) === t;
+            })[0];
+            var value = found && found.accuracy !== null && found.accuracy !== undefined ? Number(found.accuracy) : null;
+            $('#a-topic-' + t).textContent = value === null || !isFinite(value) ? '—' : value + '%';
+            $('#a-topic-' + t + '-note').textContent = found
+                ? 'class accuracy · ' + found.reached + ' of ' + found.total + (Number(found.total) === 1 ? ' student' : ' students') + ' answered'
+                : 'class accuracy';
+        });
+        box.classList.remove('is-hidden');
+    }
+
     async function refreshOverview() {
         var data = await call('admin_checkin_overview');
         overview.sections = (data && data.sections) || [];
@@ -1129,6 +1163,12 @@
         ensureSection();
         renderChips();
         renderSession();
+        // heavier than the rest: once on a new section, then every 30 seconds
+        if (section !== topicsSection || Date.now() - topicsAt > 30000) {
+            topicsSection = section;
+            topicsAt = Date.now();
+            paintTopicBoxes(section);
+        }
     }
 
     function setHidden(on) {

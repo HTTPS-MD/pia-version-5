@@ -298,7 +298,7 @@
             if (note) {
                 note.textContent =
                     found && found.reached !== undefined && found.total !== undefined
-                        ? 'class accuracy · ' + found.reached + ' of ' + found.total + ' students answered'
+                        ? 'class accuracy · ' + found.reached + ' of ' + found.total + (Number(found.total) === 1 ? ' student' : ' students') + ' answered'
                         : 'class accuracy';
             }
         });

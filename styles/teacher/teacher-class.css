@@ -366,46 +366,6 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
 }
 
 
-/* After the Game is closed: how much of the whole class struggled in each topic */
-.topic-boxes {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-    margin-bottom: 16px;
-}
-.topic-box {
-    padding: 16px 18px;
-    border-radius: var(--r-md, 12px);
-    background: color-mix(in srgb, var(--text) 8%, var(--bg));
-    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 18%, transparent);
-}
-/* dark mode: black, like the directory panel under them */
-html[data-surface='admin'][data-theme='dark'] .topic-box {
-    background: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
-}
-.topic-box-label {
-    margin: 0 0 6px;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-.topic-box-value {
-    margin: 0;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #ffd83d;
-    line-height: 1.1;
-}
-.topic-box-note {
-    margin: 4px 0 0;
-    font-size: 0.8rem;
-    color: var(--text-muted);
-}
-@media (max-width: 40rem) {
-    .topic-boxes {
-        grid-template-columns: 1fr;
-    }
-}
-
 /* the top bar is the admin's: the same glass over the same colour wash (admin-glass.css gives the wallpaper) */
 html[data-surface='admin'][data-theme][data-theme][data-theme] .t-bar {
     background: var(--lg-fill);
