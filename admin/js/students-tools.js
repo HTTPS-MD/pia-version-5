@@ -641,8 +641,12 @@
             return;
         }
         menu._sig = sig;
+        var bellIcon =
+            '<svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
         menu.innerHTML =
-            '<div class="custom-select-option section-opt bell-head">Tried to sign in again · ' + esc(section) + '</div>' +
+            (items.length
+                ? '<div class="custom-select-option section-opt bell-head">Tried to sign in again · ' + esc(section) + '</div>'
+                : '') +
             (items.length
                 ? items
                       .map(function (i) {
@@ -656,19 +660,11 @@
                           );
                       })
                       .join('')
-                : '<div class="custom-select-option section-opt bell-empty">No one is waiting.</div>');
+                : '<div class="custom-select-option section-opt bell-empty">' + bellIcon + '<span>No new notifications</span></div>');
     }
+    // Let back in goes straight through: no question afterwards.
     async function bellLetBackIn(email) {
-        var ok = await window.PIAAdmin.confirmAction({
-            heading: 'Is this the real student?',
-            message:
-                'Make sure it is the real student. Anyone else on this number is signed out.',
-            confirmLabel: 'Let back in',
-            tone: 'accent'
-        });
-        if (ok) {
-            await letBackIn(email);
-        }
+        await letBackIn(email);
     }
     function bellDismiss(email, n) {
         var section = scoped();
