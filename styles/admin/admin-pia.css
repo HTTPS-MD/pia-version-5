@@ -1192,7 +1192,7 @@ html[data-surface='admin'] #modal-scores .score-input {
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 1px solid var(--line);
+    border: 1px solid color-mix(in srgb, #ffd83d 50%, transparent);
     font-size: 0.75rem;
 }
 #modal-qb-edit .qb-wiz li.is-current {
@@ -1200,13 +1200,13 @@ html[data-surface='admin'] #modal-scores .score-input {
     font-weight: 600;
 }
 #modal-qb-edit .qb-wiz li.is-current span {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--palette-ink, #0b1233);
+    background: #ffd83d;
+    border-color: #ffd83d;
+    color: #0b1233;
 }
 #modal-qb-edit .qb-wiz li.is-done span {
-    border-color: var(--accent);
-    color: var(--accent);
+    border-color: #ffd83d;
+    color: var(--volt-text);
 }
 #modal-qb-edit .qb-review-row {
     display: flex;
@@ -1786,9 +1786,11 @@ html[data-surface='admin'] .sidebar-user .avatar {
 #view-mathtask .qb-strip {
     height: auto;
     min-height: 0;
-    padding: 6px;
-    gap: 6px;
-    border-radius: 999px;
+    padding: 0;
+    gap: 10px;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
 }
 #view-mathtask .qb-strip .btn {
     height: 40px;
@@ -2864,4 +2866,26 @@ html[data-theme='light'] .topic-box {
     box-shadow:
         inset 0 0 0 1px var(--line-soft),
         0 14px 34px var(--black-a16);
+}
+
+
+/* Delete question: easy to read, still clearly the careful button */
+#modal-qb-edit #qb-edit-delete {
+    background: rgba(255, 107, 107, 0.14);
+    color: #ffb0b0;
+    border: 1px solid rgba(255, 107, 107, 0.6);
+    font-weight: 600;
+}
+#modal-qb-edit #qb-edit-delete:hover:not(:disabled) {
+    background: rgba(255, 107, 107, 0.26);
+    color: #fff;
+}
+:root[data-theme='light'] #modal-qb-edit #qb-edit-delete {
+    background: rgba(180, 35, 24, 0.08);
+    color: #b42318;
+    border-color: rgba(180, 35, 24, 0.5);
+}
+:root[data-theme='light'] #modal-qb-edit #qb-edit-delete:hover:not(:disabled) {
+    background: rgba(180, 35, 24, 0.16);
+    color: #8a1a10;
 }
