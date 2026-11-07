@@ -222,8 +222,8 @@ function setupRealtimeListener() {
 }
 
 const PRIVACY_TEXT = STAFF
-    ? 'Only the researchers see your responses. They are never shown to your students or the school.'
-    : 'Only the researchers see them. Never your classmates or teachers.';
+    ? 'Only the admin sees your responses. They are never shown to your students or the school.'
+    : 'Only the admin sees them. Never your classmates or teachers.';
 
 function showPrivacyStep() {
     const container = document.getElementById('step-container');
@@ -249,8 +249,7 @@ function showPrivacyStep() {
         </section>
 
         <div class="gate-actions">
-            ${STAFF ? '' : '<a href="waiting-room.html" class="btn btn-secondary">Not right now</a>'}
-            <button type="button" data-action="start" class="btn btn-primary">I understand — start</button>
+            <button type="button" data-action="start" class="btn btn-primary">Start</button>
         </div>
     `;
 }

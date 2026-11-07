@@ -85,7 +85,7 @@
 .landing-look.quiz .privacy-note {
     border-left: 0;
     border-radius: 0.8rem;
-    box-shadow: inset 4px 0 0 var(--green);
+    box-shadow: none;
 }
 
 /* buttons: yellow primary, outlined secondary */

@@ -398,7 +398,7 @@ ul.gate-chips {
 .quiz .privacy-note {
     margin: 0 0 2rem;
     padding: 0.9rem 1rem 0.9rem 1.1rem;
-    border-left: 4px solid var(--green);
+    border-left: 0;
     background: var(--q-field);
 }
 .quiz .privacy-title {
