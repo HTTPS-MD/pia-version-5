@@ -18,7 +18,8 @@
         filter: 'all',
         term: '',
         loadedAt: 0,
-        loading: false
+        loading: false,
+        privacy: false
     };
     var pollId = null;
     var signingOut = false;
@@ -373,6 +374,27 @@
         }
     }
 
+    // Privacy Mode: only initials on the screen. It is off at first and remembered by this browser only.
+    function initialsOf(fullName) {
+        var words = String(fullName || '').trim().split(/\s+/).filter(Boolean);
+        return ((words[0] || '?')[0] + (words.length > 1 ? words[words.length - 1][0] : (words[0] || '?')[1] || '')).toUpperCase();
+    }
+
+    function setPrivacy(on) {
+        state.privacy = !!on;
+        var box = $('#hide-details');
+        if (box) {
+            box.checked = state.privacy;
+            var track = box.parentNode.querySelector('.stage-switch');
+            if (track) {
+                track.classList.toggle('is-on', state.privacy);
+            }
+        }
+        try {
+            localStorage.setItem('pia_teacher_privacy', state.privacy ? '1' : '0');
+        } catch (e) {}
+    }
+
     function render() {
         var counts = { all: state.rows.length, offline: 0 };
         state.rows.forEach(function (r) {
@@ -420,7 +442,7 @@
             text.className = 'cell-user-text';
             var name = document.createElement('span');
             name.className = 't-name';
-            name.textContent = r.name;
+            name.textContent = state.privacy ? initialsOf(r.name) : r.name;
             text.appendChild(name);
             user.append(wrap, text);
             who.appendChild(user);
@@ -442,6 +464,18 @@
     }
 
     function bindControls() {
+        var box = $('#hide-details');
+        if (box) {
+            var saved = null;
+            try {
+                saved = localStorage.getItem('pia_teacher_privacy');
+            } catch (e) {}
+            setPrivacy(saved === '1');
+            box.addEventListener('change', function () {
+                setPrivacy(box.checked);
+                render();
+            });
+        }
         $('#filters').addEventListener('click', function (event) {
             var tab = event.target.closest('[data-filter]');
             if (!tab) {

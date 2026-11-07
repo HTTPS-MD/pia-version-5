@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261122h">
     <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261127v">
     <link rel="stylesheet" href="../../styles/admin/admin-glass.css?v=20261125b">
-    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261127f">
+    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261127h">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -78,10 +78,15 @@
         <main class="t-main" id="main">
 
             <section id="view-students">
-                <div class="page-head">
+                <div class="page-head t-head">
                     <div class="t-title">
                         <h1 class="page-title" id="section-title">Your section</h1>
                     </div>
+                    <label class="show-details privacy-mode" title="Hides the students’ names on your screen only">
+                        <input type="checkbox" id="hide-details" class="sr-only" role="switch">
+                        <span class="stage-switch" aria-hidden="true"></span>
+                        <span class="privacy-mode-label">Privacy Mode</span>
+                    </label>
                 </div>
 
                 <p class="scope-line" id="scope-line" aria-live="polite"></p>
@@ -164,6 +169,7 @@
                                 <li><strong>Online:</strong> the student is signed in and active now. The dot beside the name is green when online.</li>
                                 <li><strong>Participation:</strong> “Entered” means the student has entered the study. “Not in yet” means they have not. It is greyed out while the student is offline.</li>
                                 <li><strong>Study has started / not yet started:</strong> shows whether the administrator has started the session for your section.</li>
+                                <li><strong>Privacy Mode:</strong> the switch at the top hides the students’ names on your screen (only their initials show), for example when the screen is projected. It is off at first and only changes your own screen.</li>
                                 <li><strong>All Students / Offline tabs and Search:</strong> show everyone or only those who are offline, or find a student by name.</li>
                                 </ul>
                                 <p>The list refreshes by itself every few seconds, so you do not need to reload it.</p>
@@ -307,7 +313,7 @@
     <script src="../../assets/js/shared/device-revoke.js?v=20261031b"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
     <script src="../../assets/js/shared/help-page.js?v=20261121a"></script>
-    <script src="../js/teacher-roster.js?v=20261127d"></script>
+    <script src="../js/teacher-roster.js?v=20261127e"></script>
     <script src="../js/teacher-settings.js?v=20261121a"></script>
 </body>
 

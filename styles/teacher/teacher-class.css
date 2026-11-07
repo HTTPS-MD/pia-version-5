@@ -428,3 +428,51 @@ html[data-surface='admin'][data-theme='dark'] .t-avatar {
     background: color-mix(in srgb, var(--text) 10%, var(--bg));
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 26%, transparent);
 }
+
+/* the title and the Privacy Mode switch share one row */
+#view-students .t-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+#view-students .t-head .show-details.privacy-mode {
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    height: 44px;
+    margin: 0;
+    padding: 0 20px;
+    gap: 10px;
+    border-radius: 999px;
+}
+/* the switch itself (the admin's switch, drawn here because this page does not load the admin's top-bar styles) */
+.t-head .stage-switch {
+    flex: 0 0 auto;
+    align-self: center;
+    position: relative;
+    width: 30px;
+    height: 16px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--text) 25%, transparent);
+}
+.t-head .stage-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--hex-ffffff);
+    transition: left 0.15s ease;
+}
+.t-head .stage-switch.is-on {
+    background: color-mix(in srgb, var(--text) 60%, transparent);
+}
+.t-head .stage-switch.is-on::after {
+    left: 16px;
+}
