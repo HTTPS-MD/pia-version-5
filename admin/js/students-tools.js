@@ -730,27 +730,13 @@
         return set;
     }
 
-    // "Sign out everyone" only makes sense while at least one student of the section is signed in.
-    function updateSignAll() {
-        var b = $('#att-signout-all');
-        if (!b) {
-            return;
-        }
-        var section = scoped();
-        var any = false;
-        if (section) {
-            (window.PIAAdmin.state.cohort || []).forEach(function (c) {
-                if (c.section === section && c.email && onlineMap[String(c.email).toLowerCase()]) {
-                    any = true;
-                }
-            });
-        }
-        b.hidden = !any;
-        b.classList.toggle('is-hidden', !any);
+    // The Archived button shows once a section is chosen.
+    function updateArchivedButton() {
         var removed = $('#att-removed');
         if (removed) {
-            removed.hidden = !section;
-            removed.classList.toggle('is-hidden', !section);
+            var on = !!scoped();
+            removed.hidden = !on;
+            removed.classList.toggle('is-hidden', !on);
         }
     }
 
@@ -770,13 +756,13 @@
             var noStudents = !!meta && Number(meta.students) === 0 && !open;
             var hideBtn = !section || noStudents;
             btn.hidden = hideBtn;
-            updateSignAll();
+            updateArchivedButton();
             btn.textContent = ended ? 'Ended' : open ? 'End' : 'Start';
             btn.setAttribute('data-ci', ended ? 'locked' : open ? 'stop' : 'start');
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             btn.className =
-                'btn btn-sm ' + (open || ended ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
+                'btn ' + (open || ended ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
             btn.disabled = ended;
             btn.title = ended ? 'This session ended today.' : '';
         }
@@ -937,37 +923,6 @@
     }
     window.PIASignOut = { online: onlineIn, signOut: signOutEmails };
 
-    // The "Sign out everyone" button: list the section's students who are online and offer to sign them all out.
-    async function offerSignOutAll(section) {
-        var online;
-        try {
-            online = await onlineIn(section);
-        } catch (error) {
-            say(failure(error), true);
-            return;
-        }
-        if (!online.length) {
-            say('Nobody in ' + section + ' is online right now.');
-            return;
-        }
-        var ok = await window.PIAAdmin.confirmAction({
-            heading: 'Sign out ' + online.length + (online.length === 1 ? ' student' : ' students') + ' still online?',
-            message: 'They will be signed out on every device.',
-            table: {
-                columns: ['Student', 'Status'],
-                rows: online.map(function (e) {
-                    return [window.PIAAdmin.studentLabel(e), { text: 'Online', tone: 'good' }];
-                })
-            },
-            confirmLabel: 'Sign out all',
-            tone: 'accent'
-        });
-        if (!ok) {
-            return;
-        }
-        await signOutEmails(online);
-    }
-    window.PIAOfferSignOutAll = offerSignOutAll;
 
     // End: the students who have not entered are listed, and the admin chooses to close, or to close and open OCEAN.
     // Returns true (closed), 'ocean' (closed and OCEAN is opening) or false (cancelled).
@@ -1221,7 +1176,7 @@
         toggle.type = 'button';
         toggle.id = 'att-toggle';
         toggle.hidden = true;
-        toggle.className = 'btn btn-sm btn-primary';
+        toggle.className = 'btn btn-primary';
         toggle.textContent = 'Start';
         var countChip = document.createElement('span');
         countChip.id = 'att-count';
@@ -1233,53 +1188,6 @@
         if (actionsBar) {
             actionsBar.appendChild(toggle);
         }
-        // "Sign out everyone" is a button of the row (closing the Game already signs everyone out).
-        var signAll = $('#att-signout-all');
-        // At the end of the row: the bell (students who tried to sign in again), then the More menu
-        // (Input Scores, Add Students: the rarely used actions).
-        var bellBox = document.createElement('div');
-        bellBox.className = 'bar-bell is-hidden';
-        bellBox.id = 'att-bell-box';
-        bellBox.hidden = true;
-        bellBox.innerHTML =
-            '<button type="button" class="bar-bell-btn" id="att-bell" aria-haspopup="menu" aria-expanded="false" aria-label="No one is waiting to be let back in" title="Students who tried to sign in again">' +
-            '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>' +
-            '<span class="bell-count is-hidden" id="att-bell-count"></span></button>' +
-            '<div class="custom-select-list section-menu bar-bell-menu" id="att-bell-menu" role="menu" hidden></div>';
-        // The bell sits in the top bar, between the theme switch and the profile, so it is seen on every tab.
-        var themeBtn = $('#theme-toggle');
-        if (themeBtn && themeBtn.parentNode) {
-            themeBtn.parentNode.insertBefore(bellBox, themeBtn.nextSibling);
-        } else {
-            toggle.parentNode.appendChild(bellBox);
-        }
-        var bellMenu = $('#att-bell-menu');
-        var setBell = floatingMenu('bell', $('#att-bell'), bellMenu, bellBox);
-        bellMenu.addEventListener('click', async function (event) {
-            var item = event.target.closest('.bell-item');
-            if (!item) {
-                return;
-            }
-            var email = item.getAttribute('data-email');
-            if (event.target.closest('[data-bell-dismiss]')) {
-                bellDismiss(email, Number(item.getAttribute('data-n')));
-            } else if (event.target.closest('[data-bell-lbi]')) {
-                setBell(false);
-                await bellLetBackIn(email);
-            }
-        });
-        signAll.addEventListener('click', async function () {
-            var section = chosen();
-            if (!section) {
-                return;
-            }
-            signAll.disabled = true;
-            try {
-                await offerSignOutAll(section);
-            } finally {
-                signAll.disabled = false;
-            }
-        });
         var removedItem = $('#att-removed');
         if (removedItem) {
             removedItem.addEventListener('click', showRemoved);

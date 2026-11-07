@@ -2685,3 +2685,14 @@ html[data-theme='dark'] .confirm-table .table-wrap {
     margin-left: auto;
     align-self: center;
 }
+
+/* Start / End: at the right end of the tabs row, as big as the buttons of the row below */
+#view-students .table-title #att-toggle {
+    height: 38px;
+    min-height: 38px;
+    padding: 0 18px;
+    font-size: var(--fs-sm);
+}
+#view-students .table-title .att-count.is-hidden + #att-toggle {
+    margin-left: auto;
+}
