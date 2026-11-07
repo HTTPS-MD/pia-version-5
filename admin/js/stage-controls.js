@@ -51,7 +51,27 @@
             return;
         }
         var section = window.PIASectionNow || '';
-        bar.hidden = !section;
+        // While the door is open (the session is running) there is nothing to do with the stages: a short note takes their place.
+        var running = !!section && !!window.PIASessionLive;
+        // The stage controls show up after End. Before that they stay out of the way, unless a stage is still open
+        // (left open from before): then they show, so it can be closed.
+        var anyOpen = !!section && Admin.GATES.some(function (g) {
+            return sectionOpen(g, section);
+        });
+        var ended = window.PIASessionState === 'locked' || window.PIASessionState === 'ended';
+        bar.hidden = !section || !(running || ended || anyOpen);
+        var label = bar.querySelector('.stage-label');
+        var items = bar.querySelector('.stage-items');
+        var note = $('#stage-note');
+        if (label) {
+            label.classList.toggle('is-hidden', running);
+        }
+        if (items) {
+            items.classList.toggle('is-hidden', running);
+        }
+        if (note) {
+            note.classList.toggle('is-hidden', !running);
+        }
         Admin.GATES.forEach(function (gate) {
             var btn = bar.querySelector('[data-gate-switch="' + gate.key + '"]');
             if (!btn) {

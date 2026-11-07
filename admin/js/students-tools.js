@@ -758,14 +758,19 @@
             var hideBtn = !section || noStudents;
             btn.hidden = hideBtn;
             updateArchivedButton();
-            btn.textContent = ended ? 'Ended' : open ? 'End' : 'Start';
+            // The button says which section it acts on: it sits in the top bar, which is the same on every tab.
+            btn.textContent = (ended ? 'Ended' : open ? 'End' : 'Start') + (section ? ' ' + section : '');
             btn.setAttribute('data-ci', ended ? 'locked' : open ? 'stop' : 'start');
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             btn.className =
                 'btn ' + (open || ended ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
             btn.disabled = ended;
-            btn.title = ended ? 'This session ended today.' : '';
+            btn.title = ended
+                ? 'This session ended today.'
+                : open
+                  ? 'End: stop letting students in and get ready to start the experiment'
+                  : 'Start: let the students in';
         }
         // The live count at the top: Entered x of n (only once the session has started).
         var chip = $('#att-count');
@@ -1264,7 +1269,11 @@
         if (actionsBar) {
             actionsBar.appendChild(countChip);
         }
-        if (actionsBar) {
+        // Start / End sits in the top bar, right beside the theme switch.
+        var themeSw = $('#theme-toggle');
+        if (themeSw && themeSw.parentNode) {
+            themeSw.parentNode.insertBefore(toggle, themeSw);
+        } else if (actionsBar) {
             actionsBar.appendChild(toggle);
         }
         // The bell: students who tried to sign in again.
@@ -1393,7 +1402,6 @@
         var tabsRow = $('#stage-tabs') && $('#stage-tabs').parentNode;
         if (countChip && tabsRow) {
             tabsRow.appendChild(countChip);
-            tabsRow.appendChild($('#att-toggle'));
         }
         if (details && titleRow && titleRow.lastChild !== details) {
             titleRow.appendChild(details);

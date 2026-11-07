@@ -2687,17 +2687,17 @@ html[data-theme='dark'] .confirm-table .table-wrap {
     align-self: center;
 }
 
-/* Start / End: at the right end of the tabs row, as big as the buttons of the row below */
-#view-students .table-title #att-toggle {
-    height: 38px;
-    min-height: 38px;
-    padding: 0 18px;
+/* Start / End: in the top bar, right beside the theme switch, the same height */
+#att-toggle {
+    height: 44px;
+    min-height: 44px;
+    padding: 0 20px;
     font-size: var(--fs-sm);
+    white-space: nowrap;
+    max-width: 14rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-#view-students .table-title .att-count.is-hidden + #att-toggle {
-    margin-left: auto;
-}
-
 /* Archived: the actions sit in the footer and change with what is ticked */
 .removed-foot {
     align-items: center;
