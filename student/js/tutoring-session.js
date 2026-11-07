@@ -19,8 +19,8 @@
             btn.disabled = true;
 
             lede.textContent = Dash.state.notOpenYet
-                ? 'Tutoring has not opened yet. Please wait for your teacher to open it.'
-                : 'Tutoring is closed right now. Please wait for your teacher to open it again.';
+                ? 'Tutoring has not opened yet. Please wait for your admin to open it.'
+                : 'Tutoring is closed right now. Please wait for your admin to open it again.';
         } else if (Dash.state.startLede) {
             lede.textContent = Dash.state.startLede;
             Dash.state.startLede = '';
@@ -115,7 +115,7 @@
         Dash.state.bankEmpty = true;
         $('#problem-kicker').textContent = 'No problems yet';
         $('#problem-expression').textContent =
-            'No configured questions are available. Please ask your teacher to check the question bank.';
+            'No configured questions are available. Please ask your admin to check the question bank.';
         $('#steps').textContent = '';
         Dash.speak(null, 'default');
     }

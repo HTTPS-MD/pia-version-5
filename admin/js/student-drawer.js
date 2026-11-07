@@ -356,8 +356,9 @@
                     allowRetakeOcean(s.email);
                 } else if (action === 'retake-character') {
                     allowRetakeCharacter(s.email);
-                } else if (action === 'delete') {
-                    deleteStudent(s.email);
+                } else if (action === 'remove') {
+                    Admin.closeModal('drawer-student');
+                    window.PIACheckin.removeStudent(s.email, s.full_name);
                 }
             });
         });
@@ -427,32 +428,6 @@
 
         Admin.toastOk('Character re-selection enabled', Admin.whoIs(email) + ' can pick a persona again.');
         Admin.closeModal('drawer-student');
-        Admin.refreshAll();
-    }
-
-    async function deleteStudent(email) {
-        var ok = await Admin.confirmAction({
-            heading: 'Delete ' + Admin.whoIs(email) + '?',
-            message:
-                'Their profile, account and every response are removed. This cannot be undone and changes your dataset.',
-            confirmLabel: 'Delete permanently'
-        });
-        if (!ok) {
-            return;
-        }
-
-        var res = await sb.rpc('admin_delete_user', { target_email: email });
-
-        if (res.error) {
-            Admin.toastErr(
-                'Deletion failed',
-                Admin.friendlyDbError(res.error, 'The account was not deleted.')
-            );
-            return;
-        }
-
-        Admin.closeModal('drawer-student');
-        Admin.toastOk('Participant deleted', Admin.whoIs(email) + ' was removed from the study.');
         Admin.refreshAll();
     }
 

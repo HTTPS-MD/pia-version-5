@@ -167,7 +167,7 @@
         }
 
         // A student who is signed in or inside a stage is not moved: they would keep playing in a section whose
-        // stage may be closed, and their attendance would stay on the old section.
+        // stage may be closed, and their place in the session would stay on the old section.
         var current = (Admin.state.cohort || []).filter(function (c) {
             return String(c.email || '').toLowerCase() === originalEmail.toLowerCase();
         })[0];

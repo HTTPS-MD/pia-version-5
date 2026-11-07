@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261126a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261122h">
     <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261124a">
-    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261126a">
+    <link rel="stylesheet" href="../../styles/teacher/teacher-class.css?v=20261127a">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
     <link rel="apple-touch-icon" href="/assets/images/apple-touch-icon.png">
@@ -97,7 +97,6 @@
                             <span class="live-dot" id="class-live-dot" aria-hidden="true"></span>
                             <span id="class-live-status">Study is not yet started</span>
                         </span>
-                        <button type="button" class="btn btn-secondary btn-sm is-hidden" id="download-att">Download attendance</button>
                     </div>
 
                     <div class="panel-bar">
@@ -120,7 +119,7 @@
                             <thead>
                                 <tr>
                                     <th scope="col">Student</th>
-                                    <th scope="col">Attendance</th>
+                                    <th scope="col">Participation</th>
                                 </tr>
                             </thead>
                             <tbody id="roster"></tbody>
@@ -145,7 +144,7 @@
 <div class="help-a">
 <figure class="help-shot" hidden data-shot="../../assets/images/help/help-teacher-directory.webp" data-alt="The student directory of a section"></figure>
 <div class="help-copy">
-<p>This is your section’s student directory. It shows who is in your section, who is online right now, and today’s attendance.</p>
+<p>This is your section’s student directory. It shows who is in your section, who is online right now, and who has entered the study today.</p>
                                 <p>It is read-only. You can look, but you cannot change anything about a student or the study.</p>
 </div>
 </div>
@@ -157,8 +156,8 @@
 <div class="help-copy">
 <ul>
                                 <li><strong>Online:</strong> the student is signed in and active now. The dot beside the name is green when online.</li>
-                                <li><strong>Attendance:</strong> Present or Absent as marked by the administrator. “Not marked” means the roll has not been called for that student yet.</li>
-                                <li><strong>Class is open / Study is not yet started:</strong> shows whether attendance has been opened for your section.</li>
+                                <li><strong>Participation:</strong> “Entered” means the student has entered the study. “Not in yet” means they have not. It is greyed out while the student is offline.</li>
+                                <li><strong>Study has started / not yet started:</strong> shows whether the administrator has started the session for your section.</li>
                                 <li><strong>All / Online tabs and Search:</strong> show everyone or only those online, or find a student by name.</li>
                                 </ul>
                                 <p>The list refreshes by itself every few seconds, so you do not need to reload it.</p>
@@ -281,13 +280,13 @@
     <script src="../../assets/js/shared/device.js?v=20261031a"></script>
     <script src="../../assets/js/shared/student-guard.js?v=20261031a"></script>
     <script src="../../assets/js/shared/idle-timeout.js?v=20261031c"></script>
-    <script src="../../assets/js/shared/activity-tracking.js?v=20261031a"></script>
-    <script src="../../assets/js/shared/session-guard.js?v=20261126a"></script>
+    <script src="../../assets/js/shared/activity-tracking.js?v=20261127b"></script>
+    <script src="../../assets/js/shared/session-guard.js?v=20261127b"></script>
     <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
     <script src="../../assets/js/shared/device-revoke.js?v=20261031b"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
     <script src="../../assets/js/shared/help-page.js?v=20261121a"></script>
-    <script src="../js/teacher-roster.js?v=20261126a"></script>
+    <script src="../js/teacher-roster.js?v=20261127a"></script>
     <script src="../js/teacher-settings.js?v=20261121a"></script>
 </body>
 

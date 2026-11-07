@@ -79,7 +79,7 @@ function showStageClosedNotice() {
         id: 'pia-stage-closed',
         role: 'alertdialog',
         title: 'This stage has been closed',
-        text: 'Your teacher closed this stage. You can finish and submit what you have started. It will not be lost, but you will not be able to start it again.',
+        text: 'Your admin closed this stage. You can finish and submit what you have started. It will not be lost, but you will not be able to start it again.',
         actions: [{ id: 'pia-stage-closed-ok', label: 'Got it', primary: true, onClick: () => dialog.close() }]
     });
 }

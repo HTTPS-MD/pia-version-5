@@ -15,7 +15,7 @@ async function showTutorIfReady(profile) {
 
     document.getElementById('waiting-title').innerHTML = tutor.name + ' is ready<mark>!</mark>';
     document.getElementById('waiting-desc').textContent =
-        'Your teacher will start the game soon. This page moves on by itself.';
+        'Your admin will start the game soon. This page moves on by itself.';
     const img = document.getElementById('wait-tutor');
     const still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     img.src = TUTOR_IMG + profile.selected_character + '/default' + (still ? '-still' : '') + '.webp';

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261126a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261122h">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261126b">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261126d">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261127h">
     <link rel="stylesheet" href="../../styles/admin/admin-glass.css?v=20261125b">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
@@ -166,7 +166,6 @@
                     </div>
 
                     <div id="section-chips" style="margin-bottom:12px"></div>
-                    <div id="attendance-bar" style="margin-bottom:16px"></div>
 
                     <div class="class-strip" id="class-strip">
                         <div class="prof-card-host" id="prof-line"></div>
@@ -212,14 +211,11 @@
                                     <option value="control">Control</option>
                                 </select>
                                 <div class="bar-actions" id="bar-actions">
-                                    <div class="bar-more" id="bar-more">
-                                        <button type="button" class="btn btn-secondary bar-more-btn" id="bar-more-btn" aria-haspopup="menu" aria-expanded="false" aria-label="More actions" title="More actions">⋯</button>
-                                        <div class="custom-select-list section-menu bar-more-menu" id="bar-more-menu" role="menu" hidden>
-                                            <button type="button" class="custom-select-option section-opt bar-more-item is-hidden" id="section-scores-open" role="menuitem">Input Scores</button>
-                                            <button type="button" class="custom-select-option section-opt bar-more-item" data-modal-open="modal-add-students" role="menuitem">Add Students</button>
-                                            <button type="button" class="custom-select-option section-opt bar-more-item is-hidden" id="att-signout-all" role="menuitem" hidden title="Signs out every student of this section who is online, on every device">Sign out everyone</button>
-                                        </div>
-                                    </div>
+                                    <button type="button" class="btn btn-secondary is-hidden" id="section-scores-open">Input Scores</button>
+                                    <button type="button" class="btn btn-secondary" data-modal-open="modal-add-students">Add Students</button>
+                                    <button type="button" class="btn btn-secondary btn-round is-hidden" id="att-removed" hidden aria-label="Archived" title="Archived"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8"/><path d="M10 12h4"/></svg></button>
+                                    <button type="button" class="btn btn-secondary is-hidden" id="att-signout-all" hidden title="Signs out every student of this section who is online, on every device">Sign out everyone</button>
+
                                 </div>
                             </div>
                         </div>
@@ -397,11 +393,11 @@
 </div>
 </details>
                             <details class="help-step" id="ah-roll" name="help-topic">
-<summary class="help-q"><span class="help-num">03</span><span class="help-title">Roll call (attendance)</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
+<summary class="help-q"><span class="help-num">03</span><span class="help-title">Starting and ending a session</span><svg class="icon help-chevron" aria-hidden="true"><use href="#i-chev-down"></use></svg></summary>
 <div class="help-a">
-<figure class="help-shot" hidden data-shot="../../assets/images/help/help-admin-attendance.webp" data-alt="Marking students present or absent"></figure>
 <div class="help-copy">
-<p>Mark each student Present or Absent for the session. A student who is not marked present cannot enter. Teachers see this attendance read-only.</p>
+<p>Check who is in the room face to face first. In a student’s profile, use Remove from this session (and give the reason) for anyone who is not there. Removed students are not counted and cannot enter. Add back puts them on the roster again.</p>
+<p>Press Start so students can enter with their student number. The top shows how many have entered. Press End to close the door: a student who never entered cannot enter after that. Teachers see only Entered or Not in yet.</p>
 </div>
 </div>
 </details>
@@ -993,6 +989,7 @@
             </div>
             <footer class="modal-foot">
                 <button class="btn btn-secondary" data-modal-close>Cancel</button>
+                <button class="btn btn-secondary is-hidden" id="confirm-alt" type="button"></button>
                 <button class="btn btn-danger" id="confirm-accept">Proceed</button>
             </footer>
         </div>
@@ -1018,6 +1015,47 @@
             </div>
             <footer class="modal-foot">
                 <button class="btn btn-primary" data-modal-close>Okay</button>
+            </footer>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-remove" role="dialog" aria-modal="true" aria-labelledby="remove-title">
+        <div class="modal modal-sm">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="remove-title">Archive this student?</h2>
+                    <p class="modal-sub" id="remove-sub"></p>
+                </div>
+            </header>
+            <form id="remove-form" novalidate>
+                <div class="modal-body stack">
+                    <div class="field">
+                        <label class="label" for="remove-reason">Reason</label>
+                        <input class="input" type="text" id="remove-reason" maxlength="200" autocomplete="off" placeholder="For example: absent today">
+                    </div>
+                    <p class="form-status" id="remove-status" role="status" aria-live="polite"></p>
+                </div>
+                <footer class="modal-foot">
+                    <button type="button" class="btn btn-secondary" data-modal-close>Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="remove-submit">Archive</button>
+                </footer>
+            </form>
+        </div>
+    </div>
+
+    <div class="overlay" id="modal-removed" role="dialog" aria-modal="true" aria-labelledby="removed-title">
+        <div class="modal modal-md">
+            <header class="modal-head">
+                <div class="modal-head-text">
+                    <h2 class="modal-title" id="removed-title">Archived</h2>
+                    <p class="modal-sub" id="removed-sub">Their answers and account are kept. Add back puts them on the roster again. Delete permanently removes them and every response for good.</p>
+                </div>
+            </header>
+            <div class="modal-body stack">
+                <div class="confirm-table" id="removed-table"></div>
+            </div>
+            <footer class="modal-foot">
+                <button class="btn btn-primary" data-modal-close>Done</button>
             </footer>
         </div>
     </div>
@@ -1112,8 +1150,8 @@
                         <button class="action-list-item" data-student-action="retake-character">
                             Allow character re-selection
                         </button>
-                        <button class="action-list-item is-danger" data-student-action="delete">
-                            Delete participant
+                        <button class="action-list-item" data-student-action="remove">
+                            Archive
                         </button>
                     </div>
                 </div>
@@ -1386,8 +1424,8 @@
     <script src="../../assets/js/shared/device.js?v=20261031a"></script>
     <script src="../../assets/js/shared/student-guard.js?v=20261031a"></script>
     <script src="../../assets/js/shared/idle-timeout.js?v=20261031c"></script>
-    <script src="../../assets/js/shared/activity-tracking.js?v=20261031a"></script>
-    <script src="../../assets/js/shared/session-guard.js?v=20261126a"></script>
+    <script src="../../assets/js/shared/activity-tracking.js?v=20261127b"></script>
+    <script src="../../assets/js/shared/session-guard.js?v=20261127b"></script>
     <script src="../../assets/js/shared/page-extras.js?v=20261031a"></script>
     <script src="../../assets/js/shared/device-revoke.js?v=20261031b"></script>
     <script src="../../assets/js/shared/stage-sync.js?v=20261031a"></script>
@@ -1396,20 +1434,20 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261126g"></script>
+    <script src="../js/students-tools.js?v=20261127j"></script>
     <script src="../js/add-students.js?v=20261122b"></script>
     <script src="../js/admin-core.js?v=20261126a"></script>
-    <script src="../js/admin-dialogs.js?v=20261125a"></script>
+    <script src="../js/admin-dialogs.js?v=20261127a"></script>
     <script src="../js/admin-loading.js?v=20261105b"></script>
-    <script src="../js/admin-data.js?v=20261126a"></script>
+    <script src="../js/admin-data.js?v=20261127a"></script>
     <script src="../js/students-table.js?v=20261126a"></script>
-    <script src="../js/student-drawer.js?v=20261109b"></script>
-    <script src="../js/student-forms.js?v=20261126a"></script>
+    <script src="../js/student-drawer.js?v=20261127b"></script>
+    <script src="../js/student-forms.js?v=20261127a"></script>
     <script src="../js/admin-faculty.js?v=20261122a"></script>
-    <script src="../js/stage-controls.js?v=20261126l"></script>
+    <script src="../js/stage-controls.js?v=20261127a"></script>
     <script src="../js/admin-account.js?v=20261122d"></script>
     <script src="../js/score-entry.js?v=20261121a"></script>
-    <script src="../js/live-updates.js?v=20261126a"></script>
+    <script src="../js/live-updates.js?v=20261127a"></script>
     <script src="../js/math-task-core.js?v=20261109a"></script>
     <script src="../js/math-task-edit.js?v=20261121b"></script>
     <script src="../js/math-task-rules.js?v=20261111a"></script>

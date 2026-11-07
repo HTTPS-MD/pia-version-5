@@ -21,7 +21,7 @@
         Admin.state.loading.cohort = true;
 
         function readProfiles(columns) {
-            return sb.from('profiles').select(columns).not('role', 'in', STAFF_ROLES).limit(2000);
+            return sb.from('profiles').select(columns).not('role', 'in', STAFF_ROLES).is('removed_at', null).limit(2000);
         }
 
         var both = await Promise.all([
@@ -152,7 +152,8 @@
         var query = sb
             .from('profiles')
             .select('*', { count: 'exact' })
-            .not('role', 'in', STAFF_ROLES);
+            .not('role', 'in', STAFF_ROLES)
+            .is('removed_at', null);
 
         var term = Admin.sanitizeFilterTerm(Admin.state.filters.search).toLowerCase();
         if (term) {
@@ -211,7 +212,8 @@
             var q = sb
                 .from('profiles')
                 .select('email', { count: 'exact', head: true })
-                .not('role', 'in', STAFF_ROLES);
+                .not('role', 'in', STAFF_ROLES)
+                .is('removed_at', null);
             return applyStageFilter(applyGroupFilter(q), stage === 'all' ? null : stage);
         };
 

@@ -145,6 +145,7 @@
             .from('profiles')
             .select('full_name, email, section')
             .not('role', 'in', Admin.STAFF_ROLES)
+            .is('removed_at', null)
             .or('full_name.ilike.%' + t + '%,email.ilike.%' + t + '%')
             .order('full_name', { ascending: true })
             .limit(6);

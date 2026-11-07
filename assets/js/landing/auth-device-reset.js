@@ -22,7 +22,7 @@
         if (/signed out/i.test(raw)) {
             return 'This sign-in expired. Send a new code and try again.';
         }
-        return 'We couldn’t sign your other devices out. Try again, or ask your teacher.';
+        return 'We couldn’t sign your other devices out. Try again, or ask your admin.';
     }
 
     function startDeviceResetCooldown() {

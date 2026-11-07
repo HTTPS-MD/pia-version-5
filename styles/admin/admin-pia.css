@@ -444,9 +444,6 @@ html[data-surface='admin'] .head-search .input {
 .pia-all-sections .stage-switch {
     display: none !important;
 }
-#att-toggle[hidden] {
-    display: none !important;
-}
 #view-students .page-title #section-host {
     display: inline-flex;
 }
@@ -498,10 +495,6 @@ html[data-surface='admin'] .head-search .input {
 #view-students .panel-bar .bar-group {
     margin-left: auto;
 }
-#view-students .panel-bar #att-toggle {
-    margin-left: 0;
-    min-width: 0;
-}
 #view-students .panel-bar .bar-group .custom-select {
     width: 11rem;
 }
@@ -543,20 +536,12 @@ html[data-surface='admin'] .head-search .input {
 .prof-card-head > .btn {
     flex: none;
 }
-html[data-surface='admin'] .mk-pair .btn {
-    height: 30px;
-    min-width: 30px;
-    padding: 0 10px;
-}
 @media (max-width: 75rem) {
     #view-students .panel-bar .tabs {
         flex: 1 1 100%;
     }
     #view-students .panel-bar .bar-group {
         margin-left: auto;
-    }
-    #view-students .panel-bar #att-toggle {
-        margin-left: 0;
     }
 }
 @media (max-width: 56.25rem) {
@@ -688,10 +673,6 @@ html[data-surface='admin'] .mk-pair .btn {
 }
 .live-dot.is-on {
     background: var(--ok);
-}
-.class-live #att-toggle {
-    margin-left: 6px;
-    min-width: 0;
 }
 @media (max-width: 40rem) {
     .class-live {
@@ -1333,12 +1314,20 @@ html[data-surface='admin'] #modal-scores .score-input {
     gap: 8px;
     margin-left: auto;
 }
-#view-students .bar-actions .btn,
-#view-students .bar-actions #att-toggle {
+#view-students .bar-actions .btn {
     height: 38px;
     min-height: 38px;
     padding: 0 18px;
     font-size: var(--fs-sm);
+}
+#view-students .bar-actions .btn.btn-round {
+    width: 38px;
+    min-width: 38px;
+    padding: 0;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 #view-students .bar-actions .is-hidden {
     display: none;
@@ -1527,7 +1516,7 @@ html[data-surface='admin'] .game-history-row {
     overflow: hidden;
     text-overflow: ellipsis;
 }
-/* a section is picked: Student, Number, Condition, Stage, Character, Attendance */
+/* a section is picked: Student, Participation, Number, Condition, Stage, Character */
 html.pia-section-picked #roster-thead th:nth-child(1) { width: 25%; }
 html.pia-section-picked #roster-thead th:nth-child(2) { width: 16%; }
 html.pia-section-picked #roster-thead th:nth-child(3) { width: 13%; }
@@ -2494,44 +2483,19 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     opacity: 0.55;
 }
 
-/* Attendance after the session ended, or before it started */
-#view-students .att-result {
-    font-size: 0.9em;
-}
-#view-students .att-result.is-present {
-    color: var(--success, #3fb27f);
-}
-#view-students .att-result.is-absent {
-    color: var(--danger, #e5645c);
-}
+/* The Participation cell before the session starts */
 #view-students .att-result.is-none {
     opacity: 0.6;
 }
 
-/* The Attendance column is narrow: let the result and the "Not in yet" badge wrap instead of being cut off */
+/* The Participation column is narrow: let the state and the tried-again count wrap instead of being cut off */
 #view-students td[data-mk-cell] {
     white-space: normal;
     overflow: visible;
     text-overflow: clip;
 }
-#view-students td[data-mk-cell] .att-result {
-    display: inline-block;
-    line-height: 1.25;
-}
-#view-students td[data-mk-cell] .badge {
-    display: inline-block;
-    margin-top: 4px;
-}
 
-#view-students td[data-mk-cell] [data-lbi] {
-    margin-top: 4px;
-}
-
-/* Attendance cell: Present · In on the first line; Blocked ×N · Let back in (small link) on the second */
-#view-students td[data-mk-cell] .att-dot {
-    opacity: 0.45;
-    margin: 0 5px;
-}
+/* Participation cell: Entered or Not in yet, and under it the tried-again count */
 #view-students td[data-mk-cell] .att-state {
     font-size: 0.85em;
     opacity: 0.7;
@@ -2551,41 +2515,35 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     color: var(--warn, #e0a82e);
     font-weight: 600;
 }
-#view-students td[data-mk-cell] .att-link {
-    all: unset;
-    cursor: pointer;
-    color: var(--accent, #7fb0ff);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    margin: 0;
-}
-#view-students td[data-mk-cell] .att-link:hover {
-    opacity: 0.8;
-}
-#view-students td[data-mk-cell] .att-link:focus-visible {
-    outline: 2px solid var(--accent, #7fb0ff);
-    outline-offset: 2px;
-    border-radius: 3px;
-}
-
-/* ---- class buttons: the bell and the More menu ----
+/* ---- the bell ----
    Their menus are the section dropdown's own component (custom-select-list section-menu): the glass and the rows
    come from global.css. Here: where they sit, how wide, and the bell's own rows. */
-#view-students :is(.bar-more, .bar-bell) {
+.bar-bell {
     position: relative;
 }
-#view-students .bar-more-btn {
-    padding: 0 14px;
-    font-size: 20px;
-    line-height: 1;
-    letter-spacing: 1px;
-}
-#view-students .bar-bell-btn {
+/* the bell: a round button like the theme switch */
+.bar-bell-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 0 12px;
+    width: 44px;
+    height: 44px;
+    flex: none;
+    padding: 0;
+    border: 1px solid var(--line-soft);
+    border-radius: 50%;
+    background: var(--bg-chip);
+    color: var(--text);
+    cursor: pointer;
+}
+.bar-bell-btn:hover {
+    border-color: var(--accent-line);
+    color: var(--accent);
+}
+.bar-bell-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
 .bell-count {
     position: absolute;
@@ -2604,7 +2562,6 @@ html[data-surface='admin'] .privacy-mode .stage-switch.is-on::after {
     text-align: center;
 }
 /* open, they live on <body> (placed by script), so they are fixed */
-.bar-more-menu,
 .bar-bell-menu {
     position: fixed;
     z-index: 260;
@@ -2651,17 +2608,6 @@ html[data-theme] :is(.bell-head, .bell-item, .bell-empty):hover {
     background: var(--bg-chip);
     font-size: 0.8em;
     font-weight: 700;
-}
-
-/* Entered: the student is in (so Present is understood) */
-#view-students .att-result.is-in {
-    color: var(--accent, #7fb0ff);
-    font-weight: 600;
-}
-
-/* Present, did not participate: a little quieter than Present */
-#view-students .att-result.is-dnp {
-    opacity: 0.8;
 }
 
 /* ---- section menu rows, pills on the right (buttons have no shadows: the rules that drew them are gone) ---- */
@@ -2722,7 +2668,20 @@ html[data-theme='dark'] .confirm-table .table-wrap {
 }
 
 /* Entered, then gone: faded like the Current Stage text while the student's dot on the same row is not online */
-#view-students tr:not(:has(.avatar-dot.is-online)) td[data-mk-cell] :is(.att-result, .att-state).is-in {
+#view-students tr:not(:has(.avatar-dot.is-online)) td[data-mk-cell] .att-state.is-in {
     color: var(--text);
     opacity: 0.55;
+}
+
+/* The live count in the first row: no box, larger, yellow and bold */
+#view-students .att-count {
+    background: none;
+    border: 0;
+    padding: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #ffd83d;
+    white-space: nowrap;
+    margin-left: auto;
+    align-self: center;
 }

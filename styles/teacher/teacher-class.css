@@ -92,14 +92,6 @@ html[data-surface='admin'][data-theme='light'] .t-bar {
     font-weight: 600;
 }
 
-.t-att-present {
-    color: var(--ok);
-    font-weight: 600;
-}
-.t-att-absent {
-    color: var(--danger);
-}
-
 @media (max-width: 40rem) {
     .t-main {
         padding-inline: 16px;
@@ -363,8 +355,7 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
     margin-inline: auto;
 }
 
-/* Attendance while the session runs: Entered in the accent colour, faded once the student is offline;
-   and the final "Did not participate" (marked Present, never entered) */
+/* Entered in the accent colour, faded once the student is offline */
 .t-att-in {
     color: var(--accent);
     font-weight: 600;
@@ -373,6 +364,4 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
     color: var(--text);
     opacity: 0.55;
 }
-.t-att-dnp {
-    color: var(--text-muted);
-}
+

@@ -76,19 +76,19 @@
             btn.setAttribute('aria-checked', on ? 'true' : 'false');
             btn.classList.toggle('is-on', on);
             var locked = !!window.PIASessionLive;
-            // No attendance taken yet: nobody can be let in, so a closed stage cannot be opened.
-            var noAttendance = window.PIAAttState === 'none' && !on;
-            btn.disabled = !ready || locked || noAttendance || btn.classList.contains('is-working');
+            // The session has not started: nobody can be let in, so a closed stage cannot be opened.
+            var notStarted = window.PIASessionState === 'none' && !on;
+            btn.disabled = !ready || locked || notStarted || btn.classList.contains('is-working');
             btn.setAttribute(
                 'aria-label',
                 gate.title + ' for ' + section + (on ? ': open' : ': closed')
             );
             btn.title = !section
                 ? ''
-                : noAttendance
-                  ? 'Start and end attendance first.'
+                : notStarted
+                  ? 'Press Start, then End, first.'
                   : locked
-                  ? 'End attendance first. Stages stay locked while attendance is open.'
+                  ? 'Press End first. Stages stay locked while the session is running.'
                   : gate.open
                   ? gate.title +
                     ' is open for every section. Switching it off closes it for all of them.'
@@ -129,7 +129,7 @@
         return null;
     }
 
-    // The question before a stage opens. OCEAN has no earlier stage: Present students enter. The others list who can enter and who stays out.
+    // The question before a stage opens: who can enter and who stays out.
     async function openStageDialog(gate, section) {
         var dialog = {
             heading: 'Open ' + gate.title + ' for ' + section + '?',
@@ -137,24 +137,24 @@
             tone: 'accent'
         };
         if (gate.key === 'ocean') {
-            // Attendance is locked by now: Present students enter, Absent ones do not.
-            var marks = window.PIAAttendanceRows ? await window.PIAAttendanceRows(section) : null;
+            // The session has ended: students who entered can take the test, the others cannot enter anymore.
+            var marks = window.PIASessionRows ? await window.PIASessionRows(section) : null;
             if (!marks || !marks.length) {
-                dialog.message = 'Students marked Present can enter.';
+                dialog.message = 'Students who entered can start the test.';
                 return dialog;
             }
-            // Present and not finished: can enter. Present but already finished: left alone (opening OCEAN never resets them).
+            // Entered and not finished: can enter. Entered but already finished: left alone (opening OCEAN never resets them).
             var done = {};
             Admin.state.cohort.forEach(function (c) {
                 done[String(c.email || '').toLowerCase()] = !!c.is_ocean_done;
             });
             var enter = [];
             var finished = [];
-            var absent = [];
+            var never = [];
             marks.forEach(function (m) {
                 var who = Admin.studentLabel(m.email);
-                if (!m.present) {
-                    absent.push([who, { text: 'Absent', tone: 'bad' }]);
+                if (!m.entered) {
+                    never.push([who, { text: 'Did not enter', tone: 'bad' }]);
                 } else if (done[String(m.email).toLowerCase()]) {
                     finished.push([who, 'Already finished the OCEAN test']);
                 } else {
@@ -162,18 +162,31 @@
                 }
             });
             dialog.message =
-                enter.length + ' can enter. ' + finished.length + ' already finished. ' + absent.length + ' Absent.';
-            dialog.table = { columns: ['Student', 'Status'], rows: absent.concat(finished, enter) };
+                enter.length + ' can enter. ' + finished.length + ' already finished. ' + never.length + ' did not enter.';
+            dialog.table = { columns: ['Student', 'Status'], rows: never.concat(finished, enter) };
             if (!enter.length) {
                 dialog.blocked = true;
-                dialog.message = 'Nobody can enter the OCEAN test. Everyone is Absent or has already finished it.';
+                dialog.message = 'Nobody can enter the OCEAN test. Everyone has already finished it or did not enter.';
             }
             return dialog;
         }
         var stay = [];
         var enter = [];
+        // Students who never entered today's session cannot sign in, so they stay out of every stage.
+        var marks = window.PIASessionRows ? await window.PIASessionRows(section) : null;
+        var entered = null;
+        if (marks && marks.length) {
+            entered = {};
+            marks.forEach(function (m) {
+                entered[String(m.email).toLowerCase()] = !!m.entered;
+            });
+        }
         Admin.state.cohort.forEach(function (s) {
             if (s.section !== section || !s.email) {
+                return;
+            }
+            if (entered && !entered[String(s.email).toLowerCase()]) {
+                stay.push([Admin.studentLabel(s.email), { text: 'Did not enter', tone: 'warn' }]);
                 return;
             }
             var inEarlier = earlierOpenGates(gate, section).filter(function (g) {
@@ -208,39 +221,22 @@
         if (!section || window.PIASessionLive || btn.classList.contains('is-working')) {
             return;
         }
-        if (window.PIAAttState === 'none' && !sectionOpen(gate, section)) {
+        if (window.PIASessionState === 'none' && !sectionOpen(gate, section)) {
             return;
         }
         btn.classList.add('is-working');
         btn.disabled = true;
         try {
             Admin.state.gateSelected[gate.key] = [section];
-            var opening = !sectionOpen(gate, section);
-            if (opening) {
-                var preview = await openStageDialog(gate, section);
-                if (preview.blocked) {
-                    Admin.showNotice('Cannot open ' + gate.title + ' yet', preview.message, 'danger', preview.table);
-                    return;
-                }
-            }
-            // When attendance is still to be locked, that dialog is the only question: accepting it opens the stage.
-            var asked = false;
-            if (opening && window.PIAAttendanceCheckpoint) {
-                var answer = await window.PIAAttendanceCheckpoint(section, gate.title);
-                if (!answer) {
-                    return;
-                }
-                asked = answer === 'confirmed';
-            }
             if (sectionOpen(gate, section)) {
                 await revokeSections(gate.key, null);
-            } else if (asked) {
+                return;
+            }
+            var preview = await openStageDialog(gate, section);
+            if (preview.blocked) {
+                Admin.showNotice('Cannot open ' + gate.title + ' yet', preview.message, 'danger', preview.table);
+            } else if (await Admin.confirmAction(preview)) {
                 await grantSections(gate.key, null);
-            } else {
-                var ok = await Admin.confirmAction(await openStageDialog(gate, section));
-                if (ok) {
-                    await grantSections(gate.key, null);
-                }
             }
         } finally {
             Admin.state.gateSelected[gate.key] = [];
@@ -248,6 +244,23 @@
             renderStageSwitches();
         }
     }
+
+    // For the End dialog: can this stage open for the section, and open it without asking again.
+    Admin.previewStage = function (key, section) {
+        return openStageDialog(gateByKey(key), section);
+    };
+    Admin.stageIsOpen = function (key, section) {
+        return sectionOpen(gateByKey(key), section);
+    };
+    Admin.openStageNow = async function (key, section) {
+        Admin.state.gateSelected[key] = [section];
+        try {
+            await grantSections(key, null);
+        } finally {
+            Admin.state.gateSelected[key] = [];
+            renderStageSwitches();
+        }
+    };
 
     function initGates() {
         var tabsBar = $('#stage-let');
@@ -414,7 +427,7 @@
                           ? inside.length + (inside.length === 1 ? ' student is' : ' students are') + ' inside now. They go back to the Waiting Room. '
                           : 'Nobody is inside right now. ') +
                     'Nothing they submitted is removed.' +
-                    (endsExperiment ? ' The experiment ends and the attendance becomes final.' : '') +
+                    (endsExperiment ? ' The experiment ends.' : '') +
                     (everyone ? '' : ' Other sections keep their access.'),
                 table: online.length
                     ? {
@@ -466,18 +479,6 @@
         if (online.length && window.PIASignOut) {
             window.PIASignOut.signOut(online);
         }
-        // Closing the Game ends the experiment: the teacher's attendance record for the section becomes final.
-        if (gate.key === 'dash') {
-            (everyone
-                ? (Admin.state.sections || []).map(function (x) {
-                      return x.name || x;
-                  })
-                : names
-            ).forEach(function (name) {
-                sb.rpc('admin_finalize_attendance', { p_section: name }).then(function () {}, function () {});
-            });
-        }
-
         if (Array.isArray(Admin.state.overrides)) {
             Admin.state.overrides = Admin.state.overrides.filter(function (o) {
                 return o.stage !== gateKey || (!everyone && names.indexOf(o.section) === -1);

@@ -312,6 +312,16 @@
             var fresh = accept.cloneNode(true);
             accept.parentNode.replaceChild(fresh, accept);
 
+            // An optional second answer (altLabel): the dialog then resolves 'alt' instead of true.
+            var alt = $('#confirm-alt').cloneNode(true);
+            $('#confirm-alt').parentNode.replaceChild(alt, $('#confirm-alt'));
+            alt.textContent = options.altLabel || '';
+            alt.classList.toggle('is-hidden', !options.altLabel);
+            alt.addEventListener('click', function () {
+                closeModal(overlay);
+                settle('alt');
+            });
+
             function settle(result) {
                 overlay.removeEventListener('click', onBackdrop, true);
                 document.removeEventListener('keydown', onEsc, true);

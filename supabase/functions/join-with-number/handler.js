@@ -5,25 +5,23 @@
 //
 //   { action: 'enter', number, quiet? } -> { ok, status: 'let_in', email, token_hash }
 //
-// The flow: while a class is open the admin calls the names and marks each
-// student present or absent. A student types the number and enters. Only a student
-// marked present gets a one-time sign-in token, and only ONCE: the first entry is
-// free. A second try (a closed browser, another computer, a classmate typing the
-// number) is refused and counted on that student's row; only the admin's
-// "Let back in" lets it through again.
+// The flow: the roll is taken face to face, outside the system. The admin removes students who are not
+// there from the session, then presses Start. A student types the number and enters. Only a student on
+// the roster gets a one-time sign-in token, and only ONCE: the first entry is free. A second try (a
+// closed browser, another computer, a classmate typing the number) is refused and counted on that
+// student's row; only the admin's "Let back in" lets it through again. After End, a student who never
+// entered is refused like anyone else (no count, nothing to let back in).
 //
-// EVERY refusal is the same answer (same words, same status, waiting: true): an unknown number, an
-// absent student, a late one, one already in, nothing open. Outside the class nobody can tell whether the
+// EVERY refusal is the same answer (same words, same status, waiting: true): an unknown number, a
+// removed student, one after End, one already in, nothing open. Outside the class nobody can tell whether the
 // session started or whether a number is registered, and no name is ever sent. A refused student waits and
 // asks again with quiet: true (not counted again for the admin's bell) until the admin lets them in.
 //
-// A number is accepted once the admin has taken attendance for the student's
-// section today, and it stays accepted after the session is closed, so a student
-// marked present who has not entered yet can still come in. While no session was
-// opened today the answer is the same for every number and no name is read, so
-// nothing about the roster leaks.
+// A number is accepted once the admin has started a session for the student's section today. While no
+// session was started today the answer is the same for every number and no name is read, so nothing
+// about the roster leaks.
 export const MAX_FAILURES_PER_NUMBER = 5;
-export const MAX_FAILURES_PER_IP = 60; // a whole lab shares one address
+export const MAX_FAILURES_PER_IP = 150; // a whole lab (about 40 students) shares one address
 // The address can be faked, so it cannot be the only brake: this caps ALL failed tries
 // together. A lab of 40 children making typos stays far below it; a script guessing
 // numbers does not.
@@ -48,6 +46,10 @@ export async function handleJoin(body, ip, deps) {
     const key = normalizeNumber(body.number);
     if (!NUMBER_PATTERN.test(key)) return refused;
     const since = deps.now() - WINDOW_MS;
+    // A waiting screen asks again every few seconds with quiet: true. Those asks must not use up the tries of the
+    // whole class, so they are free, but only for a number that was refused (a real try) in the last 10 minutes.
+    // A quiet ask for any other number is an ordinary try. Guessing numbers therefore always costs real tries.
+    const quiet = body.quiet === true && (await deps.countFailures('q:' + key, since)) > 0;
     const [byNumber, byIp, byAll] = await Promise.all([
         deps.countFailures('n:' + key, since),
         deps.countFailures('ip:' + ip, since),
@@ -62,15 +64,21 @@ export async function handleJoin(body, ip, deps) {
     }
     // An unknown number counts as a failed try (the brake against guessing numbers).
     const fail = async () => {
-        await Promise.all([
-            deps.record('n:' + key, false),
-            deps.record('ip:' + ip, false),
-            deps.record('all', false)
-        ]);
+        if (!quiet) {
+            await Promise.all([
+                deps.record('n:' + key, false),
+                deps.record('ip:' + ip, false),
+                deps.record('all', false),
+                deps.record('q:' + key, false)
+            ]);
+        }
         return refused;
     };
     // Nothing open anywhere: the same refusal, whatever the number. No name is read, nothing leaks.
-    if (!(await deps.anyCheckinOpen())) return refused;
+    if (!(await deps.anyCheckinOpen())) {
+        if (!quiet) await deps.record('q:' + key, false);
+        return refused;
+    }
     const student = await deps.findStudent(key);
     const role = String(student?.role ?? 'student')
         .trim()
@@ -82,16 +90,27 @@ export async function handleJoin(body, ip, deps) {
         (await deps.checkinOpenFor(student.section));
     if (!student || !allowed) return fail();
     const email = student.email.trim().toLowerCase();
-    const mark = await deps.attendanceFor(student.section, email);
+    const mark = await deps.standingFor(student.section, email);
     if (mark === 'none' || mark === 'absent') return fail();
-    // Late (after the lock) or already in: refused, and counted once for the admin's bell.
-    if (mark === 'late' || mark === 'entered') {
-        if (!body.quiet) await deps.noteReentry(student.section, email);
+    // After End, a student who never entered is refused like anyone else: no bell, nothing to let back in.
+    if (mark === 'late') {
+        if (!quiet) await deps.record('q:' + key, false);
+        return refused;
+    }
+    // Already in: refused, and counted once for the admin's bell.
+    if (mark === 'entered') {
+        if (!quiet) {
+            await deps.noteReentry(student.section, email);
+            await deps.record('q:' + key, false);
+        }
         return refused;
     }
     const firstEntry = await deps.claimEntry(student.section, email);
     if (!firstEntry) {
-        if (!body.quiet) await deps.noteReentry(student.section, email);
+        if (!quiet) {
+            await deps.noteReentry(student.section, email);
+            await deps.record('q:' + key, false);
+        }
         return refused;
     }
     try {

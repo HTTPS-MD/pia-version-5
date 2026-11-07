@@ -112,8 +112,8 @@
             Dash.state.startBlocked = true;
             Dash.showGlobalError(
                 me.data && me.data.selected_character
-                    ? 'Your tutor could not be loaded. Please tell your teacher.'
-                    : 'Your tutor has not been assigned yet. Please tell your teacher.'
+                    ? 'Your tutor could not be loaded. Please tell your admin.'
+                    : 'Your tutor has not been assigned yet. Please tell your admin.'
             );
             Dash.reveal();
             return;

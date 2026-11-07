@@ -1,12 +1,12 @@
 // ============================================================================
 // PIA -- join-with-number  (Supabase Edge Function, Deno)
 // ============================================================================
-// The student door for the computer lab: a student number, confirmed by name.
-// The admin has already called the roll and marked who is present, so a student
-// marked present goes straight in. The rules live in handler.js (and are
-// rehearsed in tests/sim); this file only connects them to Supabase.
+// The student door for the computer lab: a student number.
+// The roll is taken face to face, outside the system, and students who are not there are removed from
+// the session. When the admin presses Start, every student on the roster can enter. The rules live in
+// handler.js (and are rehearsed in tests/sim); this file only connects them to Supabase.
 //
-// HOW A SESSION IS OPENED: for a student marked present, the Auth Admin API
+// HOW A SESSION IS OPENED: for a student on the roster, the Auth Admin API
 // makes a one-time sign-in token for the EXISTING account and hands it to the
 // browser that asked, once; the browser redeems it with verifyOtp. Everything
 // after that (profile lookup, claim_student_session, routing) is the normal
@@ -17,9 +17,10 @@
 // service-role key, which must never reach a browser.
 //
 // WHAT THIS DOES NOT PROVE: who is typing. A student number is known to a
-// student's classmates. What limits it: only a student the admin marked present
-// gets in, a student gets in once (the second try is refused, counted in
-// attendance_marks.refused_count, and only the admin's Let back in allows it again).
+// student's classmates. What limits it: only a student on the roster gets in while the session is
+// running, a student gets in once (the second try is refused, counted in
+// attendance_marks.refused_count, and only the admin's Let back in allows it again), and after End
+// a student who never entered is refused.
 //
 // A student who never activated has a profile but no auth user: the function
 // creates it (email confirmed, a random password nobody knows) the first time
@@ -68,7 +69,7 @@ Deno.serve(async (req) => {
     const ip = req.headers.get('cf-connecting-ip') ?? forwarded[forwarded.length - 1] ?? 'unknown';
     const nowIso = () => new Date().toISOString();
     // "Today" is the calendar day in Philippine time (UTC+8, no daylight saving). Same rule as the database
-    // (pia_current_checkin): at 12:00 AM the section goes back to needing a new Start attendance.
+    // (pia_current_checkin): at 12:00 AM the section goes back to needing a new Start.
     const sinceIso = (nowMs = Date.now()) => {
         const manila = new Date(nowMs + 8 * 3600 * 1000);
         manila.setUTCHours(0, 0, 0, 0);
@@ -83,8 +84,8 @@ Deno.serve(async (req) => {
         const { count } = await q;
         return count ?? 0;
     };
-    // The newest session of the section started today, open or closed: a student marked present can
-    // still enter after the admin ended the attendance, until a stage is opened.
+    // The newest session of the section started today, open or ended: after End only a student who
+    // entered before (and was let back in) can still come in.
     const openCheckinId = async (section) => {
         const { data } = await admin
             .from('checkins')
@@ -132,7 +133,7 @@ Deno.serve(async (req) => {
         },
         anyCheckinOpen: async () => (await openCount()) > 0,
         checkinOpenFor: async (section) => (await openCount(section)) > 0,
-        async attendanceFor(section, email) {
+        async standingFor(section, email) {
             const id = await openCheckinId(section);
             if (!id) return 'none';
             const { data } = await admin

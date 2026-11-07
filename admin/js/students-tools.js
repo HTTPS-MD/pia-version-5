@@ -1,4 +1,4 @@
-/* PIA ADMIN CONSOLE -- THE STUDENTS PAGE: SECTION CHIPS, ATTENDANCE, NUMBERS */
+/* PIA ADMIN CONSOLE -- THE STUDENTS PAGE: SECTION CHIPS, START / END, NUMBERS */
 (function () {
     'use strict';
 
@@ -13,7 +13,7 @@
     var marks = {};
     var marksSection = null;
     var onlineMap = {}; // email -> is signed in now, for the chosen section (read every refresh)
-    var attState = 'none'; // none | open | ended | locked, from admin_attendance_status
+    var sessionState = 'none'; // none | open | ended | locked, from the database
     var built = false;
     var polling = false;
 
@@ -38,11 +38,6 @@
             throw res.error;
         }
         return res.data;
-    }
-
-    function pageVisible() {
-        var panel = $('#view-students');
-        return !!panel && !panel.classList.contains('is-hidden') && !document.hidden;
     }
 
     function chosen() {
@@ -567,7 +562,7 @@
         select.value = name;
         select.dispatchEvent(new Event('change', { bubbles: true }));
         renderChips();
-        renderAttendance();
+        renderSession();
         refreshOverview().catch(function () {});
     }
 
@@ -598,7 +593,7 @@
         (window.PIAAdmin.state.cohort || []).forEach(function (c) {
             var key = c.email ? String(c.email).toLowerCase() : '';
             var m = marks[key];
-            if (c.section === section && m && m.present && m.refused > 0 && !gone[bellKey(section, key, m.refused)]) {
+            if (c.section === section && m && m.refused > 0 && !gone[bellKey(section, key, m.refused)]) {
                 list.push({
                     email: key,
                     initials: window.PIAAdmin.initialsOf(c.full_name, c.email),
@@ -752,14 +747,20 @@
         }
         b.hidden = !any;
         b.classList.toggle('is-hidden', !any);
+        var removed = $('#att-removed');
+        if (removed) {
+            removed.hidden = !section;
+            removed.classList.toggle('is-hidden', !section);
+        }
     }
 
-    function renderAttendance() {
+    function renderSession() {
         var section = scoped();
         var btn = $('#att-toggle');
+        var open = !!section && !!openFor(section);
+        var ended = !!section && !open && sessionState === 'locked';
         if (btn) {
-            var open = !!section && !!openFor(section);
-            // A section with no students has nothing to take attendance of: no Start button.
+            // A section with no students has nobody to let in: no Start button.
             var meta = null;
             overview.sections.forEach(function (x) {
                 if (x.section === section) {
@@ -770,119 +771,74 @@
             var hideBtn = !section || noStudents;
             btn.hidden = hideBtn;
             updateSignAll();
-            var locked = !!section && !open && attState === 'locked';
-            btn.textContent = locked ? 'Attendance is final' : open ? 'End attendance' : 'Start attendance';
-            btn.setAttribute('data-ci', locked ? 'locked' : open ? 'stop' : 'start');
+            btn.textContent = ended ? 'Ended' : open ? 'End' : 'Start';
+            btn.setAttribute('data-ci', ended ? 'locked' : open ? 'stop' : 'start');
+            // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             btn.className =
-                'btn btn-sm ' + (open || locked ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
-            btn.disabled = locked;
-            btn.title = locked ? 'A stage was already opened, so attendance can no longer change.' : '';
+                'btn btn-sm ' + (open || ended ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
+            btn.disabled = ended;
+            btn.title = ended ? 'This session ended today.' : '';
         }
-        var markAll = $('#att-markall');
-        if (markAll) {
-            var showAll = !!(section && openFor(section));
-            markAll.hidden = !showAll;
-            markAll.classList.toggle('is-hidden', !showAll);
+        // The live count at the top: Entered x of n (only once the session has started).
+        var chip = $('#att-count');
+        if (chip) {
+            var total = 0;
+            var entered = 0;
+            if (section && (open || ended)) {
+                (window.PIAAdmin.state.cohort || []).forEach(function (c) {
+                    if (c.section === section && c.email) {
+                        total += 1;
+                        if (marks[String(c.email).toLowerCase()] && marks[String(c.email).toLowerCase()].entered) {
+                            entered += 1;
+                        }
+                    }
+                });
+            }
+            chip.textContent = 'Entered ' + entered + ' of ' + total;
+            chip.classList.toggle('is-hidden', !(section && (open || ended)));
         }
-        window.PIASessionLive = !!section && !!openFor(section);
-        window.PIAAttState = section ? attState : '';
+        window.PIASessionLive = open;
+        window.PIASessionState = section ? sessionState : '';
         if (window.PIAAdmin && window.PIAAdmin.renderStageSwitches) {
             window.PIAAdmin.renderStageSwitches();
         }
         var liveState = $('#class-live-status');
         if (liveState) {
-            var isOpen2 = !!section && !!openFor(section);
-            liveState.textContent = !section
-                ? 'Choose a section'
-                : isOpen2
-                  ? 'Attendance is open'
-                  : attState === 'locked'
-                    ? 'Attendance is final'
-                    : 'Attendance has ended';
+            liveState.textContent = !section ? 'Choose a section' : open ? 'Session open' : ended ? 'Session ended' : 'Not started';
             var dot = $('#class-live-dot');
             if (dot) {
-                dot.classList.toggle('is-on', isOpen2);
+                dot.classList.toggle('is-on', open);
             }
         }
         renderBell();
         paintMarks();
     }
 
-    // After the entry: In / Not in yet, a count of refused second tries, and Let back in.
-    // noState: the result already says Entered, so do not say it twice.
-    function entryExtras(m, noState) {
-        if (!m || !m.present) {
-            return '';
-        }
-        // Line 1: Present · Not in yet (or Entered). Line 2, only when needed: Tried again x3 · Sign out.
-        var html = noState
-            ? ''
-            : '<span class="att-dot">·</span>' +
-              (m.entered
-                  ? '<span class="att-state is-in">Entered</span>'
-                  : '<span class="att-state">Not in yet</span>');
-        var meta = [];
-        if (m.refused > 0) {
-            meta.push(
-                '<span class="att-blocked" title="Tried to sign in again and was refused. Let back in is in the bell.">Tried again ×' +
-                    m.refused +
-                    '</span>'
-            );
-        }
-        if (meta.length) {
-            html += '<span class="att-meta">' + meta.join('<span class="att-dot">·</span>') + '</span>';
+    // One cell: Entered or Not in yet (greyed by CSS while the student is offline), and a count of refused second tries.
+    function participationCell(m) {
+        var inside = !!m && m.entered;
+        var html = '<span class="att-state' + (inside ? ' is-in' : '') + '">' + (inside ? 'Entered' : 'Not in yet') + '</span>';
+        if (m && m.refused > 0) {
+            html +=
+                '<span class="att-meta"><span class="att-blocked" title="Tried to sign in again and was refused. Let back in is in the bell.">Tried again ×' +
+                m.refused +
+                '</span></span>';
         }
         return html;
     }
 
-    // After the attendance ended: Entered (nobody who is Absent can enter, so Present is not repeated),
-    // Present · Not in yet, or Absent.
-    function closedCell(m) {
-        if (!m.present) {
-            return '<span class="att-result is-absent">Absent</span>';
-        }
-        if (m.entered) {
-            return '<span class="att-result is-in">Entered</span>' + entryExtras(m, true);
-        }
-        // Locked: a Present student who never entered can no longer enter. Before the lock he still can.
-        if (attState === 'locked') {
-            return '<span class="att-result is-present is-dnp">Present, did not participate</span>' + entryExtras(m, true);
-        }
-        return '<span class="att-result is-present">Present</span>' + entryExtras(m);
-    }
-
-    function markCell(email) {
-        var m = marks[email] || null;
-        var state = m ? (m.present ? 'present' : 'absent') : 'none';
-        var html =
-            '<span class="mk-pair" role="group" aria-label="Attendance">' +
-            '<button type="button" class="btn btn-sm ' +
-            (state === 'present' ? 'btn-primary' : 'btn-secondary') +
-            '" data-mk="present" aria-pressed="' +
-            (state === 'present') +
-            '" aria-label="Present" title="Present">✓</button> ' +
-            '<button type="button" class="btn btn-sm ' +
-            (state === 'absent' ? 'btn-danger' : 'btn-secondary') +
-            '" data-mk="absent" aria-pressed="' +
-            (state === 'absent') +
-            '" aria-label="Absent" title="Absent">✗</button></span>';
-        return html + entryExtras(m);
-    }
-
     function paintMarks() {
-        renderStats();
         var section = scoped();
         var on = !!section;
-        var live = on && !!openFor(section);
-        document.documentElement.classList.toggle('pia-att-on', live);
+        var started = on && (!!openFor(section) || sessionState === 'locked' || sessionState === 'ended');
         var headRow = $('#roster-thead tr');
         var th = headRow && headRow.querySelector('[data-mk-th]');
         if (on && headRow && !th) {
             th = document.createElement('th');
             th.scope = 'col';
             th.setAttribute('data-mk-th', '');
-            th.textContent = 'Attendance';
+            th.textContent = 'Participation';
             headRow.insertBefore(th, headRow.children[1] || null);
         } else if (!on && th) {
             th.remove();
@@ -905,21 +861,10 @@
                             event.stopPropagation();
                         });
                     });
-                    cell.addEventListener('click', function (event) {
-                        onMark(event, tr.getAttribute('data-student'));
-                    });
                     tr.insertBefore(cell, tr.children[1] || null);
                 }
                 var key = String(tr.getAttribute('data-student')).toLowerCase();
-                var kept = marks[key];
-                // Live: the Present / Absent buttons. Ended: keep the result. No record: say so.
-                var html = live
-                    ? markCell(key)
-                    : kept
-                      ? closedCell(kept)
-                      : '<span class="att-result is-none">' +
-                        (Object.keys(marks).length ? 'Not marked' : 'Not started') +
-                        '</span>';
+                var html = started ? participationCell(marks[key]) : '<span class="att-result is-none">—</span>';
                 if (cell._html !== html) {
                     cell._html = html;
                     cell.innerHTML = html;
@@ -940,7 +885,7 @@
         } catch (error) {
             say(failure(error), true);
         }
-        renderAttendance();
+        renderSession();
         refreshOverview().catch(function () {});
     }
 
@@ -1024,129 +969,59 @@
     }
     window.PIAOfferSignOutAll = offerSignOutAll;
 
-    // Before the first stage opens: show who is Present, Absent and not in yet, and lock only on a yes.
-    // The table the admin sees before attendance is locked: Absent, Present but not in yet, Entered.
-    // ending = End attendance (locks it). Otherwise it is the first stage opening (only when attendance ended without a lock).
-    // Returns true (nothing to ask), 'confirmed' (the admin accepted: for a stage this is also the stage's confirmation) or false.
-    async function attendanceCheckpoint(section, stageTitle, ending) {
-        if (!section) {
-            return true;
-        }
-        var st;
-        try {
-            st = await call('admin_attendance_status', { p_section: section });
-        } catch (e) {
-            return true;
-        }
-        if (ending ? st !== 'open' : st !== 'ended') {
-            return true;
-        }
+    // End: the students who have not entered are listed, and the admin chooses to close, or to close and open OCEAN.
+    // Returns true (closed), 'ocean' (closed and OCEAN is opening) or false (cancelled).
+    async function endDialog(section) {
         var rows = [];
         try {
             rows = (await call('admin_attendance', { p_section: section })) || [];
         } catch (e) {
-            return true;
-        }
-        var admin = window.PIAAdmin;
-        var byEmail = {};
-        rows.forEach(function (r) {
-            byEmail[String(r.email).toLowerCase()] = r;
-        });
-        var cohort = (admin.state.cohort || []).filter(function (c) {
-            return c.section === section && c.email;
-        });
-        var emails = cohort.map(function (c) {
-            return String(c.email).toLowerCase();
-        });
-        var unmarked = emails.filter(function (e) {
-            return !byEmail[e];
-        });
-        if (unmarked.length) {
-            say('Mark every student Present or Absent first (' + unmarked.length + ' not marked).', true);
+            say(failure(e), true);
             return false;
         }
-        var present = emails.filter(function (e) {
-            return byEmail[e].present;
+        var admin = window.PIAAdmin;
+        var inside = {};
+        rows.forEach(function (r) {
+            inside[String(r.email).toLowerCase()] = !!r.entered;
         });
-        var absent = emails.filter(function (e) {
-            return !byEmail[e].present;
-        });
-        var notIn = present.filter(function (e) {
-            return !byEmail[e].entered;
-        });
-        // the ones to check come first: Absent, then Present but not in yet, then Entered
-        var label = admin.studentLabel;
-        var rowsOut = absent
-            .map(function (e) {
-                return [label(e), { text: 'Absent', tone: 'bad' }];
+        var emails = (admin.state.cohort || [])
+            .filter(function (c) {
+                return c.section === section && c.email;
             })
-            .concat(
-                notIn.map(function (e) {
-                    return [label(e), { text: 'Present · not in yet', tone: 'warn' }];
-                }),
-                present
-                    .filter(function (e) {
-                        return byEmail[e].entered;
-                    })
-                    .map(function (e) {
-                        return [label(e), { text: 'Entered', tone: 'good' }];
-                    })
-            );
-        var accepted = await admin.confirmAction({
-            heading: ending ? 'End attendance and lock it?' : 'Lock attendance and open ' + (stageTitle || 'this stage') + '?',
-            message:
-                present.length + ' Present, ' + absent.length + ' Absent. You cannot change attendance after this.' +
-                (notIn.length ? ' ' + notIn.length + ' Present ' + (notIn.length === 1 ? 'student is' : 'students are') + ' not in yet and cannot join after this.' : ''),
-            table: { columns: ['Student', 'Status'], rows: rowsOut },
-            confirmLabel: ending ? 'End and lock' : 'Lock and open',
+            .map(function (c) {
+                return String(c.email).toLowerCase();
+            });
+        var notIn = emails.filter(function (e) {
+            return !inside[e];
+        });
+        var preview = admin.previewStage ? await admin.previewStage('ocean', section) : null;
+        var canOpen = !!preview && !preview.blocked && !admin.stageIsOpen('ocean', section);
+        var answer = await admin.confirmAction({
+            heading: 'Are you sure you want to close?',
+            message: notIn.length
+                ? emails.length - notIn.length + ' of ' + emails.length + ' entered. Students who have not entered cannot enter after this.'
+                : 'Everyone entered.',
+            table: {
+                columns: ['Student', 'Status'],
+                rows: notIn.map(function (e) {
+                    return [admin.studentLabel(e), { text: 'Not in yet', tone: 'warn' }];
+                })
+            },
+            confirmLabel: canOpen ? 'Close and open OCEAN' : 'Close',
+            altLabel: canOpen ? 'Close' : '',
             tone: 'accent'
         });
-        return accepted ? 'confirmed' : false;
+        if (!answer) {
+            return false;
+        }
+        return canOpen && answer === true ? 'ocean' : true;
     }
-    window.PIAAttendanceCheckpoint = attendanceCheckpoint;
     // The day's marks for a section: [{ email, present, entered }] (null if they cannot be read).
-    window.PIAAttendanceRows = function (section) {
+    window.PIASessionRows = function (section) {
         return call('admin_attendance', { p_section: section }).catch(function () {
             return null;
         });
     };
-
-    async function onMark(event, rawEmail) {
-        if (event.target.closest('[data-lbi]')) {
-            await letBackIn(rawEmail);
-            return;
-        }
-        var btn = event.target.closest('[data-mk]');
-        if (!btn) {
-            return;
-        }
-        var section = chosen();
-        var email = String(rawEmail).toLowerCase();
-        var kind = btn.getAttribute('data-mk');
-        try {
-            var want = kind === 'present';
-            var now = marks[email];
-            var next = now && now.present === want ? null : want;
-            await call('admin_set_attendance', {
-                p_section: section,
-                p_email: email,
-                p_present: next
-            });
-            if (next === null) {
-                delete marks[email];
-            } else {
-                marks[email] = {
-                    present: next,
-                    entered: now ? now.entered : false,
-                    refused: now ? now.refused : 0
-                };
-            }
-            say('');
-        } catch (error) {
-            say(failure(error), true);
-        }
-        renderAttendance();
-    }
 
     async function refreshOverview() {
         var data = await call('admin_checkin_overview');
@@ -1209,15 +1084,15 @@
         if (section !== marksSection) {
             marks = {};
             marksSection = section;
-            attState = 'none';
+            sessionState = 'none';
             onlineMap = {};
         }
         if (section) {
             // The state of the newest record: none, open, ended or locked (a stage was opened).
             try {
-                attState = await call('admin_attendance_status', { p_section: section });
+                sessionState = await call('admin_attendance_status', { p_section: section });
             } catch (e) {
-                attState = openFor(section) ? 'open' : Object.keys(marks).length ? 'ended' : 'none';
+                sessionState = openFor(section) ? 'open' : Object.keys(marks).length ? 'ended' : 'none';
             }
             // Who is signed in now (the Sign out everyone button shows only while someone is).
             try {
@@ -1259,18 +1134,7 @@
         }
         ensureSection();
         renderChips();
-        renderAttendance();
-    }
-
-    async function act(button, work) {
-        button.disabled = true;
-        try {
-            await work();
-            await refreshOverview();
-        } catch (error) {
-            say(failure(error), true);
-        }
-        button.disabled = false;
+        renderSession();
     }
 
     function setHidden(on) {
@@ -1317,8 +1181,7 @@
             '#view-students .filter-row .input{height:40px;min-height:40px;box-sizing:border-box}' +
             '#view-students .page-actions .btn{min-height:40px;box-sizing:border-box}' +
             '[data-section-menu] button:hover{background:var(--line-soft)!important}' +
-            '#att-toggle{min-width:10rem;text-align:center}' +
-            '#roster-thead th[data-mk-th],#student-tbody td[data-mk-cell]{min-width:14rem}' +
+            '#roster-thead th[data-mk-th],#student-tbody td[data-mk-cell]{min-width:9rem}' +
             masked +
             '{position:relative;color:transparent!important}' +
             sel(' *') +
@@ -1359,14 +1222,18 @@
         toggle.id = 'att-toggle';
         toggle.hidden = true;
         toggle.className = 'btn btn-sm btn-primary';
-        toggle.textContent = 'Start attendance';
+        toggle.textContent = 'Start';
+        var countChip = document.createElement('span');
+        countChip.id = 'att-count';
+        countChip.className = 'att-count is-hidden';
         var actionsBar = $('#bar-actions');
         if (actionsBar) {
-            actionsBar.appendChild(toggle);
-        } else {
-            ($('#class-live') || bar).appendChild(toggle);
+            actionsBar.appendChild(countChip);
         }
-        // "Sign out everyone" lives in the More menu (closing the Game already signs everyone out).
+        if (actionsBar) {
+            actionsBar.appendChild(toggle);
+        }
+        // "Sign out everyone" is a button of the row (closing the Game already signs everyone out).
         var signAll = $('#att-signout-all');
         // At the end of the row: the bell (students who tried to sign in again), then the More menu
         // (Input Scores, Add Students: the rarely used actions).
@@ -1375,14 +1242,14 @@
         bellBox.id = 'att-bell-box';
         bellBox.hidden = true;
         bellBox.innerHTML =
-            '<button type="button" class="btn btn-secondary bar-bell-btn" id="att-bell" aria-haspopup="menu" aria-expanded="false" aria-label="No one is waiting to be let back in" title="Students who tried to sign in again">' +
+            '<button type="button" class="bar-bell-btn" id="att-bell" aria-haspopup="menu" aria-expanded="false" aria-label="No one is waiting to be let back in" title="Students who tried to sign in again">' +
             '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>' +
             '<span class="bell-count is-hidden" id="att-bell-count"></span></button>' +
             '<div class="custom-select-list section-menu bar-bell-menu" id="att-bell-menu" role="menu" hidden></div>';
-        var moreBox = $('#bar-more');
-        if (moreBox && moreBox.parentNode) {
-            moreBox.parentNode.appendChild(moreBox);
-            moreBox.parentNode.insertBefore(bellBox, moreBox);
+        // The bell sits in the top bar, between the theme switch and the profile, so it is seen on every tab.
+        var themeBtn = $('#theme-toggle');
+        if (themeBtn && themeBtn.parentNode) {
+            themeBtn.parentNode.insertBefore(bellBox, themeBtn.nextSibling);
         } else {
             toggle.parentNode.appendChild(bellBox);
         }
@@ -1401,12 +1268,6 @@
                 await bellLetBackIn(email);
             }
         });
-        if (moreBox) {
-            var setMore = floatingMenu('more', $('#bar-more-btn'), $('#bar-more-menu'), moreBox);
-            $('#bar-more-menu').addEventListener('click', function () {
-                setMore(false);
-            });
-        }
         signAll.addEventListener('click', async function () {
             var section = chosen();
             if (!section) {
@@ -1419,6 +1280,10 @@
                 signAll.disabled = false;
             }
         });
+        var removedItem = $('#att-removed');
+        if (removedItem) {
+            removedItem.addEventListener('click', showRemoved);
+        }
         toggle.addEventListener('click', async function () {
             var section = chosen();
             if (!section) {
@@ -1428,28 +1293,24 @@
                 return;
             }
             var starting = toggle.getAttribute('data-ci') !== 'stop';
-            if (starting && Object.keys(marks).length) {
-                var again = await window.PIAAdmin.confirmAction({
-                    heading: 'Start attendance again?',
-                    message:
-                        'Attendance for ' +
-                        section +
-                        ' was already started. Marks and students who are in stay as they are. You can still change marks until a stage opens.',
-                    confirmLabel: 'Start again',
-                    tone: 'accent'
-                });
-                if (!again) {
+            var next = true;
+            if (!starting) {
+                next = await endDialog(section);
+                if (!next) {
                     return;
                 }
             }
-            if (!starting && !(await attendanceCheckpoint(section, null, true))) {
-                return;
+            toggle.disabled = true;
+            try {
+                await call(starting ? 'admin_start_checkin' : 'admin_stop_checkin', starting ? { p_section: section, p_minutes: 120 } : { p_section: section });
+                await refreshOverview();
+                if (next === 'ocean') {
+                    await window.PIAAdmin.openStageNow('ocean', section);
+                }
+            } catch (error) {
+                say(failure(error), true);
             }
-            act(toggle, function () {
-                return starting
-                    ? call('admin_start_checkin', { p_section: section, p_minutes: 120 })
-                    : call('admin_stop_checkin', { p_section: section });
-            });
+            toggle.disabled = false;
         });
         var tabChoice = null;
         try {
@@ -1502,6 +1363,13 @@
         if (stages && titleRow && stages.parentNode !== titleRow) {
             titleRow.appendChild(stages);
         }
+        // The live count sits at the right end of the tabs row.
+        var countChip = $('#att-count');
+        var tabsRow = $('#stage-tabs') && $('#stage-tabs').parentNode;
+        if (countChip && tabsRow) {
+            tabsRow.appendChild(countChip);
+            tabsRow.appendChild($('#att-toggle'));
+        }
         if (details && titleRow && titleRow.lastChild !== details) {
             titleRow.appendChild(details);
         }
@@ -1526,10 +1394,6 @@
             }
         );
         updateHostVisibility();
-        var att = $('#attendance-bar');
-        if (att) {
-            att.style.display = 'none';
-        }
         if (!h1) {
             return;
         }
@@ -1634,7 +1498,7 @@
             !!($('#section-filter') && $('#section-filter').value) && !window.PIAAllSections;
         document.documentElement.classList.toggle('pia-section-picked', picked);
         renderChips();
-        renderAttendance();
+        renderSession();
         paintMarks();
         if (!polling && typeof sb !== 'undefined' && sb) {
             polling = true;
@@ -1642,7 +1506,7 @@
                 say(failure(error), true);
             });
             setInterval(function () {
-                if (pageVisible()) {
+                if (!document.hidden) {
                     refreshOverview().catch(function () {});
                 }
             }, REFRESH_MS);
@@ -1713,53 +1577,6 @@
         }
     }
 
-    function statCard(label, value, note, bar) {
-        return (
-            '<div class="stat-card"><div class="stat-label">' +
-            esc(label) +
-            '</div><div class="stat-value">' +
-            value +
-            '</div><div class="stat-note">' +
-            esc(note) +
-            '</div>' +
-            (bar != null
-                ? '<div class="stat-bar"><i style="width:' + Math.max(0, Math.min(100, bar)) + '%"></i></div>'
-                : '') +
-            '</div>'
-        );
-    }
-
-    function renderStats() {
-        var host = $('#class-stats');
-        var sum = window.PIAAdmin && window.PIAAdmin.state && window.PIAAdmin.state.summary;
-        if (!host || !sum) {
-            return;
-        }
-        var total = sum.total;
-        var pct = total ? Math.round((sum.done / total) * 100) : 0;
-        var cards = [
-            statCard('OCEAN completion', pct + '<small>%</small>', sum.done + ' of ' + total + ' assessments completed', pct)
-        ];
-        if (sum.section) {
-            var present = 0;
-            Object.keys(marks).forEach(function (email) {
-                if (marks[email] && marks[email].present) {
-                    present += 1;
-                }
-            });
-            cards.push(
-                statCard('Present today', present + ' <small>/ ' + total + '</small>', Math.max(0, total - present) + ' students awaiting attendance')
-            );
-        }
-        var html = cards.join('');
-        if (host._html !== html) {
-            host._html = html;
-            host.innerHTML = html;
-        }
-    }
-
-    document.addEventListener('pia:scope', renderStats);
-
     function holdsSection(email) {
         var section = chosen();
         return !!section && holder[section] === String(email || '').toLowerCase();
@@ -1793,7 +1610,124 @@
         }
     }
 
+    // ---- Remove from this session / Add back ----
+    // A removed student keeps the account and every answer; the roster, the count, the door and the teacher stop counting them.
+    function askReason(email, name) {
+        var Admin = window.PIAAdmin;
+        var form = $('#remove-form');
+        var input = $('#remove-reason');
+        var status = $('#remove-status');
+        $('#remove-sub').textContent =
+            Admin.studentLabel(email) + ' will not be counted, and cannot enter. Their answers and account stay. You can add them back or delete them from Archived.';
+        input.value = '';
+        status.textContent = '';
+        Admin.openModal('modal-remove');
+        input.focus();
+        form.onsubmit = async function (event) {
+            event.preventDefault();
+            var reason = input.value.trim();
+            if (!reason) {
+                status.textContent = 'Write the reason first.';
+                return;
+            }
+            $('#remove-submit').disabled = true;
+            try {
+                await call('admin_remove_from_session', { p_email: email, p_reason: reason });
+                Admin.closeModal('modal-remove');
+                say('Archived. You can add them back or delete them from Archived.');
+                await Admin.refreshAll();
+                await refreshOverview();
+            } catch (error) {
+                status.textContent = failure(error);
+            }
+            $('#remove-submit').disabled = false;
+        };
+    }
+
+    async function showRemoved() {
+        var Admin = window.PIAAdmin;
+        var section = chosen();
+        var host = $('#removed-table');
+        host.textContent = 'Loading…';
+        Admin.openModal('modal-removed');
+        var res = await sb
+            .from('profiles')
+            .select('email, full_name, removed_at, removed_reason')
+            .eq('section', section)
+            .not('removed_at', 'is', null)
+            .order('removed_at', { ascending: false });
+        if (res.error) {
+            host.textContent = failure(res.error);
+            return;
+        }
+        var rows = res.data || [];
+        if (!rows.length) {
+            host.innerHTML = '<p class="muted">Nobody is archived in ' + esc(section) + '.</p>';
+            return;
+        }
+        host.innerHTML =
+            '<div class="table-wrap"><table class="table"><thead><tr><th scope="col">Student</th><th scope="col">Reason</th><th scope="col"></th></tr></thead><tbody>' +
+            rows
+                .map(function (r) {
+                    var who = document.documentElement.classList.contains('pia-hide-details')
+                        ? Admin.initialsOf(r.full_name, r.email)
+                        : r.full_name;
+                    return (
+                        '<tr><td>' + esc(who) + '</td><td>' + esc(r.removed_reason || '') + '</td>' +
+                        '<td class="nowrap"><button type="button" class="btn btn-sm btn-secondary" data-edit>Edit</button>' +
+                        '<span class="is-hidden" data-actions><button type="button" class="btn btn-sm btn-secondary" data-addback="' + esc(r.email) + '">Add back</button> ' +
+                        '<button type="button" class="btn btn-sm btn-danger" data-delete="' + esc(r.email) + '" data-who="' + esc(who) + '">Delete permanently</button></span></td></tr>'
+                    );
+                })
+                .join('') +
+            '</tbody></table></div>';
+        host.onclick = async function (event) {
+            var edit = event.target.closest('[data-edit]');
+            if (edit) {
+                edit.classList.add('is-hidden');
+                edit.parentNode.querySelector('[data-actions]').classList.remove('is-hidden');
+                return;
+            }
+            var del = event.target.closest('[data-delete]');
+            if (del) {
+                var ok = await Admin.confirmAction({
+                    heading: 'Delete ' + del.getAttribute('data-who') + ' permanently?',
+                    message: 'Their profile, account and every response are removed. This cannot be undone and changes your dataset.',
+                    confirmLabel: 'Delete permanently'
+                });
+                if (!ok) {
+                    return;
+                }
+                try {
+                    await call('admin_delete_user', { target_email: del.getAttribute('data-delete') });
+                    say('Deleted.');
+                    await Admin.refreshAll();
+                } catch (error) {
+                    say(failure(error), true);
+                }
+                await showRemoved();
+                return;
+            }
+            var b = event.target.closest('[data-addback]');
+            if (!b) {
+                return;
+            }
+            b.disabled = true;
+            try {
+                await call('admin_add_back_to_session', { p_email: b.getAttribute('data-addback') });
+                say('Added back.');
+                await Admin.refreshAll();
+                await refreshOverview();
+                await showRemoved();
+            } catch (error) {
+                say(failure(error), true);
+                b.disabled = false;
+            }
+        };
+    }
+
     window.PIACheckin = {
+        removeStudent: askReason,
         holdsSection: holdsSection,
         removeFromSection: removeFromSection,
         loadNumber: loadNumber,
@@ -1808,7 +1742,7 @@
         },
         refresh: function () {
             renderChips();
-            renderAttendance();
+            renderSession();
         }
     };
 })();

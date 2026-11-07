@@ -103,7 +103,7 @@ const SESSION_ENDED_COPY = {
     },
     revoked: {
         title: 'You’ve been signed out',
-        text: 'Your teacher or the study team signed this account out. You have been securely logged out here.',
+        text: 'Your admin or the study team signed this account out. You have been securely logged out here.',
         note: ''
     },
     ended: {

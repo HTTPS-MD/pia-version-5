@@ -100,9 +100,27 @@ A bell at the top with a count of students who tried to sign in again. Let back 
 - A refused student waits and asks again every 5 seconds (up to 10 minutes) without being counted again. The first try of a real student is counted for the admin's bell. Let back in then lets them straight in. Before the admin lets back in, the admin asks the class who the student is.
 - Known limitation (for Chapter 5): an unknown number counts as a failed try (the brake against guessing numbers) and a real number in the "late / already in" case does not, so someone who tries one number many times can slowly tell them apart by when they get throttled. The limits per number, per address and overall keep it slow.
 
-## L. The teacher's attendance (decided and built 2026-11-06; SQL 22 not run yet)
+## L. The teacher's attendance (built 2026-11-06, REPLACED by M on 2026-11-07: the teacher now sees only live Entered / Not in yet)
 
 - Live, until the Game is closed: Present / Absent / Not marked, and **Entered** (accent colour while the student is online, faded after they leave).
 - Final, once the admin closes the Game for the section (`admin_finalize_attendance`, sets `checkins.final_at`): **Present** (entered, even if only briefly), **Absent**, **Did not participate** (marked Present but never entered). It does not change after that.
 - **Download attendance** (CSV for Excel) appears only when the record is final: Name, Section, Date, Status, Time entered (Manila time). No student number, group, stage, personality label, result or score. A name that starts like a formula is made safe.
 - For the paper: "Did not participate" means "marked Present, but never entered the session".
+
+## M. Final decisions of 2026-11-07 (supersede A to L where they differ)
+
+- Attendance is checked face to face, outside the system. The system has no Present / Absent marking and no word "attendance".
+- Absent students are "Removed from this session" (hidden, data kept, can be added back). Not deleted: deleting loses data and hides attrition for the paper.
+- Start opens the door for the students left; live count "Entered x of n". End shows who has not entered, "Are you sure you want to close?", then Close or Close and open OCEAN. After End nobody new can enter; a student who entered and lost the login comes back with Let back in (bell). No device key, no class code.
+- Teacher sees only live Entered / Not in yet (no final record, no Download): a final "Completed / Not completed" would show a student's progress to the teacher (CERC: voluntary participation, no stigma).
+- Admin and paper: Completed / Not completed.
+- Open: the threshold of "Completed" in the Game.
+- To check with the adviser / CERC: the resubmission describes Firebase / Firestore, a Decision Tree and a Google Forms personality assessment; the system is Supabase with the OCEAN inside it.
+
+### Built on 2026-11-07 (local, not pushed; SQL 23 not run in Supabase yet)
+
+- SQL `supabase/staging/23-start-end-and-remove-from-session.sql`: `profiles.removed_at` / `removed_reason`; `admin_remove_from_session(email, reason)` (refused if the student already entered), `admin_add_back_to_session(email)`; Start skips removed students; End no longer refuses for unmarked students; a student added while Start is running gets a place automatically; section counts and the teacher's roster leave removed students out; the teacher roster returns only name, online and entered; `admin_finalize_attendance` is dropped. A student cannot change the removal columns themselves.
+- Admin screen: buttons Start / End (Ended once closed), column Participation (Entered / Not in yet, Tried again x N), count chip "Entered x of n", End dialog (table of students who have not entered, Close / Close and open OCEAN), Remove from this session in the student's profile (reason required), "Removed students" in the ... menu with Add back. Opening OCEAN lists "Can enter / Already finished / Did not enter".
+- Door: after End a student who never entered is refused with the same message, no bell, no waiting. `lookup` stays removed.
+- Teacher page: Participation column (Entered / Not in yet), no Download, no final labels.
+- SQL 21 in the repo was a broken 2-byte file; it was rewritten from what it does (the version already run in Supabase sets `entered_once = true` in `admin_let_back_in`).

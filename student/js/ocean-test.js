@@ -178,7 +178,7 @@ function renderGatekeeper() {
             <div class="gate-wrap gate-open">
                 <h1 class="gate-title">Not open yet</h1>
                 <p class="gate-lede">
-                    Your teacher hasn't started the questionnaire. Head back to the waiting
+                    Your admin hasn't started the questionnaire. Head back to the waiting
                     room and it will bring you here automatically when it opens.
                 </p>
                 <div class="gate-actions">
