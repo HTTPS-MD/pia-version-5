@@ -253,16 +253,15 @@
         // Cancel closes the window; unsaved edits are thrown away after asking
         $('#qb-config-cancel').addEventListener('click', async function () {
             if (Admin.qb.dirty) {
-                var ok = await Admin.confirmAction({
-                    heading: 'Discard changes?',
-                    message: 'Your edits to the rules are not saved.',
-                    confirmLabel: 'Discard'
-                });
-                if (!ok) {
+                var answer = await Admin.askUnsaved();
+                if (!answer) {
                     return;
                 }
-                Admin.qb.dirty = false;
-                await Admin.loadMathTask();
+                // Save draft keeps the edits on the screen's state (they are back when Rules is opened again)
+                if (answer === 'discard') {
+                    Admin.qb.dirty = false;
+                    await Admin.loadMathTask();
+                }
             }
             Admin.closeModal('modal-qb-rules');
         });

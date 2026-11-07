@@ -100,9 +100,44 @@
 
         $('#es-number').value = '';
         $('#es-number').disabled = true;
-        snapshot = look();
+        // what is saved (the baseline for Save changes); a draft, if there is one, is put on top of it
+        var base = {
+            first: $('#es-first').value,
+            middle: $('#es-middle').value,
+            last: $('#es-last').value,
+            number: '',
+            section: $('#es-section').value
+        };
+        function snapOf() {
+            return JSON.stringify([
+                base.first.trim(),
+                base.middle.trim(),
+                base.last.trim(),
+                base.number.replace(/\D/g, ''),
+                base.section
+            ]);
+        }
+        var draft = Admin.drafts['student:' + s.email] || null;
+        function applyDraft() {
+            if (!draft) {
+                return;
+            }
+            $('#es-first').value = draft.first;
+            $('#es-middle').value = draft.middle;
+            $('#es-last').value = draft.last;
+            $('#es-number').value = draft.number;
+            $('#es-section').value = draft.section;
+            if (Admin.refreshCustomSelect) {
+                Admin.refreshCustomSelect('es-section');
+            }
+        }
+        snapshot = snapOf();
+        applyDraft();
         syncSave();
         Admin.openModal('modal-edit-student');
+        if (draft) {
+            Admin.toastOk('Draft restored', 'Your unsaved changes are back.');
+        }
 
         // the parts saved with the student win over the guess from the full name
         sb.from('profiles')
@@ -117,19 +152,27 @@
                 if ($('#es-original-email').value !== s.email) {
                     return;
                 }
-                $('#es-first').value = d.first_name || '';
-                $('#es-middle').value = d.middle_name || '';
-                $('#es-last').value = d.last_name || '';
-                snapshot = look();
+                base.first = d.first_name || '';
+                base.middle = d.middle_name || '';
+                base.last = d.last_name || '';
+                if (!draft) {
+                    $('#es-first').value = base.first;
+                    $('#es-middle').value = base.middle;
+                    $('#es-last').value = base.last;
+                }
+                snapshot = snapOf();
                 syncSave();
             });
         window.PIACheckin.numberFor(s.email).then(
             function (number) {
                 var field = $('#es-number');
-                field.value = number;
+                base.number = number;
+                if (!draft) {
+                    field.value = number;
+                }
                 field.disabled = false;
                 field.setAttribute('data-initial', number);
-                snapshot = look();
+                snapshot = snapOf();
                 syncSave();
             },
             function () {
@@ -223,6 +266,7 @@
                 return;
             }
 
+            delete Admin.drafts['student:' + originalEmail];
             snapshot = look();
             Admin.closeModal('modal-edit-student');
             Admin.toastOk('Participant updated', fullName + ' was saved.');
@@ -247,15 +291,24 @@
             }
             event.stopImmediatePropagation();
             event.preventDefault();
-            Admin.confirmAction({
-                heading: 'Discard changes?',
-                message: 'Your edits to this participant are not saved.',
-                confirmLabel: 'Discard'
-            }).then(function (ok) {
-                if (ok) {
-                    snapshot = look();
-                    Admin.closeModal('modal-edit-student');
+            var email = $('#es-original-email').value;
+            Admin.askUnsaved().then(function (answer) {
+                if (!answer) {
+                    return;
                 }
+                if (answer === 'save') {
+                    Admin.drafts['student:' + email] = {
+                        first: $('#es-first').value,
+                        middle: $('#es-middle').value,
+                        last: $('#es-last').value,
+                        number: $('#es-number').value,
+                        section: $('#es-section').value
+                    };
+                } else {
+                    delete Admin.drafts['student:' + email];
+                }
+                snapshot = look();
+                Admin.closeModal('modal-edit-student');
             });
         }
         overlay.addEventListener(

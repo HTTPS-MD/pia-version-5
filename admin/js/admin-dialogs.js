@@ -306,6 +306,11 @@
                 (danger ? 'alert' : 'info') +
                 '"></use></svg>';
 
+            // a window with only the answers asked for (no Cancel): leaving it with Esc or a click outside keeps editing
+            var cancelBtn = $('#confirm-cancel');
+            if (cancelBtn) {
+                cancelBtn.classList.toggle('is-hidden', !!options.noCancel);
+            }
             accept.textContent = options.confirmLabel || 'Proceed';
             accept.className = 'btn ' + (danger ? 'btn-danger' : 'btn-primary');
 
@@ -360,6 +365,22 @@
         });
     }
     Admin.confirmAction = confirmAction;
+
+    // Unsaved edits: 'save' (keep them as a draft), 'discard', or null (keep editing: Esc / outside click).
+    Admin.drafts = {};
+    function askUnsaved() {
+        return confirmAction({
+            heading: 'You have unsaved changes',
+            message: 'Save them as a draft to continue later, or discard them.',
+            confirmLabel: 'Save draft',
+            altLabel: 'Discard',
+            tone: 'accent',
+            noCancel: true
+        }).then(function (answer) {
+            return answer === true ? 'save' : answer === 'alt' ? 'discard' : null;
+        });
+    }
+    Admin.askUnsaved = askUnsaved;
 
     function showNotice(title, body, tone, table) {
         $('#notice-title').textContent = title;

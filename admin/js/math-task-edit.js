@@ -501,24 +501,32 @@
 
         var uniform = Admin.qbUniformPoints(Admin.qb.bank[Admin.qb.topic]);
         var stash = !item && Admin.qb.stash && Admin.qb.stash.topic === Admin.qb.topic ? Admin.qb.stash : null;
-        $('#qb-question').value = item ? item.q : stash ? stash.question : '';
-        $('#qb-final').value = item ? item.final : stash ? stash.final : '';
-        $('#qb-points').value = String(item ? item.points : stash ? stash.points : uniform || 10);
+        // an edit of a saved question that was kept as a draft
+        var editDraft = item ? Admin.drafts['question:' + item.id] || null : null;
+        $('#qb-question').value = editDraft ? editDraft.question : item ? item.q : stash ? stash.question : '';
+        $('#qb-final').value = editDraft ? editDraft.final : item ? item.final : stash ? stash.final : '';
+        $('#qb-points').value = String(
+            editDraft ? editDraft.points : item ? item.points : stash ? stash.points : uniform || 10
+        );
 
         qbStepList().textContent = '';
         var steps = Admin.QB_STEP_LABELS[Admin.qb.topic].map(function (_, i) {
-            return (item && item.steps[i]) || (stash && stash.steps[i]) || null;
+            return (editDraft && editDraft.steps[i]) || (item && item.steps[i]) || (stash && stash.steps[i]) || null;
         });
         steps.forEach(function (s) {
             qbAddStep(s, false);
         });
 
         Admin.qb.editSnap = qbSnap();
+        if (editDraft) {
+            // the draft is not what is stored, so Save changes stays on
+            Admin.qb.editSnap = 'draft';
+        }
         $('#qb-mode').hidden = !!item;
         wizStart(true);
         Admin.qb.drafts = stash ? JSON.parse(JSON.stringify(stash.drafts)) : [];
         qbSetMode(stash && stash.mode === 'gen' ? 'gen' : 'write');
-        if (stash) {
+        if (stash || editDraft) {
             Admin.toastOk('Draft restored', 'Your unsaved question is back.');
         }
         $('#qb-edit-title').textContent = item ? 'Edit question ' + index : 'Add question';
@@ -640,14 +648,21 @@
             event.stopImmediatePropagation();
             event.preventDefault();
             if (Admin.qb.editingId != null) {
-                Admin.confirmAction({
-                    heading: 'Discard changes?',
-                    message: 'Your edits to this question are not saved.',
-                    confirmLabel: 'Discard'
-                }).then(function (ok) {
-                    if (ok) {
-                        Admin.closeModal('modal-qb-edit');
+                var editedId = Admin.qb.editingId;
+                Admin.askUnsaved().then(function (answer) {
+                    if (!answer) {
+                        return;
                     }
+                    Admin.drafts['question:' + editedId] =
+                        answer === 'save'
+                            ? {
+                                  question: $('#qb-question').value,
+                                  final: $('#qb-final').value,
+                                  points: $('#qb-points').value,
+                                  steps: qbReadSteps()
+                              }
+                            : null;
+                    Admin.closeModal('modal-qb-edit');
                 });
                 return;
             }
@@ -824,6 +839,8 @@
 
         if (editing == null) {
             Admin.qb.stash = null;
+        } else {
+            Admin.drafts['question:' + editing] = null;
         }
         Admin.closeModal('modal-qb-edit');
         Admin.renderQbTable();

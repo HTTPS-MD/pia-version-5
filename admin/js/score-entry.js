@@ -204,6 +204,17 @@
         $$('#scores-tbody .score-pair').forEach(paintScorePair);
         paintScoreCounts();
         loaded = look();
+        // a saved draft goes back on top of what is stored
+        var draft = Admin.drafts['scores:' + sectionName];
+        var boxes = $$('#modal-scores input');
+        if (draft && draft.length === boxes.length) {
+            boxes.forEach(function (input, i) {
+                input.value = draft[i];
+            });
+            paintScoreCounts();
+            $$('#scores-tbody .score-pair').forEach(paintScorePair);
+            Admin.toastOk('Draft restored', 'Your unsaved scores are back.');
+        }
         updateSaveState();
     }
     Admin.openScoresModal = openScoresModal;
@@ -245,15 +256,19 @@
             }
             event.stopImmediatePropagation();
             event.preventDefault();
-            var ok = await Admin.confirmAction({
-                heading: 'Discard scores?',
-                message: 'The scores you typed are not saved.',
-                confirmLabel: 'Discard'
-            });
-            if (ok) {
-                loaded = null;
-                Admin.closeModal('modal-scores');
+            var key = 'scores:' + (Admin.state.activeSection || '');
+            var answer = await Admin.askUnsaved();
+            if (!answer) {
+                return;
             }
+            Admin.drafts[key] =
+                answer === 'save'
+                    ? $$('#modal-scores input').map(function (input) {
+                          return input.value;
+                      })
+                    : null;
+            loaded = null;
+            Admin.closeModal('modal-scores');
         }
         overlay.addEventListener(
             'click',
@@ -384,6 +399,7 @@
             return;
         }
 
+        Admin.drafts['scores:' + (Admin.state.activeSection || '')] = null;
         Admin.closeModal('modal-scores');
         Admin.toastOk(
             'Scores saved',

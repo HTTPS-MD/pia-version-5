@@ -150,6 +150,43 @@
         ['input', 'change'].forEach(function (type) {
             $('#edit-teacher-form').addEventListener(type, syncTeacherSave);
         });
+        // closing with edits asks first: save them as a draft or discard them
+        var teacherOverlay = $('#modal-edit-teacher');
+        function guardTeacher(event) {
+            if (teacherLook() === teacherSnapshot) {
+                return;
+            }
+            event.stopImmediatePropagation();
+            event.preventDefault();
+            var who = $('#et-original-email').value;
+            Admin.askUnsaved().then(function (answer) {
+                if (!answer) {
+                    return;
+                }
+                Admin.drafts['teacher:' + who] =
+                    answer === 'save' ? { name: $('#et-name').value, email: $('#et-email').value } : null;
+                teacherSnapshot = teacherLook();
+                Admin.closeModal('modal-edit-teacher');
+            });
+        }
+        teacherOverlay.addEventListener(
+            'click',
+            function (event) {
+                if (event.target.closest('[data-modal-close]')) {
+                    guardTeacher(event);
+                }
+            },
+            true
+        );
+        teacherOverlay.addEventListener(
+            'mousedown',
+            function (event) {
+                if (event.target === teacherOverlay) {
+                    guardTeacher(event);
+                }
+            },
+            true
+        );
 
         $('#faculty-reset').addEventListener('click', function () {
             if (Admin.state.activeFaculty) {
@@ -311,8 +348,17 @@
         $('#et-name').value = f.name || '';
         $('#et-email').value = f.email;
         teacherSnapshot = teacherLook();
+        // an unsaved edit that was kept as a draft goes back on top of what is stored
+        var draft = Admin.drafts['teacher:' + f.email];
+        if (draft) {
+            $('#et-name').value = draft.name;
+            $('#et-email').value = draft.email;
+        }
         syncTeacherSave();
         Admin.openModal('modal-edit-teacher');
+        if (draft) {
+            Admin.toastOk('Draft restored', 'Your unsaved changes are back.');
+        }
     }
 
     async function saveTeacher(event) {
@@ -348,6 +394,7 @@
                 return;
             }
             teacherSnapshot = teacherLook();
+            Admin.drafts['teacher:' + original] = null;
             Admin.closeModal('modal-edit-teacher');
             Admin.closeModal('modal-faculty');
             Admin.toastOk('Teacher updated', name + ' was saved.');
