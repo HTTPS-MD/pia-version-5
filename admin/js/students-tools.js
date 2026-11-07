@@ -1188,6 +1188,38 @@
         if (actionsBar) {
             actionsBar.appendChild(toggle);
         }
+        // The bell: students who tried to sign in again.
+        var bellBox = document.createElement('div');
+        bellBox.className = 'bar-bell is-hidden';
+        bellBox.id = 'att-bell-box';
+        bellBox.hidden = true;
+        bellBox.innerHTML =
+            '<button type="button" class="bar-bell-btn" id="att-bell" aria-haspopup="menu" aria-expanded="false" aria-label="No one is waiting to be let back in" title="Students who tried to sign in again">' +
+            '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>' +
+            '<span class="bell-count is-hidden" id="att-bell-count"></span></button>' +
+            '<div class="custom-select-list section-menu bar-bell-menu" id="att-bell-menu" role="menu" hidden></div>';
+        // The bell sits in the top bar, between the theme switch and the profile, so it is seen on every tab.
+        var themeBtn = $('#theme-toggle');
+        if (themeBtn && themeBtn.parentNode) {
+            themeBtn.parentNode.insertBefore(bellBox, themeBtn.nextSibling);
+        } else {
+            toggle.parentNode.appendChild(bellBox);
+        }
+        var bellMenu = $('#att-bell-menu');
+        var setBell = floatingMenu('bell', $('#att-bell'), bellMenu, bellBox);
+        bellMenu.addEventListener('click', async function (event) {
+            var item = event.target.closest('.bell-item');
+            if (!item) {
+                return;
+            }
+            var email = item.getAttribute('data-email');
+            if (event.target.closest('[data-bell-dismiss]')) {
+                bellDismiss(email, Number(item.getAttribute('data-n')));
+            } else if (event.target.closest('[data-bell-lbi]')) {
+                setBell(false);
+                await bellLetBackIn(email);
+            }
+        });
         var removedItem = $('#att-removed');
         if (removedItem) {
             removedItem.addEventListener('click', showRemoved);
