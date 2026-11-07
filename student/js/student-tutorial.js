@@ -13,7 +13,7 @@
             title: 'Welcome to your tutoring session',
             image: '',
             alt: '',
-            text: 'You will solve percentage word problems with your tutor, one step at a time. The session has a time limit, shown as Time left, so keep an eye on it.'
+            text: 'You will solve percentage word problems with your tutor, one step at a time. Take your time. There is no need to rush.'
         },
         {
             title: 'Work one step at a time',
@@ -31,12 +31,13 @@
             title: 'Hints are there to help',
             image: '',
             alt: '',
-            text: 'After two wrong answers on a step, the hint button appears. Each press gives a bit more help, so you can stop as soon as you know what to do.'
+            demo: 'hint',
+            text: 'After two wrong answers in a row on a step, the Request Hint button appears. Each press gives a bit more help, so you can stop as soon as you know what to do.'
         }
     ];
 
     var sb = null;
-    var card, content, titleEl, textEl, stepEl, imgEl, backBtn, nextBtn;
+    var card, content, titleEl, textEl, stepEl, imgEl, demoEl, backBtn, nextBtn;
     var index = 0;
     var seenKnown = false;
     var saving = null;
@@ -93,6 +94,7 @@
             imgEl.hidden = true;
             imgEl.removeAttribute('src');
         }
+        demoEl.hidden = step.demo !== 'hint';
         backBtn.hidden = index === 0;
         nextBtn.textContent = index === STEPS.length - 1 ? 'Start' : 'Next';
     }
@@ -127,6 +129,7 @@
         textEl = $('#tutorial-text');
         stepEl = $('#tutorial-step');
         imgEl = $('#tutorial-img');
+        demoEl = $('#tutorial-demo');
         backBtn = $('#tutorial-back');
         nextBtn = $('#tutorial-next');
 

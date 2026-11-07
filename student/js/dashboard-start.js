@@ -150,7 +150,7 @@
             } else if (Dash.state.topic > 1) {
                 $('#start-lede').textContent =
                     where +
-                    ' The session has a time limit, and you can ask ' +
+                    ' Take your time, and you can ask ' +
                     'for a hint whenever you’re stuck.';
             }
         }

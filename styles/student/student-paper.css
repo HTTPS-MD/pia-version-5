@@ -562,8 +562,19 @@ ul.paper-chips {
 }
 
 /* the tutorial inside the white card: hidden parts really hidden */
+.tutorial-demo[hidden],
 .tutorial-card[hidden],
 .start-content[hidden],
 .tutorial-actions [hidden] {
     display: none !important;
+}
+
+/* step 4 shows the real look of the hint button (not clickable) */
+.tutorial-demo {
+    margin: 0 0 1.2rem;
+    pointer-events: none;
+}
+.tutorial-hint-demo {
+    max-width: 15rem;
+    cursor: default;
 }
