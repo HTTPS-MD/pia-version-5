@@ -1262,15 +1262,12 @@
         var removedItem = $('#att-removed');
         if (removedItem) {
             removedItem.addEventListener('click', function () {
-                showRemoved(false);
+                showRemoved();
             });
         }
-        var removedEdit = $('#removed-edit');
-        if (removedEdit) {
-            removedEdit.addEventListener('click', function () {
-                editing = !editing;
-                paintEdit();
-            });
+        var removedDel = $('#removed-delete');
+        if (removedDel) {
+            removedDel.addEventListener('click', deletePicked);
         }
         toggle.addEventListener('click', async function () {
             var section = chosen();
@@ -1629,24 +1626,34 @@
         }
     }
 
-    var editing = false;
+    var picked = {}; // email -> true: the students ticked in Archived
 
-    function paintEdit() {
-        var b = $('#removed-edit');
-        if (b) {
-            b.textContent = editing ? 'Cancel edit' : 'Edit';
+    function paintPicked() {
+        var emails = Object.keys(picked);
+        var rows = document.querySelectorAll('#removed-table [data-row]');
+        var count = $('#removed-count');
+        if (count) {
+            count.textContent = !rows.length ? '' : emails.length ? emails.length + ' selected' : '';
         }
-        Array.prototype.forEach.call(document.querySelectorAll('#removed-table [data-actions]'), function (el) {
-            el.classList.toggle('is-hidden', !editing);
-        });
+        // Delete waits until at least one student is ticked.
+        var del = $('#removed-delete');
+        if (del) {
+            del.disabled = !emails.length;
+        }
+        var all = $('#removed-all');
+        if (all) {
+            all.checked = !!rows.length && emails.length === rows.length;
+            all.indeterminate = emails.length > 0 && emails.length < rows.length;
+        }
     }
 
-    async function showRemoved(keepEditing) {
+    async function showRemoved() {
         var Admin = window.PIAAdmin;
-        editing = keepEditing === true;
+        picked = {};
         var section = chosen();
         var host = $('#removed-table');
         host.textContent = 'Loading…';
+        paintPicked();
         Admin.openModal('modal-removed');
         var res = await sb
             .from('profiles')
@@ -1661,46 +1668,42 @@
         var rows = res.data || [];
         if (!rows.length) {
             host.innerHTML = '<p class="muted">Nobody is archived in ' + esc(section) + '.</p>';
-            paintEdit();
+            paintPicked();
             return;
         }
+        // The student numbers of the archived students (masked under Privacy Mode, like everywhere else).
+        var numbers = {};
+        try {
+            ((await call('admin_numbers_for', {
+                p_emails: rows.map(function (r) {
+                    return r.email;
+                })
+            })) || []).forEach(function (n) {
+                numbers[String(n.email).toLowerCase()] = prettyNumber(n.number);
+            });
+        } catch (e) {}
+        var hidden = document.documentElement.classList.contains('pia-hide-details');
         host.innerHTML =
-            '<div class="table-wrap"><table class="table"><thead><tr><th scope="col">Student</th><th scope="col"></th></tr></thead><tbody>' +
+            '<div class="table-wrap"><table class="table"><thead><tr>' +
+            '<th scope="col" class="removed-check"><input type="checkbox" id="removed-all" aria-label="Select all"></th>' +
+            '<th scope="col">Student</th><th scope="col">Student number</th><th scope="col"></th></tr></thead><tbody>' +
             rows
                 .map(function (r) {
                     var who = document.documentElement.classList.contains('pia-hide-details')
                         ? Admin.initialsOf(r.full_name, r.email)
                         : r.full_name;
                     return (
-                        '<tr><td>' + esc(who) + '</td>' +
-                        '<td class="nowrap"><span class="removed-actions' + (editing ? '' : ' is-hidden') + '" data-actions><button type="button" class="btn btn-sm btn-secondary" data-addback="' + esc(r.email) + '">Add back</button> ' +
-                        '<button type="button" class="btn btn-sm btn-danger" data-delete="' + esc(r.email) + '" data-who="' + esc(who) + '">Delete permanently</button></span></td></tr>'
+                        '<tr data-row data-email="' + esc(r.email) + '" data-who="' + esc(who) + '">' +
+                        '<td class="removed-check"><input type="checkbox" data-pick aria-label="Select ' + esc(who) + '"></td>' +
+                        '<td>' + esc(who) + '</td>' +
+                        '<td class="mono">' + esc(hidden ? '********' : numbers[String(r.email).toLowerCase()] || '—') + '</td>' +
+                        '<td class="removed-row-action"><button type="button" class="btn btn-secondary" data-addback="' + esc(r.email) + '">Add back</button></td></tr>'
                     );
                 })
                 .join('') +
             '</tbody></table></div>';
-        paintEdit();
+        paintPicked();
         host.onclick = async function (event) {
-            var del = event.target.closest('[data-delete]');
-            if (del) {
-                var ok = await Admin.confirmAction({
-                    heading: 'Delete ' + del.getAttribute('data-who') + ' permanently?',
-                    message: 'Their profile, account and every response are removed. This cannot be undone and changes your dataset.',
-                    confirmLabel: 'Delete permanently'
-                });
-                if (!ok) {
-                    return;
-                }
-                try {
-                    await call('admin_delete_user', { target_email: del.getAttribute('data-delete') });
-                    say('Deleted.');
-                    await Admin.refreshAll();
-                } catch (error) {
-                    say(failure(error), true);
-                }
-                await showRemoved(true);
-                return;
-            }
             var b = event.target.closest('[data-addback]');
             if (!b) {
                 return;
@@ -1711,12 +1714,73 @@
                 say('Added back.');
                 await Admin.refreshAll();
                 await refreshOverview();
-                await showRemoved(true);
+                await showRemoved();
             } catch (error) {
                 say(failure(error), true);
                 b.disabled = false;
             }
         };
+        host.onchange = function (event) {
+            var all = event.target.closest('#removed-all');
+            if (all) {
+                picked = {};
+                Array.prototype.forEach.call(host.querySelectorAll('[data-row]'), function (tr) {
+                    tr.querySelector('[data-pick]').checked = all.checked;
+                    if (all.checked) {
+                        picked[tr.getAttribute('data-email')] = true;
+                    }
+                });
+            } else if (event.target.matches('[data-pick]')) {
+                var tr = event.target.closest('[data-row]');
+                if (event.target.checked) {
+                    picked[tr.getAttribute('data-email')] = true;
+                } else {
+                    delete picked[tr.getAttribute('data-email')];
+                }
+            }
+            paintPicked();
+        };
+    }
+
+    function pickedRows() {
+        return Array.prototype.filter.call(document.querySelectorAll('#removed-table [data-row]'), function (tr) {
+            return picked[tr.getAttribute('data-email')];
+        });
+    }
+
+    // Delete is permanent: it always asks first, and lists who will be deleted.
+    async function deletePicked() {
+        var Admin = window.PIAAdmin;
+        var rows = pickedRows();
+        if (!rows.length) {
+            return;
+        }
+        var ok = await Admin.confirmAction({
+            heading: 'Delete ' + rows.length + (rows.length === 1 ? ' student' : ' students') + ' permanently?',
+            message: 'Their profile, account and every response are removed. This cannot be undone and changes your dataset.',
+            table: {
+                columns: ['Student'],
+                rows: rows.map(function (tr) {
+                    return [tr.getAttribute('data-who')];
+                })
+            },
+            confirmLabel: 'Delete permanently'
+        });
+        if (!ok) {
+            return;
+        }
+        var failed = 0;
+        for (var i = 0; i < rows.length; i++) {
+            try {
+                await call('admin_delete_user', { target_email: rows[i].getAttribute('data-email') });
+            } catch (error) {
+                failed += 1;
+            }
+        }
+        say(failed ? failed + ' could not be deleted.' : 'Deleted.', !!failed);
+        await Admin.refreshAll();
+        await refreshOverview();
+        await showRemoved();
     }
 
     window.PIACheckin = {

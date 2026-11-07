@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261126a">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261122h">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261126b">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261127q">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261127v">
     <link rel="stylesheet" href="../../styles/admin/admin-glass.css?v=20261125b">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
@@ -1023,15 +1023,16 @@
             <header class="modal-head">
                 <div class="modal-head-text">
                     <h2 class="modal-title" id="removed-title">Archived</h2>
-                    <p class="modal-sub" id="removed-sub">Their answers and account are kept. Add back puts them on the roster again. Delete permanently removes them and every response for good.</p>
+                    <p class="modal-sub" id="removed-sub">Their answers and account are kept. Add back puts a student on the roster again. To delete, tick the students and press Delete: it removes them and every response for good.</p>
                 </div>
             </header>
             <div class="modal-body stack">
                 <div class="confirm-table" id="removed-table"></div>
             </div>
-            <footer class="modal-foot">
-                <button class="btn btn-secondary" id="removed-edit" type="button">Edit</button>
-                <button class="btn btn-primary" data-modal-close>Done</button>
+            <footer class="modal-foot removed-foot">
+                <span class="removed-count muted" id="removed-count" aria-live="polite"></span>
+                <button class="btn btn-secondary" id="removed-cancel" type="button" data-modal-close>Cancel</button>
+                <button class="btn btn-danger" id="removed-delete" type="button" disabled>Delete</button>
             </footer>
         </div>
     </div>
@@ -1410,7 +1411,7 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261127p"></script>
+    <script src="../js/students-tools.js?v=20261127x"></script>
     <script src="../js/add-students.js?v=20261122b"></script>
     <script src="../js/admin-core.js?v=20261126a"></script>
     <script src="../js/admin-dialogs.js?v=20261127a"></script>
