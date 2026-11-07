@@ -2023,11 +2023,11 @@ h4 {
     cursor: pointer;
 }
 .hero-media {
-    background: #a9c9ee url('../../assets/images/backgrounds/school-characters-bg-light-v4.webp')
+    background: #a9c9ee url('../../assets/images/backgrounds/school-characters-bg-light-3d-v5.webp')
         center bottom / cover no-repeat;
 }
 :root[data-theme='dark'] .hero-media {
-    background: #0e1a44 url('../../assets/images/backgrounds/school-characters-bg-dark-v4.webp')
+    background: #0e1a44 url('../../assets/images/backgrounds/school-characters-bg-dark-3d-v5.webp')
         center bottom / cover no-repeat;
 }
 .hero-tone {
