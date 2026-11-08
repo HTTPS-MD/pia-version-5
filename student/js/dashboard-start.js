@@ -192,10 +192,7 @@
                             if (open) {
                                 return;
                             }
-                            if (window.PIA_HAS_ACTIVE_WORK()) {
-                                showStageClosedNotice();
-                                return;
-                            }
+                            // closed: back to the Waiting Room at once (what was answered is already saved)
                             window.location.replace('waiting-room.html');
                         }
                     )

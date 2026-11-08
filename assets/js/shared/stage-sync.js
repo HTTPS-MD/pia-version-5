@@ -48,11 +48,7 @@ function setupStudentRealtimeStageSync() {
                     const target = STAGE_PAGES[stage];
                     if (!target) return;
 
-                    if (stage === 'Waiting Room' && pageHasActiveWork()) {
-                        showStageClosedNotice();
-                        return;
-                    }
-
+                    // a closed stage sends the student to the Waiting Room at once, even in the middle of a question
                     if (target.pages.some(isOnPage)) return;
 
                     window.location.replace(target.url);

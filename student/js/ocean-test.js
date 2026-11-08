@@ -204,15 +204,13 @@ function setupRealtimeListener() {
                     (payload) => {
                         const isOpen = payload.new.value === true || payload.new.value === 'true';
 
-                        if (isTestInProgress()) {
-                            if (!isOpen) showStageClosedNotice();
+                        // closed: back to the Waiting Room at once (the answers so far are already saved)
+                        if (!isOpen) {
+                            window.location.href = 'waiting-room.html';
                             return;
                         }
-
-                        if (isOpen) {
+                        if (!isTestInProgress()) {
                             window.location.reload();
-                        } else {
-                            window.location.href = 'waiting-room.html';
                         }
                     }
                 )
