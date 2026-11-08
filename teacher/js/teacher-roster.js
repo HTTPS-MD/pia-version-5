@@ -298,8 +298,7 @@
             if (note) {
                 note.textContent =
                     found && found.reached !== undefined && found.total !== undefined
-                        ? (value === null || !isFinite(value) ? '' : 'grade ' + Math.round(value / 2 + 50) + ' · ') +
-                          'class accuracy · ' + found.reached + ' of ' + found.total + (Number(found.total) === 1 ? ' student' : ' students') + ' answered'
+                        ? 'class accuracy · ' + found.reached + ' of ' + found.total + (Number(found.total) === 1 ? ' student' : ' students') + ' answered'
                         : 'class accuracy';
             }
         });

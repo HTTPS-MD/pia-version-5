@@ -2963,3 +2963,36 @@ html[data-theme='light'] .topic-box {
     color: #b42318;
     border-color: rgba(180, 35, 24, 0.5);
 }
+
+/* Small and medium screens: the Archived button stays a circle, and the stage switches wrap inside their box instead of being cut off */
+#view-students #bar-actions .btn.btn-round {
+    flex: 0 0 38px;
+    width: 38px;
+    min-width: 38px;
+    max-width: 38px;
+    height: 38px;
+    padding: 0;
+    border-radius: 50%;
+    aspect-ratio: 1 / 1;
+}
+#view-students .page-title-row .stage-let {
+    height: auto;
+    min-height: 42px;
+    padding-block: 8px;
+    flex-wrap: wrap;
+    max-width: 100%;
+    min-width: 0;
+}
+#view-students .page-title-row .stage-let .stage-items {
+    display: flex;
+    flex-wrap: wrap;
+    min-width: 0;
+}
+@media (max-width: 48rem) {
+    #view-students .page-title-row .stage-let {
+        flex: 1 1 100%;
+        width: 100%;
+        border-radius: 22px;
+        border-right: 1px solid var(--line);
+    }
+}

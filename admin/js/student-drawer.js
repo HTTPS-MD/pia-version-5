@@ -164,10 +164,6 @@
                 daily ? gameDuration(daily.active_seconds_total) : Number(summary.sessions)
             ) +
             gameStat(
-                'Grade',
-                summary.accuracy_percent == null ? '—' : Math.round(Number(summary.accuracy_percent) / 2 + 50)
-            ) +
-            gameStat(
                 'Clean questions',
                 summary.clean_questions == null ? '—' : Number(summary.clean_questions) + ' of ' + (Number(summary.completed_questions) || 0)
             ) +
