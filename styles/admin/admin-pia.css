@@ -3025,15 +3025,19 @@ html[data-surface='admin'] body {
         min-width: 0;
         order: 0;
     }
+    /* "Entered x of n" and the gate button sit on the right */
     #view-students .page-title-row .att-count {
         order: 1;
-        margin-left: 0 !important;
+        margin-left: auto !important;
     }
     #view-students .page-title-row #att-toggle {
         order: 2;
         height: 44px;
         min-height: 44px;
-        margin-left: 0 !important;
+        margin-left: 8px !important;
+    }
+    #view-students .page-title-row:has(.att-count.is-hidden) #att-toggle {
+        margin-left: auto !important;
     }
     #view-students .page-title-row .show-details.privacy-mode {
         order: 3;
