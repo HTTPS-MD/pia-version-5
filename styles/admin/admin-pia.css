@@ -2996,3 +2996,106 @@ html[data-theme='light'] .topic-box {
         border-right: 1px solid var(--line);
     }
 }
+
+/* ---- Responsive pass: phones, tablets, normal and ultrawide screens ---- */
+
+/* the page never scrolls sideways; a wide table scrolls inside its own box */
+html[data-surface='admin'],
+html[data-surface='admin'] body {
+    overflow-x: clip;
+}
+
+/* ultrawide: the content stops stretching and sits in the middle */
+@media (min-width: 100rem) {
+    html[data-surface='admin'] .page {
+        max-width: 112rem;
+        margin-inline: auto;
+    }
+}
+
+/* phones and small tablets: the title row wraps in three lines (section, gate and Privacy Mode, stages) */
+@media (max-width: 48rem) {
+    #view-students .page-title-row {
+        flex-wrap: wrap;
+        row-gap: 10px;
+        column-gap: 8px;
+    }
+    #view-students .page-title-row .page-title {
+        flex: 1 1 100%;
+        min-width: 0;
+        order: 0;
+    }
+    #view-students .page-title-row .att-count {
+        order: 1;
+        margin-left: 0 !important;
+    }
+    #view-students .page-title-row #att-toggle {
+        order: 2;
+        height: 44px;
+        min-height: 44px;
+        margin-left: 0 !important;
+    }
+    #view-students .page-title-row .show-details.privacy-mode {
+        order: 3;
+        height: 44px;
+        min-height: 44px;
+        margin-left: auto !important;
+    }
+    #view-students .page-title-row .stage-let {
+        order: 4;
+        flex: 1 1 100%;
+        width: 100%;
+        margin: 0 !important;
+    }
+    /* search and the group filter are the same width */
+    #view-students .panel-bar .bar-group .head-search,
+    #view-students .panel-bar .bar-group .custom-select,
+    #view-students .panel-bar .bar-group select {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+    /* the profile fits the screen */
+    .drawer-overlay .drawer {
+        width: 100vw;
+        max-width: 100%;
+        min-width: 0;
+    }
+    .drawer-body {
+        min-width: 0;
+        overflow-x: hidden;
+        padding-inline: 16px;
+    }
+    .drawer-body .kv-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+/* small phones: the top bar fits the tabs, the bell and the profile without touching */
+@media (max-width: 30rem) {
+    .topbar {
+        padding-left: 4.75rem;
+        padding-right: 4.25rem;
+    }
+    .nav-list {
+        gap: 0;
+    }
+    .nav-item {
+        padding: 0 6px;
+        font-size: 0.8125rem;
+        white-space: nowrap;
+    }
+    .sidebar-user .user-chevron {
+        display: none !important;
+    }
+    .bar-bell-btn {
+        width: 40px;
+        height: 40px;
+    }
+    .sidebar-foot {
+        margin-right: 8px;
+    }
+    .topbar-right {
+        gap: 8px;
+    }
+}
