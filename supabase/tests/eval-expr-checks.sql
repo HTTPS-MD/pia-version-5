@@ -16,6 +16,16 @@ declare
     '1--1', '1/*x*/2', '1*/2', '1/0', '((1)', '1)', '()', '1e5', '1^2', '2**3', '1 1/2', '25 3', '12 5', '1 000', '1 .5', '½',
     repeat('1', 61), repeat('(', 30) || repeat(')', 30)
   ];
+  -- [what the student typed, the key]. These need files 42, 44 and 45.
+  right_step constant text[][] := array[
+    ['10', '10'], ['10.0', '10'], ['50 - 40', '10'], ['50 - 40 = 10', '10'], ['50-40=10', '10'], ['50 - 40 = 10 = 10', '10'],
+    ['10 = 10', '10'], ['10/40*100 = 25%', '25%'], ['25/100 = 0.25', '0.25'], ['(100/3)*3 = 100', '100']
+  ];
+  wrong_step constant text[][] := array[
+    ['9', '10'], ['0.251', '0.25'], ['25 3', '25'], ['50 - 40 = 99', '10'], ['60 - 40 = 20', '10'], ['99 = 99', '10'],
+    ['= 10', '10'], ['10 =', '10'], ['=', '10'], ['50 - 40 == 10', '10'], ['25 3 = 25', '25'], ['0.25 = 0.251', '0.25'],
+    ['1=1;select 1', '1'], ['1=1 or 1', '1'], ['pg_sleep(5) = 1', '1'], ['10 = abc', '10']
+  ];
   i int;
   got numeric;
   t0 timestamptz;
@@ -43,6 +53,18 @@ begin
     raise exception 'TOO SLOW: the longest inputs took %', clock_timestamp() - t0;
   end if;
 
-  raise notice 'All % checks passed.', array_length(good, 1) + array_length(bad, 1) + 1;
+  for i in 1 .. array_length(right_step, 1) loop
+    if not public.pia_step_matches(right_step[i][1], right_step[i][2]) then
+      raise exception 'SHOULD BE RIGHT: % for key %', right_step[i][1], right_step[i][2];
+    end if;
+  end loop;
+
+  for i in 1 .. array_length(wrong_step, 1) loop
+    if public.pia_step_matches(wrong_step[i][1], wrong_step[i][2]) then
+      raise exception 'SHOULD BE WRONG: % for key %', wrong_step[i][1], wrong_step[i][2];
+    end if;
+  end loop;
+
+  raise notice 'All % checks passed.', array_length(good, 1) + array_length(bad, 1) + 1 + array_length(right_step, 1) + array_length(wrong_step, 1);
 end;
 $checks$;
