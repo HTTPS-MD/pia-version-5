@@ -2942,3 +2942,24 @@ html[data-theme='light'] .topic-box {
     color: #b42318;
     border-color: rgba(180, 35, 24, 0.5);
 }
+
+
+/* Archived: Delete is the careful button, readable like the other ones */
+#modal-removed #removed-delete {
+    background: rgba(255, 107, 107, 0.14);
+    color: #ffb0b0;
+    border: 1px solid rgba(255, 107, 107, 0.6);
+    font-weight: 600;
+}
+#modal-removed #removed-delete:hover:not(:disabled) {
+    background: rgba(255, 107, 107, 0.26);
+    color: #fff;
+}
+#modal-removed #removed-delete:disabled {
+    opacity: 0.45;
+}
+:root[data-theme='light'] #modal-removed #removed-delete {
+    background: rgba(180, 35, 24, 0.08);
+    color: #b42318;
+    border-color: rgba(180, 35, 24, 0.5);
+}

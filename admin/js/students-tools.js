@@ -1374,6 +1374,10 @@
                 showRemoved();
             });
         }
+        var removedBack = $('#removed-addback');
+        if (removedBack) {
+            removedBack.addEventListener('click', addBackPicked);
+        }
         var removedDel = $('#removed-delete');
         if (removedDel) {
             removedDel.addEventListener('click', deletePicked);
@@ -1717,14 +1721,18 @@
 
     // ---- Remove from this session / Add back ----
     // A removed student keeps the account and every answer; the roster, the count, the door and the teacher stop counting them.
-    async function askReason(email) {
+    async function askReason(email, options) {
         var Admin = window.PIAAdmin;
-        var ok = await Admin.confirmAction({
-            heading: 'Archive ' + Admin.studentLabel(email) + '?',
-            message: 'They will not be counted and cannot enter.',
-            confirmLabel: 'Archive',
-            tone: 'accent'
-        });
+        // the Remove Student window already asked, so it asks no second time
+        var ok =
+            options && options.confirmed
+                ? true
+                : await Admin.confirmAction({
+                      heading: 'Archive ' + Admin.studentLabel(email) + '?',
+                      message: 'They will not be counted and cannot enter.',
+                      confirmLabel: 'Archive',
+                      tone: 'accent'
+                  });
         if (!ok) {
             return;
         }
@@ -1765,6 +1773,11 @@
         if (del) {
             del.disabled = !emails.length;
         }
+        // Add back waits until at least one student is ticked, like Delete
+        var back = $('#removed-addback');
+        if (back) {
+            back.disabled = !emails.length;
+        }
         var all = $('#removed-all');
         if (all) {
             all.checked = !!rows.length && emails.length === rows.length;
@@ -1803,7 +1816,7 @@
         host.innerHTML =
             '<div class="table-wrap"><table class="table"><thead><tr>' +
             '<th scope="col" class="removed-check"><input type="checkbox" id="removed-all" aria-label="Select all"></th>' +
-            '<th scope="col">Student</th><th scope="col">Student number</th><th scope="col"></th></tr></thead><tbody>' +
+            '<th scope="col">Student</th><th scope="col">Student number</th></tr></thead><tbody>' +
             rows
                 .map(function (r) {
                     var who = document.documentElement.classList.contains('pia-hide-details')
@@ -1814,7 +1827,7 @@
                         '<td class="removed-check"><input type="checkbox" data-pick aria-label="Select ' + esc(who) + '"></td>' +
                         '<td>' + esc(who) + '</td>' +
                         '<td class="mono" data-number-for="' + esc(r.email) + '">' + esc(hidden ? '********' : '…') + '</td>' +
-                        '<td class="removed-row-action"><button type="button" class="btn btn-secondary" data-addback="' + esc(r.email) + '">Add back</button></td></tr>'
+                        '</tr>'
                     );
                 })
                 .join('') +
@@ -1841,24 +1854,6 @@
                 }
             );
         }
-        host.onclick = async function (event) {
-            var b = event.target.closest('[data-addback]');
-            if (!b) {
-                return;
-            }
-            b.disabled = true;
-            try {
-                var email = b.getAttribute('data-addback');
-                await call('admin_add_back_to_session', { p_email: email });
-                say('Added back.');
-                // the row leaves the list at once; the rest of the page catches up in the background
-                dropArchivedRows([email]);
-                refreshBehind();
-            } catch (error) {
-                say(failure(error), true);
-                b.disabled = false;
-            }
-        };
         host.onchange = function (event) {
             var all = event.target.closest('#removed-all');
             if (all) {
@@ -1910,6 +1905,43 @@
         });
     }
 
+    // Add back puts every ticked student on the roster again; the rows leave the list at once.
+    async function addBackPicked() {
+        var Admin = window.PIAAdmin;
+        var emails = pickedRows().map(function (tr) {
+            return tr.getAttribute('data-email');
+        });
+        if (!emails.length) {
+            return;
+        }
+        var back = $('#removed-addback');
+        if (back) {
+            back.disabled = true;
+        }
+        var results = await Promise.all(
+            emails.map(function (email) {
+                return call('admin_add_back_to_session', { p_email: email }).then(
+                    function () {
+                        return true;
+                    },
+                    function () {
+                        return false;
+                    }
+                );
+            })
+        );
+        var failed = results.filter(function (done) {
+            return !done;
+        }).length;
+        say(failed ? failed + ' could not be added back.' : 'Added back.', !!failed);
+        dropArchivedRows(
+            emails.filter(function (email, i) {
+                return results[i];
+            })
+        );
+        refreshBehind();
+    }
+
     // Delete is permanent: it always asks first, and lists who will be deleted.
     async function deletePicked() {
         var Admin = window.PIAAdmin;
@@ -1924,9 +1956,11 @@
             heading: 'Delete ' + rows.length + (rows.length === 1 ? ' student' : ' students') + ' permanently?',
             message: 'Their profile, account and responses are removed. This cannot be undone.',
             table: {
-                columns: ['Student'],
+                columns: ['Student', 'Student number'],
                 rows: rows.map(function (tr) {
-                    return [tr.getAttribute('data-who')];
+                    // the number shown in the Archived list (masked under Privacy Mode, like everywhere else)
+                    var cell = tr.querySelector('[data-number-for]');
+                    return [tr.getAttribute('data-who'), cell ? cell.textContent : '—'];
                 })
             },
             confirmLabel: 'Delete permanently'
@@ -1963,8 +1997,29 @@
         refreshBehind();
     }
 
+    // Permanently delete one student (always asks first)
+    async function deleteStudent(email) {
+        var Admin = window.PIAAdmin;
+        var ok = await Admin.confirmAction({
+            heading: 'Permanently delete ' + Admin.studentLabel(email) + '?',
+            message: 'Their profile, account and responses are removed. This cannot be undone.',
+            confirmLabel: 'Permanently delete'
+        });
+        if (!ok) {
+            return;
+        }
+        try {
+            await call('admin_delete_user', { target_email: email });
+            say('Deleted.');
+            await Promise.all([Admin.refreshAll(), refreshOverview()]);
+        } catch (error) {
+            say(failure(error), true);
+        }
+    }
+
     window.PIACheckin = {
         removeStudent: askReason,
+        deleteStudent: deleteStudent,
         holdsSection: holdsSection,
         removeFromSection: removeFromSection,
         loadNumber: loadNumber,

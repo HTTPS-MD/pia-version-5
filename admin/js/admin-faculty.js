@@ -151,24 +151,34 @@
                 window.PIACheckin.holdsSection(f.email)
             );
             if (!holds) {
-                Admin.closeModal('modal-faculty');
-                deleteFaculty(f.email);
+                if (await deleteFaculty(f.email)) {
+                    Admin.closeModal('modal-faculty');
+                }
                 return;
             }
-            var answer = await Admin.confirmAction({
-                heading: 'Remove ' + Admin.whoIs(f.email) + '?',
-                message: 'Removing from the section keeps their account.',
-                confirmLabel: 'Remove from section',
-                altLabel: 'Permanently delete',
-                altTone: 'danger',
-                tone: 'accent',
-                noCancel: true
-            });
-            if (answer === true) {
-                window.PIACheckin.removeFromSection({ confirmed: true });
-            } else if (answer === 'alt') {
-                Admin.closeModal('modal-faculty');
-                deleteFaculty(f.email);
+            // Remove from section is the default. Delete opens a second question, and Cancel there comes back here.
+            for (;;) {
+                var answer = await Admin.confirmAction({
+                    heading: 'Remove ' + Admin.whoIs(f.email) + '?',
+                    message: 'Removing from the section keeps their account.',
+                    confirmLabel: 'Remove from section',
+                    altLabel: 'Delete',
+                    altTone: 'danger',
+                    tone: 'accent',
+                    noCancel: true
+                });
+                if (answer === true) {
+                    window.PIACheckin.removeFromSection({ confirmed: true });
+                    break;
+                }
+                if (answer === 'alt') {
+                    if (await deleteFaculty(f.email)) {
+                        Admin.closeModal('modal-faculty');
+                        break;
+                    }
+                    continue;
+                }
+                break;
             }
         });
 
@@ -535,7 +545,7 @@
             confirmLabel: 'Permanently delete'
         });
         if (!ok) {
-            return;
+            return false;
         }
 
         var res = await sb.rpc('admin_delete_user', { target_email: email });
@@ -545,7 +555,7 @@
                 'Removal failed',
                 Admin.friendlyDbError(res.error, 'The account was not deleted.')
             );
-            return;
+            return true;
         }
 
         // The RPC removes the login and profile; the teacher record and the
@@ -558,12 +568,13 @@
                 Admin.friendlyDbError(rec.error, 'The teacher record was not deleted.')
             );
             await Admin.loadFaculty();
-            return;
+            return true;
         }
         await sb.from('professor_sections').delete().ilike('email', lower);
 
         Admin.toastOk('Teacher removed', Admin.whoIs(email) + ' no longer has access.');
         await Admin.loadFaculty();
         Admin.renderSections();
+        return true;
     }
 })();

@@ -5185,8 +5185,10 @@ h4 {
     text-decoration: underline;
 }
 
-/* the platform's shadow (and the platform itself, on a short screen) fades out at the bottom of the section instead of being cut off flat */
-.act-select {
-    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2rem), transparent 100%);
-    mask-image: linear-gradient(to bottom, #000 calc(100% - 2rem), transparent 100%);
+/* room under the platform, so its shadow fades out before the bottom of the section instead of being cut flat there */
+.act.act-select {
+    padding-bottom: calc(var(--sp-8) + 4rem);
+}
+.act-select .select-board > .pk-backdrop {
+    filter: drop-shadow(0 10px 18px var(--black-a25));
 }

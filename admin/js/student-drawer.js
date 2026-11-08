@@ -366,8 +366,24 @@
                 } else if (action === 'retake-character') {
                     allowRetakeCharacter(s.email);
                 } else if (action === 'remove') {
-                    Admin.closeModal('drawer-student');
-                    window.PIACheckin.removeStudent(s.email, s.full_name);
+                    // Archive (the default) keeps the student in Archived; Permanently delete asks once more
+                    Admin.confirmAction({
+                        heading: 'Remove ' + Admin.whoIs(s.email) + '?',
+                        message: 'Archived students can be added back.',
+                        confirmLabel: 'Archive',
+                        altLabel: 'Permanently delete',
+                        altTone: 'danger',
+                        tone: 'accent',
+                        noCancel: true
+                    }).then(function (answer) {
+                        if (answer === true) {
+                            Admin.closeModal('drawer-student');
+                            window.PIACheckin.removeStudent(s.email, { confirmed: true });
+                        } else if (answer === 'alt') {
+                            Admin.closeModal('drawer-student');
+                            window.PIACheckin.deleteStudent(s.email);
+                        }
+                    });
                 }
             });
         });

@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="../../styles/global.css?v=20261128s">
     <link rel="stylesheet" href="../../styles/admin/admin.css?v=20261129d">
     <link rel="stylesheet" href="../../styles/admin/admin-topnav.css?v=20261126b">
-    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261201b">
+    <link rel="stylesheet" href="../../styles/admin/admin-pia.css?v=20261201h">
     <link rel="stylesheet" href="../../styles/admin/admin-glass.css?v=20261125b">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16.png">
@@ -900,16 +900,19 @@
             <header class="modal-head">
                 <div class="modal-head-text">
                     <h2 class="modal-title" id="removed-title">Archived</h2>
-                    <p class="modal-sub" id="removed-sub">Their answers and account are kept. Add back puts a student on the roster again. To delete, tick the students and press Delete: it removes them and every response for good.</p>
+                    <p class="modal-sub" id="removed-sub">Tick the students to add them back or delete them.</p>
                 </div>
+                <button class="modal-close" type="button" data-modal-close aria-label="Close">
+                    <svg class="icon"><use href="#i-x"></use></svg>
+                </button>
             </header>
             <div class="modal-body stack">
                 <div class="confirm-table" id="removed-table"></div>
             </div>
             <footer class="modal-foot removed-foot">
                 <span class="removed-count muted" id="removed-count" aria-live="polite"></span>
-                <button class="btn btn-secondary" id="removed-cancel" type="button" data-modal-close>Cancel</button>
-                <button class="btn btn-danger" id="removed-delete" type="button" disabled>Delete</button>
+                <button class="btn btn-danger-soft" id="removed-delete" type="button" disabled>Delete</button>
+                <button class="btn btn-primary" id="removed-addback" type="button" disabled>Add back</button>
             </footer>
         </div>
     </div>
@@ -1004,8 +1007,8 @@
                         <button class="action-list-item" data-student-action="retake-character">
                             Allow character re-selection
                         </button>
-                        <button class="action-list-item" data-student-action="remove">
-                            Archive
+                        <button class="action-list-item is-danger" data-student-action="remove">
+                            Remove Student
                         </button>
                     </div>
                 </div>
@@ -1287,16 +1290,16 @@
 
     <script src="../../assets/js/shared/bfpt-items.js"></script>
     <script src="../js/math-task-generator.js"></script>
-    <script src="../js/students-tools.js?v=20261201a"></script>
+    <script src="../js/students-tools.js?v=20261201g"></script>
     <script src="../js/add-students.js?v=20261122b"></script>
     <script src="../js/admin-core.js?v=20261127b"></script>
     <script src="../js/admin-dialogs.js?v=20261201c"></script>
     <script src="../js/admin-loading.js?v=20261105b"></script>
     <script src="../js/admin-data.js?v=20261127a"></script>
     <script src="../js/students-table.js?v=20261126a"></script>
-    <script src="../js/student-drawer.js?v=20261201b"></script>
+    <script src="../js/student-drawer.js?v=20261201d"></script>
     <script src="../js/student-forms.js?v=20261130a"></script>
-    <script src="../js/admin-faculty.js?v=20261201c"></script>
+    <script src="../js/admin-faculty.js?v=20261201d"></script>
     <script src="../js/stage-controls.js?v=20261130b"></script>
     <script src="../js/admin-account.js?v=20261130b"></script>
     <script src="../js/score-entry.js?v=20261130a"></script>
