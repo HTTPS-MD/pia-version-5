@@ -104,6 +104,7 @@
                 <button type="button" class="sidebar-user" id="user-menu-btn" aria-haspopup="menu"
                     aria-expanded="false" aria-controls="user-menu">
                     <span class="avatar avatar-md" id="admin-initials" aria-hidden="true">··</span>
+                    <span class="bell-count user-avatar-badge is-hidden" id="user-avatar-badge" aria-hidden="true"></span>
                     <span class="sidebar-user-text">
                         <span class="sidebar-user-name" id="admin-name">Loading…</span>
                         <span class="sidebar-user-mail" id="admin-email">—</span>
@@ -111,8 +112,11 @@
                     <span class="custom-select-chevron user-chevron" aria-hidden="true"></span>
                 </button>
                 <div class="user-menu" id="user-menu" role="menu" aria-label="Account" hidden>
-                    <button type="button" class="user-menu-item user-menu-theme" role="menuitem" data-user-action="theme">
-                        <svg class="icon icon-sm" aria-hidden="true"><use id="user-theme-icon" href="#i-sun"></use></svg><span id="user-theme-label">Light mode</span></button>
+                    <button type="button" class="user-menu-item user-menu-notif is-hidden" role="menuitem" id="user-notif-btn" data-user-action="notif" aria-expanded="false" aria-controls="user-notif-list">
+                        <svg class="icon icon-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span>Notifications</span><span class="user-notif-count is-hidden" id="user-notif-count"></span></button>
+                    <div class="user-notif-list is-hidden" id="user-notif-list" hidden></div>
+                    <button type="button" class="user-menu-item user-menu-theme" role="menuitemcheckbox" aria-checked="true" data-user-action="theme">
+                        <span id="user-theme-label">Dark mode</span><span class="user-theme-switch" aria-hidden="true"></span></button>
                     <button type="button" class="user-menu-item" role="menuitem" data-user-action="settings">
                         <svg class="icon icon-sm" aria-hidden="true"><use href="#i-gear"></use></svg>Settings</button>
                     <button type="button" class="user-menu-item is-signout" role="menuitem" id="user-signout" data-user-action="signout">

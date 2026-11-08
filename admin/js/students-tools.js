@@ -618,6 +618,21 @@
             count.textContent = String(items.length);
             count.classList.toggle('is-hidden', !items.length);
         }
+        // phone: the bell lives in the profile menu (a number on the profile picture and a list inside the menu)
+        var uBadge = $('#user-avatar-badge');
+        var uCount = $('#user-notif-count');
+        var uBtn = $('#user-notif-btn');
+        if (uBadge) {
+            uBadge.textContent = String(items.length);
+            uBadge.classList.toggle('is-hidden', !items.length);
+        }
+        if (uCount) {
+            uCount.textContent = String(items.length);
+            uCount.classList.toggle('is-hidden', !items.length);
+        }
+        if (uBtn) {
+            uBtn.classList.toggle('is-hidden', !section);
+        }
         var btn = $('#att-bell');
         if (btn) {
             btn.setAttribute(
@@ -661,6 +676,10 @@
                       })
                       .join('')
                 : '<div class="custom-select-option section-opt bell-empty">' + bellIcon + '<span>No new notifications</span></div>');
+        var mirror = $('#user-notif-list');
+        if (mirror) {
+            mirror.innerHTML = menu.innerHTML;
+        }
     }
     // Let back in goes straight through: no question afterwards.
     async function bellLetBackIn(email) {
@@ -1355,7 +1374,7 @@
         }
         var bellMenu = $('#att-bell-menu');
         var setBell = floatingMenu('bell', $('#att-bell'), bellMenu, bellBox);
-        bellMenu.addEventListener('click', async function (event) {
+        async function onBellClick(event) {
             var item = event.target.closest('.bell-item');
             if (!item) {
                 return;
@@ -1367,7 +1386,12 @@
                 setBell(false);
                 await bellLetBackIn(email);
             }
-        });
+        }
+        bellMenu.addEventListener('click', onBellClick);
+        var userNotif = $('#user-notif-list');
+        if (userNotif) {
+            userNotif.addEventListener('click', onBellClick);
+        }
         var removedItem = $('#att-removed');
         if (removedItem) {
             removedItem.addEventListener('click', function () {

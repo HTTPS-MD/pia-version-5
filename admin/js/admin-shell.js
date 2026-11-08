@@ -153,14 +153,9 @@
     }
 
     function paintThemeItem() {
-        var dark = currentTheme() === 'dark';
-        var label = $('#user-theme-label');
-        var icon = $('#user-theme-icon');
-        if (label) {
-            label.textContent = dark ? 'Light mode' : 'Dark mode';
-        }
-        if (icon) {
-            icon.setAttribute('href', dark ? '#i-sun' : '#i-moon');
+        var item = $('#user-menu .user-menu-theme');
+        if (item) {
+            item.setAttribute('aria-checked', currentTheme() === 'dark' ? 'true' : 'false');
         }
     }
 
@@ -246,8 +241,19 @@
             }
             var action = item.getAttribute('data-user-action');
             if (action === 'theme') {
+                // the menu stays open so the switch is seen sliding
                 $('#theme-toggle').click();
-                closeUserMenu(false);
+                paintThemeItem();
+                return;
+            }
+            if (action === 'notif') {
+                // phone: the notifications open inside this menu
+                var list = $('#user-notif-list');
+                if (list) {
+                    list.hidden = !list.hidden;
+                    list.classList.toggle('is-hidden', list.hidden);
+                    item.setAttribute('aria-expanded', list.hidden ? 'false' : 'true');
+                }
                 return;
             }
             if (action === 'signout') {
