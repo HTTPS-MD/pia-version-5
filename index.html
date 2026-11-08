@@ -58,8 +58,8 @@
         <div class="shell nav-inner">
 
             <a class="tap nav-mark brand-link" href="#top">
-                <img class="site-logo" src="assets/images/logo-320.webp" alt="PIA — Personal Instructing Agent, back to top"
-                    width="96" height="48">
+                <img class="site-logo" src="assets/images/logo-320.webp"
+                    alt="PIA — Personal Instructing Agent, back to top" width="96" height="48">
             </a>
 
             <nav class="nav-menu" id="nav-menu" aria-label="Page sections">
@@ -68,14 +68,22 @@
                     <li><a class="nav-link" href="#agent-select">Tutors</a></li>
                     <li><a class="nav-link" href="#why-pia">Why PIA</a></li>
                     <li><a class="nav-link" href="#privacy">Privacy</a></li>
-                    <li class="nav-staff-item"><button type="button" class="nav-link nav-link-staff" data-auth-open="staff">Teacher / Admin</button></li>
-                    <li class="nav-theme-item"><button type="button" class="nav-link nav-link-staff nav-link-theme" data-theme-toggle><span>Theme</span><span class="theme-switch" aria-hidden="true"><svg class="icon icon-sun"><use href="/assets/icons-landing.svg#i-sun"></use></svg><svg class="icon icon-moon"><use href="/assets/icons-landing.svg#i-moon"></use></svg></span></button></li>
+                    <li class="nav-staff-item"><button type="button" class="nav-link nav-link-staff"
+                            data-auth-open="staff">Teacher / Admin</button></li>
+                    <li class="nav-theme-item"><button type="button" class="nav-link nav-link-staff nav-link-theme"
+                            data-theme-toggle><span>Theme</span><span class="theme-switch" aria-hidden="true"><svg
+                                    class="icon icon-sun">
+                                    <use href="/assets/icons-landing.svg#i-sun"></use>
+                                </svg><svg class="icon icon-moon">
+                                    <use href="/assets/icons-landing.svg#i-moon"></use>
+                                </svg></span></button></li>
                 </ul>
             </nav>
 
             <div class="nav-actions">
 
-                <button type="button" class="tap btn-pop nav-join nav-auth" data-auth-open="signin" data-resume-label="Continue">Join</button>
+                <button type="button" class="tap btn-pop nav-join nav-auth" data-auth-open="signin"
+                    data-resume-label="Continue">Join</button>
                 <button type="button" class="tap btn-pop nav-signin" data-auth-open="staff">Teacher / Admin</button>
 
                 <button type="button" class="tap theme-toggle theme-switch" id="theme-toggle" data-theme-toggle
@@ -128,7 +136,11 @@
                             <div class="hero-cta hero-join" id="hero-cta" data-reveal>
                                 <form class="join" id="hero-join" novalidate>
                                     <label class="sr-only" for="join-num">Your code</label>
-                                    <svg class="join-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+                                    <svg class="join-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+                                        <circle cx="12" cy="8" r="4" />
+                                        <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+                                    </svg>
                                     <input class="join-in" id="join-num" type="text" inputmode="numeric"
                                         autocomplete="off" spellcheck="false" maxlength="14"
                                         placeholder="Enter your code">
@@ -141,78 +153,86 @@
 
                 </section>
 
-        <section class="band band-video" id="how" aria-labelledby="how-title">
-            <div class="shell">
-                <header class="band-head">
-                    <h2 class="band-title" id="how-title" data-reveal>See how <em class="help-mark">PIA works</em></h2>
-                    <p class="band-lede" data-reveal>A quick tour, from typing your code to your first answer.</p>
-                </header>
-                <div class="video-frame" data-reveal>
-                    <video id="how-video" controls preload="none" playsinline width="1280" height="720"
-                        poster="assets/video/pia-how-to-use-poster.webp">
-                        <source src="assets/video/pia-how-to-use.mp4" type="video/mp4">
-                        Your browser cannot play this video.
-                    </video>
-                    <button type="button" class="video-play" id="how-play" aria-label="Play the video"></button>
-                </div>
-                <ol class="how-steps">
-                    <li data-reveal><span class="how-num" aria-hidden="true">1</span>Type your code</li>
-                    <li data-reveal><span class="how-num" aria-hidden="true">2</span>Solve one step at a time</li>
-                    <li data-reveal><span class="how-num" aria-hidden="true">3</span>Ask for a hint if you&rsquo;re stuck</li>
-                </ol>
-            </div>
-        </section>
+                <section class="band band-video" id="how" aria-labelledby="how-title">
+                    <div class="shell">
+                        <header class="band-head">
+                            <h2 class="band-title" id="how-title" data-reveal>See how <em class="help-mark">PIA
+                                    works</em></h2>
+                            <p class="band-lede" data-reveal>A quick tour, from typing your code to your first answer.
+                            </p>
+                        </header>
+                        <div class="video-frame" data-reveal>
+                            <video id="how-video" controls preload="none" playsinline width="1280" height="720"
+                                poster="assets/video/pia-how-to-use-poster.webp">
+                                <source src="assets/video/pia-how-to-use.mp4" type="video/mp4">
+                                Your browser cannot play this video.
+                            </video>
+                            <button type="button" class="video-play" id="how-play" aria-label="Play the video"></button>
+                        </div>
+                        <ol class="how-steps">
+                            <li data-reveal><span class="how-num" aria-hidden="true">1</span>Type your code</li>
+                            <li data-reveal><span class="how-num" aria-hidden="true">2</span>Solve one step at a time
+                            </li>
+                            <li data-reveal><span class="how-num" aria-hidden="true">3</span>Ask for a hint if
+                                you&rsquo;re stuck</li>
+                        </ol>
+                    </div>
+                </section>
 
-        <section class="band band-strip" id="lesson" aria-labelledby="strip-title">
-            <div class="shell">
-                <header class="band-head">
+                <section class="band band-strip" id="lesson" aria-labelledby="strip-title">
+                    <div class="shell">
+                        <header class="band-head">
 
-                    <h2 class="band-title" id="strip-title" data-reveal>
-                        Got a big problem? <em class="help-mark">Cut it into panels!</em>
-                    </h2>
-                    <p class="band-lede" data-reveal>
-                        A &#8369;100 bag now costs &#8369;120. By what percent did the price go up?
-                    </p>
-                </header>
+                            <h2 class="band-title" id="strip-title" data-reveal>
+                                Got a big problem? <em class="help-mark">Cut it into panels!</em>
+                            </h2>
+                            <p class="band-lede" data-reveal>
+                                A &#8369;100 bag now costs &#8369;120. By what percent did the price go up?
+                            </p>
+                        </header>
 
-                <ol class="strip">
-                    <li class="panel panel-a" data-reveal>
-                        <p class="caption panel-cap">The problem</p>
-                        <p class="panel-eq">&#8369;100 <span aria-hidden="true">&rarr;</span><span
-                                class="sr-only">to</span> &#8369;120</p>
-                        <p class="bubble"><span class="sr-only">PIA: </span>The price went up. By what percent?</p>
-                    </li>
-                    <li class="panel panel-b" data-reveal>
-                        <p class="caption panel-cap">Find the change</p>
-                        <p class="panel-eq">
-                            <span class="panel-work">&#8369;120 &minus; &#8369;100</span>
-                            &#8369;20 more
-                        </p>
-                        <p class="bubble"><span class="sr-only">PIA: </span>First, how much did it go up?</p>
-                    </li>
-                    <li class="panel panel-c" data-reveal>
-                        <p class="caption panel-cap">Compare to the start</p>
-                        <p class="panel-eq">
+                        <ol class="strip">
+                            <li class="panel panel-a" data-reveal>
+                                <p class="caption panel-cap">The problem</p>
+                                <p class="panel-eq">&#8369;100 <span aria-hidden="true">&rarr;</span><span
+                                        class="sr-only">to</span> &#8369;120</p>
+                                <p class="bubble"><span class="sr-only">PIA: </span>The price went up. By what percent?
+                                </p>
+                            </li>
+                            <li class="panel panel-b" data-reveal>
+                                <p class="caption panel-cap">Find the change</p>
+                                <p class="panel-eq">
+                                    <span class="panel-work">&#8369;120 &minus; &#8369;100</span>
+                                    &#8369;20 more
+                                </p>
+                                <p class="bubble"><span class="sr-only">PIA: </span>First, how much did it go up?</p>
+                            </li>
+                            <li class="panel panel-c" data-reveal>
+                                <p class="caption panel-cap">Compare to the start</p>
+                                <p class="panel-eq">
 
-                            <span class="panel-work">20 &divide; <del aria-hidden="true">120</del> 100</span>
-                            = 0.20
-                        </p>
-                        <p class="bubble"><span class="sr-only">PIA: </span>Divide by the ORIGINAL price. That&rsquo;s the whole trick.</p>
-                    </li>
-                    <li class="panel panel-d panel-splash" data-reveal>
-                        <p class="caption panel-cap">Done &check;</p>
-                        <p class="panel-eq panel-eq-big">20%</p>
-                        <p class="panel-check">Check: 20% of &#8369;100 = &#8369;20 &check;</p>
+                                    <span class="panel-work">20 &divide; <del aria-hidden="true">120</del> 100</span>
+                                    = 0.20
+                                </p>
+                                <p class="bubble"><span class="sr-only">PIA: </span>Divide by the ORIGINAL price.
+                                    That&rsquo;s the whole trick.</p>
+                            </li>
+                            <li class="panel panel-d panel-splash" data-reveal>
+                                <p class="caption panel-cap">Done &check;</p>
+                                <p class="panel-eq panel-eq-big">20%</p>
+                                <p class="panel-check">Check: 20% of &#8369;100 = &#8369;20 &check;</p>
 
-                    </li>
-                                </ol>
+                            </li>
+                        </ol>
 
-                <picture class="lesson-mate" aria-hidden="true" data-reveal>
-                    <source media="(prefers-reduced-motion: reduce)" srcset="assets/images/personas/Extraverted/lesson-theo-belt-still.webp">
-                    <img src="assets/images/personas/Extraverted/lesson-theo-belt.webp" alt="" width="480" height="640" loading="lazy" decoding="async">
-                </picture>
-            </div>
-        </section>
+                        <picture class="lesson-mate" aria-hidden="true" data-reveal>
+                            <source media="(prefers-reduced-motion: reduce)"
+                                srcset="assets/images/personas/Extraverted/lesson-theo-belt-still.webp">
+                            <img src="assets/images/personas/Extraverted/lesson-theo-belt.webp" alt="" width="480"
+                                height="640" loading="lazy" decoding="async">
+                        </picture>
+                    </div>
+                </section>
 
                 <section class="act act-select" id="agent-select" aria-labelledby="select-title">
                     <div class="shell select-shell">
@@ -220,7 +240,6 @@
                         <header class="select-head">
                             <p class="mono-tag" data-reveal>Pick your sidekick</p>
                             <h2 class="select-title" id="select-title" data-reveal>Who is your sidekick?</h2>
-                            <p class="select-lede" data-reveal>Tap a face to meet each tutor. Your admin tells you if you get to choose.</p>
                         </header>
 
                         <div class="select-layout">
@@ -236,9 +255,9 @@
                                         <span class="roster-strength">Finds the why</span>
                                     </span>
                                 </button>
-                                <button type="button" class="roster-item" role="tab" id="tab-pia-conscientious" title="Cara"
-                                    aria-controls="panel-pia-conscientious" aria-selected="false" tabindex="-1"
-                                    data-agent="pia-conscientious">
+                                <button type="button" class="roster-item" role="tab" id="tab-pia-conscientious"
+                                    title="Cara" aria-controls="panel-pia-conscientious" aria-selected="false"
+                                    tabindex="-1" data-agent="pia-conscientious">
                                     <span class="roster-icon" aria-hidden="true"><img
                                             src="assets/images/heads/pia-conscientious.webp" alt="" width="96"
                                             height="96" decoding="async"></span>
@@ -295,65 +314,76 @@
 
                             <div class="select-board" data-reveal>
 
-                                <img class="pk-backdrop pk-backdrop-dark" src="assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp" alt="" width="1000" height="1000" loading="lazy" decoding="async" aria-hidden="true">
-                                <img class="pk-backdrop pk-backdrop-light" src="assets/images/backgrounds/classroom-backdrop-3d-pia-light.webp" alt="" width="1000" height="1000" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="pk-backdrop pk-backdrop-dark"
+                                    src="assets/images/backgrounds/classroom-backdrop-3d-pia-dark.webp" alt=""
+                                    width="1000" height="1000" loading="lazy" decoding="async" aria-hidden="true">
+                                <img class="pk-backdrop pk-backdrop-light"
+                                    src="assets/images/backgrounds/classroom-backdrop-3d-pia-light.webp" alt=""
+                                    width="1000" height="1000" loading="lazy" decoding="async" aria-hidden="true">
                                 <div class="stage">
                                     <div class="stage-figure" data-figure="pia-open">
                                         <div class="model-canvas-wrapper has-art" data-model="pia-open" role="img"
                                             aria-label="Ava, the Explorer, character art">
                                             <picture class="stage-art">
-                                                <source media="(prefers-reduced-motion: reduce)" srcset="assets/images/tutors/pia-open/default-still.webp">
-                                                <img src="assets/images/tutors/pia-open/default.webp" alt="" width="384" height="512" decoding="async" loading="lazy">
+                                                <source media="(prefers-reduced-motion: reduce)"
+                                                    srcset="assets/images/tutors/pia-open/default-still.webp">
+                                                <img src="assets/images/tutors/pia-open/default.webp" alt="" width="384"
+                                                    height="512" decoding="async" loading="lazy">
                                             </picture>
                                         </div>
                                     </div>
-                                    <div class="stage-figure" data-figure="pia-conscientious"
-                                        hidden>
+                                    <div class="stage-figure" data-figure="pia-conscientious" hidden>
                                         <div class="model-canvas-wrapper has-art" data-model="pia-conscientious"
                                             role="img" aria-label="Cara, the Detective, character art">
                                             <picture class="stage-art">
-                                                <source media="(prefers-reduced-motion: reduce)" srcset="assets/images/tutors/pia-conscientious/default-still.webp">
-                                                <img src="assets/images/tutors/pia-conscientious/default.webp" alt="" width="384" height="512" decoding="async" loading="lazy">
+                                                <source media="(prefers-reduced-motion: reduce)"
+                                                    srcset="assets/images/tutors/pia-conscientious/default-still.webp">
+                                                <img src="assets/images/tutors/pia-conscientious/default.webp" alt=""
+                                                    width="384" height="512" decoding="async" loading="lazy">
                                             </picture>
                                         </div>
                                     </div>
-                                    <div class="stage-figure" data-figure="pia-extravert"
-                                        hidden>
+                                    <div class="stage-figure" data-figure="pia-extravert" hidden>
                                         <div class="model-canvas-wrapper has-art" data-model="pia-extravert" role="img"
                                             aria-label="Theo, the Spark, character art">
                                             <picture class="stage-art">
-                                                <source media="(prefers-reduced-motion: reduce)" srcset="assets/images/tutors/pia-extravert/default-still.webp">
-                                                <img src="assets/images/tutors/pia-extravert/default.webp" alt="" width="384" height="512" decoding="async" loading="lazy">
+                                                <source media="(prefers-reduced-motion: reduce)"
+                                                    srcset="assets/images/tutors/pia-extravert/default-still.webp">
+                                                <img src="assets/images/tutors/pia-extravert/default.webp" alt=""
+                                                    width="384" height="512" decoding="async" loading="lazy">
                                             </picture>
                                         </div>
                                     </div>
-                                    <div class="stage-figure" data-figure="pia-agreeable"
-                                        hidden>
+                                    <div class="stage-figure" data-figure="pia-agreeable" hidden>
                                         <div class="model-canvas-wrapper has-art" data-model="pia-agreeable" role="img"
                                             aria-label="Amy, the Ally, character art">
                                             <picture class="stage-art">
-                                                <source media="(prefers-reduced-motion: reduce)" srcset="assets/images/tutors/pia-agreeable/default-still.webp">
-                                                <img src="assets/images/tutors/pia-agreeable/default.webp" alt="" width="384" height="512" decoding="async" loading="lazy">
+                                                <source media="(prefers-reduced-motion: reduce)"
+                                                    srcset="assets/images/tutors/pia-agreeable/default-still.webp">
+                                                <img src="assets/images/tutors/pia-agreeable/default.webp" alt=""
+                                                    width="384" height="512" decoding="async" loading="lazy">
                                             </picture>
                                         </div>
                                     </div>
-                                    <div class="stage-figure" data-figure="pia-calm"
-                                        hidden>
+                                    <div class="stage-figure" data-figure="pia-calm" hidden>
                                         <div class="model-canvas-wrapper has-art" data-model="pia-calm" role="img"
                                             aria-label="Kai, the Steady, character art">
                                             <picture class="stage-art">
-                                                <source media="(prefers-reduced-motion: reduce)" srcset="assets/images/tutors/pia-calm/default-still.webp">
-                                                <img src="assets/images/tutors/pia-calm/default.webp" alt="" width="384" height="512" decoding="async" loading="lazy">
+                                                <source media="(prefers-reduced-motion: reduce)"
+                                                    srcset="assets/images/tutors/pia-calm/default-still.webp">
+                                                <img src="assets/images/tutors/pia-calm/default.webp" alt="" width="384"
+                                                    height="512" decoding="async" loading="lazy">
                                             </picture>
                                         </div>
                                     </div>
-                                    <div class="stage-figure" data-figure="pia-neutral"
-                                        hidden>
+                                    <div class="stage-figure" data-figure="pia-neutral" hidden>
                                         <div class="model-canvas-wrapper has-art" data-model="pia-neutral" role="img"
                                             aria-label="Noel, the Guide, character art">
                                             <picture class="stage-art">
-                                                <source media="(prefers-reduced-motion: reduce)" srcset="assets/images/tutors/pia-neutral/default-still.webp">
-                                                <img src="assets/images/tutors/pia-neutral/default.webp" alt="" width="384" height="512" decoding="async" loading="lazy">
+                                                <source media="(prefers-reduced-motion: reduce)"
+                                                    srcset="assets/images/tutors/pia-neutral/default-still.webp">
+                                                <img src="assets/images/tutors/pia-neutral/default.webp" alt=""
+                                                    width="384" height="512" decoding="async" loading="lazy">
                                             </picture>
                                         </div>
                                     </div>
@@ -372,7 +402,8 @@
                                             <span class="detail-name-a">Explorer</span>
                                             <span class="detail-name-b">Ava</span>
                                         </h3>
-                                        <p class="detail-desc">Curious and creative. Starts with why a rule works, then shows you how to use it.</p>
+                                        <p class="detail-desc">Curious and creative. Starts with why a rule works, then
+                                            shows you how to use it.</p>
                                     </div>
                                     <div class="detail-panel" id="panel-pia-conscientious" role="tabpanel"
                                         aria-labelledby="tab-pia-conscientious" tabindex="0" hidden>
@@ -386,7 +417,8 @@
                                             <span class="detail-name-a">Detective</span>
                                             <span class="detail-name-b">Cara</span>
                                         </h3>
-                                        <p class="detail-desc">Organised and thorough. Walks through every problem in clear steps, so you can be sure of each answer.</p>
+                                        <p class="detail-desc">Organised and thorough. Walks through every problem in
+                                            clear steps, so you can be sure of each answer.</p>
                                     </div>
                                     <div class="detail-panel" id="panel-pia-extravert" role="tabpanel"
                                         aria-labelledby="tab-pia-extravert" tabindex="0" hidden>
@@ -400,7 +432,8 @@
                                             <span class="detail-name-a">Spark</span>
                                             <span class="detail-name-b">Theo</span>
                                         </h3>
-                                        <p class="detail-desc">Upbeat and fast-moving. Keeps the energy high with quick checks, and moves on as soon as it clicks.</p>
+                                        <p class="detail-desc">Upbeat and fast-moving. Keeps the energy high with quick
+                                            checks, and moves on as soon as it clicks.</p>
                                     </div>
                                     <div class="detail-panel" id="panel-pia-agreeable" role="tabpanel"
                                         aria-labelledby="tab-pia-agreeable" tabindex="0" hidden>
@@ -414,7 +447,8 @@
                                             <span class="detail-name-a">Ally</span>
                                             <span class="detail-name-b">Amy</span>
                                         </h3>
-                                        <p class="detail-desc">Warm and encouraging. Checks in often and is always happy to explain it again.</p>
+                                        <p class="detail-desc">Warm and encouraging. Checks in often and is always happy
+                                            to explain it again.</p>
                                     </div>
                                     <div class="detail-panel" id="panel-pia-calm" role="tabpanel"
                                         aria-labelledby="tab-pia-calm" tabindex="0" hidden>
@@ -428,7 +462,8 @@
                                             <span class="detail-name-a">Steady</span>
                                             <span class="detail-name-b">Kai</span>
                                         </h3>
-                                        <p class="detail-desc">Calm and careful. Takes it one step at a time and checks each step with you.</p>
+                                        <p class="detail-desc">Calm and careful. Takes it one step at a time and checks
+                                            each step with you.</p>
                                     </div>
                                     <div class="detail-panel" id="panel-pia-neutral" role="tabpanel"
                                         aria-labelledby="tab-pia-neutral" tabindex="0" hidden>
@@ -442,7 +477,8 @@
                                             <span class="detail-name-a">Guide</span>
                                             <span class="detail-name-b">Noel</span>
                                         </h3>
-                                        <p class="detail-desc">Clear and friendly. Explains the maths in a simple, focused way.</p>
+                                        <p class="detail-desc">Clear and friendly. Explains the maths in a simple,
+                                            focused way.</p>
                                     </div>
                                 </div>
                             </div>
@@ -473,43 +509,53 @@
             <div class="shell">
                 <header class="help-head">
 
-                    <h2 class="band-title" id="help-title" data-reveal>You&rsquo;ve got <em class="help-mark">backup!</em></h2>
+                    <h2 class="band-title" id="help-title" data-reveal>You&rsquo;ve got <em
+                            class="help-mark">backup!</em></h2>
                     <p class="band-lede" data-reveal>And when you get stuck, here are three ways PIA has your back.</p>
                 </header>
 
                 <picture class="help-crew" aria-hidden="true" data-reveal>
                     <img src="assets/images/landing/pia-six-characters-1400.webp"
-                         srcset="assets/images/landing/pia-six-characters-800.webp 800w, assets/images/landing/pia-six-characters-1400.webp 1400w"
-                         sizes="(min-width: 72rem) 63rem, 100vw"
-                         alt="" width="1400" height="694" loading="lazy" decoding="async">
+                        srcset="assets/images/landing/pia-six-characters-800.webp 800w, assets/images/landing/pia-six-characters-1400.webp 1400w"
+                        sizes="(min-width: 72rem) 63rem, 100vw" alt="" width="1400" height="694" loading="lazy"
+                        decoding="async">
                 </picture>
 
                 <ol class="help-list">
                     <li class="help-card" data-reveal>
                         <span class="help-num" aria-hidden="true">1</span>
-                        <h3 class="help-name">Stuck? Ask for a hint.</h3> <p>A hint shows you the next step. No stress.</p>
+                        <h3 class="help-name">Stuck? Ask for a hint.</h3>
+                        <p>A hint shows you the next step. No stress.</p>
                     </li>
                     <li class="help-card" data-reveal>
                         <span class="help-num" aria-hidden="true">2</span>
-                        <h3 class="help-name">Small steps, big wins.</h3> <p>Try a problem, see how you did, then move on.</p>
+                        <h3 class="help-name">Small steps, big wins.</h3>
+                        <p>Try a problem, see how you did, then move on.</p>
                     </li>
                     <li class="help-card" data-reveal>
                         <span class="help-num" aria-hidden="true">3</span>
-                        <h3 class="help-name">Open and go.</h3> <p>Nothing to download. Use your browser and pick up where you left off.</p>
+                        <h3 class="help-name">Open and go.</h3>
+                        <p>Nothing to download. Use your browser and pick up where you left off.</p>
                     </li>
                 </ol>
             </div>
         </section>
 
         <section class="band band-privacy" id="privacy" aria-labelledby="privacy-title">
-            <img class="pv-deco pv-lock-a" src="assets/images/landing/privacy-lock.webp" alt="" width="600" height="600" loading="lazy" decoding="async" aria-hidden="true">
-            <img class="pv-deco pv-key-a" src="assets/images/landing/privacy-key.webp" alt="" width="600" height="600" loading="lazy" decoding="async" aria-hidden="true">
-            <img class="pv-deco pv-lock-b" src="assets/images/landing/privacy-lock.webp" alt="" width="600" height="600" loading="lazy" decoding="async" aria-hidden="true">
-            <img class="pv-deco pv-key-b" src="assets/images/landing/privacy-key.webp" alt="" width="600" height="600" loading="lazy" decoding="async" aria-hidden="true">
+            <img class="pv-deco pv-lock-a" src="assets/images/landing/privacy-lock.webp" alt="" width="600" height="600"
+                loading="lazy" decoding="async" aria-hidden="true">
+            <img class="pv-deco pv-key-a" src="assets/images/landing/privacy-key.webp" alt="" width="600" height="600"
+                loading="lazy" decoding="async" aria-hidden="true">
+            <img class="pv-deco pv-lock-b" src="assets/images/landing/privacy-lock.webp" alt="" width="600" height="600"
+                loading="lazy" decoding="async" aria-hidden="true">
+            <img class="pv-deco pv-key-b" src="assets/images/landing/privacy-key.webp" alt="" width="600" height="600"
+                loading="lazy" decoding="async" aria-hidden="true">
             <div class="shell privacy-simple" data-reveal>
                 <h2 class="band-title" id="privacy-title">Your privacy</h2>
-                <p class="privacy-line">Your privacy matters. PIA keeps what you do here <b>safe and private</b>, and handles it with care.</p>
-                <p class="privacy-sub">It is used only to help you learn and for a school research project. No ads, and nothing is sold.</p>
+                <p class="privacy-line">Your privacy matters. PIA keeps what you do here <b>safe and private</b>, and
+                    handles it with care.</p>
+                <p class="privacy-sub">It is used only to help you learn and for a school research project. No ads, and
+                    nothing is sold.</p>
             </div>
         </section>
 
@@ -518,7 +564,8 @@
                 <h2 class="welcome-line" id="welcome-title">
                     <span class="sr-only">Welcome to PIA</span>
                     <span class="welcome-text" data-type="Welcome to" aria-hidden="true">Welcome to</span>
-                    <img class="welcome-logo" src="assets/images/logo-640.webp" alt="" width="640" height="320" loading="lazy" decoding="async" aria-hidden="true">
+                    <img class="welcome-logo" src="assets/images/logo-640.webp" alt="" width="640" height="320"
+                        loading="lazy" decoding="async" aria-hidden="true">
                 </h2>
             </div>
         </section>
@@ -528,15 +575,19 @@
         <div class="shell">
 
             <div class="foot-card">
-                <img class="foot-logo" src="assets/images/logo-640.webp" alt="PIA" width="640" height="320" loading="lazy" decoding="async">
+                <img class="foot-logo" src="assets/images/logo-640.webp" alt="PIA" width="640" height="320"
+                    loading="lazy" decoding="async">
                 <div class="foot-join">
                     <h2 class="foot-title" id="cta-title">Ready? Let&rsquo;s go!</h2>
                     <form class="join" id="foot-join" novalidate>
                         <label class="sr-only" for="foot-num">Your code</label>
-                        <svg class="join-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
-                        <input class="join-in" id="foot-num" type="text" inputmode="numeric"
-                            autocomplete="off" spellcheck="false" maxlength="14"
-                            placeholder="Enter your code">
+                        <svg class="join-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" aria-hidden="true">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7" />
+                        </svg>
+                        <input class="join-in" id="foot-num" type="text" inputmode="numeric" autocomplete="off"
+                            spellcheck="false" maxlength="14" placeholder="Enter your code">
                         <button type="submit" class="join-btn">Join</button>
                     </form>
                     <button type="button" class="tap cta cta-primary foot-btn" data-auth-open="signin">Join</button>
@@ -546,19 +597,24 @@
                      with the copyright line. The privacy note has its own section above the footer. -->
                 <div class="foot-cols">
                     <ul class="foot-logos" aria-label="Made at">
-                        <li><img src="assets/images/landing/UE-logo.webp" alt="University of the East" width="709" height="709" loading="lazy" decoding="async"></li>
-                        <li><img src="assets/images/landing/ccss.webp" alt="College of Computer Studies and Systems" width="1171" height="1171" loading="lazy" decoding="async"></li>
+                        <li><img src="assets/images/landing/UE-logo.webp" alt="University of the East" width="709"
+                                height="709" loading="lazy" decoding="async"></li>
+                        <li><img src="assets/images/landing/ccss.webp" alt="College of Computer Studies and Systems"
+                                width="1171" height="1171" loading="lazy" decoding="async"></li>
                     </ul>
                     <section class="foot-col foot-contact" aria-labelledby="foot-contact-h">
                         <h3 class="foot-h" id="foot-contact-h">Contact the developers</h3>
                         <a class="foot-mail" href="mailto:personalinstructingagent@gmail.com">
-                            <svg class="icon" aria-hidden="true"><use href="/assets/icons-landing.svg#i-mail"></use></svg>
+                            <svg class="icon" aria-hidden="true">
+                                <use href="/assets/icons-landing.svg#i-mail"></use>
+                            </svg>
                             <span>personalinstructingagent<wbr>@gmail.com</span>
                         </a>
                         <p class="foot-sub">Questions about your data? Ask the admin.</p>
                     </section>
                     <div class="foot-meta">
-                        <p class="foot-staff"><button type="button" class="link-btn" data-auth-open="staff">Teacher / Admin sign in</button></p>
+                        <p class="foot-staff"><button type="button" class="link-btn" data-auth-open="staff">Teacher /
+                                Admin sign in</button></p>
                         <p class="foot-copy">&copy; 2026 PIA &middot; University of the East, CCSS</p>
                     </div>
                 </div>
@@ -662,7 +718,8 @@
                     </p>
 
                     <p class="portal-first">First time here?
-                        <button type="button" class="link-btn" data-auth-open="activate">Activate your account</button></p>
+                        <button type="button" class="link-btn" data-auth-open="activate">Activate your account</button>
+                    </p>
 
                     <button type="button" class="btn btn-secondary portal-submit device-offer" data-device-reset hidden>
                         <svg class="icon">
@@ -725,7 +782,8 @@
                         </svg>
                         <strong id="fp-sent-to"></strong>
                     </p>
-                    <a class="btn btn-primary email-open" id="fp-open-mail" href="https://mail.google.com/" target="_blank" rel="noopener">Open inbox</a>
+                    <a class="btn btn-primary email-open" id="fp-open-mail" href="https://mail.google.com/"
+                        target="_blank" rel="noopener">Open inbox</a>
                     <p class="email-note">Not there? Check Spam or Junk.</p>
                     <div class="auth-alt email-more">
                         <button type="button" class="link-btn" id="fp-resend">Resend email</button>
@@ -836,7 +894,8 @@
                         </div>
                     </div>
                     <label class="show-pw">
-                        <input type="checkbox" autocomplete="off" id="sp-show-pw" data-pw-check="sp-password sp-confirm">
+                        <input type="checkbox" autocomplete="off" id="sp-show-pw"
+                            data-pw-check="sp-password sp-confirm">
                         <span>Show passwords</span>
                     </label>
                     <button class="btn btn-primary portal-submit" type="submit" id="sp-submit">Confirm and sign
