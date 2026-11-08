@@ -3187,14 +3187,27 @@ html[data-theme='light'] .user-theme-switch .icon-moon {
         line-height: 20px;
         text-align: center;
     }
-    /* the number sits under the profile picture */
+    /* the number sits on the lower right of the profile picture, where the online dot sits on a student's picture */
     .user-avatar-badge {
         display: block;
-        top: auto;
+        top: 22px;
+        left: 21px;
         right: auto;
-        bottom: -8px;
-        left: 30px;
+        bottom: auto;
         z-index: 2;
+        box-shadow: 0 0 0 2.5px var(--bg-body, #0a0f2e);
+    }
+    /* room between the rows of the profile menu */
+    .user-menu-notif,
+    .user-menu-theme {
+        min-height: 48px;
+        padding-inline: 10px;
+    }
+    .user-menu-notif {
+        margin-bottom: 6px;
+    }
+    .user-menu-theme {
+        margin-block: 6px;
     }
     .user-notif-list {
         display: block;
