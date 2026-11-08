@@ -336,7 +336,8 @@
                 return;
             }
             guardImage(img);
-            img.setAttribute('src', moodSrc('default'));
+            // the welcome card shows the landing tutor; the game screen shows the still game tutor
+            img.setAttribute('src', sel === '#agent-img-start' && Dash.tutor.start ? Dash.tutor.start : moodSrc('default'));
             img.setAttribute('alt', 'Your tutor, ' + first);
         });
 

@@ -5,10 +5,11 @@ window.PIA_TUTORS = (function () {
         openness: {
             name: 'Ava',
             images: {
-                default: '../../assets/images/tutors/pia-open/default.webp',
-                happy: '../../assets/images/tutors/pia-open/happy.webp',
-                sad: '../../assets/images/tutors/pia-open/sad.webp',
-                thinking: '../../assets/images/tutors/pia-open/default.webp'
+                default: '../../assets/images/tutors-game/pia-open/default.webp',
+                happy: '../../assets/images/tutors-game/pia-open/happy.webp',
+                excited: '../../assets/images/tutors-game/pia-open/excited.webp',
+                sad: '../../assets/images/tutors-game/pia-open/sad.webp',
+                thinking: '../../assets/images/tutors-game/pia-open/default.webp'
             },
             profiles: {
                 struggling: {
@@ -204,10 +205,11 @@ window.PIA_TUTORS = (function () {
         conscientiousness: {
             name: 'Cara',
             images: {
-                default: '../../assets/images/tutors/pia-conscientious/default.webp',
-                happy: '../../assets/images/tutors/pia-conscientious/happy.webp',
-                sad: '../../assets/images/tutors/pia-conscientious/sad.webp',
-                thinking: '../../assets/images/tutors/pia-conscientious/default.webp'
+                default: '../../assets/images/tutors-game/pia-conscientious/default.webp',
+                happy: '../../assets/images/tutors-game/pia-conscientious/happy.webp',
+                excited: '../../assets/images/tutors-game/pia-conscientious/excited.webp',
+                sad: '../../assets/images/tutors-game/pia-conscientious/sad.webp',
+                thinking: '../../assets/images/tutors-game/pia-conscientious/default.webp'
             },
             profiles: {
                 struggling: {
@@ -400,10 +402,11 @@ window.PIA_TUTORS = (function () {
         extraversion: {
             name: 'Theo',
             images: {
-                default: '../../assets/images/tutors/pia-extravert/default.webp',
-                happy: '../../assets/images/tutors/pia-extravert/happy.webp',
-                sad: '../../assets/images/tutors/pia-extravert/sad.webp',
-                thinking: '../../assets/images/tutors/pia-extravert/default.webp'
+                default: '../../assets/images/tutors-game/pia-extravert/default.webp',
+                happy: '../../assets/images/tutors-game/pia-extravert/happy.webp',
+                excited: '../../assets/images/tutors-game/pia-extravert/excited.webp',
+                sad: '../../assets/images/tutors-game/pia-extravert/sad.webp',
+                thinking: '../../assets/images/tutors-game/pia-extravert/default.webp'
             },
             profiles: {
                 struggling: {
@@ -596,10 +599,11 @@ window.PIA_TUTORS = (function () {
         agreeableness: {
             name: 'Amy',
             images: {
-                default: '../../assets/images/tutors/pia-agreeable/default.webp',
-                happy: '../../assets/images/tutors/pia-agreeable/happy.webp',
-                sad: '../../assets/images/tutors/pia-agreeable/sad.webp',
-                thinking: '../../assets/images/tutors/pia-agreeable/default.webp'
+                default: '../../assets/images/tutors-game/pia-agreeable/default.webp',
+                happy: '../../assets/images/tutors-game/pia-agreeable/happy.webp',
+                excited: '../../assets/images/tutors-game/pia-agreeable/excited.webp',
+                sad: '../../assets/images/tutors-game/pia-agreeable/sad.webp',
+                thinking: '../../assets/images/tutors-game/pia-agreeable/default.webp'
             },
             profiles: {
                 struggling: {
@@ -793,10 +797,11 @@ window.PIA_TUTORS = (function () {
         neuroticism: {
             name: 'Kai',
             images: {
-                default: '../../assets/images/tutors/pia-calm/default.webp',
-                happy: '../../assets/images/tutors/pia-calm/happy.webp',
-                sad: '../../assets/images/tutors/pia-calm/sad.webp',
-                thinking: '../../assets/images/tutors/pia-calm/default.webp'
+                default: '../../assets/images/tutors-game/pia-calm/default.webp',
+                happy: '../../assets/images/tutors-game/pia-calm/happy.webp',
+                excited: '../../assets/images/tutors-game/pia-calm/excited.webp',
+                sad: '../../assets/images/tutors-game/pia-calm/sad.webp',
+                thinking: '../../assets/images/tutors-game/pia-calm/default.webp'
             },
             profiles: {
                 struggling: {
@@ -987,10 +992,10 @@ window.PIA_TUTORS = (function () {
         neutral: {
             name: 'Noel',
             images: {
-                default: '../../assets/images/tutors/pia-neutral/default.webp',
-                happy: '../../assets/images/tutors/pia-neutral/approval.webp',
-                sad: '../../assets/images/tutors/pia-neutral/disapproval.webp',
-                thinking: '../../assets/images/tutors/pia-neutral/default.webp'
+                default: '../../assets/images/tutors-game/pia-neutral/default.webp',
+                happy: '../../assets/images/tutors-game/pia-neutral/approval.webp',
+                sad: '../../assets/images/tutors-game/pia-neutral/disapproval.webp',
+                thinking: '../../assets/images/tutors-game/pia-neutral/default.webp'
             },
             profiles: {
                 struggling: {
@@ -1234,21 +1239,24 @@ window.PIA_TUTORS = (function () {
             default: art['default'],
             happy: art.happy,
             sad: art.sad,
-            excited: art.happy,
+            excited: art.excited || art.happy,
             thinking: art.thinking || art['default']
         };
+        // In the game the tutor does not move: every mood is the still picture.
         var fallback = {};
         Object.keys(images).forEach(function (mood) {
             fallback[mood] = images[mood].replace(/\.webp$/, '-still.webp');
-            if (reducedMotion) {
-                images[mood] = fallback[mood];
-            }
+            images[mood] = fallback[mood];
         });
+        // The welcome card keeps the same tutor as the landing page (the one in "Who is your sidekick?").
+        var start =
+            '../../assets/images/tutors/' + key + '/default' + (reducedMotion ? '-still' : '') + '.webp';
 
         out[key] = {
             name: PERSONA_CONFIG[trait].name,
             images: images,
             fallback: fallback,
+            start: start,
             profiles: PERSONA_CONFIG[trait].profiles,
             adaptive: ADAPTIVE_PERSONA_MESSAGES[trait] || ADAPTIVE_PERSONA_MESSAGES.neutral
         };
