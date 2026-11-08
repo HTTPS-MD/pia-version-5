@@ -60,4 +60,4 @@ A root-to-leaf path is included in `decision_path` so reviewers can see precisel
 
 ## Observation minimum in PIA
 
-PIA reads the features from the student's last eight submissions and asks the tree only after **four** submissions (`MIN_EVENTS` in `supabase/functions/learning-profile/handler.js`). Before that the profile stays `average`. This is an application setting chosen for the prototype, not a validated sufficiency threshold; justify or change it with the educator before the experiment.
+PIA reads the features from the student's last eight graded submissions (a step answered as working and then a final value counts once) and asks the tree only after **four** of them (`MIN_EVENTS` in `supabase/functions/learning-profile/handler.js`). Before that the profile stays `average`. This is an application setting chosen for the prototype, not a validated sufficiency threshold; justify or change it with the educator before the experiment.

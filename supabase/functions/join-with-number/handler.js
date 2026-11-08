@@ -29,6 +29,10 @@ export const MAX_FAILURES_PER_IP = 150; // a whole lab (about 40 students) share
 // numbers does not.
 export const MAX_FAILURES_ALL = 200;
 export const WINDOW_MS = 10 * 60_000;
+// The cap on ALL tries must not let an outsider lock the whole class out. An address that let a
+// student in during the last 12 hours (the lab) is "known": the cap on all tries does not apply to
+// it, only its own cap of 150. Once the cap is reached, only new addresses are stopped.
+export const KNOWN_ADDRESS_MS = 12 * 60 * 60_000;
 export const MESSAGES = {
     refused: 'Can’t let you in yet. Tell your admin.',
     throttled: 'Too many tries. Please wait a few minutes, or tell your admin.',
@@ -57,10 +61,13 @@ export async function handleJoin(body, ip, deps) {
         deps.countFailures('ip:' + ip, since),
         deps.countFailures('all', since)
     ]);
+    const knownAddress =
+        byAll >= MAX_FAILURES_ALL &&
+        (await deps.countSuccesses('ok:ip:' + ip, deps.now() - KNOWN_ADDRESS_MS)) > 0;
     if (
         byNumber >= MAX_FAILURES_PER_NUMBER ||
         byIp >= MAX_FAILURES_PER_IP ||
-        byAll >= MAX_FAILURES_ALL
+        (byAll >= MAX_FAILURES_ALL && !knownAddress)
     ) {
         return { status: 429, body: { error: MESSAGES.throttled } };
     }
@@ -124,6 +131,10 @@ export async function handleJoin(body, ip, deps) {
             await deps.releaseEntry(student.section, email);
             return { status: 500, body: { error: MESSAGES.server } };
         }
+        // This address let a student in: it is now known (see KNOWN_ADDRESS_MS). A failed note never blocks the entry.
+        try {
+            await deps.record('ok:ip:' + ip, true);
+        } catch {}
         return { status: 200, body: { ok: true, status: 'let_in', email, token_hash: tokenHash } };
     } catch {
         await deps.releaseEntry(student.section, email);

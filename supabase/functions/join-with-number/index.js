@@ -107,6 +107,15 @@ Deno.serve(async (req) => {
                 .gte('at', new Date(sinceMs).toISOString());
             return count ?? 0;
         },
+        async countSuccesses(key, sinceMs) {
+            const { count } = await admin
+                .from('join_attempts')
+                .select('id', { count: 'exact', head: true })
+                .eq('key', key)
+                .eq('ok', true)
+                .gte('at', new Date(sinceMs).toISOString());
+            return count ?? 0;
+        },
         async record(key, ok) {
             await admin.from('join_attempts').insert({ key, ok });
         },
