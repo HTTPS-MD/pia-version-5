@@ -1099,7 +1099,7 @@
             var value = found && found.accuracy !== null && found.accuracy !== undefined ? Number(found.accuracy) : null;
             $('#a-topic-' + t).textContent = value === null || !isFinite(value) ? '—' : value + '%';
             $('#a-topic-' + t + '-note').textContent = found
-                ? 'class accuracy · ' + found.reached + ' of ' + found.total + (Number(found.total) === 1 ? ' student' : ' students') + ' answered'
+                ? (value === null || !isFinite(value) ? '' : 'grade ' + Math.round(value / 2 + 50) + ' · ') + 'class accuracy · ' + found.reached + ' of ' + found.total + (Number(found.total) === 1 ? ' student' : ' students') + ' answered'
                 : 'class accuracy';
         });
         box.classList.remove('is-hidden');

@@ -163,6 +163,14 @@
                 daily ? 'Active time' : 'Sessions',
                 daily ? gameDuration(daily.active_seconds_total) : Number(summary.sessions)
             ) +
+            gameStat(
+                'Grade',
+                summary.accuracy_percent == null ? '—' : Math.round(Number(summary.accuracy_percent) / 2 + 50)
+            ) +
+            gameStat(
+                'Clean questions',
+                summary.clean_questions == null ? '—' : Number(summary.clean_questions) + ' of ' + (Number(summary.completed_questions) || 0)
+            ) +
             gameStat('Total points', Number(summary.score_sum) || 0) +
             gameStat('Total errors', Number(summary.errors) || 0) +
             '</div>';
@@ -172,9 +180,9 @@
                 ? '<div class="game-history-list">' +
                   daily.days
                       .map(function (d) {
-                          // accuracy is of the questions that were finished; a day of only tries has none yet
-                          var done = d.finished == null ? d.questions : d.finished;
-                          var pct = done ? Math.round((d.clean * 100) / done) : null;
+                          // accuracy is of the steps answered (right / right + wrong), like the class accuracy
+                          var answered = (Number(d.steps_correct) || 0) + (Number(d.steps_wrong) || 0);
+                          var pct = answered ? Math.round((Number(d.steps_correct) * 100) / answered) : null;
                           return (
                               '<div class="game-history-row"><div class="game-history-top"><span>' +
                               Admin.esc(formatDay(d.day)) +
