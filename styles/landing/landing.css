@@ -5184,3 +5184,9 @@ h4 {
     color: #fff;
     text-decoration: underline;
 }
+
+/* the platform's shadow (and the platform itself, on a short screen) fades out at the bottom of the section instead of being cut off flat */
+.act-select {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 2rem), transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 2rem), transparent 100%);
+}
