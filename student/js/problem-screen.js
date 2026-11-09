@@ -1,7 +1,3 @@
-/*
- * Problem screen.
- * Hint button, solved and error states, the worked example preview and the time-limit clock.
- */
 (function () {
     'use strict';
 

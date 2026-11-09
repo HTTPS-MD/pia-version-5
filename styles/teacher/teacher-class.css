@@ -1,5 +1,3 @@
-/* PIA TEACHER PAGE -- one read-only roster in the homepage look */
-
 .t-boot {
     position: fixed;
     inset: 0;
@@ -283,7 +281,6 @@ html[data-theme='dark'] .t-avatar {
     display: none;
 }
 
-/* the roster panel is the admin directory: black in dark mode, one title row, one filter row */
 html[data-surface='admin'][data-theme='dark'] .t-main .panel {
     --bg-surface: color-mix(in srgb, black 45%, var(--hex-0a0f2e));
     background: var(--bg-surface);
@@ -327,7 +324,6 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
     clip: rect(0 0 0 0);
 }
 
-/* the section picker is the admin's: the title is the button */
 #section-host {
     position: relative;
     display: flex;
@@ -349,13 +345,11 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
     white-space: nowrap;
 }
 
-/* settings sit in the middle of the page */
 #view-settings {
     max-width: 40rem;
     margin-inline: auto;
 }
 
-/* Entered in the accent colour, faded once the student is offline */
 .t-att-in {
     color: var(--accent);
     font-weight: 600;
@@ -366,7 +360,6 @@ html[data-surface='admin'][data-theme='dark'] .t-main .table thead th {
 }
 
 
-/* the top bar is the admin's: the same glass over the same colour wash (admin-glass.css gives the wallpaper) */
 html[data-surface='admin'][data-theme][data-theme][data-theme] .t-bar {
     background: var(--lg-fill);
     -webkit-backdrop-filter: var(--lg-filter);
@@ -381,7 +374,6 @@ html[data-surface='admin'][data-theme][data-theme][data-theme] .t-bar {
         backdrop-filter: none;
     }
 }
-/* the account pill has the same blue background and outline as the theme switch */
 html[data-surface='admin'] .t-avatar,
 html[data-surface='admin'][data-theme='dark'] .t-avatar {
     border: 0;
@@ -389,7 +381,6 @@ html[data-surface='admin'][data-theme='dark'] .t-avatar {
     box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 26%, transparent);
 }
 
-/* the title and the Privacy Mode switch share one row */
 #view-students .t-head {
     display: flex;
     align-items: center;
@@ -406,7 +397,6 @@ html[data-surface='admin'][data-theme='dark'] .t-avatar {
     gap: 10px;
     border-radius: 999px;
 }
-/* the switch itself (the admin's switch, drawn here because this page does not load the admin's top-bar styles) */
 .t-head .stage-switch {
     flex: 0 0 auto;
     align-self: center;

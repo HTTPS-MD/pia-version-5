@@ -1,7 +1,3 @@
-/*
- * Stage controls.
- * Open or close each stage for a section, and granting or revoking access.
- */
 (function () {
     'use strict';
 
@@ -51,19 +47,12 @@
             return;
         }
         var section = window.PIASectionNow || '';
-        // While the door is open (the session is running) there is nothing to do with the stages: a short note takes their place.
         var running = !!section && !!window.PIASessionLive;
-        // The stage controls show up after End. Before that they stay out of the way, unless a stage is still open
-        // (left open from before): then they show, so it can be closed.
         var anyOpen = !!section && Admin.GATES.some(function (g) {
             return sectionOpen(g, section);
         });
         var ended = window.PIASessionState === 'locked' || window.PIASessionState === 'ended';
-        // The experiment is over once the Game was closed for the section (and no stage is open again): the switches step
-        // aside, with a short note and a way to bring them back.
         var finished = !!section && !running && !anyOpen && window.PIAGameClosed === section;
-        // Once the experiment is over the whole bar steps aside (the button says "Experiment ended").
-        // the gate button says "Experiment ended" only when the bar is hidden because of this
         var wasFinished = window.PIAStagesFinished;
         var wasOpen = window.PIAStagesOpen;
         window.PIAStagesFinished = finished;
@@ -102,7 +91,6 @@
             btn.setAttribute('aria-checked', on ? 'true' : 'false');
             btn.classList.toggle('is-on', on);
             var locked = !!window.PIASessionLive;
-            // The session has not started: nobody can be let in, so a closed stage cannot be opened.
             var notStarted = window.PIASessionState === 'none' && !on;
             btn.disabled = !ready || locked || notStarted || btn.classList.contains('is-working');
             btn.setAttribute(
@@ -125,7 +113,6 @@
     }
     Admin.renderStageSwitches = renderStageSwitches;
 
-    // The stages before this one that are open for this section only (not for everyone), so each can be closed on its own.
     function earlierOpenGates(gate, section) {
         return Admin.GATES.slice(0, Admin.GATES.indexOf(gate)).filter(function (g) {
             return !g.open && sectionOpen(g, section);
@@ -137,7 +124,6 @@
         });
     }
 
-    // Why a student cannot enter a stage yet (null = can enter). The same rules as admin_grant_stage in the database.
     function stayOutReason(gate, s) {
         var group = String(s.group_type || '').toLowerCase().replace('_', '-');
         if (!s.is_ocean_done) {
@@ -161,7 +147,6 @@
         return null;
     }
 
-    // "(Control)", "(Free Choice)", "(Neutral)" or "(Assigned)" after the status of a student in the question
     var GROUP_NAMES = { control: 'Control', 'non-assigned': 'Free Choice', neutral: 'Neutral', assigned: 'Assigned' };
     function withGroup(email, status) {
         var who = (Admin.state.cohort || []).filter(function (c) {
@@ -178,7 +163,6 @@
         return status + ' (' + name + ')';
     }
 
-    // The question before a stage opens: who can enter and who stays out.
     async function openStageDialog(gate, section) {
         var dialog = {
             heading: 'Open ' + gate.title + ' for ' + section + '?',
@@ -186,13 +170,11 @@
             tone: 'accent'
         };
         if (gate.key === 'ocean') {
-            // The session has ended: students who entered can take the test, the others cannot enter anymore.
             var marks = window.PIASessionRows ? await window.PIASessionRows(section) : null;
             if (!marks || !marks.length) {
                 dialog.message = 'Students who entered can start the test.';
                 return dialog;
             }
-            // Entered and not finished: can enter. Entered but already finished: left alone (opening OCEAN never resets them).
             var done = {};
             Admin.state.cohort.forEach(function (c) {
                 done[String(c.email || '').toLowerCase()] = !!c.is_ocean_done;
@@ -221,7 +203,6 @@
         }
         var stay = [];
         var enter = [];
-        // Students who never entered today's session cannot sign in, so they stay out of every stage.
         var marks = window.PIASessionRows ? await window.PIASessionRows(section) : null;
         var entered = null;
         if (marks && marks.length) {
@@ -255,7 +236,6 @@
                 : ' ' + before.title + ' closes now, nobody is inside.';
         });
         dialog.table = { columns: ['Student', 'Status'], rows: stay.concat(enter) };
-        // Nobody could get in: the stage is not opened at all.
         if (!enter.length) {
             dialog.blocked = true;
             dialog.message =
@@ -297,7 +277,6 @@
         }
     }
 
-    // For the End dialog: can this stage open for the section, and open it without asking again.
     Admin.previewStage = function (key, section) {
         return openStageDialog(gateByKey(key), section);
     };
@@ -370,7 +349,6 @@
         });
         await Admin.refreshAll();
 
-        // An earlier stage closes by itself once nobody is inside it (a student still inside keeps it open).
         for (var c = 0; c < names.length; c++) {
             if (failed.some(function (f) { return f.section === names[c]; })) {
                 continue;
@@ -410,7 +388,6 @@
             return;
         }
 
-        // the students who could not enter, as a table: who and why
         var parts = [granted.length + ' let in · ' + skipped.length + ' not ready'];
         failed.forEach(function (f) {
             parts.push('Could not open ' + f.section + ': ' + Admin.teacherWords(f.message));
@@ -433,7 +410,6 @@
 
     function plainReason(reason, email) {
         var text = String(reason || '').trim();
-        // choosing a tutor only applies to the free-choice group: the others are skipped on purpose
         if (/does not apply/i.test(text)) {
             var who = (Admin.state.cohort || []).filter(function (c) {
                 return String(c.email || '').toLowerCase() === String(email || '').toLowerCase();
@@ -471,7 +447,6 @@
             return s.current_stage === gate.label && s.email && (everyone || names.indexOf(s.section) !== -1);
         });
         var manySections = everyone || names.length > 1;
-        // Closing the Game for one section ends the experiment: everyone still online is signed out in the same step.
         var online = [];
         var endsExperiment = gate.key === 'dash' && !everyone && names.length === 1;
         if (endsExperiment && window.PIASignOut) {

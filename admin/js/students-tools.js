@@ -1,4 +1,3 @@
-/* PIA ADMIN CONSOLE -- THE STUDENTS PAGE: SECTION CHIPS, START / END, NUMBERS */
 (function () {
     'use strict';
 
@@ -12,9 +11,9 @@
     var holder = {};
     var marks = {};
     var marksSection = null;
-    var learnMap = {}; // email -> the latest learning profile of the chosen section (from the database)
-    var onlineMap = {}; // email -> is signed in now, for the chosen section (read every refresh)
-    var sessionState = 'none'; // none | open | ended | locked, from the database
+    var learnMap = {};
+    var onlineMap = {};
+    var sessionState = 'none';
     var built = false;
     var polling = false;
 
@@ -573,7 +572,6 @@
         })[0];
     }
 
-    // ---- The bell: students of this section who tried to sign in again ----
     function dismissedMap() {
         try {
             return JSON.parse(localStorage.getItem('pia_bell_dismissed') || '{}') || {};
@@ -618,7 +616,6 @@
             count.textContent = String(items.length);
             count.classList.toggle('is-hidden', !items.length);
         }
-        // phone: the bell lives in the profile menu (a number on the profile picture and a list inside the menu)
         var uBadge = $('#user-avatar-badge');
         var uCount = $('#user-notif-count');
         var uBtn = $('#user-notif-btn');
@@ -681,7 +678,6 @@
             mirror.innerHTML = menu.innerHTML;
         }
     }
-    // Let back in goes straight through: no question afterwards.
     async function bellLetBackIn(email) {
         await letBackIn(email);
     }
@@ -695,8 +691,6 @@
         renderBell();
     }
 
-    // A menu that opens under a button moves to <body> and sits right under the button, right edges lined up.
-    // On <body> its frosted-glass blur can see the whole page (inside a glass card it could not).
     function placeFloating(button, menu) {
         if (menu.parentNode !== document.body) {
             document.body.appendChild(menu);
@@ -707,9 +701,6 @@
         menu.style.left = 'auto';
     }
 
-    // A button that opens a floating menu. One popup at a time: opening any popup announces itself
-    // (event pia:popup-open) and every other popup closes. Also closes on an outside click, Esc, scroll or resize.
-    // Returns set(open).
     function floatingMenu(id, button, menu, box) {
         function set(open) {
             if (open) {
@@ -746,7 +737,6 @@
         return set;
     }
 
-    // The Archived button shows once a section is chosen.
     function updateArchivedButton() {
         var removed = $('#att-removed');
         if (removed) {
@@ -760,7 +750,6 @@
         var section = scoped();
         var btn = $('#att-toggle');
         var open = !!section && !!openFor(section);
-        // Privacy Mode hides names and numbers: with no student and no teacher in the section there is nothing to hide.
         var privacyBox = document.querySelector('label.privacy-mode');
         if (privacyBox) {
             var info = null;
@@ -774,7 +763,6 @@
         }
         var ended = !!section && !open && sessionState === 'locked';
         if (btn) {
-            // A section with no students has nobody to let in: no Start button.
             var meta = null;
             overview.sections.forEach(function (x) {
                 if (x.section === section) {
@@ -785,14 +773,11 @@
             var hideBtn = !section || noStudents;
             btn.hidden = hideBtn;
             updateArchivedButton();
-            // The button says which section it acts on: it sits in the top bar, which is the same on every tab.
-            var over = ended && window.PIAGameClosed === section && !!window.PIAStagesFinished; // the experiment is over
-            // After Close gate, once every stage is closed, the same button ends the experiment.
+            var over = ended && window.PIAGameClosed === section && !!window.PIAStagesFinished;
             var canEnd = ended && !over && !window.PIAStagesOpen;
             var waitStages = ended && !over && !!window.PIAStagesOpen;
             btn.textContent = over ? 'Experiment ended' : ended ? (waitStages ? 'Gate closed' : 'End experiment') : open ? 'Close gate' : 'Open gate';
             btn.setAttribute('data-ci', canEnd ? 'end' : ended ? 'locked' : open ? 'stop' : 'start');
-            // .btn sets its own display, which beats [hidden]: the is-hidden class does the hiding.
             btn.className =
                 'btn ' + (open || ended ? 'btn-secondary' : 'btn-primary') + (hideBtn ? ' is-hidden' : '');
             btn.disabled = ended && !canEnd;
@@ -806,7 +791,6 @@
                     ? 'Students are entering. Press Close gate to stop letting students in and start the experiment.'
                     : 'Open gate: let the students in';
         }
-        // The live count at the top: Entered x of n (only once the session has started).
         var chip = $('#att-count');
         if (chip) {
             var total = 0;
@@ -822,7 +806,6 @@
                 });
             }
             chip.textContent = 'Entered ' + entered + ' of ' + total;
-            // only while the gate is open: once it is closed the count is no longer needed
             chip.classList.toggle('is-hidden', !(section && open));
         }
         window.PIASessionLive = open;
@@ -842,7 +825,6 @@
         paintMarks();
     }
 
-    // One cell: Entered or Not in yet (greyed by CSS while the student is offline), and a count of refused second tries.
     function participationCell(m) {
         var inside = !!m && m.entered;
         var html = '<span class="att-state' + (inside ? ' is-in' : '') + '">' + (inside ? 'Entered' : 'Not in yet') + '</span>';
@@ -946,7 +928,6 @@
         refreshOverview().catch(function () {});
     }
 
-    // The section's students who are signed in on any device right now (throws when the lookup fails).
     async function onlineIn(section) {
         var cohort = (window.PIAAdmin.state.cohort || []).filter(function (s) {
             return s.section === section && s.email;
@@ -975,7 +956,6 @@
             });
     }
 
-    // Ends these students' logins on every device and says so.
     async function signOutEmails(online) {
         var failed = 0;
         await Promise.all(
@@ -995,9 +975,6 @@
     window.PIASignOut = { online: onlineIn, signOut: signOutEmails };
 
 
-    // Close gate: the students who have not entered are listed, and the admin chooses to close, or to close and open OCEAN.
-    // Returns true (closed), 'ocean' (closed and OCEAN is opening) or false (cancelled).
-    // End experiment: the stages are closed, so this writes the same "Game closed" mark the Game switch writes.
     async function endExperiment(section, btn) {
         var admin = window.PIAAdmin;
         var online = [];
@@ -1083,14 +1060,12 @@
         }
         return canOpen && answer === true ? 'ocean' : true;
     }
-    // The day's marks for a section: [{ email, present, entered }] (null if they cannot be read).
     window.PIASessionRows = function (section) {
         return call('admin_attendance', { p_section: section }).catch(function () {
             return null;
         });
     };
 
-    // The class accuracy of each topic for the chosen section (the same numbers the teacher gets after the Game is closed).
     var topicsAt = 0;
     var topicsSection = null;
     async function paintTopicBoxes(section) {
@@ -1129,7 +1104,6 @@
         overview.sections = (data && data.sections) || [];
         overview.open = (data && data.open) || [];
         try {
-            // A section with no students yet still belongs in the list.
             var all = await sb.from('sections').select('name');
             if (!all.error && all.data) {
                 var known = {};
@@ -1190,13 +1164,11 @@
             onlineMap = {};
         }
         if (section) {
-            // The state of the newest record: none, open, ended or locked (a stage was opened).
             try {
                 sessionState = await call('admin_attendance_status', { p_section: section });
             } catch (e) {
                 sessionState = openFor(section) ? 'open' : Object.keys(marks).length ? 'ended' : 'none';
             }
-            // Who is signed in now (the Sign out everyone button shows only while someone is).
             try {
                 var emails = (window.PIAAdmin.state.cohort || [])
                     .filter(function (c) {
@@ -1215,12 +1187,10 @@
                     }
                 }
             } catch (e) {}
-            // Has the Game been closed for this section? (the experiment is over: the stage controls step aside)
             try {
                 var closedNow = await call('admin_game_closed', { p_section: section });
                 window.PIAGameClosed = closedNow ? section : '';
             } catch (e) {}
-            // The latest learning profile the decision tree gave each student of the section.
             try {
                 var lps = await call('admin_learning_profiles', { p_section: section });
                 learnMap = {};
@@ -1228,7 +1198,6 @@
                     learnMap[String(r.email).toLowerCase()] = String(r.profile);
                 });
             } catch (e) {}
-            // Also read it after the session ended, so the record stays on screen.
             try {
                 var rows = await call('admin_attendance', { p_section: section });
                 if (rows && rows.length) {
@@ -1250,7 +1219,6 @@
         ensureSection();
         renderChips();
         renderSession();
-        // heavier than the rest: once on a new section, then every 30 seconds
         if (section !== topicsSection || Date.now() - topicsAt > 30000) {
             topicsSection = section;
             topicsAt = Date.now();
@@ -1351,11 +1319,9 @@
         if (actionsBar) {
             actionsBar.appendChild(countChip);
         }
-        // Start / End sits beside Privacy Mode (moved there by build()).
         if (actionsBar) {
             actionsBar.appendChild(toggle);
         }
-        // The bell: students who tried to sign in again.
         var bellBox = document.createElement('div');
         bellBox.className = 'bar-bell is-hidden';
         bellBox.id = 'att-bell-box';
@@ -1365,7 +1331,6 @@
             '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>' +
             '<span class="bell-count is-hidden" id="att-bell-count"></span></button>' +
             '<div class="custom-select-list section-menu bar-bell-menu" id="att-bell-menu" role="menu" hidden></div>';
-        // The bell sits in the top bar, between the theme switch and the profile, so it is seen on every tab.
         var themeBtn = $('#theme-toggle');
         if (themeBtn && themeBtn.parentNode) {
             themeBtn.parentNode.insertBefore(bellBox, themeBtn.nextSibling);
@@ -1443,7 +1408,6 @@
             tabChoice = sessionStorage.getItem('pia_hide_details');
         } catch (e) {}
         if (tabChoice === null) {
-            // First load of this sign-in: hidden until the account setting arrives, then follow it.
             setHidden(true);
             if (window.PIAAdmin && window.PIAAdmin.loadPrivacyDefault) {
                 window.PIAAdmin.loadPrivacyDefault().then(function (on) {
@@ -1459,7 +1423,6 @@
         if (built) {
             return;
         }
-        // keep the teacher's online status in step with the live presence updates
         var applyPresence = window.PIAAdmin && window.PIAAdmin.applyPresence;
         if (applyPresence) {
             window.PIAAdmin.applyPresence = function (email, online) {
@@ -1474,7 +1437,6 @@
         buildHideToggle();
         var h1 = titleHost();
         var actions = $('#view-students .page-actions');
-        // the eye sits right beside the section title
         var details = $('#view-students .show-details');
         var title = $('#view-students .page-title');
         if (details && title && !title.parentNode.classList.contains('page-title-row')) {
@@ -1489,10 +1451,8 @@
         if (stages && titleRow && stages.parentNode !== titleRow) {
             titleRow.appendChild(stages);
         }
-        // Open gate / Close gate: right beside Privacy Mode, on its left.
         var startEnd = $('#att-toggle');
         if (startEnd && titleRow && details) {
-            // the live count (Entered x of n) sits right before the gate button
             var countChip = $('#att-count');
             if (countChip) {
                 titleRow.insertBefore(countChip, details);
@@ -1694,7 +1654,6 @@
         }
     }
 
-    // The student number is edited from the participant profile, not from the table.
     async function loadNumber(cell, email) {
         cell.innerHTML = '<span class="scope-line">…</span>';
         try {
@@ -1711,14 +1670,12 @@
         return !!section && holder[section] === String(email || '').toLowerCase();
     }
 
-    // Called from the teacher profile: the section keeps its students and waits for a new teacher.
     async function removeFromSection(options) {
         var section = chosen();
         var Admin = window.PIAAdmin;
         if (!section || !Admin) {
             return;
         }
-        // the Remove Teacher window already asked, so it asks no second time
         var ok =
             options && options.confirmed
                 ? true
@@ -1743,11 +1700,8 @@
         }
     }
 
-    // ---- Remove from this session / Add back ----
-    // A removed student keeps the account and every answer; the roster, the count, the door and the teacher stop counting them.
     async function askReason(email, options) {
         var Admin = window.PIAAdmin;
-        // the Remove Student window already asked, so it asks no second time
         var ok =
             options && options.confirmed
                 ? true
@@ -1763,8 +1717,6 @@
         try {
             await call('admin_remove_from_session', { p_email: email });
             say('Archived.');
-            // A student who is signed in is signed out: they are no longer part of the session. That, the roster
-            // and the counts all go at the same time instead of one after another.
             await Promise.all([
                 onlineIn(chosen())
                     .then(function (list) {
@@ -1783,7 +1735,7 @@
         }
     }
 
-    var picked = {}; // email -> true: the students ticked in Archived
+    var picked = {};
 
     function paintPicked() {
         var emails = Object.keys(picked);
@@ -1792,12 +1744,10 @@
         if (count) {
             count.textContent = !rows.length ? '' : emails.length ? emails.length + ' selected' : '';
         }
-        // Delete waits until at least one student is ticked.
         var del = $('#removed-delete');
         if (del) {
             del.disabled = !emails.length;
         }
-        // Add back waits until at least one student is ticked, like Delete
         var back = $('#removed-addback');
         if (back) {
             back.disabled = !emails.length;
@@ -1833,8 +1783,6 @@
             paintPicked();
             return 0;
         }
-        // The list shows at once; the student numbers fill in when they arrive (and are never asked for under
-        // Privacy Mode, where they are masked like everywhere else).
         var numbers = {};
         var hidden = document.documentElement.classList.contains('pia-hide-details');
         host.innerHTML =
@@ -1901,8 +1849,6 @@
         return rows.length;
     }
 
-    // Takes the given students out of the Archived list without asking the server again. When the last one
-    // is gone there is nothing left to show: the dialog closes.
     function dropArchivedRows(emails) {
         emails.forEach(function (email) {
             delete picked[email];
@@ -1918,7 +1864,6 @@
         }
     }
 
-    // The roster and the session counts follow along without keeping the dialog waiting.
     function refreshBehind() {
         Promise.all([window.PIAAdmin.refreshAll(), refreshOverview()]).catch(function () {});
     }
@@ -1929,9 +1874,7 @@
         });
     }
 
-    // Add back puts every ticked student on the roster again; the rows leave the list at once.
     async function addBackPicked() {
-        var Admin = window.PIAAdmin;
         var emails = pickedRows().map(function (tr) {
             return tr.getAttribute('data-email');
         });
@@ -1966,14 +1909,12 @@
         refreshBehind();
     }
 
-    // Delete is permanent: it always asks first, and lists who will be deleted.
     async function deletePicked() {
         var Admin = window.PIAAdmin;
         var rows = pickedRows();
         if (!rows.length) {
             return;
         }
-        // The Archived dialog steps aside while the question is open, and comes back if the answer is Cancel.
         var archived = $('#modal-removed');
         archived.classList.add('is-suspended');
         var ok = await Admin.confirmAction({
@@ -1982,7 +1923,6 @@
             table: {
                 columns: ['Student', 'Student number'],
                 rows: rows.map(function (tr) {
-                    // the number shown in the Archived list (masked under Privacy Mode, like everywhere else)
                     var cell = tr.querySelector('[data-number-for]');
                     return [tr.getAttribute('data-who'), cell ? cell.textContent : '—'];
                 })
@@ -1993,7 +1933,6 @@
         if (!ok) {
             return;
         }
-        // all the deletes go together instead of one after another
         var emails = rows.map(function (tr) {
             return tr.getAttribute('data-email');
         });
@@ -2021,7 +1960,6 @@
         refreshBehind();
     }
 
-    // Permanently delete one student (always asks first)
     async function deleteStudent(email) {
         var Admin = window.PIAAdmin;
         var ok = await Admin.confirmAction({

@@ -1,8 +1,7 @@
-/* PIA SYSTEM — LANDING · "INK & NEON" */
 :root {
     --band-pad: clamp(4rem, 12vh, 9rem);
     --gutter: clamp(1.25rem, 5vw, 3rem);
-    --tap-min: 2.75rem; /* 44px — WCAG 2.5.8, via .tap */
+    --tap-min: 2.75rem;
     --z-reel-copy: 4;
 
     --ease-snap: cubic-bezier(0.2, 0.9, 0.1, 1);
@@ -103,8 +102,6 @@ h4 {
     outline-offset: 2px;
 }
 
-/* WCAG 2.5.8: the HIT area is at least 44x44 even where the drawn box is
-   smaller. */
 .tap {
     position: relative;
 }
@@ -811,10 +808,6 @@ h4 {
     color: color-mix(in srgb, var(--text) 88%, var(--bg-body));
 }
 
-/* From 30rem up the staff note was the sheet's only extra (the theme switch
-   and Sign in live in the bar there), so without it the whole section goes,
-   rule line included, instead of leaving an empty ruled strip. */
-
 .cast {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -988,7 +981,6 @@ h4 {
     }
 }
 
-/* Room to spare: bring the note back. Short screens: drop the tutors' tagline. */
 @media (min-width: 56rem) and (min-height: 56rem) {
     .act-select .select-note {
         display: block;
@@ -1854,8 +1846,7 @@ h4 {
         inset-block-end: var(--sp-4);
     }
 
-    .select-foot .cta,
-    .finale-actions {
+    .select-foot .cta {
         width: 100%;
     }
 }
@@ -1869,7 +1860,6 @@ h4 {
     }
 }
 
-/* Batch 1: account access and readable open sections. Global user styles are untouched. */
 .js .nav:not(.has-auth) .nav-auth {
     transition: none;
 }
@@ -3878,7 +3868,6 @@ h4 {
     transform: translate(-50%, -50%) rotate(calc((1 - var(--burst, 1)) * var(--spin, 0deg)))
         scale(calc(0.15 + 0.85 * var(--burst, 1)));
 }
-/* --tx and --ty are where each one ends up, as a share of the section, so none can sit outside it */
 .pv-lock-a {
     --w: clamp(5.5rem, 15vw, 13rem);
     --tx: 13%;
@@ -4423,7 +4412,6 @@ h4 {
     white-space: nowrap;
 }
 
-/* Teacher / Admin sign in: in the menu on phones, in the bar everywhere else */
 .nav-staff-item {
     display: none;
 }
@@ -4525,7 +4513,6 @@ h4 {
     }
 }
 
-/* the join field and its button are the same size on every screen and in every place (hero and footer) */
 .join,
 .foot-join .join,
 .hero-join .join {
@@ -4557,7 +4544,6 @@ h4 {
     font-size: 1.05rem;
 }
 
-/* the footer has the code field on larger screens and one Join button on phones */
 .foot-join .foot-btn {
     display: none;
 }
@@ -4598,7 +4584,6 @@ h4 {
     }
 }
 
-/* footer: the PIA logo takes the whole left side. On the right: the title and the code field, a thin line, then the contact with the school logos, and the staff link with the copyright. */
 .foot-card {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -4713,7 +4698,6 @@ h4 {
 }
 
 
-/* reset and activate: no reserved blank space, even gaps when a message appears */
 #modal-forgot .modal-body{
     display: grid;
     gap: var(--sp-4);
@@ -4742,7 +4726,6 @@ h4 {
     padding-top: var(--sp-2);
 }
 
-/* modal links follow the yellow accent: readable gold on light, yellow on dark */
 .overlay .link-btn {
     color: var(--volt);
 }
@@ -4766,7 +4749,6 @@ h4 {
     color: var(--danger);
 }
 
-/* sign-in windows: even rhythm, no reserved blank space */
 .overlay .portal-form {
     gap: var(--sp-5);
 }
@@ -4802,7 +4784,6 @@ h4 {
     padding-bottom: var(--sp-7);
 }
 
-/* check your email: one short message, the destination, then the actions */
 #modal-forgot .email-accepted{
     display: grid;
     gap: var(--sp-4);
@@ -4818,8 +4799,6 @@ h4 {
     display: none;
 }
 
-/* phones: Teacher / Admin sits in the bar and the theme switch moves into the menu.
-   Once Join shows, Teacher / Admin leaves the bar for the menu. */
 .nav-theme-item {
     display: none;
 }
@@ -4841,7 +4820,6 @@ h4 {
     }
 }
 
-/* phone menu: plain rows without arrows; the theme row sits apart and shows the current mode */
 @media (max-width: 63.99rem) {
     .nav .nav-link::after {
         content: none;
@@ -4878,7 +4856,6 @@ h4 {
     }
 }
 
-/* sign in: a first-time line under the button, in the same yellow link style as Forgot password */
 .overlay .portal-first {
     margin: var(--sp-4) 0 0;
     font-size: var(--fs-sm);
@@ -4891,7 +4868,6 @@ h4 {
     padding-inline: var(--sp-1);
 }
 
-/* a saved session is being checked: a plain loading screen instead of the landing page */
 :root[data-session='pending'] body::before {
     content: 'Loading\2026';
     position: fixed;
@@ -4906,7 +4882,6 @@ h4 {
     font-weight: 700;
 }
 
-/* the round buttons (theme and menu) look like the admin's: a 44px circle with one thin outline and no fill */
 :root[data-theme='dark'] {
     --line-input: color-mix(in srgb, var(--palette-paper) 52%, var(--palette-ink));
 }
@@ -4936,7 +4911,6 @@ h4 {
     }
 }
 
-/* set your password: the same rhythm as the sign-in windows, no reserved blank space */
 #modal-set-password .modal-body {
     display: grid;
     gap: var(--sp-4);
@@ -4964,12 +4938,10 @@ h4 {
     margin-block-start: var(--sp-2);
 }
 
-/* the close button stays round when focused (the global focus style would square it) */
 .modal-close:focus-visible {
     border-radius: 50%;
 }
 
-/* check your email, tidied: the address in a chip, one main button, quiet links underneath */
 #modal-forgot .email-accepted {
     gap: var(--sp-3);
 }
@@ -5027,14 +4999,12 @@ h4 {
     opacity: 0.6;
 }
 
-/* navbar: frosted glass bar, softer outlines, and a sliding sun / moon switch for the theme */
 .js .nav.is-solid {
     background: color-mix(in srgb, var(--bg) 52%, transparent);
     -webkit-backdrop-filter: blur(18px) saturate(170%);
     backdrop-filter: blur(18px) saturate(170%);
     border-block-end-color: color-mix(in srgb, var(--text) 14%, transparent);
 }
-/* with the menu open the bar goes solid again, so the menu reads clearly */
 .js .nav.is-open {
     background: var(--bg);
     border-block-end-color: color-mix(in srgb, var(--text) 14%, transparent);
@@ -5062,7 +5032,6 @@ h4 {
 .nav .theme-switch:hover {
     background: color-mix(in srgb, var(--text) 14%, var(--bg));
 }
-/* the knob */
 .nav .theme-switch::before {
     content: '';
     position: absolute;
@@ -5086,7 +5055,6 @@ h4 {
 .nav .theme-switch:hover::before {
     scale: 1.08;
 }
-/* both icons sit on the track, the one under the knob is lit */
 .nav .theme-switch .icon {
     position: absolute;
     top: 50%;
@@ -5124,7 +5092,6 @@ h4 {
     }
 }
 
-/* tablet and phone: the theme switch lives in the menu, the bar keeps Join, Teacher / Admin and the burger */
 @media (max-width: 63.99rem) {
     html[data-theme] .nav button#theme-toggle.theme-switch {
         display: none;
@@ -5140,7 +5107,6 @@ h4 {
         flex: 0 0 4.5rem;
     }
 }
-/* Teacher / Admin stays in the bar for as long as it fits (and leaves the menu) */
 @media (min-width: 22.5rem) and (max-width: 63.99rem) {
     .nav .nav-signin,
     .nav.has-auth .nav-signin,
@@ -5153,13 +5119,11 @@ h4 {
     }
 }
 
-/* Join and Teacher / Admin are the same height as the burger (and as each other) at every width */
 .nav .nav-join,
 .nav .nav-signin {
     min-height: 2.75rem;
 }
 
-/* the "Can't let you in yet" window: short, even spacing, one Okay button */
 #modal-join-error .modal-head {
     padding-bottom: 0;
 }
@@ -5178,7 +5142,6 @@ h4 {
     justify-content: flex-end;
 }
 
-/* the footer links sit on the dark card: on hover they turn white, never a yellow fill */
 .foot-card .link-btn:hover,
 .foot-card .foot-meta .link-btn:hover {
     background: none;
@@ -5186,7 +5149,6 @@ h4 {
     text-decoration: underline;
 }
 
-/* room under the platform, so its shadow fades out before the bottom of the section instead of being cut flat there */
 .act.act-select {
     padding-bottom: calc(var(--sp-8) + 4rem);
 }

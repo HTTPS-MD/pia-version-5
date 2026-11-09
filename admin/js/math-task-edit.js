@@ -1,14 +1,9 @@
-/*
- * Math task bank (2 of 3).
- * Row actions, delete, bulk points, the question editor and the auto-generator.
- */
 (function () {
     'use strict';
 
     var Admin = window.PIAAdmin;
 
     function qbRow(item, index) {
-        var n = index + 1;
         var tr = document.createElement('tr');
         tr.className = 'qb-row is-clickable';
         tr.tabIndex = 0;
@@ -282,8 +277,6 @@
         });
     }
 
-    // Add and Edit question run as a wizard: Problem, one page per required step, then Review.
-    // Edit shows the whole form at once.
     var wiz = { on: false, stage: 0 };
 
     function wizLast() {
@@ -378,7 +371,6 @@
         }
     }
 
-    // checks only the page you are on; returns true when it may move on
     function wizCheck() {
         Admin.clearFormErrors('qb-edit-form');
         $('#qb-step-error').textContent = '';
@@ -430,7 +422,6 @@
         return true;
     }
 
-    // the same rules as wizCheck, without messages: Next stays off until this page is complete
     function wizReady() {
         if (wiz.stage === 0) {
             return (
@@ -501,7 +492,6 @@
 
         var uniform = Admin.qbUniformPoints(Admin.qb.bank[Admin.qb.topic]);
         var stash = !item && Admin.qb.stash && Admin.qb.stash.topic === Admin.qb.topic ? Admin.qb.stash : null;
-        // an edit of a saved question that was kept as a draft
         var editDraft = item ? Admin.drafts['question:' + item.id] || null : null;
         $('#qb-question').value = editDraft ? editDraft.question : item ? item.q : stash ? stash.question : '';
         $('#qb-final').value = editDraft ? editDraft.final : item ? item.final : stash ? stash.final : '';
@@ -519,7 +509,6 @@
 
         Admin.qb.editSnap = qbSnap();
         if (editDraft) {
-            // the draft is not what is stored, so Save changes stays on
             Admin.qb.editSnap = 'draft';
         }
         $('#qb-mode').hidden = !!item;
@@ -539,7 +528,6 @@
     }
     Admin.qbOpenEditor = qbOpenEditor;
 
-    // Save stays off while nothing has been changed (an edit) or typed (a new question).
     function qbSaveState() {
         var save = $('#qb-edit-save');
         if (!save) {
@@ -569,7 +557,6 @@
         });
     });
 
-    // closing Add question with something typed or generated asks: save a draft or discard
     function qbSnap() {
         return JSON.stringify([
             $('#qb-question').value,
@@ -864,7 +851,6 @@
     }
     Admin.qbSaveEditor = qbSaveEditor;
 
-    // the Add question dialog has two modes: write one question, or auto-generate several
     function qbSetMode(mode) {
         var gen = mode === 'gen';
         $('#qb-pane-write').hidden = gen;
@@ -895,7 +881,6 @@
     Admin.qbSetMode = qbSetMode;
 
 
-    // a problem textarea grows with its text, so the whole problem is always visible
     function qbGrow(box) {
         if (!box || !box.offsetParent) {
             return;

@@ -1,7 +1,3 @@
-/*
- * The tutor.
- * The character, what the tutor says, the face shown for each mood, and the speech bubble.
- */
 (function () {
     'use strict';
 
@@ -336,7 +332,6 @@
                 return;
             }
             guardImage(img);
-            // the welcome card shows the landing tutor; the game screen shows the still game tutor
             img.setAttribute('src', sel === '#agent-img-start' && Dash.tutor.start ? Dash.tutor.start : moodSrc('default'));
             img.setAttribute('alt', 'Your tutor, ' + first);
         });
@@ -345,7 +340,6 @@
     }
     Dash.applyCharacter = applyCharacter;
 
-    // what each tutor says on the welcome screen, in their own voice
     var WELCOME_LEDE = {
         'pia-open':
             'Ready to explore percentages together? Every problem is a little puzzle, and we will uncover it one clue at a time.',

@@ -1,4 +1,3 @@
-/* Tutor dialogue and art, ported verbatim from the attached PIA game (pia-test-main/index.html). */
 window.PIA_TUTORS = (function () {
     'use strict';
     const PERSONA_CONFIG = {
@@ -1242,13 +1241,11 @@ window.PIA_TUTORS = (function () {
             excited: art.excited || art.happy,
             thinking: art.thinking || art['default']
         };
-        // In the game the tutor does not move: every mood is the still picture.
         var fallback = {};
         Object.keys(images).forEach(function (mood) {
             fallback[mood] = images[mood].replace(/\.webp$/, '-still.webp');
             images[mood] = fallback[mood];
         });
-        // The welcome card keeps the same tutor as the landing page (the one in "Who is your sidekick?").
         var start =
             '../../assets/images/tutors/' + key + '/default' + (reducedMotion ? '-still' : '') + '.webp';
 

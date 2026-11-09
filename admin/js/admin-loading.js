@@ -1,7 +1,3 @@
-/*
- * Loading states.
- * Placeholder rows while data loads, the retry button, and scroll areas.
- */
 (function () {
     'use strict';
 

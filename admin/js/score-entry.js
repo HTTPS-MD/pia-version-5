@@ -1,7 +1,3 @@
-/*
- * Score entry.
- * The window for typing the pre-test and post-test scores of a section.
- */
 (function () {
     'use strict';
 
@@ -94,7 +90,6 @@
     }
     Admin.paintScorePair = paintScorePair;
 
-    // on a phone the dialog shows one test at a time: the tabs choose which
     function setScoresView(view) {
         var modal = $('#modal-scores .modal');
         modal.setAttribute('data-scores-view', view);
@@ -204,7 +199,6 @@
         $$('#scores-tbody .score-pair').forEach(paintScorePair);
         paintScoreCounts();
         loaded = look();
-        // a saved draft goes back on top of what is stored
         var draft = Admin.drafts['scores:' + sectionName];
         var boxes = $$('#modal-scores input');
         if (draft && draft.length === boxes.length) {
@@ -227,7 +221,6 @@
     });
     $('#scores-tbody').addEventListener('input', paintScoreCounts);
 
-    // closing with typed-in scores asks first; loaded is what the dialog looked like when it opened
     var loaded = null;
 
     function look() {
@@ -238,7 +231,6 @@
             .join('|');
     }
 
-    // Save stays off until something in the window has been changed.
     function updateSaveState() {
         $('#scores-save').disabled = loaded === null || look() === loaded;
     }

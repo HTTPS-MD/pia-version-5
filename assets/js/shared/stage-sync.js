@@ -1,7 +1,3 @@
-/*
- * Stage sync.
- * Moves the student to the right page when the admin opens or closes a stage.
- */
 function isOnPage(page) {
     const bare = (value) => String(value).replace(/\.html$/, '');
     return bare(window.location.pathname).endsWith('/' + bare(page));
@@ -48,7 +44,6 @@ function setupStudentRealtimeStageSync() {
                     const target = STAGE_PAGES[stage];
                     if (!target) return;
 
-                    // a closed stage sends the student to the Waiting Room at once, even in the middle of a question
                     if (target.pages.some(isOnPage)) return;
 
                     window.location.replace(target.url);

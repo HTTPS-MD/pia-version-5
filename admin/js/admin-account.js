@@ -1,7 +1,3 @@
-/*
- * Admin account.
- * Change password, the devices admins are signed in on, sign out, and adding admins.
- */
 (function () {
     'use strict';
 
@@ -150,7 +146,6 @@
         $('#cp-show').addEventListener('change', function () {
             setPasswordsShown(this.checked);
         });
-        // Update stays off until something is typed, and goes off again when the window empties.
         function syncUpdate() {
             $('#cp-submit').disabled = !['cp-current', 'cp-new', 'cp-confirm'].some(function (id) {
                 return $('#' + id).value !== '';
@@ -243,7 +238,6 @@
     }
     Admin.initDeleteOwnAccount = initDeleteOwnAccount;
 
-    // The account setting "Start in Privacy Mode every time I sign in". No row yet means on.
     var privacyDefaultPromise = null;
     Admin.loadPrivacyDefault = function loadPrivacyDefault() {
         if (!privacyDefaultPromise) {
@@ -297,7 +291,6 @@
             return;
         }
         signingOut = true;
-        // The next sign-in in this tab starts from the account setting again.
         try {
             sessionStorage.removeItem('pia_hide_details');
         } catch (e) {}

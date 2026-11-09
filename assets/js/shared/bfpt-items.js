@@ -1,4 +1,3 @@
-/* PIA SYSTEM — BFPT ITEMS */
 (function () {
     'use strict';
 

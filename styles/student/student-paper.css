@@ -1,5 +1,3 @@
-/* PIA -- the "paper" look of the student pages (questionnaire, waiting room, choose a tutor, welcome). */
-
 :root[data-theme='dark'] .paper {
     --q-paper: var(--hex-111a47);
     --q-ink: var(--palette-paper);
@@ -561,7 +559,6 @@ ul.paper-chips {
     }
 }
 
-/* the tutorial inside the white card: hidden parts really hidden */
 .tutorial-demo[hidden],
 .tutorial-card[hidden],
 .start-content[hidden],
@@ -569,7 +566,6 @@ ul.paper-chips {
     display: none !important;
 }
 
-/* step 4 shows the real look of the hint button (not clickable) */
 .tutorial-demo {
     margin: 0 0 1.2rem;
     pointer-events: none;

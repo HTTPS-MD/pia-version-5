@@ -1,7 +1,3 @@
-/*
- * Students table.
- * The list of students with online status, stage, minutes, filters and the section picker.
- */
 (function () {
     'use strict';
 
@@ -18,7 +14,6 @@
     }
 
     function stageOf(profile) {
-        // Control students never play the game: once OCEAN is done they sit on the thank-you page.
         if (profile.group_type === 'control' && profile.is_ocean_done === true) {
             return 'Thank You';
         }
@@ -96,7 +91,6 @@
     }
     Admin.stageLabel = stageLabel;
 
-    // Offline students keep their last stage, shown faded so you can see where they stopped.
     function stageBadge(stageKey, profile) {
         if (!stageKey) {
             return '<span class="muted">—</span>';
@@ -417,14 +411,6 @@
         );
     }
 
-    function filtersActive() {
-        return !!(
-            Admin.state.filters.section ||
-            Admin.state.filters.stage ||
-            Admin.state.filters.group !== 'all' ||
-            Admin.state.filters.search.trim()
-        );
-    }
 
     function characterCell(s) {
         return '<td>' + Admin.esc(Admin.tutorLabel(s)) + '</td>';
@@ -436,7 +422,6 @@
 
         var none = Admin.state.rosterPage.length === 0;
         empty.classList.toggle('is-hidden', !none);
-        // A search, a stage tab or a group that matches nobody: Reset filters. A section that has no students at all: Add students.
         var f = Admin.state.filters;
         var narrowed = !!(f.stage || f.group !== 'all' || f.search.trim());
         var emptySection = none && !narrowed;
@@ -712,7 +697,6 @@
         }
         document.addEventListener('pointerdown', onPointerDown);
         select.addEventListener('change', refresh);
-        // Keep the trigger in step when code fills the options or sets the value.
         new MutationObserver(refresh).observe(select, { childList: true });
         ['value', 'selectedIndex'].forEach(function (prop) {
             var native = Object.getOwnPropertyDescriptor(HTMLSelectElement.prototype, prop);
@@ -726,7 +710,6 @@
                 }
             });
         });
-        // One popup at a time: opening any other popup closes this one.
         function onOtherPopup(event) {
             if (event.detail !== 'cs:' + id) {
                 close(false);
@@ -748,7 +731,6 @@
         refresh();
     }
 
-    // Every dropdown in the console is the custom one: enhance what is on the page and what is added later.
     function initCustomSelects() {
         $$('select').forEach(initCustomSelect);
         new MutationObserver(function (records) {
@@ -784,7 +766,6 @@
             Admin.debounce(function (event) {
                 Admin.state.filters.search = event.target.value;
                 Admin.state.page = 1;
-                // Typing searches every student, whatever section is open; clearing returns to the section.
                 var on = event.target.value.trim() !== '';
                 var changed = on !== !!Admin.state.allSections;
                 Admin.state.allSections = on;

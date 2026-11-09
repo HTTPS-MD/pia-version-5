@@ -1,7 +1,3 @@
-/*
- * Already signed in.
- * Checks the saved session and offers to continue or go to the dashboard.
- */
 (function () {
     'use strict';
 
@@ -53,7 +49,6 @@
         }
     }
 
-    // 'go' when the redirect has started, 'stay' when the last redirect came straight back
     function goStraightToDashboard(email, role) {
         try {
             var last = Number(sessionStorage.getItem('pia_straight_to_dashboard') || 0);
@@ -121,7 +116,6 @@
             return;
         }
 
-        // no redirect: the landing page shows as for any visitor
         root.removeAttribute('data-session');
         if (!role) {
             Auth.toast(

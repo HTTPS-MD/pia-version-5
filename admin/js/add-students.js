@@ -1,4 +1,3 @@
-/* PIA ADMIN CONSOLE -- ADD STUDENTS */
 (function () {
     'use strict';
 
@@ -127,7 +126,6 @@
             status: 'inactive',
             role: 'student'
         };
-        // the name parts are kept apart; a database without those columns still takes the full name
         var insertRes = await sb.from('profiles').insert([
             Object.assign({}, row, {
                 first_name: student.first || null,
@@ -340,7 +338,6 @@
         return $('[data-row="' + id + '"]', root);
     }
 
-    // the row messages stay hidden in the table; the first one (and how many more) shows in the footer
     function paintStatus() {
         var bad = $$('.as-row', root).filter(function (el) {
             return $('.field-msg', el).textContent;
@@ -404,7 +401,6 @@
             return !isBlank(r);
         }).length;
         var count = n || filled;
-        // Add students stays off until a student has been typed in.
         $('#as-submit').disabled = filled === 0;
         var where = sectionName() ? ' to ' + sectionName() : '';
         $('#as-submit').textContent = count
@@ -496,7 +492,6 @@
         }
     }
 
-    // closing with students typed in asks first: save a draft, discard, or keep editing
     function wireDraft() {
         function guard(event) {
             if (!hasContent()) {
@@ -549,7 +544,6 @@
     function wire() {
         var grid = $('#as-grid', root);
 
-        // the custom dropdown fires 'change' only, so listen to both
         function onEdit(event) {
             var item = event.target.closest('[data-row]');
             if (!item) {

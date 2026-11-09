@@ -1,7 +1,3 @@
-/*
- * Dashboard basics.
- * Settings, the shared state, screen switching and the loading and error messages.
- */
 (function () {
     'use strict';
 

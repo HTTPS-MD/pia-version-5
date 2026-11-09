@@ -1,4 +1,3 @@
-// phones: the game is split into three tabs along the bottom (lesson, error log, solved questions)
 (function () {
     var frame = document.querySelector('.game-frame');
     var tabs = document.querySelectorAll('.game-tab');
@@ -21,7 +20,6 @@
     });
     show('lesson');
 
-    // phones: the tutor pops up when there is something to say, then tucks away
     var speech = document.getElementById('agent-speech');
     var box = document.getElementById('status-msg');
     var recall = document.getElementById('tutor-recall');

@@ -1,7 +1,3 @@
-/*
- * Session guard.
- * Watches that the sign-in is still valid, and ends the session cleanly when it is not.
- */
 const SESSION_CHECK_MS = 10 * 1000;
 
 let sessionCheckTimerId = null;
@@ -216,7 +212,6 @@ async function endStudentSession(reason) {
     if (idleModal) idleModal.remove();
     removeAllChannels();
 
-    // (2) Say why, before any network call can stall.
     showSessionEnded(SESSION_ENDED_COPY[reason] ? reason : 'ended');
     window.dispatchEvent(new CustomEvent('pia:session-ended', { detail: { reason } }));
 

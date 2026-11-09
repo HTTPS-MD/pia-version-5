@@ -1,7 +1,3 @@
-/*
- * Start-up.
- * Refreshes everything, loads the admin identity, wires the forms and starts the page.
- */
 (function () {
     'use strict';
 

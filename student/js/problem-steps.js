@@ -1,7 +1,3 @@
-/*
- * Problem steps.
- * Draws each step of a problem and sends the student's answer.
- */
 (function () {
     'use strict';
 
@@ -65,7 +61,6 @@
         );
         head.appendChild(Dash.el('h3', 'step-title', 'Step ' + (i + 1) + ': ' + label));
         if (done) {
-            // shown on phones, where a finished step folds down to one line
             head.appendChild(Dash.el('span', 'step-answer', '(' + ((p.doneSteps[i] || {}).text || '') + ')'));
         }
         card.appendChild(head);

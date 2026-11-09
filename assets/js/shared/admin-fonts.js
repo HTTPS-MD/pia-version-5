@@ -1,4 +1,3 @@
-/* Admin console webfonts: Inter (UI text) and JetBrains Mono (numbers, timers, */
 (function () {
     'use strict';
     var URLS = [

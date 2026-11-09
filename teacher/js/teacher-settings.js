@@ -1,7 +1,3 @@
-/*
- * Teacher settings.
- * Personal details and change password.
- */
 (function () {
     'use strict';
 
@@ -83,7 +79,6 @@
         });
     }
 
-    // Update stays off until something is typed.
     function syncUpdate() {
         $('#cp-submit').disabled = !['cp-current', 'cp-new', 'cp-confirm'].some(function (id) {
             return document.getElementById(id).value !== '';

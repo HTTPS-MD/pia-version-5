@@ -1,7 +1,3 @@
-/*
- * Sign-in windows (modals).
- * Opening and closing the windows, keeping focus inside, and locking the page behind them.
- */
 (function () {
     'use strict';
 

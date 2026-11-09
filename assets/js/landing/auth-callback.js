@@ -1,4 +1,3 @@
-/* PIA SYSTEM — EMAIL-LINK CATCHER (landing page only) */
 (function () {
     'use strict';
 

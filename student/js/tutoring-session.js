@@ -1,7 +1,3 @@
-/*
- * Tutoring session.
- * Checks that tutoring is open, starts or resumes a session and loads the next problem.
- */
 (function () {
     'use strict';
 

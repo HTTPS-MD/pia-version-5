@@ -1,4 +1,3 @@
-/* PIA SYSTEM — ADMIN SHELL */
 (function (global) {
     'use strict';
 
@@ -241,13 +240,11 @@
             }
             var action = item.getAttribute('data-user-action');
             if (action === 'theme') {
-                // the menu stays open so the switch is seen sliding
                 $('#theme-toggle').click();
                 paintThemeItem();
                 return;
             }
             if (action === 'notif') {
-                // phone: the notifications open inside this menu
                 var list = $('#user-notif-list');
                 if (list) {
                     list.hidden = !list.hidden;
@@ -283,8 +280,6 @@
         pending: false
     };
 
-    /* Verified destinations and actions only: each one maps to an existing
-       view or dialog. Nothing for export, security log or devices. */
     function paletteModules() {
         return [
             {

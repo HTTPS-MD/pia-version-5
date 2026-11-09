@@ -1,12 +1,6 @@
-/*
- * Teacher page.
- * Checks the teacher, then shows the read-only list of the section: who is online
- * and whether each has entered. Refreshes by itself.
- */
 (function () {
     'use strict';
 
-    var esc = escapeHTML;
 
     var POLL_MS = 10000;
 
@@ -166,7 +160,6 @@
         }
     }
 
-    // Teachers with more than one section pick one from the same dropdown the admin console uses.
     async function offerSectionSwitch() {
         try {
             var res = await sb.rpc('teacher_my_sections');
@@ -265,8 +258,6 @@
         $('#roster-panel').hidden = !state.section;
     }
 
-    // The three boxes (the class accuracy in each topic) are live, like the admin's: they refresh with the roster and may
-    // still change while students play. The database answers with one percentage per topic and nothing else.
     async function paintTopicBoxes() {
         var box = $('#topic-boxes');
         if (!box) {
@@ -282,7 +273,6 @@
             return;
         }
         var rows = res.data || [];
-        // no rows: not a teacher with a section
         if (!rows.length) {
             box.classList.add('is-hidden');
             return;
@@ -293,7 +283,6 @@
             })[0];
             var value = found && found.accuracy !== null && found.accuracy !== undefined ? Number(found.accuracy) : null;
             setText($('#topic-' + t), value === null || !isFinite(value) ? '—' : value + '%');
-            // "4 of 10 students answered": the accuracy is only of the students who reached the topic
             var note = $('#topic-' + t + '-note');
             if (note) {
                 note.textContent =
@@ -330,7 +319,6 @@
                     key: String(r.student_key || ''),
                     name: String(r.full_name || 'Unnamed student'),
                     online: r.online === true,
-                    // true / false while a session was started today, null before
                     entered: r.entered === true ? true : r.entered === false ? false : null
                 };
             });
@@ -368,7 +356,6 @@
         return !term || row.name.toLowerCase().indexOf(term) !== -1;
     }
 
-    // Entered (full colour while the student is online, faded after they leave), Not in yet, or a dash before the start.
     function participationCell(td, row) {
         if (row.entered === null) {
             td.className = 'muted';
@@ -382,7 +369,6 @@
         }
     }
 
-    // Privacy Mode: asterisks instead of the names (the avatar keeps its initials, like the admin's). It is off at first and remembered by this browser only.
     function setPrivacy(on) {
         state.privacy = !!on;
         var box = $('#hide-details');

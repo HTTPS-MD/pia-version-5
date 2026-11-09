@@ -1,7 +1,3 @@
-/*
- * Live updates.
- * Refreshes the page when data changes, and searches students across sections.
- */
 (function () {
     'use strict';
 

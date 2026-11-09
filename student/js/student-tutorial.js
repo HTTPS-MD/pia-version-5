@@ -1,11 +1,8 @@
-/* PIA SYSTEM — TUTORING TUTORIAL (student-dashboard.html) */
 (function () {
     'use strict';
 
     var SEEN_KEY = 'pia_tutorial_seen_at';
 
-    // To show a picture on a step, put the file in assets/images/tutorial/ and set image to its name,
-    // for example image: 'step-1.webp', and alt to a short description of it.
     var IMAGE_DIR = '../../assets/images/tutorial/';
 
     var STEPS = [
@@ -99,7 +96,6 @@
         nextBtn.textContent = index === STEPS.length - 1 ? 'Start' : 'Next';
     }
 
-    // the white card shows the tutorial first; the last step starts the session
     function showTutorial() {
         index = 0;
         render();
@@ -107,7 +103,6 @@
         card.hidden = false;
     }
 
-    // the last step's button is Start: it ends the tutorial and starts the session (the Start card stays if that is not possible)
     function finish() {
         markSeen();
         card.hidden = true;

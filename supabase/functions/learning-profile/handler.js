@@ -1,18 +1,3 @@
-// PIA -- learning-profile: the request logic, free of Deno imports so it can be
-// tested in Node (tests/learning-profile-edge.cjs). index.js wires it to Supabase.
-//
-// Flow: student's browser -> THIS function -> pia-ml-api (Cloudflare).
-//   1. The student's own token is required. The numbers come from the database
-//      (get_learning_features, run AS the student, so the game's guard applies:
-//      Control, teachers and signed-out callers are refused).
-//   2. Exactly seven numbers are sent to the ML service, picked by name below:
-//      no name, email, student id, session id, tutor or group. The token for the
-//      ML service lives only in this function's secrets.
-//   3. The answer is recorded (record_learning_profile: profile, number of submissions, time, with the student read
-//      from the session) so the admin can see it. Only {profile, confidence: null} goes back to the browser (the rule-based tree has no probability). Any failure is a
-//      plain error and the page keeps its current wording.
-// The browser sends only {session_id}. It cannot send features and cannot send
-// "learn": there is nothing in this path that can change the model.
 const FEATURES = [
     'recent_accuracy',
     'average_attempts',
@@ -24,8 +9,6 @@ const FEATURES = [
 ];
 const PROFILES = ['struggling', 'average', 'outstanding'];
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-// The profile is read from the last eight submissions, so it waits for half of them. Until then the answer is
-// 'average' and the service is not asked (two wrong answers in a row would otherwise mean 0% and struggling).
 const MIN_EVENTS = 4;
 function cors(origin, env) {
     const h = { Vary: 'Origin' };
@@ -51,7 +34,6 @@ export async function handle(req, env, rpc, fetchFn = fetch, record = async () =
     if (req.method === 'OPTIONS')
         return new Response(null, { status: 204, headers: cors(origin, env) });
     if (req.method !== 'POST') return reply(405, { error: 'POST only.' }, origin, env);
-    // Off until both the ML address and its secret are configured.
     if (!env.mlUrl || !env.mlToken) return reply(503, { error: 'Not configured.' }, origin, env);
     const auth = req.headers.get('Authorization') || '';
     if (!auth.startsWith('Bearer ') || auth.length < 20)
@@ -74,7 +56,6 @@ export async function handle(req, env, rpc, fetchFn = fetch, record = async () =
     const events = Number(src.events || 0);
     if (events < MIN_EVENTS)
         return reply(200, { profile: 'average', confidence: null, source: 'default' }, origin, env);
-    // Pick the seven by name; nothing else is ever forwarded.
     const payload = {};
     for (const k of FEATURES) {
         const v = Number(src.features ? src.features[k] : NaN);
@@ -90,11 +71,9 @@ export async function handle(req, env, rpc, fetchFn = fetch, record = async () =
         });
         if (!ml.ok) return reply(502, { error: 'Profile service unavailable.' }, origin, env);
         const out = await ml.json();
-        // The decision tree answers only the profile; it has no probability, so confidence is always null.
         if (!out || !PROFILES.includes(String(out.profile))) {
             return reply(502, { error: 'Profile service unavailable.' }, origin, env);
         }
-        // Keep a record of what the tree answered (the admin screen reads it). A failure here never changes the answer.
         try {
             await record(sessionId, String(out.profile), events);
         } catch (_e) {}

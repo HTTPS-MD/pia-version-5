@@ -1,9 +1,3 @@
-/*
- * Student sign-in with a student number.
- * One step: type the number and join. The door answers the same way to every refusal, so nothing about who is
- * registered or whether the session started leaks. A refused student waits (quietly asking again) until the
- * admin lets them in, and then goes straight in.
- */
 (function () {
     'use strict';
 
@@ -149,8 +143,6 @@
     }
     Auth.enterWithToken = enterWithToken;
 
-    // Refused: say so, wait, and keep asking quietly (the door counts only the first try, for the admin's bell)
-    // until the admin lets the student in. Then the student goes straight in. Stops when the window is closed.
     function showJoinWaiting(message, number, ui) {
         showJoinError(message);
         $('#join-error-wait').hidden = false;
@@ -188,7 +180,6 @@
         })();
     }
 
-    // One door for both boxes (the first screen and the sign-in window).
     async function joinWithNumber(number, ui) {
         var res = await joinCall({ action: 'enter', number: number });
         if (!res.ok) {
@@ -225,7 +216,6 @@
         var release = Auth.setBusy($('#si-submit'), 'Entering…');
         try {
             await joinWithNumber(number, {
-                // after a wait the window is opened again, which is a new version of it
                 working: function () {
                     Auth.openModal('modal-signin');
                     version = overlay.dataset.authVersion || '0';

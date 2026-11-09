@@ -1,7 +1,3 @@
-/*
- * Teachers.
- * The teacher list, profile, devices, and adding or removing a teacher.
- */
 (function () {
     'use strict';
 
@@ -139,7 +135,6 @@
             openFacultyProfile(row.getAttribute('data-faculty'), row);
         });
 
-        // One button: a teacher who holds the section is either taken off it (the default) or removed for good
         $('#faculty-remove').addEventListener('click', async function () {
             var f = Admin.state.activeFaculty;
             if (!f) {
@@ -156,7 +151,6 @@
                 }
                 return;
             }
-            // Remove from section is the default. Delete opens a second question, and Cancel there comes back here.
             for (;;) {
                 var answer = await Admin.confirmAction({
                     heading: 'Remove ' + Admin.whoIs(f.email) + '?',
@@ -187,7 +181,6 @@
         ['input', 'change'].forEach(function (type) {
             $('#edit-teacher-form').addEventListener(type, syncTeacherSave);
         });
-        // closing with edits asks first: save them as a draft or discard them
         var teacherOverlay = $('#modal-edit-teacher');
         function guardTeacher(event) {
             if (teacherLook() === teacherSnapshot) {
@@ -240,47 +233,6 @@
         node.className = 'form-status' + (tone ? ' is-' + tone : '');
     }
 
-    async function resetFacultyPassword(email, sourceBtn) {
-        var ok = await Admin.confirmAction({
-            heading: 'Send a password link to ' + Admin.whoIs(email) + '?',
-            message: 'They set a new password through the emailed link.',
-            confirmLabel: 'Send link',
-            tone: 'accent'
-        });
-        if (!ok) {
-            return;
-        }
-
-        var release = Admin.setBusy(sourceBtn, 'Sending…');
-        setFacultyStatus('Sending the link…', '');
-        var res;
-        try {
-            res = await sb.auth.signInWithOtp({
-                email: email,
-                options: { shouldCreateUser: false, emailRedirectTo: Admin.activationRedirect(email) }
-            });
-        } catch (err) {
-            res = { error: { message: (err && err.message) || 'The request did not complete.' } };
-        }
-        release();
-
-        if (!Admin.state.activeFaculty || Admin.state.activeFaculty.email !== email) {
-            return;
-        }
-        if (res.error) {
-            setFacultyStatus(
-                'The link was not sent: ' + Admin.authFailureText(res.error, ''),
-                'error'
-            );
-            return;
-        }
-        setFacultyStatus(
-            'The service accepted the request. ' +
-                email +
-                ' can use the link in the email to set a new password.',
-            'ok'
-        );
-    }
 
     var OCEAN_TRAITS = [
         { key: 'ocean_e', name: 'Extroversion' },
@@ -300,7 +252,6 @@
             return;
         }
         var r = info.row;
-        // the strongest trait (all of them if tied)
         var top = OCEAN_TRAITS.reduce(function (best, t) {
             var v = r[t.key];
             return v != null && (best === null || v > best) ? v : best;
@@ -371,7 +322,6 @@
         $('#et-name').value = f.name || '';
         $('#et-email').value = f.email;
         teacherSnapshot = teacherLook();
-        // an unsaved edit that was kept as a draft goes back on top of what is stored
         var draft = Admin.drafts['teacher:' + f.email];
         if (draft) {
             $('#et-name').value = draft.name;
@@ -390,7 +340,6 @@
         var original = $('#et-original-email').value;
         var name = $('#et-name').value.trim();
         var email = Admin.normalizeEmail($('#et-email').value);
-        // the section stays as it is
         var section = (Admin.state.activeFaculty && Admin.state.activeFaculty.assigned_section) || '';
 
         var valid = true;
@@ -558,8 +507,6 @@
             return true;
         }
 
-        // The RPC removes the login and profile; the teacher record and the
-        // section links live in their own tables and are cleared here.
         var lower = String(email).toLowerCase();
         var rec = await sb.from('professors').delete().ilike('email', lower);
         if (rec.error) {

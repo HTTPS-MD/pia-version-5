@@ -1,8 +1,3 @@
-/*
- * Small page-wide helpers.
- * Offline and error banner, backup pictures, light/dark switch, skip link,
- * and the "back to top" button.
- */
 (function () {
     'use strict';
 

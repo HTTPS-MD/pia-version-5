@@ -1,4 +1,3 @@
-/* PIA SYSTEM — PRE-PAINT SIGN-IN GUARD */
 (function () {
     'use strict';
 

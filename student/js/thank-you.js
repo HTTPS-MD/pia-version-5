@@ -1,4 +1,3 @@
-/* The last page for the control group: they only answer the questionnaire. */
 (async function () {
     const profile = await requireStudentSession();
     if (!profile) return;

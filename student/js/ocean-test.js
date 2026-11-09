@@ -204,7 +204,6 @@ function setupRealtimeListener() {
                     (payload) => {
                         const isOpen = payload.new.value === true || payload.new.value === 'true';
 
-                        // closed: back to the Waiting Room at once (the answers so far are already saved)
                         if (!isOpen) {
                             window.location.href = 'waiting-room.html';
                             return;
@@ -368,7 +367,6 @@ function loadQuestion() {
     const isLast = i === total - 1;
     const remaining = total - done;
     const firstGap = userResponses.indexOf(null);
-    // the last question always shows Submit; it stays off until every statement has an answer
     const showSubmit = reviewingUnanswered ? isComplete() : isLast;
     const canReviewFromLast = isLast && firstGap !== -1 && firstGap < i;
     if (nextBtn) {
@@ -410,7 +408,6 @@ function handleAnswer(score) {
     loadQuestion();
 }
 
-// The "Saving your answers" notice is a window over the test, shown until the page moves on (or an error replaces it).
 function setSavingModal(on) {
     const modal = document.getElementById('saving-modal');
     const box = document.getElementById('saving-modal-content');
@@ -573,8 +570,6 @@ document.addEventListener(
 );
 
 checkAccessAndInit();
-
-// onclick="" attribute: the site's Content-Security-Policy (_headers) forbids
 
 document.addEventListener('click', (event) => {
     const control = event.target.closest('[data-action]');

@@ -1,12 +1,8 @@
-/*
- * Student number box on the first screen.
- */
 (function () {
     'use strict';
 
     var Auth = window.PIAAuth;
 
-    // defined in auth-student-join.js, which loads after this file: look it up when it is needed
     function showJoinError(message) {
         Auth.showJoinError(message);
     }
@@ -34,7 +30,6 @@
         var walkedIn = false;
         try {
             walkedIn = true;
-            // a refusal waits for the admin and then enters on its own (see auth-student-join.js)
             var inside = await Auth.joinWithNumber(number, {
                 current: function () {
                     return true;

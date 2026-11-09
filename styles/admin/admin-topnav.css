@@ -1,4 +1,3 @@
-/* PIA ADMIN CONSOLE -- NAVIGATION ACROSS THE TOP, on every screen size (two tabs: Sections and Math Task; no hamburger) */
 .app {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: var(--topbar-h) auto minmax(0, 1fr);

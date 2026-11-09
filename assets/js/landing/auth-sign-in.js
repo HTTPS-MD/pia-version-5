@@ -1,7 +1,3 @@
-/*
- * Staff sign-in.
- * Checks the email and password, handles sign-in errors and picks the right dashboard.
- */
 (function () {
     'use strict';
 
@@ -174,7 +170,6 @@
 
             await routeAfterSignIn(profile, role, function (message, tone) {
                 if (tone === 'ok' && submit) {
-                    // Success shows on the button itself, until the page changes.
                     succeeded = true;
                     submit.innerHTML = '\u2713 Login successful';
                     Auth.setStatus(opts.statusId, '', 'ok');
@@ -200,7 +195,6 @@
     }
 
     async function claimSeat(email, profile, role) {
-        // Every role is one session at a time: the newest sign-in wins and the older one ends.
         if (typeof claimStudentSession === 'function') {
             var claim = await claimStudentSession();
             if (!claim.missing) {

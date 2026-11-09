@@ -1,8 +1,3 @@
-/*
- * The landing look, for the student pages.
- * Add class "landing-look" to <body> (next to "paper") and link this file after student-paper.css.
- * It gives: the gradient background, the cream cards, yellow primary buttons, round header buttons and modals.
- */
 :root[data-theme] .paper.landing-look {
     --q-paper: var(--hex-fff8e7);
     --q-ink: var(--hex-0d1230);
@@ -13,7 +8,6 @@
     --ll-shadow: 0 0.75rem 2rem var(--black-a28);
 }
 
-/* background: the landing's navy with two soft glows */
 :root[data-theme='dark'] .landing-look :is(.journey-ambient--classroom, .paper-scene, .learn-ambient) {
     background-image: var(--grain),
         radial-gradient(ellipse 45% 55% at 28% 55%, var(--rgb86-144-255-a34), transparent),
@@ -37,7 +31,6 @@
     background-repeat: repeat, no-repeat, no-repeat, no-repeat;
 }
 
-/* header buttons */
 .landing-look :is(.journey-bar-right, .learn-bar-right) .btn-signout {
     height: 40px;
     padding: 0 var(--sp-5);
@@ -58,7 +51,6 @@
     border-radius: 50%;
 }
 
-/* cards */
 .landing-look .paper-card,
 .landing-look.quiz .gate-wrap.gate-open,
 .landing-look.quiz .question-card {
@@ -76,7 +68,6 @@
     color: inherit;
     border-radius: 0;
 }
-/* chips and the privacy note */
 .landing-look .paper-chips li,
 .landing-look .gate-chips li {
     border: 0;
@@ -88,7 +79,6 @@
     box-shadow: none;
 }
 
-/* buttons: yellow primary, outlined secondary */
 .landing-look .paper-card .btn,
 .landing-look .start-wrap .btn,
 .landing-look.quiz .gate-wrap .btn,
@@ -113,7 +103,6 @@
     background: var(--hex-ffe66d);
 }
 
-/* questionnaire answers */
 .landing-look.quiz .ocean-answer-btn {
     border: 2px solid transparent;
     border-radius: var(--ll-btn-radius);
@@ -122,13 +111,11 @@
     border-color: var(--q-ink);
 }
 
-/* waiting room dots */
 .landing-look .wait-dots li {
     border: 0;
     border-radius: 50%;
 }
 
-/* choose a tutor: round avatars, a stage, and a cream card, like "Who is your sidekick?" on the landing page */
 .landing-look .pick-title {
     margin: 0 0 var(--sp-4);
     text-align: center;
@@ -191,7 +178,6 @@
     outline-offset: 3px;
 }
 
-/* the stage: the 3D classroom picture behind the tutor, the card on the right */
 .landing-look .pick-stage {
     display: grid;
     grid-column: 2 / 4;
@@ -213,14 +199,12 @@
 .landing-look .pick-stage:not(.has-pick) .pick-hello {
     display: none;
 }
-/* "Tap me!" sits on the tutor, like on the landing page; "Say hi" is only shown before a pick and after locking */
 .landing-look .pick-stage.has-pick .pick-hello {
     display: none;
 }
 .landing-look .is-locked .pick-hello {
     display: block;
 }
-/* the classroom picture cropped to its drawn part, with the tutor placed on its platform by percentages, so the ratio is the same on every screen */
 .landing-look .pick-big {
     position: relative;
     grid-column: 1;
@@ -380,14 +364,12 @@
     }
 }
 
-/* the bottom tabs and the one-line answer of a finished step are for phones only */
 .landing-look .game-tabs,
 .landing-look .tutor-recall,
 .landing-look .step-answer {
     display: none;
 }
 
-/* tutoring: the same cards, pills and yellow buttons on the game screen */
 .landing-look .game-frame {
     --g-edge: transparent;
     --g-offset: transparent;
@@ -397,7 +379,6 @@
     box-shadow: none;
     overflow: visible;
 }
-/* the tutor sits in the middle of the space left of the cards, the card stays in the middle of the screen */
 @media (min-width: 901px) {
     .landing-look .game-frame {
         grid-template-columns: minmax(280px, 1fr) minmax(0, 43rem) minmax(var(--g-right), 1fr);
@@ -413,7 +394,6 @@
     background: transparent;
     box-shadow: none;
 }
-/* the tutor and the classroom are one box, so the tutor stands on the platform at every screen size */
 .landing-look .video-copy-layer {
     --stage-w: min(100cqw, 32rem, calc(100cqh - var(--bubble-h, 9.25rem) - 40px));
 }
@@ -595,7 +575,6 @@
     color: var(--q-soft);
 }
 
-/* tutoring modals */
 .landing-look .time-modal-header {
     text-shadow: none;
 }
@@ -644,7 +623,6 @@
         display: flex;
         flex-direction: column;
     }
-    /* small screens: the tutor is a short strip (tutor + speech) so the problem is on screen straight away */
     .landing-look .video-mentor-sidebar {
         flex: none;
         height: auto;
@@ -698,7 +676,6 @@
         padding: 0.3rem 1rem;
         font-size: 0.85rem;
     }
-    /* the tutor pops up under the header when there is something to say, and tucks away after a while or when tapped */
     .landing-look .video-mentor-sidebar {
         position: fixed;
         top: 68px;
@@ -751,7 +728,6 @@
         grid-template-columns: 4.75rem minmax(0, 1fr);
         gap: 1rem;
     }
-    /* hint and tutor buttons stay in reach just above the tabs */
     .landing-look .video-hint-layer {
         position: fixed;
         right: 0.75rem;
@@ -778,7 +754,6 @@
         cursor: pointer;
     }
 
-    /* three tabs along the bottom: lesson, error log, solved questions */
     .landing-look .game-screen {
         padding-bottom: 8.5rem;
     }
@@ -819,7 +794,6 @@
         display: none;
     }
 
-    /* a finished step folds down to one line: the badge, the title and the answer */
     .landing-look .step-card.correct .solution-label,
     .landing-look .step-card.correct .solution-input-row,
     .landing-look .step-card.correct .conversion-confirmation {
@@ -852,7 +826,6 @@
     }
 }
 
-/* welcome screen: the tutor on the classroom stage, centred, with the greeting and Start below */
 .landing-look .start-wrap {
     max-width: 36rem;
     grid-template-columns: minmax(0, 1fr);
@@ -894,16 +867,6 @@
 }
 .landing-look .start-actions {
     justify-content: center;
-}
-.landing-look .learn-bar .btn-tutorial {
-    border: 0;
-    border-radius: var(--ll-btn-radius);
-    background: var(--volt);
-    color: var(--on-volt);
-    font-weight: 700;
-}
-.landing-look .learn-bar .btn-tutorial:hover {
-    background: var(--hex-ffe66d);
 }
 .landing-look .agent-stage {
     position: relative;
@@ -954,7 +917,6 @@
     border-color: transparent;
 }
 
-/* welcome screen on a wide screen: the tutor on the left, the greeting, text and Start on the right */
 @media (min-width: 46rem) {
     .landing-look .start-wrap {
         max-width: 66rem;
@@ -992,7 +954,6 @@
     }
 }
 
-/* welcome screen: the greeting is the tutor speaking, in a text box beside them */
 .landing-look .start-intro {
     margin: 0;
     font-weight: 600;
@@ -1025,7 +986,6 @@
     }
 }
 
-/* the tutor's text box looks like the join box on the landing page: cream, dark text, soft shadow */
 @media (min-width: 46rem) {
     .landing-look .start-card {
         border: 0;
@@ -1047,7 +1007,6 @@
     }
 }
 
-/* welcome screen on a phone: the tutor on top, the same cream text box below with its pointer facing up */
 @media (max-width: 45.99rem) {
     .landing-look .start-wrap {
         max-width: 26rem;
@@ -1103,7 +1062,6 @@
     }
 }
 
-/* the game's dialogs look like every other dialog in the system */
 .landing-look .modal {
     color: var(--text);
 }
@@ -1133,7 +1091,6 @@
     color: var(--text-muted);
 }
 
-/* the theme button is the same round toggle as everywhere else: a 44px circle with one thin outline and no fill */
 :root[data-theme='dark'] .landing-look {
     --line-input: color-mix(in srgb, var(--palette-paper) 52%, var(--palette-ink));
 }
@@ -1163,7 +1120,6 @@
     }
 }
 
-/* the white card: Back, Next, Start and Continue sit on the right, like the questionnaire */
 .landing-look .start-card .start-actions {
     justify-content: flex-end;
     width: 100%;

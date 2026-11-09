@@ -1,4 +1,3 @@
-/* Shared activation/recovery setup. A URL mode or a cached session alone */
 (function () {
     'use strict';
     const form = document.getElementById('setup-password-form');
@@ -146,8 +145,6 @@
         }
     }
 
-    // Teachers and administrators go straight to their dashboard with the password just set,
-    // through the same seat check as the normal sign-in. Any failure leaves the Sign in button.
     async function signInStaff(email, password, role) {
         try {
             const auth = await supabaseClient.auth.signInWithPassword({ email, password });

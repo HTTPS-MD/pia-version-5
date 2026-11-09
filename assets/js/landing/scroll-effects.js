@@ -1,8 +1,3 @@
-/*
- * Effects that follow the scroll.
- * Sections that fade in, the hover highlight, the rising footer card and the
- * privacy section burst.
- */
 (function () {
     'use strict';
 

@@ -1,4 +1,3 @@
-/* Evaluates the student's progress state and routes them accordingly without overriding targeted access. */
 async function checkUserAndStage() {
     const profile = await requireStudentSession();
     if (!profile) return;
@@ -32,7 +31,6 @@ async function checkUserAndStage() {
 
 const SECTION_OPEN_CHECK_MS = 5000;
 
-// A section the admin opened lets in students who finish later: ask the server at once, then every few seconds.
 async function sectionOpenForMe(stageName) {
     const { data } = await supabaseClient.rpc('set_student_stage', { p_stage: stageName });
     return !!(data && data.granted);

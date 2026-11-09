@@ -1,7 +1,3 @@
-/*
- * Page extras.
- * Backup pictures when an image fails, and clean-up of live connections when leaving.
- */
 document.addEventListener(
     'error',
     (e) => {

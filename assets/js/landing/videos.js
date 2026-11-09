@@ -1,7 +1,3 @@
-/*
- * Videos.
- * The background video in the hero and the "how it works" video.
- */
 (function () {
     'use strict';
 

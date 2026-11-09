@@ -1,7 +1,3 @@
-/*
- * Deleting a section.
- * A section with students is deleted by saying which section they move to.
- */
 (function () {
     'use strict';
 
@@ -31,7 +27,6 @@
         }
     }
 
-    // ---- delete a section ----
     var pending = null;
 
     var NEW = '__new__';

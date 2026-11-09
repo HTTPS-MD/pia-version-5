@@ -1,7 +1,3 @@
-/*
- * Answers and hints.
- * What happens after an answer, asking for a hint, finishing a problem and the extra-practice offer.
- */
 (function () {
     'use strict';
 

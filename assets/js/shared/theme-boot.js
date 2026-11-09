@@ -1,4 +1,3 @@
-/* PIA SYSTEM — PRE-PAINT BOOT */
 (function () {
     'use strict';
 

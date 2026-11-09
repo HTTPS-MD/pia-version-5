@@ -1,7 +1,3 @@
-/*
- * Activate account and forgot password.
- * Sends the email link and shows the wait time before sending again.
- */
 (function () {
     'use strict';
 
@@ -36,7 +32,6 @@
         }
     }
 
-    // The window can introduce itself differently, for example after an expired link.
     function setIntro(title, sub) {
         emailRequests.forgot.title = title;
         var node = $('#forgot-description');
@@ -154,13 +149,11 @@
         return INBOXES.gmail;
     }
 
-    // Opens the mail app when the phone has it, and the web inbox otherwise.
     function openInbox(event) {
         var link = event.currentTarget;
         var ua = navigator.userAgent || '';
         var web = link.href;
         if (/Android/i.test(ua) && link.dataset.android) {
-            // The app opens the web inbox address when it handles it; otherwise the browser does.
             event.preventDefault();
             var site = new URL(web);
             window.location.href =
@@ -197,7 +190,6 @@
         return 'The email request was not accepted. Try again later or contact your admin.';
     }
 
-    // The request went out (or one went out a moment ago): show where to find it.
     function markAccepted(kind, state, p, email) {
         state.email = email;
         state.accepted = true;
@@ -238,8 +230,6 @@
         state.pending = true;
         renderEmailRequests();
         try {
-            // One link for first-time and forgotten passwords: it works for an account that
-            // is not activated yet and for one that is.
             var res = await sb.auth.signInWithOtp({
                 email: email,
                 options: {
@@ -255,7 +245,6 @@
                     var wait = retryDelay(res.error);
                     state.until = Date.now() + Math.max(wait || 0, 60000);
                     if (auto && version === state.version) {
-                        // a link went out to this address in the last minute: point to it, no error
                         markAccepted(kind, state, p, email);
                         return;
                     }
@@ -305,7 +294,6 @@
         document.addEventListener('visibilitychange', renderEmailRequests);
         renderEmailRequests();
     }
-    // Sends a link to an address already known on this device, for an expired link.
     Auth.sendLinkTo = function (email) {
         $('#fp-email').value = email;
         return requestEmail('forgot', false, true);

@@ -1,4 +1,3 @@
-/* PIA -- the header of the student "paper" pages: the light / dark switch, and Quit. */
 (function () {
     'use strict';
 

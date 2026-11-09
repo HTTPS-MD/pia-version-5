@@ -1,7 +1,3 @@
-/*
- * This computer.
- * A device id, the one-device rule, and claiming the student session.
- */
 function getDeviceSignature() {
     const ua = navigator.userAgent;
     let platform = 'Unknown Device';

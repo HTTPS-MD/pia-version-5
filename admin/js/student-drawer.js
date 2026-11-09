@@ -1,7 +1,3 @@
-/*
- * Student drawer.
- * The side panel for one student: results, tutorial report, retakes and delete.
- */
 (function () {
     'use strict';
 
@@ -50,11 +46,6 @@
         $('#drawer-tutor').textContent = Admin.tutorLabel(s);
 
         var controlNote = $('#drawer-control-note');
-        var beyondOcean =
-            s.group_type === 'control' &&
-            (s.is_in_game === true ||
-                s.current_stage === 'Character Selection' ||
-                s.current_stage === 'Tutoring Dashboard');
         controlNote.classList.add('is-hidden');
         controlNote.textContent = '';
 
@@ -176,7 +167,6 @@
                 ? '<div class="game-history-list">' +
                   daily.days
                       .map(function (d) {
-                          // accuracy is of the steps answered (right / right + wrong), like the class accuracy
                           var answered = (Number(d.steps_correct) || 0) + (Number(d.steps_wrong) || 0);
                           var pct = answered ? Math.round((Number(d.steps_correct) * 100) / answered) : null;
                           return (
@@ -233,7 +223,6 @@
             '</div>';
     }
 
-    var BFPT = window.PIA_BFPT || null;
 
     var BFPT_COLUMNS =
         'email, responses, ocean_e, ocean_a, ocean_c, ocean_n, ocean_o,' +
@@ -336,7 +325,6 @@
             );
         }).join('');
 
-        // the strongest trait (all of them if tied)
         var top = BFPT_TRAITS.reduce(function (best, t) {
             var v = r[t.key];
             return v != null && (best === null || v > best) ? v : best;
@@ -347,7 +335,6 @@
             return t.name;
         });
         var meta = strongest.length ? 'Dominant: ' + strongest.join(' & ') : '';
-        var matchingNote = '';
 
         $('#drawer-ocean-meta').textContent = meta;
         box.innerHTML = scores;
@@ -370,7 +357,6 @@
                 } else if (action === 'retake-character') {
                     allowRetakeCharacter(s.email);
                 } else if (action === 'remove') {
-                    // Archive (the default) keeps the student in Archived; Permanently delete asks once more
                     Admin.confirmAction({
                         heading: 'Remove ' + Admin.whoIs(s.email) + '?',
                         message: 'Archived students can be added back.',

@@ -1,7 +1,3 @@
-/*
- * Form helpers.
- * Status and error messages, show/hide password, caps-lock hint, busy buttons and toasts.
- */
 (function () {
     'use strict';
 
@@ -87,7 +83,6 @@
 
     var PW_CONTROLS = '[data-pw-toggle], [data-pw-check]';
 
-    // a control can name several fields, separated by spaces
     function pwInputs(control) {
         var ids = (control.getAttribute('data-pw-toggle') || control.getAttribute('data-pw-check') || '')
             .split(/\s+/)

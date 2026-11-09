@@ -1,8 +1,3 @@
-/*
- * Landing page base.
- * Keeps one shared "update on scroll" loop and a list of small jobs that other
- * landing files add. It runs the jobs once the page is ready.
- */
 (function () {
     'use strict';
 
@@ -90,8 +85,6 @@
         addStartJob: addStartJob
     };
 
-    // The other landing files add their jobs while the page loads, so wait for
-    // DOMContentLoaded (it fires after all of them have run).
     if (document.readyState === 'complete') {
         start();
     } else {

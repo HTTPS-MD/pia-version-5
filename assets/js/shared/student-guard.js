@@ -1,7 +1,3 @@
-/*
- * Student page guard.
- * Checks the session, which stage is open, and sends the student to the right page.
- */
 async function resolveStudentRedirect(profile) {
     if (canEnterStage(profile, 'ocean')) {
         return (await isStageOpen('stage_ocean'))
@@ -94,7 +90,6 @@ async function requireStudentSession() {
         .maybeSingle();
 
     if (!profile) {
-        // ang global sa ibaba ay kayang i-sign out pati ang bagong device.
         const why = await fetchSessionStatus();
         if (why === 'replaced' || why === 'revoked') {
             endStudentSession(why);
@@ -140,8 +135,6 @@ async function enforceStudentStage(pageKey) {
         window.location.replace(await resolveStudentRedirect(profile));
         return null;
     }
-
-    //     ang tanging nag-o-override sa global flag. Ligtas ito dahil ang mga
 
     const hasTargetedGrant = profile.current_stage === cfg.currentStage;
     if (!hasTargetedGrant && !(await isStageOpen(cfg.flag))) {

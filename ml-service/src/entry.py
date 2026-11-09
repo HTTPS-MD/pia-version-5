@@ -29,7 +29,6 @@ from workers import WorkerEntrypoint, Response
 MODEL_NAME = "rule-based-decision-tree-3-profile-v1"
 PROFILES = ["struggling", "average", "outstanding"]
 
-# Normalized "performance strength" dimensions, each between 0 and 1.
 FEATURES = [
     "accuracy_strength",
     "attempt_strength",
@@ -55,18 +54,13 @@ def as_float(data, key, default=0.0):
 def feature_vector(data):
     accuracy = clamp(as_float(data, "recent_accuracy", 0.5))
 
-    # 1 attempt is strongest. 5+ attempts reaches the bottom of this feature.
     average_attempts = max(1.0, as_float(data, "average_attempts", 1.0))
     attempt_strength = 1.0 - clamp((average_attempts - 1.0) / 4.0)
 
     hint_rate = clamp(as_float(data, "hint_rate", 0.0))
 
-    # "No hint" must not look impressive when the learner is mostly wrong:
-    # independence is only strong when it is paired with accuracy.
     independence_strength = accuracy * (1.0 - hint_rate)
 
-    # Efficiency is calculated ONLY from correct responses. Without it, derive a fallback from the response
-    # time, but only when some answers are correct.
     if "correct_response_efficiency" in data:
         correct_efficiency = clamp(as_float(data, "correct_response_efficiency", 0.0))
     else:
@@ -86,18 +80,10 @@ def feature_vector(data):
     ]
 
 
-# A value below the threshold goes left, a value at or above it goes right.
 def branch(feature, threshold, low, high):
     return {"feature": feature, "threshold": threshold, "left": low, "right": high}
 
 
-# PROVISIONAL cut-offs (see the top of this file).
-#  accuracy < 45%                -> struggling
-#  45% to below 80%              -> average, unless repeated difficulty (long wrong streak with many attempts,
-#                                   or accuracy below 60% with many attempts) -> struggling
-#  80% or more                   -> outstanding only if ALL five safeguards pass (at most one wrong in a row,
-#                                   2.8 attempts or fewer, hint independence, three correct in a row,
-#                                   efficiency on correct answers); otherwise average.
 DECISION_TREE = branch(
     "accuracy_strength", 0.45,
     "struggling",
@@ -153,7 +139,6 @@ def predict_tree(vector):
     return node, path
 
 
-# The only fields a request may carry, with the range each must lie in.
 ALLOWED = {
     "recent_accuracy": (0.0, 1.0),
     "average_attempts": (1.0, 50.0),
@@ -184,7 +169,6 @@ def clean_features(data):
 class Default(WorkerEntrypoint):
 
     def reply(self, payload, status=200):
-        # Deliberately NO Access-Control-* headers: browsers cannot use this.
         return Response(
             json.dumps(payload),
             status=status,

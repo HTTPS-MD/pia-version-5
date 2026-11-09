@@ -1,7 +1,3 @@
-/*
- * Site setup.
- * Supabase address and key, the sign-in storage, the shared client (window.sb), and email link helpers.
- */
 const supabaseUrl = 'https://qqiudlzqowfemzmefnzl.supabase.co';
 
 const supabaseKey = 'sb_publishable_1ObHmDRu2WBJZsvfMkYIJw_F-OQBys5';

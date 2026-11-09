@@ -1,7 +1,3 @@
-/*
- * Start-up.
- * Wires everything together when the page is ready.
- */
 (function () {
     'use strict';
 
@@ -116,8 +112,6 @@
             try {
                 known = localStorage.getItem('pia_link_email') || '';
             } catch (err) {}
-            // The address that asked for the last link is kept on this device, so the new
-            // link goes out at once. Another device has none and asks for the address.
             if (known && Auth.isEmail(known) && Auth.sendLinkTo) {
                 setTimeout(function () {
                     Auth.sendLinkTo(known);

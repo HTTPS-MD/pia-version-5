@@ -1,7 +1,3 @@
-/*
- * Admin basics.
- * Small helpers, scores, shared state, the loading screen, and the page router (Sections, Math Task, Settings).
- */
 (function () {
     'use strict';
 
@@ -65,7 +61,6 @@
     }
     Admin.normalizeEmail = normalizeEmail;
 
-    // a person's name for dialogs and messages; the email only when no name is known
     function whoIs(email) {
         var key = String(email || '').toLowerCase();
         var hit = null;
@@ -81,7 +76,6 @@
     }
     Admin.whoIs = whoIs;
 
-    // the database still says professor and faculty; the people using the admin read teacher
     function teacherWords(text) {
         return String(text || '')
             .replace(/\bProfessors\b/g, 'Teachers')
@@ -98,8 +92,6 @@
             return fallback;
         }
         var msg = teacherWords(error.message || '');
-        /* The database's own refusals ("PIA: an administrator cannot ...",
-           migration 0031) already say exactly why; pass them through. */
         if (/^PIA:\s*/.test(msg)) {
             return msg.replace(/^PIA:\s*/, '');
         }

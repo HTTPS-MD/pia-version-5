@@ -1,4 +1,3 @@
-/* PIA -- Math Task question generator (no DOM, no network). */
 (function (root, factory) {
     var api = factory();
     if (typeof module === 'object' && module.exports) {

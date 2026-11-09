@@ -1,8 +1,3 @@
-/*
- * Signed in already.
- * A visitor with a saved session never sees the landing page: they go straight to their
- * dashboard (or the waiting room for a student) before anything is painted.
- */
 (function () {
     'use strict';
 
@@ -43,7 +38,6 @@
         return;
     }
 
-    // one redirect at a time: if the dashboard sent us straight back, stay put
     try {
         var last = Number(sessionStorage.getItem('pia_straight_to_dashboard') || 0);
         if (Date.now() - last < 3000) {

@@ -1,7 +1,3 @@
-/*
- * Idle timeout.
- * Signs out after a long time with no activity, with a warning first.
- */
 const IDLE_LIMIT_MS = 15 * 60 * 1000;
 
 const IDLE_WARNING_MS = 60 * 1000;
@@ -115,7 +111,6 @@ function startIdleWatchdog(opts) {
         }
         resetIdle();
     });
-    // Activity in another tab dismisses this tab's warning and restarts its quiet time.
     window.addEventListener('storage', (event) => {
         if (event.key === IDLE_ACTIVITY_KEY && event.newValue) resetIdle();
     });

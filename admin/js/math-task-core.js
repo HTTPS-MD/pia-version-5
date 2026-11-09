@@ -1,7 +1,3 @@
-/*
- * Math task bank (1 of 3).
- * Loading the questions, the rules, and drawing the topic tabs and table.
- */
 (function () {
     'use strict';
 
@@ -278,7 +274,6 @@
     }
     Admin.renderQbAll = renderQbAll;
 
-    // the topic is chosen from the page title, like the section on the Sections page
     function qbPaintTopicMenu() {
         var host = $('#qb-topic-host');
         if (!host) {
@@ -417,8 +412,6 @@
     Admin.renderQbTable = renderQbTable;
 
     function renderQbToolbar() {
-        var list = qb.bank[qb.topic];
-        var usable = qb.status === 'ready' && list.length > 0;
 
         qbPaintTopicMenu();
     }

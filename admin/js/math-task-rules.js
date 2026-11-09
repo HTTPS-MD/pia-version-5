@@ -1,13 +1,8 @@
-/*
- * Math task bank (3 of 3).
- * Saving the rules and wiring the math task page.
- */
 (function () {
     'use strict';
 
     var Admin = window.PIAAdmin;
 
-    // "dirty" = what is on the screen differs from what is saved; Save stays off until it does
     function qbMarkDirty() {
         Admin.qb.dirty =
             Admin.qbConfigSig(Admin.qb.closesAt, Admin.qb.rules, null) !== Admin.qb.configSeen;
@@ -131,7 +126,6 @@
             }
         });
 
-        // unsaved rules are lost on reload, so the browser asks first
         window.addEventListener('beforeunload', function (event) {
             if (Admin.qb.dirty) {
                 event.preventDefault();
@@ -199,7 +193,6 @@
         $('#qb-add-btn').addEventListener('click', function () {
             Admin.qbOpenEditor(null, this);
         });
-        // typing a count turns Generate yellow
         $('#qb-gen-count').addEventListener('input', function () {
             var run = $('#qb-gen-run');
             var ok = Number(this.value) >= 1;
@@ -244,20 +237,17 @@
                 qbMarkDirty();
             });
         });
-        // what is saved is what the window shows when it opens (if the server has not told us yet)
         $('#qb-rules-btn').addEventListener('click', function () {
             if (Admin.qb.configSeen === null || Admin.qb.configSeen === undefined) {
                 Admin.qb.configSeen = Admin.qbConfigSig(Admin.qb.closesAt, Admin.qb.rules, null);
             }
         });
-        // Cancel closes the window; unsaved edits are thrown away after asking
         $('#qb-config-cancel').addEventListener('click', async function () {
             if (Admin.qb.dirty) {
                 var answer = await Admin.askUnsaved();
                 if (!answer) {
                     return;
                 }
-                // Save draft keeps the edits on the screen's state (they are back when Rules is opened again)
                 if (answer === 'discard') {
                     Admin.qb.dirty = false;
                     await Admin.loadMathTask();

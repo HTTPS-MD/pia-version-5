@@ -1,8 +1,3 @@
-/*
- * Tutor picker.
- * Choose one of the six tutors: the picture, text and tabs change together,
- * and the arrow, Home and End keys work.
- */
 (function () {
     'use strict';
 

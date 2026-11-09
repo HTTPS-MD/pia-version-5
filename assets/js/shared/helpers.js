@@ -1,7 +1,3 @@
-/*
- * Small shared helpers.
- * escapeHTML, $ and $$, safeInt, and checks for network errors.
- */
 function escapeHTML(str) {
     if (str === null || str === undefined) return '';
     return String(str)
@@ -25,12 +21,6 @@ function safeInt(value, fallback = 0) {
     return Number.isFinite(n) ? n : fallback;
 }
 
-/*
- * piaDialog: one dialog for the whole site (the shared .overlay and .modal), so every popup looks the same.
- * opts: id, title, text, textHtml (trusted markup instead of text), note, icon (trusted svg markup),
- *       actions [{ id, label, primary, onClick }], zIndex, role.
- * Returns { root, close, button(id) }.
- */
 function piaDialog(opts) {
     const o = opts || {};
     const root = document.createElement('div');

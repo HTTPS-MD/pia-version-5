@@ -1,8 +1,3 @@
-/*
- * Navbar.
- * Turns solid on scroll, shows or hides the sign-in buttons, opens the mobile
- * menu, and marks the section you are reading.
- */
 (function () {
     'use strict';
 

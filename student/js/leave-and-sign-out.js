@@ -1,7 +1,3 @@
-/*
- * Leaving.
- * Sign out, quit, and the veil shown when the student leaves the tab.
- */
 (function () {
     'use strict';
 

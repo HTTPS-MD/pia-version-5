@@ -1,8 +1,3 @@
-/*
- * Set your password (landing page).
- * The activation / reset email link comes back to index.html?flow=set-password and opens
- * the "Set your password" window here, instead of a separate page.
- */
 (function () {
     'use strict';
 
@@ -47,8 +42,6 @@
         var linkError = errorCode || hash.get('error') || entry.searchParams.get('error');
 
         var linkEmail = Auth.normalizeEmail(entry.searchParams.get('email'));
-        // The address comes with the link (or was kept on this device), so a new link goes
-        // out without asking for it again. Without one there is nothing to send to.
         var known = Auth.isEmail(linkEmail) ? linkEmail : '';
         try {
             known = known || Auth.normalizeEmail(localStorage.getItem('pia_link_email'));
@@ -83,8 +76,6 @@
             status(text, 'error');
         }
 
-        // A new link when the address is known; otherwise back to sign in, where Activate
-        // and Forgot password live. The address is never asked for in this window.
         function offerNext() {
             again.hidden = !known;
             continuation.hidden = !!known;
@@ -104,7 +95,6 @@
             }
         }
 
-        // Leaving the window before the password is saved drops the verified sign-in.
         new MutationObserver(function () {
             if (!overlay.classList.contains('is-open') && !finished) {
                 finished = true;
@@ -116,7 +106,6 @@
 
         history.replaceState(null, '', entry.pathname);
         document.documentElement.removeAttribute('data-session');
-        // a browser can bring the box back ticked on a reload; start hidden and unticked
         Auth.maskPasswords(overlay);
         Auth.openModal(MODAL);
         status('Checking your link…', 'ok');
@@ -211,9 +200,6 @@
             }
         }
 
-        // Teachers and administrators go straight to their dashboard with the password just
-        // set, through the same seat check as the normal sign-in. Any failure leaves the
-        // Sign in button.
         async function signInStaff(email, password, role) {
             try {
                 var auth = await sb.auth.signInWithPassword({ email: email, password: password });
@@ -269,8 +255,6 @@
 
         retry.addEventListener('click', verifyLink);
 
-        // The request runs here, on this button, and the next window opens already showing
-        // where to find the email.
         again.addEventListener('click', async function () {
             if (!known || again.disabled) {
                 return;

@@ -1,8 +1,3 @@
-/*
- * Student forms.
- * Edit a student's name, student number and section (adding students is in add-students.js).
- * The condition is set when the student is created and cannot be changed here.
- */
 (function () {
     'use strict';
 
@@ -44,7 +39,6 @@
         ]);
     }
 
-    // Save changes stays off until something in the window has been changed.
     function syncSave() {
         var save = $('#es-submit');
         if (save) {
@@ -60,9 +54,6 @@
 
         Admin.clearFormErrors('edit-student-form');
 
-        // Only the full name is stored, so the parts are worked out from it: the last word is the
-        // last name, the word before it the middle name, and the rest the first name
-        // ("Mark Daniel Bayona Francisco" is Mark Daniel, Bayona, Francisco).
         var parts = (s.full_name || '').trim().split(/\s+/).filter(Boolean);
         var first = parts[0] || '',
             middle = '',
@@ -100,7 +91,6 @@
 
         $('#es-number').value = '';
         $('#es-number').disabled = true;
-        // what is saved (the baseline for Save changes); a draft, if there is one, is put on top of it
         var base = {
             first: $('#es-first').value,
             middle: $('#es-middle').value,
@@ -139,7 +129,6 @@
             Admin.toastOk('Draft restored', 'Your unsaved changes are back.');
         }
 
-        // the parts saved with the student win over the guess from the full name
         sb.from('profiles')
             .select('first_name, middle_name, last_name')
             .eq('email', s.email)
@@ -209,8 +198,6 @@
             return;
         }
 
-        // A student who is signed in or inside a stage is not moved: they would keep playing in a section whose
-        // stage may be closed, and their place in the session would stay on the old section.
         var current = (Admin.state.cohort || []).filter(function (c) {
             return String(c.email || '').toLowerCase() === originalEmail.toLowerCase();
         })[0];
@@ -284,7 +271,6 @@
                 setTimeout(syncSave, 0);
             });
         });
-        // closing with edits asks first
         function guard(event) {
             if (look() === snapshot) {
                 return;

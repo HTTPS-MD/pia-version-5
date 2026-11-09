@@ -1,4 +1,3 @@
-/* Keep the admin access gate from becoming an endless spinner if a script or */
 (function () {
     'use strict';
 

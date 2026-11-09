@@ -1,7 +1,3 @@
-/*
- * Device revoke.
- * What happens when an admin signs a device out.
- */
 function showRevokeModal(title, message) {
     if (document.getElementById('global-revoke-modal')) return;
 
@@ -94,8 +90,6 @@ async function watchDeviceSession() {
     )
         return;
 
-    // SECURITY FIX: dati, `event:'*'` na WALANG filter -- kaya ang bawat
-
     registerChannel('global-device-revocation-' + userEmail, (ch) =>
         ch
             .on(
@@ -130,7 +124,6 @@ async function watchDeviceSession() {
 }
 
 async function executeForceLogout() {
-    // Everything below would act on the account -- global sign-out, presence,
 
     if (piaSessionEnded) {
         clearLocalSession();

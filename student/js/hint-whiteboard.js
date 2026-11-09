@@ -1,4 +1,3 @@
-/* PIA -- hint whiteboard: a worked example, drawn step by step. */
 (function (root, factory) {
     var api = factory();
     if (typeof module === 'object' && module.exports) {

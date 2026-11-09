@@ -1,5 +1,3 @@
-/* PIA SYSTEM — ACCOUNT ACTIVATION */
-
 .auth-page {
     min-height: 100vh;
     min-height: 100dvh;
@@ -191,7 +189,6 @@
     border: 1px solid var(--line);
 }
 
-/* the same surface, spacing and yellow button as the admin windows */
 .auth-card {
     --bg-field: color-mix(in srgb, var(--hex-ffffff) 3%, var(--hex-142849));
     --text-faint: var(--text-muted);
@@ -237,7 +234,6 @@
     border-color: transparent;
     box-shadow: none;
 }
-.auth-card .field-hint,
 .auth-card .field-msg {
     margin: 0;
     line-height: 1.5;
@@ -300,7 +296,6 @@
 .auth-card .auth-hint a {
     color: var(--volt-text);
 }
-/* even spacing, the same rhythm as the landing windows */
 .auth-card {
     display: grid;
     gap: var(--sp-5);
@@ -336,7 +331,6 @@
     }
 }
 
-/* the request-a-new-link button on an expired link */
 .auth-card .auth-hint a.btn {
     width: 100%;
     justify-content: center;
@@ -353,7 +347,6 @@
     color: var(--on-volt);
 }
 
-/* the admin colours */
 :root[data-theme='dark'] .auth-card {
     --bg-surface: color-mix(in srgb, var(--hex-ffffff) 5%, var(--hex-142849));
     --line: color-mix(in srgb, var(--hex-fff8e7) 18%, var(--hex-142849));

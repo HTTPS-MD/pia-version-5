@@ -1,7 +1,3 @@
-/*
- * Loading data.
- * Reads the students, stage times, sections, teachers and settings from the database.
- */
 (function () {
     'use strict';
 
@@ -134,7 +130,6 @@
         if (stage === 'Offline') {
             return query.or('active_devices.is.null,active_devices.eq.{}');
         }
-        // a stage tab lists only the students who are signed in; the rest sit under Offline
         return query.eq('current_stage', stage).neq('active_devices', '{}');
     }
 
@@ -299,8 +294,6 @@
 
         Admin.state.faculty = res.data || [];
         await loadFacultyOcean();
-        // The account turns active on the profiles row when the teacher sets a password;
-        // the professors row keeps its starting value, so read it from there.
         Admin.state.faculty.forEach(function (f) {
             var info = Admin.state.facultyOcean[String(f.email || '').toLowerCase()];
             if (info && info.account) {

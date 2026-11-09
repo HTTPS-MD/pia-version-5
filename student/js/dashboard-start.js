@@ -1,7 +1,3 @@
-/*
- * Start-up.
- * Checks the student, loads everything and wires the buttons.
- */
 (function () {
     'use strict';
 
@@ -34,8 +30,6 @@
         }
         startStageHeartbeat('Tutoring Dashboard');
 
-        /* Deliberately narrow: full_name, selected_character and section only.
-           ocean_* must not enter this page — see the header note. */
         var me = await sb
             .from('profiles')
             .select('full_name, selected_character, section')
@@ -82,7 +76,6 @@
         $('#offer-accept').addEventListener('click', function () {
             Dash.answerOffer(true);
         });
-        // saying no to the tutor's offer asks first
         $('#offer-stay').addEventListener('click', async function () {
             var offer = Dash.state.pendingOffer;
             if (!offer || Dash.state.offering) {
@@ -169,7 +162,6 @@
         await Dash.checkTutoring();
         Dash.watchTutoring();
 
-        // the first time, the tutorial sits in the white card before Start; it is settled before the page shows
         if (window.PIATutorial) {
             await window.PIATutorial.init(sb).catch(function () {});
         }
@@ -192,7 +184,6 @@
                             if (open) {
                                 return;
                             }
-                            // closed: back to the Waiting Room at once (what was answered is already saved)
                             window.location.replace('waiting-room.html');
                         }
                     )

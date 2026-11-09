@@ -1,7 +1,3 @@
-/*
- * Dialogs and small helpers.
- * Opening and closing windows, toasts, confirm boxes, info tips, busy buttons and field errors.
- */
 (function () {
     'use strict';
 
@@ -47,8 +43,6 @@
     }
     Admin.openModal = openModal;
 
-    // One rule for the window forms: the button stays off until every required field has something
-    // typed, and goes off again when the window is emptied or reopened.
     function gateSubmit(modalId, buttonId, fieldIds) {
         var modal = $('#' + modalId);
         var button = $('#' + buttonId);
@@ -96,8 +90,6 @@
         }
 
         setTimeout(function () {
-            // The same window was opened again while this one was still closing (a question that is followed at
-            // once by another question): leave it showing.
             if (Admin.openLayers.indexOf(overlay) !== -1) {
                 return;
             }
@@ -232,7 +224,6 @@
     }
     Admin.toastErr = toastErr;
 
-    // The name of a student for a dialog: initials under Privacy Mode, never an email (it carries the login number).
     Admin.studentLabel = function studentLabel(email) {
         var name = String(Admin.whoIs(email) || '');
         if (document.documentElement.classList.contains('pia-hide-details')) {
@@ -241,8 +232,6 @@
         return !name || /@students\.pia\.invalid$/i.test(name) ? 'A student' : name;
     };
 
-    // Every dialog that lists students shows this table, ten rows to a page.
-    // spec: { columns: ['Student', 'Status'], rows: [[cell, cell]], pageSize }. A cell is text or { text, tone: 'bad'|'warn'|'good' }.
     function pagedTable(host, spec) {
         var rows = spec ? spec.rows || [] : [];
         host.hidden = !rows.length;
@@ -284,7 +273,6 @@
     }
     Admin.pagedTable = pagedTable;
 
-    // a dialog with a table is wider than one without
     function fitDialog(overlay, host, spec) {
         pagedTable(host, spec);
         var box = overlay.firstElementChild;
@@ -297,7 +285,6 @@
             var overlay = $('#modal-confirm');
             var accept = $('#confirm-accept');
 
-            // one question as the title and one short line under it, nothing said twice
             $('#confirm-title').textContent = options.heading || options.title || 'Are you sure?';
             $('#confirm-subtitle').textContent = options.subtitle || '';
             $('#confirm-heading').textContent = '';
@@ -311,7 +298,6 @@
                 (danger ? 'alert' : 'info') +
                 '"></use></svg>';
 
-            // a window with only the answers asked for (no Cancel): leaving it with Esc or a click outside keeps editing
             var xBtn = $('#confirm-x');
             if (xBtn) {
                 xBtn.style.display = options.noCancel ? '' : 'none';
@@ -326,7 +312,6 @@
             var fresh = accept.cloneNode(true);
             accept.parentNode.replaceChild(fresh, accept);
 
-            // An optional second answer (altLabel): the dialog then resolves 'alt' instead of true.
             var alt = $('#confirm-alt').cloneNode(true);
             $('#confirm-alt').parentNode.replaceChild(alt, $('#confirm-alt'));
             alt.textContent = options.altLabel || '';
@@ -377,7 +362,6 @@
     }
     Admin.confirmAction = confirmAction;
 
-    // Unsaved edits: 'save' (keep them as a draft), 'discard', or null (keep editing: Esc / outside click).
     Admin.drafts = {};
     function askUnsaved() {
         return confirmAction({

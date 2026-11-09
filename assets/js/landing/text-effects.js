@@ -1,8 +1,3 @@
-/*
- * Text effects.
- * Words that light up one by one (on load and while scrolling) and the
- * typed "Welcome" line.
- */
 (function () {
     'use strict';
 

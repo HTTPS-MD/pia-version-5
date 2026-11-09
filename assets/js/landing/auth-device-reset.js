@@ -1,7 +1,3 @@
-/*
- * Sign out other devices.
- * Sends an email code, checks it, and ends the other sessions.
- */
 (function () {
     'use strict';
 

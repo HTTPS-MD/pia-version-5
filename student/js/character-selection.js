@@ -1,4 +1,3 @@
-/* Global variables */
 let selectedChar = null;
 let isLockedIn = false;
 
@@ -163,7 +162,6 @@ async function finalLockIn() {
 
     document.getElementById('lock-in-btn').style.display = 'none';
 
-    // Let the student see the pick for a moment, then on to tutoring, or the waiting room if it is not open yet.
     setTimeout(goOn, LOCK_IN_PAUSE_MS);
 }
 
@@ -195,8 +193,6 @@ if (supabaseClient) {
             .subscribe()
     );
 }
-
-// the site's Content-Security-Policy (_headers) forbids inline script, and an
 
 const ACTIONS = {
     confirm: openConfirmModal,
@@ -262,6 +258,5 @@ document.addEventListener('click', (event) => {
     });
 })();
 
-// start with the first tutor shown, so the stage is never empty
 const firstTutor = document.querySelector('.persona-card');
 if (firstTutor) previewCharacter(firstTutor);

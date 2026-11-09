@@ -1,8 +1,3 @@
-/*
- * Help pages (teacher and admin).
- * Shows each topic's screenshot only once its file has loaded, so a topic
- * without a picture reads as plain text.
- */
 (function () {
     'use strict';
 
