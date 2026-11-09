@@ -1039,6 +1039,14 @@
         var notIn = emails.filter(function (e) {
             return !inside[e];
         });
+        if (emails.length - notIn.length === 0) {
+            admin.showNotice(
+                'Cannot close the gate yet',
+                'Nobody has joined ' + section + ' yet. The gate stays open until at least one student enters.',
+                'danger'
+            );
+            return false;
+        }
         var preview = admin.previewStage ? await admin.previewStage('ocean', section) : null;
         var canOpen = !!preview && !preview.blocked && !admin.stageIsOpen('ocean', section);
         var answer = await admin.confirmAction({
