@@ -3855,6 +3855,7 @@ h4 {
     padding: 0 0.3em;
     border-radius: 0.4em;
     font-weight: 700;
+    white-space: nowrap;
 }
 .privacy-sub {
     margin: var(--sp-4) 0 0;
