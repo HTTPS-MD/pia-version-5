@@ -66,7 +66,7 @@
     Admin.openStudentDrawer = openStudentDrawer;
 
     function gameTopicLabel(topic) {
-        return { 1: 'Easy', 2: 'Medium', 3: 'Hard' }[Number(topic)] || '—';
+        return { 1: 'Topic 1', 2: 'Topic 2', 3: 'Topic 3' }[Number(topic)] || '—';
     }
 
     function gameDuration(seconds) {
