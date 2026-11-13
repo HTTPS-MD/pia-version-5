@@ -19,7 +19,7 @@
 
         var fields = [
             ['minQuestions', 'qb-min-questions', 'Solved to level up'],
-            ['maxErrors', 'qb-max-errors', 'Wrong to level down']
+            ['maxErrors', 'qb-max-errors', 'Failed questions in a row to level down']
         ];
         var order = [Admin.qb.topic].concat(
             Admin.QB_ORDER.filter(function (t) {
