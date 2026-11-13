@@ -321,12 +321,16 @@
             );
         }).join('');
 
-        var top = BFPT_TRAITS.reduce(function (best, t) {
+        var matchScore = function (t) {
             var v = r[t.key];
+            return v == null ? null : t.key === 'ocean_n' ? Admin.OCEAN_MAX - v : v;
+        };
+        var top = BFPT_TRAITS.reduce(function (best, t) {
+            var v = matchScore(t);
             return v != null && (best === null || v > best) ? v : best;
         }, null);
         var strongest = BFPT_TRAITS.filter(function (t) {
-            return top !== null && r[t.key] === top;
+            return top !== null && matchScore(t) === top;
         }).map(function (t) {
             return t.name;
         });
