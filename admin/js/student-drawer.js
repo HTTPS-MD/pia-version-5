@@ -148,7 +148,7 @@
             ) +
             gameStat(
                 'Accuracy',
-                summary.accuracy_percent == null ? '—' : Number(summary.accuracy_percent) + '%'
+                summary.accuracy_percent == null ? '—' : Math.round(Number(summary.accuracy_percent)) + '%'
             ) +
             gameStat(
                 daily ? 'Active time' : 'Sessions',
