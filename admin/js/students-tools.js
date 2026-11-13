@@ -314,13 +314,19 @@
         var wasOpen =
             h1.querySelector('[data-section-menu]') &&
             !h1.querySelector('[data-section-menu]').hidden;
-        h1.innerHTML =
+        var nextHtml =
             '<button type="button" data-section-toggle aria-haspopup="menu" aria-expanded="' +
             !!wasOpen +
             '">' +
             esc(label) +
             '<span class="custom-select-chevron" aria-hidden="true"></span></button>' +
             menu;
+        if (h1._chipsHtml === nextHtml && h1.firstChild) {
+            renderProfLine();
+            return;
+        }
+        h1._chipsHtml = nextHtml;
+        h1.innerHTML = nextHtml;
         updateHostVisibility();
         if (wasOpen) {
             h1.querySelector('[data-section-menu]').hidden = false;
