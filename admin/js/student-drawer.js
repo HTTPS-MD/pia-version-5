@@ -154,10 +154,6 @@
                 daily ? 'Active time' : 'Sessions',
                 daily ? gameDuration(daily.active_seconds_total) : Number(summary.sessions)
             ) +
-            gameStat(
-                'Clean questions',
-                summary.clean_questions == null ? '—' : Number(summary.clean_questions) + ' of ' + (Number(summary.completed_questions) || 0)
-            ) +
             gameStat('Total points', Number(summary.score_sum) || 0) +
             gameStat('Total errors', Number(summary.errors) || 0) +
             '</div>';
