@@ -433,7 +433,7 @@
               ? 'No students in ' + f.section + ' yet'
               : 'No students yet';
 
-        tbody.innerHTML = Admin.state.rosterPage
+        var rosterHtml = Admin.state.rosterPage
             .map(function (s) {
                 return rosterRow(
                     s,
@@ -448,6 +448,10 @@
                 );
             })
             .join('');
+        if (tbody._rosterHtml !== rosterHtml || !tbody.querySelector('tr[data-student]')) {
+            tbody._rosterHtml = rosterHtml;
+            tbody.innerHTML = rosterHtml;
+        }
 
         var pages = Math.max(1, Math.ceil(Admin.state.totalStudents / Admin.PAGE_SIZE));
         var from = Admin.state.totalStudents ? (Admin.state.page - 1) * Admin.PAGE_SIZE + 1 : 0;
