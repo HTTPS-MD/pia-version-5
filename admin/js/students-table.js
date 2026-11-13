@@ -62,7 +62,7 @@
             '<span class="cell-name">' +
             Admin.esc(profile.full_name || '(no name)') +
             '</span>' +
-            (/@students\.pia\.invalid$/i.test(String(profile.email || ''))
+            (/@students\.pia\.(invalid|edu\.ph)$/i.test(String(profile.email || ''))
                 ? ''
                 : '<span class="cell-mail">' + Admin.esc(profile.email) + '</span>') +
             '</span>' +

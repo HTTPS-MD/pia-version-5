@@ -354,7 +354,7 @@
                 items: palette.students.rows.map(function (s) {
                     return {
                         label: s.full_name || s.email,
-                        detail: s.full_name ? s.email : s.section || '',
+                        detail: s.full_name ? String(s.email || '').replace(/@students\.pia\.(invalid|edu\.ph)$/i, '') : s.section || '',
                         run: function () {
                             host.openStudent(s.email);
                         }
